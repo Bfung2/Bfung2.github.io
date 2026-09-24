@@ -1,0 +1,23 @@
+{
+    "site_name": "Northgate PC Works",
+    "tagline": "Parts, custom builds and on-site repair.",
+    "owner_email": "",
+    "from_email": "",
+    "phone": "",
+    "address": "",
+    "hours": "",
+    "build_fee": 250,
+    "offer_assembly": 1,
+    "tax_rate": 0,
+    "shipping_flat": 0,
+    "currency": "$",
+    "about_heading": "",
+    "about_body": "",
+    "contact_body": "",
+    "payment_mode": "invoice",
+    "stripe_pk": "",
+    "stripe_sk": "",
+    "stripe_currency": "usd",
+    "payout_note": "",
+    "admin_hash": ""
+}
