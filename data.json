@@ -17,14 +17,14 @@
   "products": [],
   "parts": [
     {
-      "id": "b63h2sx",
-      "name": "AMD Ryzen 5 9600X",
+      "id": "p21xb1v",
+      "name": "AMD Ryzen 5 7600X",
       "category": "CPU",
       "price": 210,
-      "desc": "6-Core\t\n3.9 GHz\nDDR5 5600",
+      "desc": "6-Core\t4.7 GHz\tDDR5 5200",
       "socket": "AM5",
       "memType": "DDR5",
-      "tdp": "65",
+      "tdp": "105",
       "watts": "",
       "power": ""
     }
