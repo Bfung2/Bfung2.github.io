@@ -15,20 +15,7 @@
     "applePayInfo": ""
   },
   "products": [],
-  "parts": [
-    {
-      "id": "lrunpya",
-      "name": "Test",
-      "category": "CPU",
-      "price": 2,
-      "desc": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "5",
-      "watts": "",
-      "power": ""
-    }
-  ],
+  "parts": [],
   "orders": [],
   "requests": [],
   "accounts": []
