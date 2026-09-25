@@ -1,1 +1,35 @@
-{}
+{
+  "settings": {
+    "shopName": "Apex Computers",
+    "tagline": "Custom PCs, parts and on-site tech help.",
+    "ownerEmail": "",
+    "phone": "",
+    "address": "",
+    "buildFee": 250,
+    "taxRate": 0,
+    "aboutText": "",
+    "contactText": "",
+    "ownerPhone": "",
+    "zelleInfo": "",
+    "paypalLink": "",
+    "applePayInfo": ""
+  },
+  "products": [],
+  "parts": [
+    {
+      "id": "lrunpya",
+      "name": "Test",
+      "category": "CPU",
+      "price": 2,
+      "desc": "",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "5",
+      "watts": "",
+      "power": ""
+    }
+  ],
+  "orders": [],
+  "requests": [],
+  "accounts": []
+}
