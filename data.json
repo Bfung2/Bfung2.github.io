@@ -27,6 +27,18 @@
       "tdp": "105",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "kn5rhxc",
+      "name": "AMD Ryzen 5 9600X",
+      "category": "CPU",
+      "price": 235,
+      "desc": "6-core\n3.9GHz\nDDR5 5600\nIntegrated Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
