@@ -51,6 +51,18 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "z4fhud2",
+      "name": "AMD Ryzen 5 5500",
+      "category": "CPU",
+      "price": 115,
+      "desc": "6-Core\n3.6 GHz\nNO INTEGRATED GRAPHICS",
+      "socket": "AM4",
+      "memType": "DDR4",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
