@@ -112,6 +112,18 @@
       "tdp": "120",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "tgbnnsa",
+      "name": "AMD Ryzen 7 9700X",
+      "category": "CPU",
+      "price": 355,
+      "desc": "8-Core 3.8 GHz  AMD Radeon Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
