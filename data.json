@@ -87,6 +87,18 @@
       "tdp": "105",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "7nja5f1",
+      "name": "AMD Ryzen 7 5800XT",
+      "category": "CPU",
+      "price": 255,
+      "desc": "8-core\n3.8 GHZ\nNo Integrated Graphics",
+      "socket": "AM4",
+      "memType": "DDR4",
+      "tdp": "105",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
