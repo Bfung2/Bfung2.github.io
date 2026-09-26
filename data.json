@@ -75,6 +75,18 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "0i3jd5c",
+      "name": "AMD Ryzen 7 5800X3",
+      "category": "CPU",
+      "price": 365,
+      "desc": "8-cores\n3.4GHz\nNo Integrated Graphics",
+      "socket": "AM4",
+      "memType": "DDR4",
+      "tdp": "105",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
