@@ -53,11 +53,11 @@
       "power": ""
     },
     {
-      "id": "z4fhud2",
+      "id": "f8m2i8m",
       "name": "AMD Ryzen 5 5500",
       "category": "CPU",
       "price": 115,
-      "desc": "6-Core\n3.6 GHz\nNO INTEGRATED GRAPHICS",
+      "desc": "6-Core\n3.6 GHz\nNone Integrated Graphics",
       "socket": "AM4",
       "memType": "DDR4",
       "tdp": "65",
