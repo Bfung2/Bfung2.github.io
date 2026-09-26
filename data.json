@@ -27,18 +27,6 @@
       "tdp": "105",
       "watts": "",
       "power": ""
-    },
-    {
-      "id": "jo6yaka",
-      "name": "Text",
-      "category": "Graphics card",
-      "price": 1000,
-      "desc": "",
-      "socket": "",
-      "memType": "",
-      "tdp": "",
-      "watts": "",
-      "power": ""
     }
   ],
   "orders": [],
