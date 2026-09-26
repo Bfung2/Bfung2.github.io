@@ -6,6 +6,7 @@
     "phone": "9252065399",
     "address": "",
     "buildFee": 250,
+    "shippingFee": 0,
     "taxRate": 10.5,
     "aboutText": "",
     "contactText": "",
@@ -97,6 +98,18 @@
       "socket": "AM4",
       "memType": "DDR4",
       "tdp": "105",
+      "watts": "",
+      "power": ""
+    },
+    {
+      "id": "ahv71td",
+      "name": "AMD Ryzen 7 9800X3D",
+      "category": "CPU",
+      "price": 485,
+      "desc": "8-Core 5.2 GHz AMD Radeon Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "120",
       "watts": "",
       "power": ""
     }
