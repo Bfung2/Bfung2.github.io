@@ -27,18 +27,6 @@
       "tdp": "105",
       "watts": "",
       "power": ""
-    },
-    {
-      "id": "w4phjpx",
-      "name": "Test",
-      "category": "CPU",
-      "price": 100,
-      "desc": "I",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "100",
-      "watts": "",
-      "power": ""
     }
   ],
   "orders": [],
