@@ -39,6 +39,18 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "k3gppjf",
+      "name": "AMD Ryzen 5 5600X",
+      "category": "CPU",
+      "price": 195,
+      "desc": "# of Cores\n6-Core\n\nCore Clock\n3.7 GHz\n\nNO INTEGRATED GRAPHICS",
+      "socket": "AM4",
+      "memType": "DDR4",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
