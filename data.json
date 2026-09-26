@@ -148,6 +148,18 @@
       "tdp": "105",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "jp6artw",
+      "name": "AMD Ryzen 9 9950X",
+      "category": "CPU",
+      "price": 565,
+      "desc": "16-Core 4.3 GHz AMD Radeon Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "170",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
