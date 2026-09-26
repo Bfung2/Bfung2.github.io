@@ -2,7 +2,7 @@
   "settings": {
     "shopName": "Apex Computers",
     "tagline": "Custom PCs, parts and on-site tech help.",
-    "ownerEmail": "apexcomputers039@gmail.com",
+    "ownerEmail": "",
     "phone": "",
     "address": "",
     "buildFee": 250,
@@ -25,6 +25,18 @@
       "socket": "AM5",
       "memType": "DDR5",
       "tdp": "105",
+      "watts": "",
+      "power": ""
+    },
+    {
+      "id": "w4phjpx",
+      "name": "Test",
+      "category": "CPU",
+      "price": 100,
+      "desc": "I",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "100",
       "watts": "",
       "power": ""
     }
