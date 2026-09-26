@@ -124,6 +124,18 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "3d8y1ic",
+      "name": "AMD Ryzen 7 7800X3D",
+      "category": "CPU",
+      "price": 395,
+      "desc": "8-Core 4.2 GHz AMD Radeon Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "120",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
