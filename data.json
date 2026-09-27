@@ -484,6 +484,19 @@
       "tdp": "",
       "watts": "",
       "power": "35"
+    },
+    {
+      "id": "alsuw9o",
+      "name": "ASRock B650M Pro RS WiFi B650 Micro ATX (White & Black)",
+      "category": "Motherboard",
+      "brand": "ASRock",
+      "price": 135,
+      "desc": "Supports AMD Ryzen 7000 Series and Ryzen 9000 Series processors\nBios update MAY required when used with 9000 Series processors\n8+2+1 Power Phase, Dr.MOS\nSupports DDR5 7200+ MHz (OC)\n1 PCIe 4.0 x16, 1 PCIe 3.0 x16\nGraphics Output Options: HDMI, DisplayPort\nRealtek ALC897 7.1 CH HD Audio Codec, Nahimic Audio\n4 SATA3, 1 Blazing M.2 (PCIe Gen5 x4)\n1 Hyper M.2 (PCIe Gen4 x4)\n1 M.2 (PCIe Gen4 x2)\n1 USB 3.2 Gen2 Type A+C (Rear)\n1 USB 3.2 Gen1 Type-C (Front)\n6 USB 3.2 Gen1 Type-A (2 Rear, 4 Front)\nDragon 2.5G LAN\n802.11ax Wi-Fi 6E + Bluetooth",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "35"
     }
   ],
   "orders": [],
