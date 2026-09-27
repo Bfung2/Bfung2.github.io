@@ -575,6 +575,19 @@
       "tdp": "",
       "watts": "",
       "power": "45"
+    },
+    {
+      "id": "5iejyy6",
+      "name": "ASUS TUF Gaming Z790-Plus WiFi ATX (Black)",
+      "category": "Motherboard",
+      "brand": "ASUS",
+      "price": 264.98,
+      "desc": "BIOS update may be required when used with some 14th generation Intel Core processors, visit ASUS support website for more information\nIntel LGA 1700 socket: Ready for 14th & 13th & 12th Gen Intel Core processors, support PCIe 5.0 and out of box Windows 11 ready\nEnhanced Power Solution: 16+1 DrMOS, ProCool sockets, military-grade TUF components, and Digi+ VRM for maximum durability and performance\nUltra Fast Gaming Networking : WiFi 6 AX201 (802.11 ax), Intel I225-V 2.5Gb LAN, TUF LANGuard and TurboLAN technology\nFastest Connectivity: 4x M.2/NVMe SSD, Front panel USB 3.2 Gen 2 Type-C header, USB Gen 2x2 Type-C and Thunderbolt 4 (USB4) header\nPC DIY Friendly: SafeDIMM, PCIe 5.0 Safeslot, Q-LED, M.2 Q-Latch, Pre-mount I/O shield\nNew TUF Gaming Aesthetics: New ID design, Synchronizable LED effects across a vast portfolio of compatible PC gear, including addressable RGB strips with Aura Sync\nImmersive Gaming Audio & AI Noise Cancellation:The Realtek S1200A codec",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "40"
     }
   ],
   "orders": [],
