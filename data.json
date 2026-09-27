@@ -276,6 +276,19 @@
       "tdp": "125",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "8k0rr2f",
+      "name": "Intel Core i9-14900KS",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 603,
+      "desc": "24-Core (8P+16E)\n3.2 GHz\nIntel UHD Graphics 770",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "150",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
