@@ -112,6 +112,7 @@
       "id": "ahv71td",
       "name": "AMD Ryzen 7 9800X3D",
       "category": "CPU",
+      "brand": "AMD",
       "price": 485,
       "desc": "8-Core 5.2 GHz AMD Radeon Graphics",
       "socket": "AM5",
