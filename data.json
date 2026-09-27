@@ -315,6 +315,19 @@
       "tdp": "125",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "0n03vk4",
+      "name": "Intel Core i7-12700K",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 335,
+      "desc": "12-Core (8P+4E)\n3.6 GHz\nIntel UHD Graphics 770",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "125",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
