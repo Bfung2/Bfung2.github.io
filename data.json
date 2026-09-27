@@ -198,6 +198,19 @@
       "tdp": "120",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "z0t0leh",
+      "name": "AMD Ryzen 9 9900X3D",
+      "category": "CPU",
+      "brand": "AMD",
+      "price": 615,
+      "desc": "12-Core\n4.4 GHz\nAMD Radeon Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "120",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
