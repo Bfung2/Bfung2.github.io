@@ -549,6 +549,19 @@
       "tdp": "",
       "watts": "",
       "power": "35"
+    },
+    {
+      "id": "ie1sccs",
+      "name": "ASUS PRIME B550M-A AC AMD Micro ATX (Black & White)",
+      "category": "Motherboard",
+      "brand": "ASUS",
+      "price": 115,
+      "desc": "MD AM4 socket: Ready for Ryzen™ 5000 Series/4000 G-Series/3000 Series Desktop Processors\nComprehensive cooling: VRM heatsink, PCH heatsink, Fan Xpert 2+\nUltrafast connectivity: Dual M.2, PCIe 4.0, 802.11ac Wi-Fi, USB 3.2 Gen 2 Type-A\nAura Sync RGB: Synchronizable LED effects across compatible PC gear\nAudio Features: LED-illuminated design, Audio Shielding, Premium Japanese Audio Capacitors, Dedicated Audio PCB Layers\nDIGI+ VRM & EPU support\nDDR4 memory support",
+      "socket": "AM4",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "35"
     }
   ],
   "orders": [],
