@@ -125,6 +125,7 @@
       "id": "tgbnnsa",
       "name": "AMD Ryzen 7 9700X",
       "category": "CPU",
+      "brand": "AMD",
       "price": 355,
       "desc": "8-Core 3.8 GHz  AMD Radeon Graphics",
       "socket": "AM5",
