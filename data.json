@@ -263,6 +263,19 @@
       "tdp": "125",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "zdvljp6",
+      "name": "Intel Core i9-12900KF",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 375,
+      "desc": "16-Core (8P+8E)\n3.2 GHz\nNone Integrated Graphics",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "125",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
