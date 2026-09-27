@@ -367,6 +367,19 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "h8olo1u",
+      "name": "Intel Core i7-14700F",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 345,
+      "desc": "20-Core (8P+12E)\n2.1 GHz\nNone Integrated Graphics",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
