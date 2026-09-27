@@ -21,6 +21,7 @@
       "id": "p21xb1v",
       "name": "AMD Ryzen 5 7600X",
       "category": "CPU",
+      "brand": "AMD",
       "price": 210,
       "desc": "6-Core\t4.7 GHz\tDDR5 5200",
       "socket": "AM5",
