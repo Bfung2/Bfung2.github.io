@@ -195,7 +195,7 @@
       "desc": "16-Core\n4.3 GHz\nAMD Radeon Graphics",
       "socket": "AM5",
       "memType": "DDR5",
-      "tdp": "120",
+      "tdp": "170",
       "watts": "",
       "power": ""
     },
