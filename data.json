@@ -510,6 +510,19 @@
       "tdp": "",
       "watts": "",
       "power": "35"
+    },
+    {
+      "id": "coquxfv",
+      "name": "ASUS TUF GAMING B550-PLUS WIFI II ATX (Black)",
+      "category": "Motherboard",
+      "brand": "ASUS",
+      "price": 165,
+      "desc": "Supports AMD Ryzen 5000 Series / 5000 G-Series / 4000 G-Series / 3000 Series Processors\nAMD AM4 Socket and PCIe 4.0: The perfect pairing for 3rd Gen AMD Ryzen CPUs\nRobust Power Design: 8+2 DrMOS power stages with high-quality alloy chokes and durable capacitors to provide reliable power for the last AMD high-count-core CPUs\nOptimized Thermal Solution: Fanless VRM and PCH heatsink, multiple hybrid fan headers and fan speed management with Fan Xpert 4 or the UEFI Q-Fan Control utility\nHigh-performance Gaming Networking: WiFi 6 (802.11ax), 2.5 Gb LAN with ASUS LANGuard\nBest Gaming Connectivity: Supports HDMI 2.1 (4K@60HZ) and DisplayPort 1.2 output, featuring dual M.2 slots (NVMe SSD) - one with PCIe 4.0 x4 connectivity, front panel USB 3.2 Gen 1 connector, USB 3.2 Gen 2 Type-C & Type-A ports and Thunderbolt 3 header, 1 x SPI TPM header\nIndustry-leading Gaming Audio & AI Noise Cancelling Mic Technology: High fidelity audio from a SupremeFX S1220A codec with DTS S\nDDR4 4866(OC)",
+      "socket": "AM4",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "35"
     }
   ],
   "orders": [],
