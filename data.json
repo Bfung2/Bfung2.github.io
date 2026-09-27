@@ -432,6 +432,19 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "5hr05sa",
+      "name": "Intel Core i5-14500",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 285,
+      "desc": "14-Core (6P+8E)\n2.6 GHz\nIntel UHD Graphics 770",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
