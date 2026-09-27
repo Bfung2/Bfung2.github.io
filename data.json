@@ -562,6 +562,19 @@
       "tdp": "",
       "watts": "",
       "power": "35"
+    },
+    {
+      "id": "3heb1h8",
+      "name": "ASRock B550M WiFi AM4 AMD B550 Micro ATX (Black & White)",
+      "category": "Motherboard",
+      "brand": "ASRock",
+      "price": 115,
+      "desc": "AM4 PLATFORM - Supports AMD Ryzen 5000, 5000 G-Series, 4000 G-Series, 3000 and 3000 G-Series desktop processors on the AMD B550 chipset with an 8 power phase design and 2oz copper PCB\nHIGH-SPEED MEMORY - 4 x DDR4 DIMM slots with dual channel support, scaling up to 4733+ MHz (OC) for fast, stable performance\nNEXT-GEN EXPANSION - 1 x PCIe 4.0 x16 reinforced steel slot plus 1 x Hyper M.2 (PCIe Gen4x4) socket and 4 x SATA3 6Gb/s connectors for flexible storage and graphics\nWI-FI 6E CONNECTIVITY - Onboard 802.11axe Wi-Fi 6E with 6GHz band and Bluetooth 5.2, backed by Realtek Gigabit LAN for low-latency wired and wireless networking\nIMMERSIVE AUDIO & RGB - Realtek ALC1220 7.1-channel HD audio with Nahimic Audio, dual graphics outputs (HDMI + DisplayPort), and Polychrome RGB headers for custom lighting",
+      "socket": "AM4",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "40"
     }
   ],
   "orders": [],
