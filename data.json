@@ -354,6 +354,19 @@
       "tdp": "125",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "gshvuwn",
+      "name": "Intel Core i7-14700",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 405,
+      "desc": "20-Core (8P+12E)\n2.1 GHz\nIntel UHD Graphics 770",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
