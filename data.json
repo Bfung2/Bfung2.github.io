@@ -497,6 +497,19 @@
       "tdp": "",
       "watts": "",
       "power": "35"
+    },
+    {
+      "id": "kkpc066",
+      "name": "ASUS TUF GAMING B850M-E WIFI (Black)",
+      "category": "Motherboard",
+      "brand": "ASUS",
+      "price": 185,
+      "desc": "Ready for Advanced AI PC: Designed for the future of AI computing, with the power and connectivity needed for demanding AI applications\nAMD AM5 Socket: Ready for AMD Socket AM5 for AMD Ryzen 9000 & 8000 & 7000 Series Desktop Processors\nEnhanced Power Solution: 8+2+1 80A DrMOS power stages, 8-layer PCB, 8+4 pin ProCool power connectors, alloy chokes and durable capacitors for stable power delivery\nLatest M.2 Support: One onboard PCIe 5.0 M.2 slot and two PCIe 4.0 M.2 slots\nUltrafast Connectivity: Wi-Fi 6E, PCIe 5.0 x16 slot, Realtek 2.5Gb Ethernet, rear USB 10Gbps Type-C port, front USB 5Gbps Type-C connector support\nComprehensive Cooling: Enlarged VRM heatsink, M.2 heatsink, PCH heatsink, hybrid fan headers and Fan Xpert 2+\nDIY Friendly Design: PCIe Slot Q-Release, M.2 Q-Latch, Q-LED, BIOS FlashBack and Pre-mounted I/O shield\nUnmatched Personalization: Three Addressable RGB Gen 2 headers, all configurable with ASUS-exclusive Aura Sync RGB lighting",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "35"
     }
   ],
   "orders": [],
