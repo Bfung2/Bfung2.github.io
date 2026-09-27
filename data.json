@@ -380,6 +380,19 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "r89m00v",
+      "name": "Intel Core i5-14600K",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 265,
+      "desc": "14-Core (6P+8E)\n3.5 GHz\nIntel UHD Graphics 770",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
