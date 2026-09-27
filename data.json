@@ -302,6 +302,19 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "iwmehxv",
+      "name": "Intel Core i7-14700K",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 405,
+      "desc": "20-Core (8P+12E)\n3.4 GHz\nIntel UHD Graphics 770",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "125",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
