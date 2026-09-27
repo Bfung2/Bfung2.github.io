@@ -151,6 +151,7 @@
       "id": "k7x1peg",
       "name": "AMD Ryzen 7 7700X",
       "category": "CPU",
+      "brand": "AMD",
       "price": 255,
       "desc": "8-Core 4.5 GHz AMD Radeon Graphics",
       "socket": "AM5",
