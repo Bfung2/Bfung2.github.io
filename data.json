@@ -211,6 +211,19 @@
       "tdp": "120",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "ei7v2us",
+      "name": "AMD Ryzen 9 7900X",
+      "category": "CPU",
+      "brand": "AMD",
+      "price": 330,
+      "desc": "12-Core\n4.7 GHz\nAMD Radeon Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "170",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
