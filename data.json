@@ -328,6 +328,19 @@
       "tdp": "125",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "fbb9n08",
+      "name": "Intel Core i7-12700KF",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 300,
+      "desc": "12-Core (8P+4E)\n3.6 GHz\nNone Integrated Graphics",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "125",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
