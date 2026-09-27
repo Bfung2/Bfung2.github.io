@@ -185,6 +185,19 @@
       "tdp": "120",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "t8qz6k1",
+      "name": "AMD Ryzen 9 9950X3D",
+      "category": "CPU",
+      "brand": "AMD",
+      "price": 715,
+      "desc": "16-Core\n4.3 GHz\nAMD Radeon Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "120",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
