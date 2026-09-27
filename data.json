@@ -419,6 +419,19 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "llw40wt",
+      "name": "Intel Core i5-14400",
+      "category": "CPU",
+      "brand": "intel",
+      "price": 225,
+      "desc": "10-Core (6P+4E)\n2.5 GHz\nIntel UHD Graphics 730",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
