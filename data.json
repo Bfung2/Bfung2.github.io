@@ -390,7 +390,7 @@
       "desc": "14-Core (6P+8E)\n3.5 GHz\nIntel UHD Graphics 770",
       "socket": "LGA1700",
       "memType": "DDR5",
-      "tdp": "65",
+      "tdp": "125",
       "watts": "",
       "power": ""
     },
