@@ -471,6 +471,19 @@
       "tdp": "",
       "watts": "",
       "power": "35"
+    },
+    {
+      "id": "44ink40",
+      "name": "ASUS ROG STRIX X870E-E GAMING WIFI",
+      "category": "Motherboard",
+      "brand": "ASUS",
+      "price": 415,
+      "desc": "ATX motherboard 18+2+2 power stages, Dynamic OC Switcher, Core Flex, DDR5 AEMP, WiFi 7, 5x M.2, PCIe 5.0, Q-Release Slim, USB4, AI OCing & Networking",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "35"
     }
   ],
   "orders": [],
