@@ -138,6 +138,7 @@
       "id": "3d8y1ic",
       "name": "AMD Ryzen 7 7800X3D",
       "category": "CPU",
+      "brand": "AMD",
       "price": 395,
       "desc": "8-Core 4.2 GHz AMD Radeon Graphics",
       "socket": "AM5",
