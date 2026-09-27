@@ -406,6 +406,19 @@
       "tdp": "125",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "bylcoqg",
+      "name": "Intel Core i5-14400F",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 205,
+      "desc": "10-Core (6P+4E)\n2.5 GHz\nNone Integrated Graphics",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "65",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
