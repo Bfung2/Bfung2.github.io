@@ -237,19 +237,6 @@
       "tdp": "105",
       "watts": "",
       "power": ""
-    },
-    {
-      "id": "bkhsban",
-      "name": "Intel Core Ultra 9 285K",
-      "category": "CPU",
-      "brand": "Intel",
-      "price": 395,
-      "desc": "24-Core (8P+16E)",
-      "socket": "LGA1851",
-      "memType": "DDR5",
-      "tdp": "125",
-      "watts": "",
-      "power": ""
     }
   ],
   "orders": [],
