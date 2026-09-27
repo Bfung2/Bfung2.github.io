@@ -86,6 +86,7 @@
       "id": "0i3jd5c",
       "name": "AMD Ryzen 7 5800X3",
       "category": "CPU",
+      "brand": "AMD",
       "price": 365,
       "desc": "8-cores\n3.4GHz\nNo Integrated Graphics",
       "socket": "AM4",
