@@ -224,6 +224,19 @@
       "tdp": "170",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "padyrh6",
+      "name": "AMD Ryzen 9 5900XT",
+      "category": "CPU",
+      "brand": "AMD",
+      "price": 330,
+      "desc": "16-Core\n3.3 GHz\nNone Integrated Graphics",
+      "socket": "AM4",
+      "memType": "",
+      "tdp": "105",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
