@@ -160,6 +160,19 @@
       "tdp": "170",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "2qry1bv",
+      "name": "AMD Ryzen 9 9900X",
+      "category": "CPU",
+      "brand": "AMD",
+      "price": 395,
+      "desc": "12-Core 4.4 GHz AMD Radeon Graphics",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "120",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
