@@ -73,6 +73,7 @@
       "id": "esmwg3w",
       "name": "AMD Ryzen 7 5700X",
       "category": "CPU",
+      "brand": "AMD",
       "price": 225,
       "desc": "8-cores\n3.4GHz\nNo Integrated Graphics",
       "socket": "AM4",
