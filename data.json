@@ -434,17 +434,17 @@
       "power": ""
     },
     {
-      "id": "5hr05sa",
-      "name": "Intel Core i5-14500",
-      "category": "CPU",
-      "brand": "Intel",
-      "price": 285,
-      "desc": "14-Core (6P+8E)\n2.6 GHz\nIntel UHD Graphics 770",
-      "socket": "LGA1700",
+      "id": "pdvjse6",
+      "name": "MSI MPG X870E CARBON WIFI Motherboard, ATX",
+      "category": "Motherboard",
+      "brand": "MSI",
+      "price": 403.99,
+      "desc": "Form Factor\nATX\nMemory Max\n256GB\nMemory Slots\n4x288pin (DDR5)\nChipset\nAMD X870E\n\nSupports AMD Ryzen 9000 / 8000 / 7000 Processors, AM5 - 110A SPS VRM, DDR5 Memory Boost 9000+MT/s (OC), PCIe 5.0 x16 & 4.0 x16, M.2 Gen5, Wi-Fi 7, 5G LAN",
+      "socket": "AM5",
       "memType": "DDR5",
-      "tdp": "65",
+      "tdp": "",
       "watts": "",
-      "power": ""
+      "power": "35"
     }
   ],
   "orders": [],
