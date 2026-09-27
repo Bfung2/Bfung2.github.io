@@ -447,12 +447,12 @@
       "power": "35"
     },
     {
-      "id": "4gaxipd",
-      "name": "ASUS TUF GAMING X870-PLUS WIFI ATX Motherboard",
+      "id": "65dkc86",
+      "name": "ASUS TUF GAMING X870-PLUS WIFI ATX",
       "category": "Motherboard",
-      "brand": "ASUS",
+      "brand": "",
       "price": 275,
-      "desc": "ATX - 256GB 4x288pin RAM - AMD X870 - 16+2+1, 80A SPS power stages, DDR5, PCIe 5.0 Ready, four M.2 slots, Wi-Fi 7, 2.5Gb LAN, HDMI, USB4 40Gbps, SATA 6 Gbps, USB 20Gbps Type-C",
+      "desc": "ATX, 256GB, 4x288pin (DDR5), AMD X870, 16+2+1, 80A SPS power stages, DDR5, PCIe 5.0 Ready, four M.2 slots, Wi-Fi 7, 2.5Gb LAN, HDMI, USB4 40Gbps, SATA 6 Gbps, USB 20Gbps Type-C",
       "socket": "AM5",
       "memType": "DDR5",
       "tdp": "",
