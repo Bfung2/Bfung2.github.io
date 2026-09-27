@@ -562,6 +562,19 @@
       "tdp": "",
       "watts": "",
       "power": "35"
+    },
+    {
+      "id": "sjh8e26",
+      "name": "ASRock B760M PRO RS WiFi Micro ATX (White)",
+      "category": "Motherboard",
+      "brand": "ASRock",
+      "price": 154,
+      "desc": "Supports 14th, 13th & 12th Gen Intel Core Processors (LGA1700)\n7+1+1 Power Phase, Dr.MOS for VCore+GT\n4 x DDR5 DIMMs\nSupports Dual Channel, up to 7200+ (OC)\n1 PCIe 5.0 x16, 1 PCIe 3.0 x16\nGraphics Output Options: 1 HDMI, 1 DisplayPort\nRealtek ALC897 7.1 CH HD Audio Codec, Nahimic Audio\n4 SATA3, 3 Hyper M.2 (PCIe Gen4x4)\n2 USB 3.2 Gen1 Type-C (1 Rear, 1 Front),\n5 USB 3.2 Gen1 Type-A (3 Rear, 2 Front),\n6 USB 2.0 (2 Rear, 4 Front)\nDragon 2.5G LAN\nKiller 802.11axe WiFi 6E + Bluetooth\nSupports ASRock Auto Driver Installer",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "45"
     }
   ],
   "orders": [],
