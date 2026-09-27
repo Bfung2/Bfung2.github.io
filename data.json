@@ -536,6 +536,19 @@
       "tdp": "",
       "watts": "",
       "power": "35"
+    },
+    {
+      "id": "1jcpznq",
+      "name": "ASRock B550 Phantom Gaming 4/ac ATX (Black & White)",
+      "category": "Motherboard",
+      "brand": "ASRock",
+      "price": 100,
+      "desc": "BIOS update might require for AMD Zen 3 Ryzen 5000 series CPU\nAMD B550\nSupports AMD Ryzen 5000 Series / 4000 G-Series / 3000 Series Processors\nDDR4 4733(OC)+ / 4666(OC) / 4600(OC) / 4533(OC) / 4466(OC) / 4400(OC) / 4333(OC) / 4266(OC) / 4200(OC) / 4133(OC) / 4000(OC) / 3866(OC) / 3800(OC) / 3733(OC) / 3600(OC) / 3466(OC) / 3200 / 2933 / 2667 / 2400 / 2133 (AMD Ryzen series APUs (Renoir))\nDDR4 4533(OC)+ / 4466(OC) / 4400(OC) / 4333(OC) / 4266(OC) / 4200(OC) / 4133(OC) / 4000(OC) / 3866(OC) / 3800(OC) / 3733(OC) / 3600(OC) / 3466(OC) / 3200 / 2933 / 2667 / 2400 / 2133 (AMD Ryzen series CPUs (Matisse))",
+      "socket": "AM4",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "35"
     }
   ],
   "orders": [],
