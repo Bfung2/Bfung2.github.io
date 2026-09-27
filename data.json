@@ -588,6 +588,19 @@
       "tdp": "",
       "watts": "",
       "power": "40"
+    },
+    {
+      "id": "t7pbtmx",
+      "name": "GIGABYTE Z790 AORUS ELITE AX ATX (Black)",
+      "category": "Motherboard",
+      "brand": "GIGABYTE",
+      "price": 205,
+      "desc": "Intel LGA 1700 Socket: Supports 14th, 13th & 12th Gen Intel Core Series Processors\nDDR5 Compatible: 4*SMD DIMMs with XMP 3.0 Memory Module Support\nCommanding Power Design: Twin 16+1+2 Phases Digital VRM Solution with 70A Power Stage\nCutting-Edge Thermal Design: M.2 Thermal Guard III, Fully Covered MOSFET Heatsinks, PCIe Ultra Durable Armor, 6-Layer PCB\nNext Gen Connectivity: SMD PCIe 5.0, 4* PCIe 4.0 x4 M.2, USB 3.2 Gen 2x2 Type-C\nEZ-Latch: PCIe 5.0 EZ-Latch with a Quick Release & Screwless Design\nFast Networking: 2.5GbE LAN, Intel WiFi 6E 802.11ax, 2T2R & BT5 with AORUS Antenna\nDynamic Audio: High-End Audio Capacitor, Audiophile WIMA Capacitors\nFine Tuning Features: RGB FUSION 2.0, Supports Addressable LED & RGB LED Strips, Smart Fan 6, Q-Flash Plus Update BIOS without installing CPU, Memory, and GPU",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "40"
     }
   ],
   "orders": [],
