@@ -393,6 +393,19 @@
       "tdp": "65",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "9mbrbjk",
+      "name": "Intel Core i5-14600KF",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 255,
+      "desc": "14-Core (6P+8E)\n3.5 GHz\nNone Integrated Graphics",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "125",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
