@@ -250,6 +250,19 @@
       "tdp": "125",
       "watts": "",
       "power": ""
+    },
+    {
+      "id": "48px3y3",
+      "name": "Intel Core i9-12900K",
+      "category": "CPU",
+      "brand": "Intel",
+      "price": 435,
+      "desc": "16-Core (8P+8E)\n3.2 GHz\nIntel UHD Graphics 770",
+      "socket": "LGA1700",
+      "memType": "DDR5",
+      "tdp": "125",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
