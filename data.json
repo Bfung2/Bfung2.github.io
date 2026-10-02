@@ -317,6 +317,7 @@
       "brand": "Intel",
       "price": 600,
       "desc": "24-Core (8P+16E)\n2.0 GHz\nNone Integrated Graphics",
+      "image": "https://c1.neweggimages.com/ProductImage/A0ZXD2510200HJH7672.jpg",
       "socket": "LGA1700",
       "memType": "DDR5",
       "tdp": "65",
