@@ -441,6 +441,7 @@
       "brand": "Intel",
       "price": 205,
       "desc": "10-Core (6P+4E)\n2.5 GHz\nNone Integrated Graphics",
+      "image": "https://c1.neweggimages.com/ProductImage/19-118-489-01.jpg",
       "socket": "LGA1700",
       "memType": "DDR5",
       "tdp": "65",
