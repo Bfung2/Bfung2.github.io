@@ -645,6 +645,20 @@
       "tdp": "",
       "watts": "",
       "power": "5"
+    },
+    {
+      "id": "uhgjlz5",
+      "name": "CORSAIR Vengeance RGB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 590,
+      "desc": "DDR5 6000 (PC5 48000)\n\n32GB (2 x 16GB)",
+      "image": "https://c1.neweggimages.com/productimage/nb300/20-236-879-03.jpg",
+      "socket": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "5"
     }
   ],
   "orders": [],
