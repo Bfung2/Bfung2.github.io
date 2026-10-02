@@ -371,6 +371,7 @@
       "brand": "Intel",
       "price": 375,
       "desc": "20-Core (8P+12E)\n3.4 GHz\nNone Integrated Graphics",
+      "image": "https://c1.neweggimages.com/ProductImage/19-118-468-03.jpg",
       "socket": "LGA1700",
       "memType": "DDR5",
       "tdp": "125",
