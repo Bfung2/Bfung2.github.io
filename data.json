@@ -631,6 +631,20 @@
       "tdp": "",
       "watts": "",
       "power": "40"
+    },
+    {
+      "id": "6skacce",
+      "name": "Team T-Force Delta RGB",
+      "category": "Memory",
+      "brand": "team t-force",
+      "price": 185,
+      "desc": "DDR4 3200 (PC4 25600)\n\n16GB (2 x 8GB)",
+      "image": "https://c1.neweggimages.com/ProductImage/20-331-858-01.jpg",
+      "socket": "",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "5"
     }
   ],
   "orders": [],
