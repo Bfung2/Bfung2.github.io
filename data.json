@@ -385,6 +385,7 @@
       "brand": "Intel",
       "price": 405,
       "desc": "20-Core (8P+12E)\n2.1 GHz\nIntel UHD Graphics 770",
+      "image": "https://c1.neweggimages.com/ProductImage/19-118-476-01.jpg",
       "socket": "LGA1700",
       "memType": "DDR5",
       "tdp": "65",
