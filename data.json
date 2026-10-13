@@ -25,6 +25,16 @@
       "price": 0,
       "desc": "",
       "image": ""
+    },
+    {
+      "id": "ucm4lcq",
+      "name": "Test2",
+      "category": "Featured",
+      "processor": "",
+      "brand": "",
+      "price": 0,
+      "desc": "",
+      "image": ""
     }
   ],
   "parts": [
