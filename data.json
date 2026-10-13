@@ -35,6 +35,16 @@
       "price": 0,
       "desc": "",
       "image": ""
+    },
+    {
+      "id": "7j1cwne",
+      "name": "Test3",
+      "category": "Test",
+      "processor": "",
+      "brand": "",
+      "price": 0,
+      "desc": "",
+      "image": ""
     }
   ],
   "parts": [
