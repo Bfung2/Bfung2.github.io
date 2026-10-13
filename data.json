@@ -25,6 +25,16 @@
       "price": 100,
       "desc": "",
       "image": ""
+    },
+    {
+      "id": "0frxmbq",
+      "name": "Test2",
+      "category": "",
+      "processor": "",
+      "brand": "",
+      "price": 100,
+      "desc": "",
+      "image": ""
     }
   ],
   "parts": [
