@@ -15,7 +15,18 @@
     "paypalLink": "",
     "applePayInfo": ""
   },
-  "products": [],
+  "products": [
+    {
+      "id": "nw0uqdr",
+      "name": "Test",
+      "category": "Featured",
+      "processor": "",
+      "brand": "",
+      "price": 0,
+      "desc": "",
+      "image": ""
+    }
+  ],
   "parts": [
     {
       "id": "p21xb1v",
