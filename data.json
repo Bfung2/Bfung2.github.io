@@ -287,8 +287,10 @@
       "brand": "AMD",
       "price": 330,
       "desc": "16-Core\n3.3 GHz\nNone Integrated Graphics",
+      "image": "https://www.newegg.com/amd-ryzen-9-5000-series-ryzen-9-5900xt-vermeer-socket-am4-desktop-cpu-processor/p/N82E16819113845",
       "socket": "AM4",
-      "memType": "",
+      "cpuType": "Ryzen 9",
+      "memType": "DDR4",
       "tdp": "105",
       "watts": "",
       "power": ""
