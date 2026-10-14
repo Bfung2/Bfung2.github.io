@@ -365,6 +365,7 @@
       "desc": "24-Core (8P+16E)\n3.2 GHz\nIntel UHD Graphics 770",
       "image": "https://c1.neweggimages.com/ProductImage/19-118-496-01.jpg",
       "socket": "LGA1700",
+      "cpuType": "Core i9",
       "memType": "DDR5",
       "tdp": "150",
       "watts": "",
