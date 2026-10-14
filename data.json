@@ -54,18 +54,7 @@
       "Other"
     ]
   },
-  "products": [
-    {
-      "id": "ucm4lcq",
-      "name": "Test2",
-      "category": "Featured",
-      "processor": "",
-      "brand": "",
-      "price": 0,
-      "desc": "",
-      "image": ""
-    }
-  ],
+  "products": [],
   "parts": [
     {
       "id": "p21xb1v",
