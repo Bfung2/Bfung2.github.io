@@ -751,12 +751,14 @@
       "brand": "Corsair",
       "price": 595.97,
       "desc": "32GB (2 x 16GB)",
+      "longDesc": "",
       "image": "https://c1.neweggimages.com/ProductImage/20-236-879-03.jpg",
       "socket": "",
+      "cpuType": "",
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5"
+      "power": "1.35"
     }
   ],
   "orders": [],
