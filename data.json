@@ -763,13 +763,13 @@
       "power": "1.35"
     },
     {
-      "id": "6xfzbtw",
+      "id": "2ewivv1",
       "name": "CORSAIR Vengeance RGB",
       "category": "Memory",
       "brand": "Corsair",
       "price": 525,
       "desc": "DDR5 6000 (PC5 48000)\t32GB (2 x 16GB)\tWhite\tCL36",
-      "longDesc": "(2 x 16GB)\n288-Pin PC RAM",
+      "longDesc": "",
       "image": "https://c1.neweggimages.com/ProductImage/20-982-058-01.jpg",
       "socket": "",
       "cpuType": "",
