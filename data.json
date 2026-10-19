@@ -777,6 +777,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "zvpnb23",
+      "name": "G.SKILL Trident Z5 RGB",
+      "category": "Memory",
+      "brand": "G.SKILL",
+      "price": 575,
+      "desc": "DDR5 6000 (PC5 48000)\t32GB (2 x 16GB)\tBlack\tCL36",
+      "longDesc": "",
+      "image": "https://c1.neweggimages.com/ProductImage/20-374-351-10.png",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
