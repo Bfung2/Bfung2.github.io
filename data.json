@@ -921,6 +921,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.25"
+    },
+    {
+      "id": "slk18yp",
+      "name": "CORSAIR Vengeance 32GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 600,
+      "desc": "32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000)",
+      "longDesc": "DDR5 6000 (PC5 48000)\nTiming 38-48-48-96\nCAS Latency CL38\nVoltage 1.35V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-982-347-01.png",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
