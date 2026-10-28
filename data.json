@@ -937,6 +937,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "8fjd834",
+      "name": "CORSAIR Dominator Titanium 64GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 1400,
+      "desc": "64GB (2 x 32GB) DDR5 6000 (PC5 48000)",
+      "longDesc": "DDR5 6000 (PC5 48000)\nTiming 30-36-36-76\nCAS Latency CL30\nVoltage 1.40V",
+      "image": "https://c1.neweggimages.com/productimage/nb1280/20-982-257-05.png",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.4"
     }
   ],
   "orders": [],
