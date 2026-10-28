@@ -841,6 +841,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.4"
+    },
+    {
+      "id": "jgz2gex",
+      "name": "CORSAIR Vengeance 16GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 325,
+      "desc": "6GB (2 x 8GB) 288-Pin PC RAM DDR5 6000 (PC5 48000)",
+      "longDesc": "DDR5 6000 (PC5 48000)\nTiming 36-44-44-96\nCAS Latency CL36\nVoltage 1.35V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-982-324-05.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
