@@ -809,6 +809,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "jfhjltb",
+      "name": "CORSAIR Vengeance",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 525,
+      "desc": "DDR5 5200 (PC5 41600)  32GB (2 x 16GB)\tBlack",
+      "longDesc": "Series:\tVengeance\nType:\t288-Pin PC RAM\nTiming:\t40-40-40-77\nBuffered/Registered\tUnbuffered / Unregistered",
+      "image": "https://c1.neweggimages.com/ProductImage/20-236-827-V01.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.25"
     }
   ],
   "orders": [],
