@@ -969,6 +969,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "go6mecn",
+      "name": "Team T-Force Delta ECO 32GB",
+      "category": "Memory",
+      "brand": "T-Force",
+      "price": 1100,
+      "desc": "2GB (2 x 16GB) 288-Pin PC RAM DDR5 6400 (PC5 51200)",
+      "longDesc": "The Industry's First Eco-Friendly RGB Overclocking DDR5 Memory\nFSC-Certified Eco-Friendly Paper Packaging to Protect Earth's Ecology\nCombo Quick One-Click Overclocking Certification\nEquipped with RGB Intelligent Control Chip and Supports Multiple Lighting Control Software\nOn-die ECC Error Correction Mechanism for Greater System Stability\nInnovative Circuit Structure Patent Reduces Power Consumption and Heat\n(Taiwan invention patent No.: I842298; US invention patent No.: US12111715B2)\nPatented IC Grading Method for Memory Ensures Applicability and Durability",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-985-279-01.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
