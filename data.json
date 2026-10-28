@@ -905,6 +905,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "h85yrlo",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 315,
+      "desc": "16GB (2 x 8GB) 288-Pin PC RAM DDR5 5200 (PC5 41600)",
+      "longDesc": "DDR5 5200 (PC5 41600)\nTiming 40-40-40-77\nCAS Latency CL40\nVoltage 1.25V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-982-333-03.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.25"
     }
   ],
   "orders": [],
