@@ -889,22 +889,6 @@
       "tdp": "",
       "watts": "",
       "power": "1.4"
-    },
-    {
-      "id": "p368s06",
-      "name": "CORSAIR Vengeance RGB 64GB",
-      "category": "Memory",
-      "brand": "Corsair",
-      "price": 1350,
-      "desc": "64GB (2 x 32GB) 288-Pin PC RAM DDR5 6400 (PC5 51200)",
-      "longDesc": "DDR5 6400 (PC5 51200)\nTiming 32-40-40-40-84\nCAS Latency CL32\nVoltage 1.40V",
-      "image": "https://c1.neweggimages.com/productimage/nb640/20-236-879-03.jpg",
-      "socket": "",
-      "cpuType": "",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "1.4"
     }
   ],
   "orders": [],
