@@ -825,6 +825,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.25"
+    },
+    {
+      "id": "3yuf9vc",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 675,
+      "desc": "32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) \nDDR5",
+      "longDesc": "DDR5 6000 (PC5 48000)\nTiming 30-36-36-76\nCAS Latency CL30\nVoltage 1.40V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-982-276-04.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.4"
     }
   ],
   "orders": [],
