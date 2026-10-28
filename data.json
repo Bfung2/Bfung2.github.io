@@ -1001,6 +1001,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.4"
+    },
+    {
+      "id": "lbr43vq",
+      "name": "CORSAIR Vengeance RGB 64GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 1300,
+      "desc": "64GB (2 x 32GB) 288-Pin PC RAM DDR5 6000 (PC5 48000)",
+      "longDesc": "DDR5 6000 (PC5 48000)\nTiming 30-36-36-76\nCAS Latency CL30\nVoltage 1.40V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-982-238-01.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "1.4"
     }
   ],
   "orders": [],
