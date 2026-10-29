@@ -90,6 +90,24 @@
       "tdp": "",
       "watts": "",
       "power": "45"
+    },
+    {
+      "id": "yo23yhu",
+      "name": "GIGABYTE X870 AORUS ELITE WIFI7 ICE AM5",
+      "category": "Motherboard",
+      "cpuType": "",
+      "processor": "",
+      "brand": "GIGABYTE",
+      "price": 275,
+      "desc": "ATX, DDR5, 4x M.2, PCIe 5.0, USB4, Wi-Fi 7, 2.5GbE LAN, EZ-Latch",
+      "longDesc": "\"AMD Socket AM5: Supports AMD Ryzen 9000 / Ryzen 8000 / Ryzen 7000 Series Processors\nDDR5 Compatible: 4*DIMMs with AMD EXPO Support\nPower Design: 16+2+2\nThermals: VRM and M.2 Thermal Guard\nConnectivity: PCIe 5.0, 4x M.2 Slots, Dual USB4, Front and Rear USB-C, Sensor Panel Link\nDIY Friendly: M.2 EZ-Latch, PCIe EZ-Latch, Wi-Fi EZ-Plug, EZ-Debug Zone\nNetworking: Wi-Fi 7, 2.5GbE LAN",
+      "featured": false,
+      "image": "https://c1.neweggimages.com/productimage/nb640/13-145-518-06.jpg",
+      "socket": "AM5",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "45"
     }
   ],
   "parts": [
