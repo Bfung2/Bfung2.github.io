@@ -540,24 +540,6 @@
       "tdp": "",
       "watts": "",
       "power": "5"
-    },
-    {
-      "id": "gigabye90",
-      "name": "GIGABYTE X870M AORUS ELITE WIFI7",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "GIGABYTE",
-      "price": 299.07,
-      "desc": "X870 mATX, DDR5, Wi-Fi 7, PCIe 5.0",
-      "longDesc": "AM5 X870 micro-ATX motherboard with DDR5, Wi-Fi 7, PCIe 5.0 connectivity, M.2 storage expansion, and USB-C.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
     }
   ],
   "parts": [
