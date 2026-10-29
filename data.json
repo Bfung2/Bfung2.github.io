@@ -596,24 +596,6 @@
       "power": "5"
     },
     {
-      "id": "asusro22b",
-      "name": "ASUS ROG STRIX B850-G GAMING WIFI S",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "ASUS",
-      "price": 314.89,
-      "desc": "B850 mATX, DDR5, Wi-Fi 7, PCIe 5.0",
-      "longDesc": "AM5 ROG Strix gaming motherboard with DDR5, Wi-Fi 7, PCIe 5.0, USB-C, Aura Sync, and multiple M.2 slots.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
-    },
-    {
       "id": "asustu604",
       "name": "ASUS TUF GAMING B850M-PLUS WIFI7 W",
       "category": "Motherboard",
