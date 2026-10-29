@@ -1157,7 +1157,7 @@ function done(){
   if(!lastOrder) return `<div class="wrap"><div class="empty"><strong>Nothing to show</strong></div></div>`;
   const o = lastOrder;
   return `<div class="wrap"><div class="pagehead"><div><h2>Order ${esc(o.ref)} submitted</h2>
-  <p>An email with the full order should have opened in your mail app — send it so we see it. We'll reply with an invoice.</p></div></div>
+  <p>Your order was saved successfully. An email draft should also have opened in your mail app. Please send it so we can follow up with your invoice.</p></div></div>
   <div class="panel"><pre style="white-space:pre-wrap;font-size:.88rem;margin:0">${esc(orderText(o))}</pre></div>
   <div class="row" style="margin-top:16px">
     <button class="btn" onclick="mailOwner('Order request ${esc(o.ref)}', orderText(lastOrder))">Re-open the email</button>
@@ -1217,25 +1217,7 @@ function account(){
   </div>`;
 }
 function staff(){
-  if(isOwner){ go('/manage'); return ""; }
-  if(loginStep === "confirm"){
-    AFTER = ()=>{ const f=document.getElementById("cc"); f&&f.focus(); };
-    return `<div class="wrap" style="max-width:480px">
-      <div class="pagehead"><div><h2>Confirm it's you</h2><p>Credentials correct. Text yourself the code below, then enter it here.</p></div></div>
-      <div class="panel">
-        <div class="row" style="margin-bottom:16px">
-          <button type="button" class="btn" onclick="sendConfirmText()">Text me a code</button>
-          <span class="muted" style="font-size:.85rem">Opens your messages app addressed to your own number.</span>
-        </div>
-        <form onsubmit="confirmLogin(event)">
-          <div class="field"><label for="cc">6-digit code</label><input id="cc" inputmode="numeric" maxlength="6" required></div>
-          <div class="row"><button class="btn gold" type="submit">Confirm sign-in</button>
-          <button class="btn ghost" type="button" onclick="loginStep='password';render()">Back</button></div>
-          <p id="ccErr" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p>
-        </form>
-      </div>
-    </div>`;
-  }
+  if(isOwner){go("/manage");return "";}
   return `<div class="wrap" style="max-width:480px">
     <div class="pagehead"><div><h2>Owner sign-in</h2><p>Sign in with the owner email and password.</p></div></div>
     <form class="panel" onsubmit="tryLogin(event)">
