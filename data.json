@@ -1085,6 +1085,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "rx9m78y",
+      "name": "ASUS TUF GAMING X870E-PLUS WIFI7 AMD",
+      "category": "Motherboard",
+      "brand": "ASUS",
+      "price": 305,
+      "desc": "X870E ATX 16+2+1 80A Power Stages, DDR5 Support with AEMP, PCIe 5.0 x16 with PCIe Slot Q-Release Slim, Four M.2 Slots, WiFi 7 with ASUS WiFi Q-Antenna",
+      "longDesc": "Ready for Advanced AI PC: Designed for the future of AI computing, with the power and connectivity needed for demanding AI applications\nAMD AM5 Socket: Ready for AMD Socket AM5 for AMD Ryzen 9000 & 8000 & 7000 Series Desktop Processors\nEnhanced Power Solution: 16+2+1 80A power stages, 8-layer PCB, 8+8 pin ProCool power connectors, alloy chokes and durable capacitors for stable power delivery\nIntelligent Control: ASUS-exclusive AI Overclocking, AI Cooling II, AI Networking II, and AEMP to simplify setup and improve performance\nLatest M.2 Support: Two onboard PCIe 5.0 M.2 slots and two PCIe 4.0 M.2 slots\nUltrafast Connectivity: Wi-Fi 7, PCIe 5.0 x16 slot, Realtek 2.5Gb Ethernet, rear two USB4 (40Gbps) Type-C ports, front USB 20Gbps Type-C connector with up to 30W PD Fast-charge\nComprehensive Cooling: Enlarged VRM heatsink, M.2 heatsink, PCH heatsink, hybrid fan headers and Fan Xpert 4 with AI Cooling II",
+      "image": "https://c1.neweggimages.com/productimage/nb640/13-119-748-01.png",
+      "socket": "AM5",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "45"
     }
   ],
   "orders": [],
