@@ -230,6 +230,10 @@ const GITHUB_OWNER = "bfung2";
 const GITHUB_REPO = "bfung2.github.io";
 const GITHUB_BRANCH = "main";
 const GITHUB_DATA_PATH = "data.json";
+// Browser-safe public key only. Never place a service-role key in this file.
+const SUPABASE_PROJECT_URL = "https://arvdrrrbobjpmmygojfm.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "PASTE_SUPABASE_PUBLISHABLE_KEY_HERE";
+const SUPABASE_FUNCTION_URL = `${SUPABASE_PROJECT_URL}/functions/v1/create-service-request`;
 const ghConfigured = GITHUB_OWNER !== "YOUR_GITHUB_USERNAME" && GITHUB_REPO !== "YOUR_REPO_NAME";
 function ghToken(){ try{ return localStorage.getItem("apex.ghtoken")||""; }catch(e){ return ""; } }
 function setGhToken(t){ try{ if(t) localStorage.setItem("apex.ghtoken", t); else localStorage.removeItem("apex.ghtoken"); }catch(e){} }
@@ -973,6 +977,7 @@ function tech(){
         <div class="field"><label for="rd">What are we looking at</label><input id="rd" placeholder="Desktop, laptop, a build idea, network, TV mount..."></div>
         <div class="field"><label for="ri">Details</label><textarea id="ri" required placeholder="Won't power on, want help picking parts for a budget build, question about a recent order..."></textarea></div>
         <button class="btn gold" type="submit">Send</button>
+        <p id="requestStatus" class="muted" role="status" aria-live="polite" style="margin-top:12px;font-size:.9rem"></p>
       </form>
       <div class="panel"><h3>What happens next</h3>
         <p class="muted" style="font-size:.92rem">This opens an email addressed to the shop with everything you typed. Send it and we'll reply — whether that's scheduling a repair, talking through a build, or just answering a question.</p>
@@ -980,13 +985,54 @@ function tech(){
       </div>
     </div></div>`;
 }
-function submitRequest(e){
+async function submitRequest(e){
   e.preventDefault();
-  const r = {id:uid(),at:new Date().toISOString(),reason:rr.value,name:rn.value,email:re.value,phone:rp.value,when:rw.value,address:ra.value,device:rd.value,issue:ri.value};
-  S.requests.unshift(r); save();
-  const body = `New request — ${r.reason}\n\nName: ${r.name}\nEmail: ${r.email}\nPhone: ${r.phone}\nAddress: ${r.address}\nAvailability: ${r.when}\nRe: ${r.device}\n\nDetails:\n${r.issue}\n`;
-  mailOwner(`${r.reason} — ${r.name}`, body);
-  e.target.reset(); toast("Request saved. Your email app should open now.");
+  const form = e.target;
+  const button = form.querySelector('button[type="submit"]');
+  const status = document.getElementById("requestStatus");
+  const say = (message, isError=false) => {
+    if(status){ status.textContent = message; status.style.color = isError ? "var(--alert)" : "var(--ok)"; }
+  };
+  if(!SUPABASE_PUBLISHABLE_KEY || SUPABASE_PUBLISHABLE_KEY === "PASTE_SUPABASE_PUBLISHABLE_KEY_HERE"){
+    say("The service form is not connected yet. Please try again later.", true);
+    return;
+  }
+  const r = {
+    reason: rr.value,
+    name: rn.value.trim(),
+    email: re.value.trim(),
+    phone: rp.value.trim(),
+    address: ra.value.trim(),
+    device: rd.value.trim(),
+    issue: ri.value.trim() + (rw.value.trim() ? "\n\nPreferred availability: " + rw.value.trim() : "")
+  };
+  if(!r.name || !r.email || !r.issue.trim()){
+    say("Please fill in your name, a valid email, and the details.", true);
+    return;
+  }
+  if(button){ button.disabled = true; button.textContent = "Sending…"; }
+  say("Sending your request securely…");
+  try{
+    const response = await fetch(SUPABASE_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_PUBLISHABLE_KEY,
+        "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+      },
+      body: JSON.stringify(r)
+    });
+    const result = await response.json().catch(()=>({}));
+    if(!response.ok) throw new Error(result.error || result.message || `Request failed (${response.status})`);
+    form.reset();
+    say("Your request was sent. Apex Computers will follow up using the contact details you provided.");
+    toast("Service request sent securely.");
+  }catch(err){
+    console.error("Service request submission failed:", err);
+    say("We couldn't send your request just now. Please try again in a moment or use the Contact page.", true);
+  }finally{
+    if(button){ button.disabled = false; button.textContent = "Send"; }
+  }
 }
 
 function about(){
@@ -1344,16 +1390,15 @@ function inbox(){
       <button class="btn sm ghost" onclick="sendStatusEmail(${esc(JSON.stringify(o.id))},'delivered')">Delivered</button>
     </td></tr>`).join("")}
   </table></div>`:`<div class="empty">No orders yet.</div>`}
-  <h3 style="margin-top:32px">Requests (${S.requests.length})</h3>
-  ${S.requests.length?`<div class="scroll"><table><tr><th>When</th><th>Reason</th><th>Who</th><th>Device</th><th>Details</th><th></th></tr>
-  ${S.requests.map(r=>`<tr><td>${new Date(r.at).toLocaleDateString()}</td>
-    <td><small>${esc(r.reason||"Repair or tech support")}</small></td>
-    <td>${esc(r.name)}<br><small class="muted">${esc(r.email)}<br>${esc(r.phone)}<br>${esc(r.address)}</small></td>
-    <td>${esc(r.device)}</td><td><small>${esc(r.issue)}</small></td>
-    <td><button class="btn sm ghost" onclick="replyToRequest(${esc(JSON.stringify(r.id))})">Reply</button></td></tr>`).join("")}
-  </table></div>`:`<div class="empty">No requests yet.</div>`}
+  <h3 style="margin-top:32px">Private service requests</h3>
+  <div class="panel">
+    <p>New service requests are stored privately in Supabase, not in the public website data file.</p>
+    <p><a href="https://supabase.com/dashboard/project/arvdrrrbobjpmmygojfm/editor" target="_blank" rel="noopener">Open Supabase Table Editor</a>, then select <code>service_requests</code> to view submissions.</p>
+    <p class="muted" style="font-size:.88rem">The in-site request list and reply controls are not connected to Supabase yet. For now, view requests in the private Table Editor while the owner dashboard integration is completed.</p>
+  </div>
   </div>`;
 }
+
 function replyToRequest(reqId){
   const r = S.requests.find(x=>x.id===reqId); if(!r) return;
   const body = `Hi ${r.name},\n\nGot your request about: ${r.issue}\n\nLet's get you scheduled — `;
