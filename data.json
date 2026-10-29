@@ -720,24 +720,6 @@
       "tdp": "",
       "watts": "",
       "power": "5"
-    },
-    {
-      "id": "asusprf5e",
-      "name": "ASUS PRIME B840M-A WIFI-CSM",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "ASUS",
-      "price": 198.99,
-      "desc": "B840 mATX, DDR5, Wi-Fi 6E, 3x M.2",
-      "longDesc": "AM5 B840 motherboard with DDR5, PCIe 4.0, three M.2 slots, Wi-Fi 6E, 2.5Gb Ethernet, and BIOS FlashBack.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
     }
   ],
   "parts": [
