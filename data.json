@@ -536,21 +536,6 @@
       "power": ""
     },
     {
-      "id": "65dkc86",
-      "name": "ASUS TUF GAMING X870-PLUS WIFI ATX",
-      "category": "Motherboard",
-      "brand": "",
-      "price": 275,
-      "desc": "ATX, 256GB, 4x288pin (DDR5), AMD X870, 16+2+1, 80A SPS power stages, DDR5, PCIe 5.0 Ready, four M.2 slots, Wi-Fi 7, 2.5Gb LAN, HDMI, USB4 40Gbps, SATA 6 Gbps, USB 20Gbps Type-C",
-      "image": "https://c1.neweggimages.com/ProductImage/13-145-518-06.jpg",
-      "socket": "AM5",
-      "cpuType": "",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "35"
-    },
-    {
       "id": "1u2hq2b",
       "name": "GIGABYTE X870 AORUS ELITE WIFI7 ICE ATX (White)",
       "category": "Motherboard",
