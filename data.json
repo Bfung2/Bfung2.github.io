@@ -174,7 +174,7 @@
       "desc": "B650 mATX, DDR5, 2.5GbE LAN, M.2",
       "longDesc": "Supports AMD Socket AM5 Ryzen 9000, 8000 and 7000 Series Processors\n8+2+1 Power Design, Dr.MOS for VCore+SOC+MISC\n2 x DDR5 DIMMs\nSupports Dual Channel, up to 8200+ (OC)\n1 PCIe 5.0 x16, 1 PCIe 4.0 x16, 1 PCIe 4.0 x1, 1 M.2 Key E for WiFi\nGraphics Output Options: 1 HDMI, 1 DisplayPort\nRealtek ALC897 7.1 CH HD Audio Codec, Nahimic Audio\n1 Blazing M.2 (PCIe Gen5x4)\n1 Hyper M.2 (PCIe Gen4x4)\n4 SATA3\n1 USB 3.2 Gen2 Type-C (Front)\n1 USB 3.2 Gen1 Type-C (Rear)\n6 USB 3.2 Gen1 (2 Rear, 4 Front)\n8 USB 2.0 (4 Rear, 4 Front)\nRealtek 2.5G LAN",
       "featured": false,
-      "image": "https://c1.neweggimages.com/productimage/nb640/13-162-229-03.jpg",
+      "image": "https://c1.neweggimages.com/productimage/nb300/13-162-114-04.png",
       "socket": "AM5",
       "memType": "DDR5",
       "tdp": "",
