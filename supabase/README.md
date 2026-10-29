@@ -1,53 +1,52 @@
-# Apex Computers private orders setup
+# Apex Computers private backend
 
-This folder prepares a private order backend for the existing GitHub Pages website.
-The site can remain hosted free on GitHub Pages. Supabase stores private orders and
-service requests; server-side Edge Functions will accept customer submissions and
-send email notifications. This setup is not live until the Supabase project is
-created, the SQL is run, secrets are configured, and the frontend is connected.
+The storefront remains hosted on GitHub Pages and keeps its existing visual design. Supabase is being used for private customer records and server-side operations.
 
-## 1. Create a Supabase project
+## Current setup
 
-1. Open https://supabase.com and create/sign in to your account.
-2. Create a project named `apex-computers`. Save the database password somewhere safe.
-3. In Project Settings / API, copy the **Project URL** and the **publishable/anon key**.
-   These can be used by the browser client. Never put the **service_role/secret key**
-   in `index.html`, `data.json`, a GitHub commit, or any other public file.
-4. Open SQL Editor, create a new query, paste all of `supabase/schema.sql`, and run it.
+- Supabase project: `https://arvdrrrbobjpmmygojfm.supabase.co`
+- The database schema in `schema.sql` has been run in the Supabase SQL Editor.
+- An owner Auth user has been created and its server-controlled `app_metadata.role` is set to `admin`.
+- The `create-service-request` Edge Function has been deployed and tested directly. A test request was confirmed in `public.service_requests`.
+- The feature branch connects the public service form to that function using the publishable key. The browser-side key is designed to be public; never put a Supabase service-role/secret key in HTML, JSON, or Git.
+- Draft PR #3 contains the frontend integration. It is not merged and has not yet been verified end-to-end from the website.
 
-## 2. Create the owner login
+## Important security blockers
 
-1. In Supabase Authentication, enable email/password sign-in.
-2. Create an owner user using your own email address.
-3. In the user's app metadata, set `role` to `admin` (not user-editable metadata).
-   The SQL policies use this server-controlled role to allow the owner to view/update
-   orders and service requests. Do not make a customer account an admin.
+**Do not treat the current production site as secure yet.**
 
-## 3. Keep secrets server-side
+1. The current `main/index.html` contains hardcoded owner login credentials. Treat them as exposed and replace the owner login with Supabase Auth before enabling management pages.
+2. The existing frontend stores a GitHub write token in browser local storage and uses it to write `data.json`. This should be replaced with an authenticated server-side function. Never paste a GitHub token into public source or chat.
+3. The current `main/data.json` contains customer order and service-request records. PR #1 proposes clearing these records from the current public file, but it is not merged. If they must be retained, transfer them to private storage first.
+4. Clearing the current JSON file does not remove previous commits, forks, or cached copies. If secrets were ever committed, revoke/rotate them. Historical customer data may require repository-history cleanup.
+5. Customer sign-in is currently only a local profile keyed by email, not real authentication. Customer account and order history must be migrated before they are trusted.
+6. Checkout still writes order details into the public JSON data model. Do not accept real orders until checkout writes to private storage and the owner inbox reads from it.
+7. The in-site private service-request list/reply workflow is not complete. For now, requests can be reviewed in the private Supabase Table Editor by the project owner.
 
-The service-request form now calls `create-service-request` instead of writing customer details into `data.json`. The browser needs the project's publishable key in `SUPABASE_PUBLISHABLE_KEY` near the top of `index.html`. This is the public/publishable key only, never the service-role key. Configure secrets
-inside Supabase Function Secrets, such as `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
-and (once email is configured) `RESEND_API_KEY`. Do not commit these values to GitHub
-or paste secret keys into chat.
+## Function secrets
 
-## 4. Important migration safety
+Configure secrets in Supabase Function Secrets, not in this repository. The deployed service-request function uses server-side values such as `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. The service-role key bypasses row-level security and must remain server-side.
 
-- Do not merge the new checkout/admin frontend until it has been connected and tested
-  against the Supabase project.
-- Existing `data.json` customer request data was removed in the separate security PR,
-  but deleting it from the latest version does not erase it from Git history.
-- The current `index.html` still has legacy logic that writes orders/requests/accounts
-  into public `data.json`. That logic must be replaced before collecting real customer
-  information again. The public data file should contain catalog/settings only.
-- GitHub Pages serves static files only; it cannot execute PHP or protect server secrets.
+The Edge Function should validate request bodies, limit payload sizes, and allow only the intended website origin. If the site uses a custom domain, update the CORS allowlist accordingly.
 
-## 5. Email notifications
+## Database access model
 
-Automatic email needs a server-side email provider such as Resend, plus a verified sender
-domain/address as required by the provider. The existing `mailto:` buttons only open the
-owner's email app and are not automatic notifications.
+- Public visitors submit service requests through the Edge Function.
+- The Edge Function uses server-side credentials to insert records.
+- The database's Row Level Security policies restrict reading/updating private records to an authenticated user whose server-controlled app metadata role is `admin`.
+- Do not rely on frontend checks alone; database grants and RLS policies must enforce access.
 
-## Current status
+After any schema/policy changes, rerun the relevant SQL and test both allowed and denied operations. See the official [Supabase Row Level Security guide](https://supabase.com/docs/guides/database/postgres/row-level-security).
 
-This is setup scaffolding only. No Supabase project has been created and the website is
-not yet connected to a private backend.
+## Planned migration order
+
+1. Remove public customer records from the current JSON file and address historical exposure.
+2. Replace hardcoded owner credentials with Supabase Auth.
+3. Replace browser-held GitHub write-token access with a server-side, admin-authenticated update function for public catalog/settings only.
+4. Migrate checkout/orders and customer account features to private storage with explicit access policies.
+5. Connect the owner inbox to private orders and service requests.
+6. Test the full site on a preview before merging anything into `main`.
+
+## Payment handling
+
+Do not collect card numbers or CVVs directly in this website. If online card payments are added, use a reputable payment provider's hosted checkout. Never store card numbers, CVVs, passwords, or secret API keys in these tables.
