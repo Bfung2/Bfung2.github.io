@@ -596,24 +596,6 @@
       "power": "5"
     },
     {
-      "id": "msimag06c",
-      "name": "MSI MAG B850M MORTAR WIFI",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "MSI",
-      "price": 253.99,
-      "desc": "B850 mATX, DDR5, Wi-Fi, gaming features",
-      "longDesc": "AM5 gaming motherboard with DDR5, Wi-Fi, high-speed networking, and M.2 expansion for modern Ryzen systems.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
-    },
-    {
       "id": "asustud31",
       "name": "ASUS TUF GAMING B850M-E WIFI",
       "category": "Motherboard",
