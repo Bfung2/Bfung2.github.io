@@ -1209,6 +1209,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "ko54jkz",
+      "name": "Team T-Force Delta RGB 16GB",
+      "category": "Memory",
+      "brand": "T-Force",
+      "price": 160,
+      "desc": "16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600",
+      "longDesc": "DDR4 3200 (PC4 25600)\nTiming 16-20-20-40\nCAS Latency CL16\nVoltage 1.35V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-331-858-01.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
