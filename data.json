@@ -1117,6 +1117,22 @@
       "tdp": "",
       "watts": "",
       "power": "45"
+    },
+    {
+      "id": "5yliq5w",
+      "name": "MSI MAG B850 TOMAHAWK MAX WIFI Motherboard",
+      "category": "Motherboard",
+      "brand": "MSI",
+      "price": 225,
+      "desc": "Black - ATX - AMD5 - WIFI7 - DDR5 x 4",
+      "longDesc": "AMD B850\nRyzen 7000 Series / Ryzen 8000 Series / Ryzen 9000 Series\nUp to DDR5 8400+ MT/s (OC)\n5G Network Solution: Featuring premium 5G LAN to deliver better network experience.\nWi-Fi7: The latest wireless solution with a new 320MHz channel achieving a maximum transmission speed of 5.8Gbps, which is 2.4 times faster than Wi-Fi 6/6E\nAudio Boost 5: Isolated audio with a high quality audio processor for the most immersive gaming experience.\nEZ PCIe Release: A simple press of a button to effortlessly lock or unlock the PCIe slot, simplifying the installation and removal of the graphics card.\nEZ M.2 Shield Frozr II: The New tool-less design makes installing or removing your M.2 SSD and Shield Frozr much easier\nLightning Gen 5: the latest PCIe 5.0 solution with up to 128GB/s bandwidth for maximum transfer speed.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/13-144-697-05.png",
+      "socket": "AM5",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "5"
     }
   ],
   "orders": [],
