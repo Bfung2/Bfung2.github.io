@@ -648,24 +648,6 @@
       "tdp": "",
       "watts": "",
       "power": "5"
-    },
-    {
-      "id": "gigaby7ea",
-      "name": "GIGABYTE X870M AORUS ELITE WIFI7 ICE",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "GIGABYTE",
-      "price": 324,
-      "desc": "X870 mATX, white design, DDR5, Wi-Fi 7",
-      "longDesc": "White-themed AM5 X870 micro-ATX motherboard with DDR5, Wi-Fi 7, PCIe 5.0 connectivity, M.2 storage, and USB-C.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
     }
   ],
   "parts": [
