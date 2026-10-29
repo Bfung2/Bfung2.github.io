@@ -1081,6 +1081,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "3w823jj",
+      "name": "CORSAIR Vengeance RGB Pro SL 32GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 350,
+      "desc": "32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600)",
+      "longDesc": "Illuminate your system with vivid, animated lighting from ten individually addressable, ultra-bright RGB LEDs per module.\nChoose from dozens of preset lighting profiles, or create your own in CORSAIR iCUE software.\nJust 44mm tall for wide compatibility with air coolers such as the CORSAIR A500.\nOptimized for maximum bandwidth and tight response times on the latest Intel and AMD DDR4 motherboards.\nA custom performance PCB provides the highest signal quality for the greatest level of performance and stability.\nVENGEANCE RGB PRO SL modules use only tightly screened memory chips, for extended overclocking potential.\nTake control with CORSAIR iCUE software and synchronize lighting with other CORSAIR RGB products, including coolers, keyboards and fans.\nA solid aluminum heat-spreader improves thermal conductivity for superb memory cooling even when overclocked, with modern styling to complement your RGB lighting.\nSupports Intel XMP 2.0 for simple one-setting installation and setup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-236-710-V02.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
