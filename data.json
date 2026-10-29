@@ -1161,6 +1161,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "qf6c5jp",
+      "name": "G.SKILL TridentZ RGB Series 32GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 275,
+      "desc": "DDR4 3600 (PC4 28800)\nTiming 18-22-22-42\nCAS Latency CL18\nVoltage 1.35V",
+      "longDesc": "DDR4 3600 (PC4 28800)\nTiming 18-22-22-42\nCAS Latency CL18\nVoltage 1.35V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-232-920-V01.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
