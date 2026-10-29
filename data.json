@@ -536,21 +536,6 @@
       "power": ""
     },
     {
-      "id": "1u2hq2b",
-      "name": "GIGABYTE X870 AORUS ELITE WIFI7 ICE ATX (White)",
-      "category": "Motherboard",
-      "brand": "GIGABYTE",
-      "price": 255,
-      "desc": "LGA 1718, ATX, DDR5, 4x M.2, PCIe 5.0, USB4, Wi-Fi 7, 2.5GbE LAN, EZ-Latch",
-      "image": "https://c1.neweggimages.com/productimage/nb1280/13-145-518-06.jpg",
-      "socket": "AM5",
-      "cpuType": "",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "35"
-    },
-    {
       "id": "44ink40",
       "name": "ASUS ROG STRIX X870E-E GAMING WIFI (Black)",
       "category": "Motherboard",
