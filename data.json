@@ -542,24 +542,6 @@
       "power": "5"
     },
     {
-      "id": "asuspr7ae",
-      "name": "ASUS PRIME B850M-A WIFI-CSM",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "ASUS",
-      "price": 206.99,
-      "desc": "B850 mATX, DDR5, Wi-Fi 6E, 3x M.2, 2.5GbE",
-      "longDesc": "AM5 Prime motherboard with DDR5, PCIe 5.0 readiness, three M.2 slots, Wi-Fi 6E, 2.5Gb Ethernet, and USB-C.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
-    },
-    {
       "id": "asusro22b",
       "name": "ASUS ROG STRIX B850-G GAMING WIFI S",
       "category": "Motherboard",
