@@ -1049,6 +1049,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.3"
+    },
+    {
+      "id": "3lr8mbx",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 205,
+      "desc": "16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600)",
+      "longDesc": "DDR4 3200 (PC4 25600)\nTiming 16-20-20-38\nCAS Latency CL16\nVoltage 1.35V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-982-330-02.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
