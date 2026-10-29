@@ -1865,7 +1865,32 @@
       "power": "5"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "jin98sa",
+      "ref": "AC-MVU3C9IJ",
+      "at": "2026-10-29T22:04:18.859Z",
+      "name": "Bradyn Samuel Kabat",
+      "email": "bradynandyoulogan@gmail.com",
+      "phone": "9255166888",
+      "address": "2283 tamarisk ct, Discovery Bay, CA 94505-9227",
+      "notes": "",
+      "items": [
+        {
+          "id": "f8m2i8m",
+          "name": "AMD Ryzen 5 5500",
+          "price": 115,
+          "qty": 1,
+          "kind": "product"
+        }
+      ],
+      "sub": 115,
+      "shipping": 15,
+      "tax": 12.075,
+      "total": 142.075,
+      "status": "requested"
+    }
+  ],
   "requests": [
     {
       "id": "rbk9lty",
