@@ -1113,6 +1113,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "zbkwdjp",
+      "name": "CORSAIR Vengeance LPX 16GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 185,
+      "desc": "16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600)",
+      "longDesc": "Hand-sorted memory chips ensure high performance with generous overclocking headroom.\nVENGEANCE LPX is optimized for wide compatibility with the latest Intel and AMD DDR4 motherboards.\nA low-profile height of just 34mm ensures that VENGEANCE LPX even fits in most small-form-factor builds.\nA high-performance PCB guarantees strong signal quality and stability for superior overclocking ability.\nA solid aluminum heatspreader efficiently dissipates heat from each module so that they consistently run at high clock speeds.\nSupports Intel XMP 2.0 for simple one-setting installation and setup.\nAvailable in multiple colors to match the style of your system.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-236-736-01.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
