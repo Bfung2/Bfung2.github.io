@@ -1101,6 +1101,22 @@
       "tdp": "",
       "watts": "",
       "power": "45"
+    },
+    {
+      "id": "jwxdzbt",
+      "name": "GIGABYTE B850 AORUS ELITE WIFI7 ICE AMD AM5",
+      "category": "Motherboard",
+      "brand": "GIGABYTE",
+      "price": 245,
+      "desc": "ATX, DDR5, 3x M.2, PCIe 5.0, USB-C, WIFI7, 2.5GbE LAN, EZ-Latch",
+      "longDesc": "AMD Socket AM5: Supports AMD Ryzen 9000 / Ryzen 8000 / Ryzen 7000 Series Processors\nDDR5 Compatible: 4*DIMMs\nPower Design: 14+2+2\nThermals: VRM and M.2 Thermal Guard\nConnectivity: PCIe 5.0, 3x M.2 Slots, USB-C, Sensor Panel Link\nDIY Friendly: M.2 EZ-Latch, PCIe EZ-Latch, Wi-Fi EZ-Plug\nNetworking: WIFI7, 2.5GbE LAN, BT",
+      "image": "https://c1.neweggimages.com/productimage/nb640/13-145-544-01.jpg",
+      "socket": "AM5",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "45"
     }
   ],
   "orders": [],
