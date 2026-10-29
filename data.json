@@ -1149,6 +1149,22 @@
       "tdp": "",
       "watts": "",
       "power": "5"
+    },
+    {
+      "id": "o3rfpwc",
+      "name": "ASUS ROG STRIX X870E-E GAMING WIFI AMD",
+      "category": "Motherboard",
+      "brand": "ASUS",
+      "price": 415,
+      "desc": "ATX - AM5 - 4 x DDR5- Black - Wifi 7 - Dynamic OC Switcher",
+      "longDesc": "Ready for Advanced AI PC: Designed for the future of AI computing, with the power and connectivity needed for demanding AI applications.\nAMD AM5 Socket: Ready for AMD Ryzen™ 9000, 8000 and 7000 series desktop processors.\nIntelligent Control: ASUS-exclusive AI Overclocking, AI Cooling II, AI Networking and AEMP to simplify setup and improve performance.\nROG Strix Overclocking technologies: Dynamic OC Switcher, Core Flex, Asynchronous Clock and PBO Enhancement.\nRobust Power Solution: 18+2+2 power solution rated for 110A per stage with dual ProCool II power connectors, high-quality alloy chokes and durable capacitors to support multi-core processors.\nLatest M.2 Support: Three onboard PCIe® 5.0 M.2 slots, and two PCIe 4.0 M.2 slots, all with substantial cooling solutions.\nAbundant Connectivity: Dual USB4® Type-C ports, USB 20Gbps Type-C® front-panel connector, one USB 10Gbps port with PD 3.0 up to 30W and USB Wattage Watcher, nine additional USB 10Gbps ports",
+      "image": "https://c1.neweggimages.com/productimage/nb640/13-119-682-16.jpg",
+      "socket": "AM5",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "5"
     }
   ],
   "orders": [],
