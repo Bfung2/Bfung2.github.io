@@ -1129,6 +1129,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "59ilhzy",
+      "name": "CORSAIR Vengeance RGB Pro 32GB",
+      "category": "Memory",
+      "brand": "Corsair",
+      "price": 285,
+      "desc": "32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600)",
+      "longDesc": "Dynamic Multi-Zone RGB Lighting: 10 Ultra-bright RGB LEDs per module.\nNext Generation Software: Take control in CORSAIR iCUE software and synchronize lighting with other CORSAIR RGB products, including CPU coolers, keyboards and fans.\nCustom Performance PCB: Provides the highest signal quality for the greatest level of performance and stability.\nTightly Screened Memory: Carefully screened ICs for extended overclocking potential.\nMaximum Bandwidth and Tight Response Times: Optimized for peak performance on the latest Intel and AMD DDR4 motherboards.\nNo Wires Required: Requires no extra wires or cables for a clean and seamless install.\nMaximum bandwidth and tight response time: Optimized on the latest AMD and Intel DDR4 motherboards.\nSupports XMP 2.0: A single BIOS setting is all that's requir",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-236-570-02.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
