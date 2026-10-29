@@ -1195,6 +1195,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "8y6kog3",
+      "name": "test",
+      "category": "CPU",
+      "brand": "",
+      "price": 0,
+      "desc": "",
+      "longDesc": "",
+      "image": "",
+      "socket": "",
+      "cpuType": "",
+      "memType": "",
+      "tdp": "",
+      "watts": "",
+      "power": ""
     }
   ],
   "orders": [],
