@@ -1371,31 +1371,37 @@ function inventory(){
 }
 function inbox(){
   if(!isOwner) return staff();
-  const statusLabel = {requested:"Awaiting invoice",invoiced:"Invoice sent",working:"Working on it",shipped:"Shipped",delivered:"Delivered"};
-  return `<div class="wrap"><div class="pagehead"><div><h2>Orders &amp; requests</h2></div></div>
-  <h3>Orders (${S.orders.length})</h3>
-  ${S.orders.length?`<div class="scroll"><table><tr><th>Ref</th><th>When</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>
-  ${S.orders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
+  if(!cloudOrdersLoaded && !cloudOrdersLoading) loadCloudOrders();
+  const statusLabel={requested:"Awaiting invoice",invoiced:"Invoice sent",working:"Working on it",shipped:"Shipped",delivered:"Delivered"};
+  const allOrders=[...cloudOrders,...(S.orders||[])];
+  const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
-    <td><small>${o.items.map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}</td>
-    <td><small>${statusLabel[o.status]||o.status}</small></td>
-    <td class="row" style="flex-wrap:wrap">
-      <button class="btn sm ghost" onclick="mailOwner('Order '+${esc(JSON.stringify(o.ref))}, orderText(S.orders.find(x=>x.id===${esc(JSON.stringify(o.id))})))">Email me a copy</button>
-      <button class="btn sm gold" onclick="sendInvoice(${esc(JSON.stringify(o.id))})">Send invoice</button>
-      <button class="btn sm ghost" onclick="sendStatusEmail(${esc(JSON.stringify(o.id))},'working')">Working on it</button>
-      <button class="btn sm ghost" onclick="sendStatusEmail(${esc(JSON.stringify(o.id))},'shipped')">Shipped</button>
-      <button class="btn sm ghost" onclick="sendStatusEmail(${esc(JSON.stringify(o.id))},'delivered')">Delivered</button>
-    </td></tr>`).join("")}
-  </table></div>`:`<div class="empty">No orders yet.</div>`}
+    <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}</td>
+    <td><small>${statusLabel[o.status]||o.status}</small></td><td class="row" style="flex-wrap:wrap">
+    <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
+    <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
+    <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;shipped&quot;)">Shipped</button>
+    <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;delivered&quot;)">Delivered</button></td></tr>`).join("");
+  return `<div class="wrap"><div class="pagehead"><div><h2>Orders &amp; requests</h2></div></div>
+  ${cloudOrdersLoading?`<p class="muted">Loading customer orders…</p>`:""}
+  ${cloudOrdersError?`<div class="notice">Could not load online orders: ${esc(cloudOrdersError)} <button class="btn sm ghost" onclick="cloudOrdersLoaded=false;loadCloudOrders()">Try again</button></div>`:""}
+  <h3>Orders (${allOrders.length})</h3>
+  ${allOrders.length?`<div class="scroll"><table><tr><th>Ref</th><th>When</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>${orderRows}</table></div>`:`<div class="empty">No orders yet.</div>`}
   <h3 style="margin-top:32px">Requests (${S.requests.length})</h3>
   ${S.requests.length?`<div class="scroll"><table><tr><th>When</th><th>Reason</th><th>Who</th><th>Device</th><th>Details</th><th></th></tr>
-  ${S.requests.map(r=>`<tr><td>${new Date(r.at).toLocaleDateString()}</td>
-    <td><small>${esc(r.reason||"Repair or tech support")}</small></td>
+  ${S.requests.map(r=>`<tr><td>${new Date(r.at).toLocaleDateString()}</td><td><small>${esc(r.reason||"Repair or tech support")}</small></td>
     <td>${esc(r.name)}<br><small class="muted">${esc(r.email)}<br>${esc(r.phone)}<br>${esc(r.address)}</small></td>
-    <td>${esc(r.device)}</td><td><small>${esc(r.issue)}</small></td>
-    <td><button class="btn sm ghost" onclick="replyToRequest(${esc(JSON.stringify(r.id))})">Reply</button></td></tr>`).join("")}
-  </table></div>`:`<div class="empty">No requests yet.</div>`}
-  </div>`;
+    <td>${esc(r.device)}</td><td><small>${esc(r.issue)}</small></td><td><button class="btn sm ghost" onclick="replyToRequest(&quot;${esc(r.id)}&quot;)">Reply</button></td></tr>`).join("")}
+  </table></div>`:`<div class="empty">No requests yet.</div>`}</div>`;
+}
+function findOrder(orderId){return cloudOrders.find(x=>x.id===orderId)||(S.orders||[]).find(x=>x.id===orderId);}
+async function updateOrderStatus(o,status){
+  if(cloudOrders.some(x=>x.id===o.id)){
+    const {error}=await supabaseClient.from("apex_orders").update({status}).eq("id",o.id);
+    if(error){toast("Could not update the online order: "+error.message);return false;}
+    o.status=status;
+  }else{o.status=status;save();}
+  return true;
 }
 function replyToRequest(reqId){
   const r = S.requests.find(x=>x.id===reqId); if(!r) return;
@@ -1408,21 +1414,21 @@ function mailCustomer(to,subject,body){
   const a = document.createElement("a"); a.href = url; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove();
   toast("Opening your email app — if nothing appears, the message is on your clipboard to paste in.");
 }
-function sendInvoice(orderId){
-  const o = S.orders.find(x=>x.id===orderId); if(!o) return;
-  o.status = "invoiced"; save();
+async function sendInvoice(orderId){
+  const o=findOrder(orderId); if(!o) return;
+  if(!await updateOrderStatus(o,"invoiced")) return;
   mailCustomer(o.email, `Invoice for order ${o.ref}`, invoiceText(o));
-  render(); toast("Invoice email opened — send it to "+o.email+".");
+  render(); toast("Invoice email opened. Send it to "+o.email+".");
 }
 const STATUS_TEXT = {
   working: {subj:"Your order is being worked on", line:"Wanted to let you know we've started work on your order."},
   shipped: {subj:"Your order has shipped", line:"Your order is on its way."},
   delivered: {subj:"Your order has been delivered", line:"Your order has been delivered. Thanks for going with us!"}
 };
-function sendStatusEmail(orderId, statusKey){
-  const o = S.orders.find(x=>x.id===orderId); if(!o) return;
-  const t = STATUS_TEXT[statusKey]; if(!t) return;
-  o.status = statusKey; save();
+async function sendStatusEmail(orderId, statusKey){
+  const o=findOrder(orderId); if(!o) return;
+  const t=STATUS_TEXT[statusKey]; if(!t) return;
+  if(!await updateOrderStatus(o,statusKey)) return;
   const body = `Hi ${o.name},\n\n${t.line}\n\nOrder ${o.ref}:\n`+o.items.map(i=>`- ${i.name}`).join("\n")+
     `\n\nQuestions? Just reply to this email.\n\n${S.settings.shopName||"Apex Computers"}`;
   mailCustomer(o.email, `${t.subj} — ${o.ref}`, body);
