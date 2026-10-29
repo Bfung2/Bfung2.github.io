@@ -159,6 +159,18 @@ footer.site a{color:var(--gold)}
   .summary{position:static;max-height:none;overflow:visible}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- refined card styling ---- */
+:root{--radius:10px;--wrap:1160px}
+.grid{gap:14px;background:transparent;border:0}
+.grid .card{border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 3px 14px rgba(0,0,0,.045);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.grid .card:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 10px 24px rgba(0,0,0,.10)}
+.card .thumb{border-radius:7px;border-style:solid}
+.panel,.step,.notice{border-radius:var(--radius)}
+.shelf-row>.card{border-radius:var(--radius);overflow:hidden}
+.btn,.cartbtn,nav.main a{transition:background-color .16s ease,transform .16s ease}
+.btn:hover{transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.grid .card,.btn,.cartbtn,nav.main a{transition:none}.grid .card:hover,.btn:hover{transform:none}}
 </style>
 </head>
 <body>
