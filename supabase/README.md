@@ -25,8 +25,7 @@ created, the SQL is run, secrets are configured, and the frontend is connected.
 
 ## 3. Keep secrets server-side
 
-The next implementation step is to deploy Supabase Edge Functions for order creation,
-service-request creation, status updates, and email notifications. Configure secrets
+The service-request form now calls `create-service-request` instead of writing customer details into `data.json`. The browser needs the project's publishable key in `SUPABASE_PUBLISHABLE_KEY` near the top of `index.html`. This is the public/publishable key only, never the service-role key. Configure secrets
 inside Supabase Function Secrets, such as `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
 and (once email is configured) `RESEND_API_KEY`. Do not commit these values to GitHub
 or paste secret keys into chat.
