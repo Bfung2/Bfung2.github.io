@@ -71,7 +71,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5"
+      "power": "45"
     },
     {
       "id": "xjyzxl1",
@@ -89,7 +89,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5"
+      "power": "45"
     },
     {
       "id": "yo23yhu",
@@ -1100,7 +1100,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5"
+      "power": "45"
     },
     {
       "id": "jwxdzbt",
@@ -1116,7 +1116,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5"
+      "power": "45"
     },
     {
       "id": "5yliq5w",
@@ -1135,12 +1135,12 @@
       "power": "5"
     },
     {
-      "id": "58lhmeu",
+      "id": "e797b7k",
       "name": "MSI MAG X870 TOMAHAWK",
       "category": "Motherboard",
       "brand": "MSI",
       "price": 275,
-      "desc": "Black - ATX - AM5 - DDR5 x 4 - WIFI7 - 5g LAN",
+      "desc": "Black - ATX - DDR5 x 4 - AM5 - WIFI7",
       "longDesc": "Lightning USB 40G: Featuring a built-in USB 4 port, it offers a lightning-fast 40Gbps transmission speed.\nEZ PCIe Release: A simple press of a button to effortlessly lock or unlock the PCIe slot, simplifying the installation and removal of the graphics card.\nExtended Heatsink Design: MSI extended PWM heatsink, and enhanced circuit design ensures even high-end processors to run in full speed.\nLightning Gen 5: The latest PCIe 5.0 solution with up to 128GB/s bandwidth for maximum transfer speed.\nQuadruple M.2 Connectors: Onboard quadruple M.2 connectors for the maximum storage performance.\n5G Network solution: Featuring premium 5G LAN to deliver better network experience.\nWi-Fi 7:The latest wireless solution with a new 320MHz channel, achieving a maximum transmission speed of 5.8Gbps.\nDDR5 Memory:A huge step of DDR performance enhancement with the latest DDR5 memory and MSI Memory Boost technology.",
       "image": "https://c1.neweggimages.com/productimage/nb640/13-144-667-01.jpg",
       "socket": "AM5",
