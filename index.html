@@ -203,6 +203,7 @@ footer.site a{color:var(--gold)}
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* =====================================================================
    SHARED STORAGE SETUP — saves straight into a JSON file in your GitHub
@@ -242,6 +243,11 @@ const GITHUB_OWNER = "bfung2";
 const GITHUB_REPO = "bfung2.github.io";
 const GITHUB_BRANCH = "main";
 const GITHUB_DATA_PATH = "data.json";
+const SUPABASE_URL = "https://arvdrrrbobjpmmygojfm.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFydmRycnJib2JqcG1teWdvamZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzMDE4NjksImV4cCI6MjEwODg3Nzg2OX0.4w4-iVY4BCULkhE7i4Qi4l7YRiEQNcMlhIfnPlyY8_E";
+const OWNER_EMAIL = "apexcomputers039@gmail.com";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let cloudOrders = [], cloudOrdersLoaded = false, cloudOrdersLoading = false, cloudOrdersError = "";
 const ghConfigured = GITHUB_OWNER !== "YOUR_GITHUB_USERNAME" && GITHUB_REPO !== "YOUR_REPO_NAME";
 function ghToken(){ try{ return localStorage.getItem("apex.ghtoken")||""; }catch(e){ return ""; } }
 function setGhToken(t){ try{ if(t) localStorage.setItem("apex.ghtoken", t); else localStorage.removeItem("apex.ghtoken"); }catch(e){} }
@@ -256,14 +262,7 @@ function saveGhToken(e){
   return false;
 }
 
-/* Owner sign-in is username + password + a separate code, all three checked
-   against the values below. Change any of them any time — anyone who can view
-   page source can read them, so this is a lock on the edit screens for casual
-   visitors, not a defense against someone with access to this file. */
-const OWNER_USERNAME = "BradynK";
-const OWNER_PASSWORD = "Ainsfdap0-341209LKlknfd)94nkkladsklKfoidnbgrmjJ26398fnfl8j";
-const OWNER_CODE = "0619445";
-
+/* Owner authentication is handled by Supabase Auth. */
 /* ---------- storage ---------- */
 const KEY = "apexcomputers.v1";  // old local-only key, read once below to migrate
 const DEFAULTS = {
@@ -457,41 +456,50 @@ const money = n => "$" + (Math.round((+n||0)*100)/100).toLocaleString(undefined,
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ---------- session ---------- */
-let isOwner = sessionStorage.getItem("apex.owner")==="1";
+let isOwner = false;
 let me = null;
 try{ me = JSON.parse(localStorage.getItem("apex.customer")||"null"); }catch(e){}
-
-let loginStep = "password";   // "password" -> "confirm" -> signed in
-let pendingCode = null;
-
-function tryLogin(e){
+async function initializeSupabaseAuth(){
+  try{
+    const {data,error}=await supabaseClient.auth.getSession();
+    if(error) throw error;
+    isOwner=!!(data.session && data.session.user && (data.session.user.email||"").toLowerCase()===OWNER_EMAIL);
+    render();
+  }catch(err){ console.error("Owner session check failed:",err); isOwner=false; render(); }
+}
+supabaseClient.auth.onAuthStateChange((_event,session)=>{
+  isOwner=!!(session && session.user && (session.user.email||"").toLowerCase()===OWNER_EMAIL);
+  cloudOrdersLoaded=false; cloudOrders=[];
+  render();
+});
+async function tryLogin(e){
   e && e.preventDefault();
-  if(lu.value.trim() === OWNER_USERNAME && pw.value === OWNER_PASSWORD && lc.value.trim() === OWNER_CODE){
-    if(S.settings.ownerPhone){
-      pendingCode = String(Math.floor(100000+Math.random()*900000));
-      loginStep = "confirm";
-      render();
-    } else {
-      isOwner = true; sessionStorage.setItem("apex.owner","1");
-      go('/manage'); toast("Signed in as owner.");
-    }
-  } else { pwErr.textContent = "Username, password or code doesn't match."; pw.value=""; lc.value=""; pw.focus(); }
+  const email=(document.getElementById("ownerEmail").value||"").trim().toLowerCase();
+  const password=document.getElementById("ownerPassword").value;
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error || !data.user || (data.user.email||"").toLowerCase()!==OWNER_EMAIL){
+    if(data && data.session) await supabaseClient.auth.signOut();
+    document.getElementById("ownerLoginError").textContent="Email or password is incorrect, or this account is not authorized.";
+    document.getElementById("ownerPassword").value="";
+    return false;
+  }
+  isOwner=true; go("/manage"); toast("Signed in securely."); return false;
 }
-function sendConfirmText(){
-  if(!S.settings.ownerPhone){ toast("Add your phone number in settings first — see the note on this screen."); return; }
-  const body = `Apex Computers sign-in code: ${pendingCode}`;
-  location.href = `sms:${encodeURIComponent(S.settings.ownerPhone)}${/iPhone|iPad|iPod/.test(navigator.userAgent)?"&":"?"}body=${encodeURIComponent(body)}`;
+async function logout(){
+  await supabaseClient.auth.signOut(); isOwner=false; cloudOrders=[]; cloudOrdersLoaded=false;
+  go("/"); toast("Signed out.");
 }
-function confirmLogin(e){
-  e.preventDefault();
-  if(cc.value.trim() === pendingCode){
-    isOwner = true; sessionStorage.setItem("apex.owner","1");
-    loginStep = "password"; pendingCode = null;
-    go('/manage'); toast("Signed in as owner.");
-  } else { ccErr.textContent = "That code doesn't match what was sent."; }
+async function loadCloudOrders(){
+  if(!isOwner || cloudOrdersLoading || cloudOrdersLoaded) return;
+  cloudOrdersLoading=true; cloudOrdersError="";
+  try{
+    const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
+    if(error) throw error;
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status}));
+    cloudOrdersLoaded=true;
+  }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
+  finally{ cloudOrdersLoading=false; if(route()==="/inbox") render(); }
 }
-function logout(){ isOwner=false; sessionStorage.removeItem("apex.owner"); loginStep="password"; pendingCode=null; go('/'); toast("Signed out of owner mode."); }
-
 function combineAddress(a){
   a = a || {};
   const line2 = [a.city, a.state].filter(Boolean).join(", ");
@@ -1120,18 +1128,28 @@ function invoiceText(o){
   `\n\nTotal due: ${money(o.total)}\n\nYou can pay with any of these:\n${pay}\n\n`+
   `Once payment goes through, reply here or text us and we'll get started.\n\nThanks,\n${s.shopName||"Apex Computers"}`;
 }
-function submitOrder(e){
+async function submitOrder(e){
   e.preventDefault();
-  const addr = currentCheckoutAddress();
-  if(!looksLikeAddress(addr)){ addrWarn.hidden = false; c_street.focus(); return false; }
-  const t = cartTotals();
-  const o = {id:uid(),ref:"AC-"+Date.now().toString(36).toUpperCase(),at:new Date().toISOString(),
-    name:cn.value,email:ce.value,phone:cp.value,address:combineAddress(addr),notes:cnote.value,
+  const addr=currentCheckoutAddress();
+  if(!looksLikeAddress(addr)){addrWarn.hidden=false;c_street.focus();return false;}
+  if(!myCart.length){toast("Your cart is empty.");return false;}
+  const t=cartTotals();
+  const o={id:uid()+"-"+Date.now().toString(36),ref:"AC-"+Date.now().toString(36).toUpperCase(),at:new Date().toISOString(),
+    name:cn.value.trim(),email:ce.value.trim(),phone:cp.value.trim(),address:combineAddress(addr),notes:cnote.value.trim(),
     items:structuredClone(myCart),sub:t.sub,shipping:t.shipping,tax:t.tax,total:t.total,status:"requested"};
-  S.orders.unshift(o); myCart=[]; saveCart(); save();
-  lastOrder = o;
-  mailOwner(`Order request ${o.ref} — ${o.name}`, orderText(o));
-  go('/done');
+  const btn=e.submitter||e.target.querySelector('button[type="submit"]');
+  if(btn){btn.disabled=true;btn.textContent="Submitting…";}
+  try{
+    const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status}]);
+    if(error) throw error;
+    myCart=[];saveCart();lastOrder=o;
+    mailOwner("Order request "+o.ref+" — "+o.name,orderText(o));
+    go("/done");
+  }catch(err){
+    console.error("Order submission failed:",err);
+    toast("Order wasn't submitted. Your cart is still saved. Please try again.");
+    if(btn){btn.disabled=false;btn.textContent="Submit order";}
+  }
   return false;
 }
 let lastOrder = null;
@@ -1218,15 +1236,13 @@ function staff(){
       </div>
     </div>`;
   }
-  AFTER = ()=>{ const f=document.getElementById("lu"); f&&f.focus(); };
   return `<div class="wrap" style="max-width:480px">
-    <div class="pagehead"><div><h2>Owner sign-in</h2><p>Username, password and code${S.settings.ownerPhone?", then a text-confirmation code":""}.</p></div></div>
+    <div class="pagehead"><div><h2>Owner sign-in</h2><p>Sign in with the owner email and password.</p></div></div>
     <form class="panel" onsubmit="tryLogin(event)">
-      <div class="field"><label for="lu">Username</label><input id="lu" required autocomplete="username"></div>
-      <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>
-      <div class="field"><label for="lc">Code</label><input id="lc" autocomplete="off" required></div>
-      <button class="btn gold" type="submit">Continue</button>
-      <p id="pwErr" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p>
+      <div class="field"><label for="ownerEmail">Owner email</label><input id="ownerEmail" type="email" required autocomplete="username"></div>
+      <div class="field"><label for="ownerPassword">Password</label><input id="ownerPassword" type="password" autocomplete="current-password" required></div>
+      <button class="btn gold" type="submit">Sign in</button>
+      <p id="ownerLoginError" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p>
     </form>
     <p style="margin-top:20px"><a href="#/login">Customer sign-in instead</a></p>
   </div>`;
@@ -1613,6 +1629,7 @@ function toast(msg){
   const d = document.createElement("div"); d.className="toast"; d.textContent=msg;
   document.body.appendChild(d); clearTimeout(toastT); toastT = setTimeout(()=>d.remove(),3200);
 }
+initializeSupabaseAuth();
 startCloudSync();
 </script>
 </body>
