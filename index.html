@@ -396,46 +396,61 @@ async function testGhToken(){
   }catch(err){ ghTestMsg = "✗ Couldn't reach GitHub — check your internet connection."; }
   render();
 }
-async function pushToGithub(retry){
-  const token = ghToken();
-  if(!token){
-    cloudError = "No GitHub write token saved on this device — add one in Site settings to save changes.";
-    cloudConnected = false; toast(cloudError); render();
-    return;
-  }
-  const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_DATA_PATH}`;
-  try{
-    if(!fileSha){
-      const cur = await fetch(apiUrl+`?ref=${GITHUB_BRANCH}`, {headers:{Authorization:`Bearer ${token}`, Accept:"application/vnd.github+json"}});
-      if(cur.ok){ const j = await cur.json(); fileSha = j.sha; }
+let githubSaveQueue = Promise.resolve();
+function pushToGithub(){
+  // Serialize writes so two quick edits cannot race using the same GitHub SHA.
+  githubSaveQueue = githubSaveQueue.catch(()=>{}).then(async ()=>{
+    const token = ghToken();
+    if(!token){
+      cloudError = "No GitHub write token saved on this device — add one in Site settings to save changes.";
+      cloudConnected = false; toast(cloudError); render();
+      return;
     }
-    const body = {
-      message: "Update site data — "+new Date().toISOString(),
-      content: btoa(unescape(encodeURIComponent(JSON.stringify(S,null,2)))),
-      branch: GITHUB_BRANCH
-    };
-    if(fileSha) body.sha = fileSha;
-    const res = await fetch(apiUrl, {
-      method:"PUT",
-      headers:{Authorization:`Bearer ${token}`, Accept:"application/vnd.github+json", "Content-Type":"application/json"},
-      body: JSON.stringify(body)
-    });
-    if(!res.ok){
-      const j = await res.json().catch(()=>({}));
-      if((res.status===409 || res.status===422) && retry!==true){ fileSha=null; return pushToGithub(true); } // out of sync — refetch sha, retry once
-      throw new Error(explainGhError(res.status, j.message));
+    const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_DATA_PATH}`;
+    try{
+      let saved = false;
+      for(let attempt=0; attempt<2 && !saved; attempt++){
+        // Always get the current blob SHA immediately before writing.
+        const cur = await fetch(apiUrl+`?ref=${GITHUB_BRANCH}&_=${Date.now()}`, {
+          cache:"no-store",
+          headers:{Authorization:`Bearer ${token}`, Accept:"application/vnd.github+json"}
+        });
+        const current = await cur.json().catch(()=>({}));
+        if(!cur.ok) throw new Error(explainGhError(cur.status, current.message));
+        fileSha = current.sha;
+        const body = {
+          message: "Update site data — "+new Date().toISOString(),
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(S,null,2)))),
+          branch: GITHUB_BRANCH,
+          sha: fileSha
+        };
+        const res = await fetch(apiUrl, {
+          method:"PUT",
+          headers:{Authorization:`Bearer ${token}`, Accept:"application/vnd.github+json", "Content-Type":"application/json"},
+          body: JSON.stringify(body)
+        });
+        const result = await res.json().catch(()=>({}));
+        if(res.ok){
+          fileSha = result.content && result.content.sha;
+          lastLocalWriteAt = Date.now();
+          cloudConnected = true; cloudError = "";
+          saved = true;
+        }else if((res.status===409 || res.status===422) && attempt===0){
+          fileSha = null; // retry once with a freshly fetched SHA
+        }else{
+          throw new Error(explainGhError(res.status, result.message));
+        }
+      }
+      if(!saved) throw new Error("GitHub changed the data file during both save attempts. Wait a moment and try again.");
+    }catch(err){
+      console.error(err);
+      cloudConnected = false;
+      cloudError = (err instanceof TypeError) ? "Couldn't reach GitHub — check your internet connection." : (err.message||String(err));
+      toast("Couldn't save to GitHub — "+cloudError);
     }
-    const j = await res.json();
-    fileSha = j.content && j.content.sha;
-    lastLocalWriteAt = Date.now();
-    cloudConnected = true; cloudError = "";
-  }catch(err){
-    console.error(err);
-    cloudConnected = false;
-    cloudError = (err instanceof TypeError) ? "Couldn't reach GitHub — check your internet connection." : (err.message||String(err));
-    toast("Couldn't save to GitHub — "+cloudError);
-  }
-  render();
+    render();
+  });
+  return githubSaveQueue;
 }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 const money = n => "$" + (Math.round((+n||0)*100)/100).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
