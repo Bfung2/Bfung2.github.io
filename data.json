@@ -1177,6 +1177,22 @@
       "tdp": "",
       "watts": "",
       "power": "1.35"
+    },
+    {
+      "id": "r38ntlx",
+      "name": "G.SKILL Ripjaws V Series 16GB",
+      "category": "Memory",
+      "brand": "G.SKILL",
+      "price": 150,
+      "desc": "16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600)",
+      "longDesc": "DDR4 3200 (PC4 25600)\nTiming 16-18-18-38\nCAS Latency CL16\nVoltage 1.35V",
+      "image": "https://c1.neweggimages.com/productimage/nb640/20-231-941-03.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "DDR4",
+      "tdp": "",
+      "watts": "",
+      "power": "1.35"
     }
   ],
   "orders": [],
