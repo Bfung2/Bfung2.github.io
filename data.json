@@ -596,24 +596,6 @@
       "power": "5"
     },
     {
-      "id": "msipro8e8",
-      "name": "MSI PRO B850M-A WIFI PZ",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "MSI",
-      "price": 233.99,
-      "desc": "B850 mATX, back-connect design, DDR5, Wi-Fi",
-      "longDesc": "AM5 micro-ATX motherboard with a back-connect layout, DDR5 memory, Wi-Fi, and modern M.2 storage support.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
-    },
-    {
       "id": "msimag06c",
       "name": "MSI MAG B850M MORTAR WIFI",
       "category": "Motherboard",
