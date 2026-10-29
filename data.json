@@ -1165,6 +1165,22 @@
       "tdp": "",
       "watts": "",
       "power": "5"
+    },
+    {
+      "id": "rcdo2rx",
+      "name": "ASUS B850 MAX GAMING WIFI",
+      "category": "Motherboard",
+      "brand": "ASUS",
+      "price": 195,
+      "desc": "AM5 - DDR5 x 4 - Wifi 6E - ATX - White",
+      "longDesc": "-Ready for Advanced AI PC: Designed for the future of AI computing, with the power and connectivity needed for demanding AI applications\n-AMD AM5 Socket: Ready for AMD Socket AM5 for AMD Ryzen 9000 & 8000 & 7000 Series Desktop Processors\n-Enhanced Power Solution: 8+2+1 phase power design, 6-layer PCB, alloy chokes and durable capacitors for stable power delivery\n-Ultrafast Connectivity: Wi-Fi 6E, PCIe 5.0 x16 slot, PCIe 5.0 M.2 slots, Realtek 2.5Gb Ethernet, rear USB 10Gbps Type-A & Type-C ports, and front USB 5Gbps Type-C support\n-Comprehensive Cooling: VRM and M.2 heatsinks, PCH heatsink, hybrid fan headers and Fan Xpert 2+\n-DIY Friendly Design: Pre-mounted I/O shield, BIOS FlashBack, Q-Antenna, Q-Dashboard, Q-LED Core\n-Unmatched Personalization: Three Addressable RGB Gen 2 headers, all configurable with ASUS-exclusive Aura Sync RGB lighting\n-Renowned Software: Armoury Crate, ASUS AI Advisor, ASUS DriverHub, ASUS GlideX, ASUS MyHotkey\n-CEC Tier II ready",
+      "image": "https://c1.neweggimages.com/productimage/nb640/13-119-742-01.png",
+      "socket": "AM5",
+      "cpuType": "",
+      "memType": "DDR5",
+      "tdp": "",
+      "watts": "",
+      "power": "5"
     }
   ],
   "orders": [],
