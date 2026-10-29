@@ -542,24 +542,6 @@
       "power": "5"
     },
     {
-      "id": "gigaby10c",
-      "name": "GIGABYTE B850M AORUS ELITE WIFI6E ICE",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "GIGABYTE",
-      "price": 214.99,
-      "desc": "B850 mATX, white design, DDR5, Wi-Fi 6E",
-      "longDesc": "White-themed AM5 motherboard with DDR5, Wi-Fi 6E, dual M.2, PCIe 5.0, USB-C, and 2.5GbE networking.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
-    },
-    {
       "id": "msipro1cd",
       "name": "MSI PRO B850M-A WIFI",
       "category": "Motherboard",
