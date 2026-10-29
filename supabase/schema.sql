@@ -48,6 +48,15 @@ create index if not exists service_requests_created_at_idx
 alter table public.orders enable row level security;
 alter table public.service_requests enable row level security;
 
+-- Explicit least-privilege grants. RLS policies do not revoke SQL privileges by
+-- themselves, so remove all client-role grants before granting only the required
+-- operations. Server-side Edge Functions use service_role and must keep that key
+-- in Supabase Function Secrets only.
+revoke all on table public.orders from anon, authenticated;
+revoke all on table public.service_requests from anon, authenticated;
+grant select, update on table public.orders to authenticated;
+grant select, update on table public.service_requests to authenticated;
+
 -- Only authenticated users whose app_metadata role is admin can read/update records.
 -- No public/anon insert policies are created. Edge Functions with the service-role
 -- key handle validated customer submissions server-side.
