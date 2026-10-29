@@ -542,24 +542,6 @@
       "power": "5"
     },
     {
-      "id": "asustud31",
-      "name": "ASUS TUF GAMING B850M-E WIFI",
-      "category": "Motherboard",
-      "cpuType": "",
-      "processor": "",
-      "brand": "ASUS",
-      "price": 234.99,
-      "desc": "B850 mATX, DDR5, Wi-Fi 6E, 3x M.2, 2.5GbE",
-      "longDesc": "AM5 TUF Gaming motherboard with DDR5, 8+2+1 power stages, PCIe 5.0, three M.2 slots, Wi-Fi 6E, and 2.5Gb Ethernet.",
-      "featured": false,
-      "image": "",
-      "socket": "AM5",
-      "memType": "DDR5",
-      "tdp": "",
-      "watts": "",
-      "power": "5"
-    },
-    {
       "id": "asuspr7ae",
       "name": "ASUS PRIME B850M-A WIFI-CSM",
       "category": "Motherboard",
