@@ -1424,6 +1424,17 @@ function inventory(){
     </table></div>`:`<p class="muted">None yet. <button class="btn sm ghost" onclick="editPart(null,'${g.cat}')">Add ${esc(g.cat.toLowerCase())}</button></p>`}`).join("")}
   </div>`;
 }
+async function migrateLegacyRequests(){
+  if(!isOwner)return;
+  const legacy=S.requests||[];
+  if(!legacy.length){toast("There are no older local requests to import.");return;}
+  const rows=legacy.map(r=>({id:String(r.id),created_at:r.at||new Date().toISOString(),customer_name:r.name||"Customer",customer_email:r.email||"",customer_phone:r.phone||"",customer_address:r.address||"",availability:r.when||"",reason:r.reason||"Repair or tech support",device:r.device||"",details:r.issue||"",status:"requested"}));
+  try{
+    const {error}=await supabaseClient.from("apex_service_requests").upsert(rows,{onConflict:"id",ignoreDuplicates:true});
+    if(error)throw error;
+    cloudRequestsLoaded=false;await loadOwnerWorkData();toast("Older requests imported into the shared employee inbox.");
+  }catch(err){toast("Could not import older requests: "+err.message);}
+}
 function inbox(){
   if(!isOwner)return staff();
   if(!cloudOrdersLoaded&&!cloudOrdersLoading)loadCloudOrders();
@@ -1445,6 +1456,7 @@ function inbox(){
   <h3>Orders (${allOrders.length})</h3>
   ${allOrders.length?`<div class="scroll"><table><tr><th>Ref</th><th>When</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>${orderRows}</table></div>`:`<div class="empty">No orders yet.</div>`}
   <h3 style="margin-top:32px">Service requests (${cloudRequests.length})</h3>
+  ${(S.requests||[]).length?'<button class="btn sm ghost" style="margin-bottom:12px" onclick="migrateLegacyRequests()">Import '+S.requests.length+' older local request(s) into shared inbox</button>':""}
   ${cloudRequests.length?`<div class="scroll"><table><tr><th>When</th><th>Reason</th><th>Customer</th><th>Device</th><th>Details</th><th>Assigned to</th></tr>
   ${cloudRequests.map(r=>`<tr><td>${new Date(r.created_at).toLocaleDateString()}</td><td><small>${esc(r.reason)}</small></td><td>${esc(r.customer_name)}<br><small class="muted">${esc(r.customer_email)}<br>${esc(r.customer_phone)}<br>${esc(r.customer_address)}</small></td><td>${esc(r.device)}</td><td><small>${esc(r.details)}<br>Availability: ${esc(r.availability)}</small></td><td>${assignmentSelect("request",r.id,r.assigned_to)}</td></tr>`).join("")}</table></div>`:`<div class="empty">No service requests yet.</div>`}
   <p class="muted" style="margin-top:16px">Older requests saved only on this browser: ${(S.requests||[]).length}. New requests are stored in Supabase.</p></div>`;
