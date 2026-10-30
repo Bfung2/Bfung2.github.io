@@ -301,7 +301,12 @@ function mergeIntoDefaults(d){
   const s = Object.assign({}, structuredClone(DEFAULTS.settings), (d&&d.settings)||{});
   if(s.shopName === "Bench & Board") s.shopName = "Apex Computers";
   delete s.ownerUsername; delete s.ownerPasswordHash;
-  return Object.assign(structuredClone(DEFAULTS), d||{}, {settings:s});
+  const merged = Object.assign(structuredClone(DEFAULTS), d||{}, {settings:s});
+  merged.orders = []; merged.requests = []; merged.accounts = [];
+  return merged;
+}
+function publicSiteData(){
+  return {settings:S.settings, products:S.products, parts:S.parts};
 }
 function loadLocalFallback(){
   try{
@@ -421,7 +426,7 @@ function pushToGithub(){
         fileSha = current.sha;
         const body = {
           message: "Update site data — "+new Date().toISOString(),
-          content: btoa(unescape(encodeURIComponent(JSON.stringify(S,null,2)))),
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(publicSiteData(),null,2)))),
           branch: GITHUB_BRANCH,
           sha: fileSha
         };
@@ -599,12 +604,9 @@ function customerLogin(e){
   const rec = {name:ac_name.value.trim(), email:ac_email.value.trim().toLowerCase(),
     phone:ac_phone.value.trim(), address:{street:ac_street.value.trim(),city:ac_city.value.trim(),state:ac_state.value.trim(),zip:ac_zip.value.trim()}};
   if(!rec.email){ toast("An email is needed."); return; }
-  const known = (S.accounts||[]).find(a=>a.email===rec.email);
-  if(known) Object.assign(known, {name:rec.name||known.name, phone:rec.phone||known.phone, address:(rec.address.street?rec.address:known.address)});
-  else (S.accounts = S.accounts||[]).push(rec);
-  me = known || rec;
+  me = rec;
   try{ localStorage.setItem("apex.customer", JSON.stringify(me)); }catch(err){}
-  save(); go(myCart.length ? '/checkout' : '/account'); toast("Welcome, "+(me.name||me.email)+".");
+  go(myCart.length ? '/checkout' : '/account'); toast("Welcome, "+(me.name||me.email)+".");
 }
 function customerLogout(){ me=null; try{ localStorage.removeItem("apex.customer"); }catch(e){} go('/'); toast("Signed out."); }
 function myOrders(){ return me ? S.orders.filter(o=>(o.email||"").toLowerCase()===me.email) : []; }
@@ -1077,7 +1079,7 @@ function addBuildToCart(){
   if(!chosen.length) return;
   const price = chosen.reduce((n,p)=>n+(+p.price||0),0) + (wantAssembly?(+S.settings.buildFee||0):0);
   addToCart({id:uid(),kind:"build",qty:1,name:"Custom PC build"+(wantAssembly?" (assembled by us)":" (parts only)"),price,
-    parts:chosen.map(p=>({name:p.name,category:p.category,price:+p.price||0})), assembly:wantAssembly, fee:wantAssembly?(+S.settings.buildFee||0):0});
+    parts:chosen.map(p=>({id:p.id,name:p.name,category:p.category,price:+p.price||0})), assembly:wantAssembly, fee:wantAssembly?(+S.settings.buildFee||0):0});
   buildSel={}; wantAssembly=false; saveBuild();
 }
 
