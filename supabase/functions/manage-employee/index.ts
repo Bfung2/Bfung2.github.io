@@ -34,26 +34,19 @@ Deno.serve(async (req) => {
     const action = String(body.action || "");
 
     if (action === "create") {
-      const username = String(body.username || "").trim().toLowerCase();
       const displayName = String(body.display_name || "").trim();
-      const password = String(body.password || "");
-      if (!/^[a-z0-9][a-z0-9._-]{2,29}$/.test(username)) {
-        return json({ error: "Username must be 3-30 characters using letters, numbers, dots, underscores, or hyphens." }, 400);
-      }
       if (displayName.length < 1 || displayName.length > 100) return json({ error: "Enter an employee display name." }, 400);
-      if (password.length < 10 || password.length > 128) return json({ error: "Password must be at least 10 characters." }, 400);
-
-      const { data: existing } = await admin.from("employee_profiles").select("user_id").eq("username", username).maybeSingle();
-      if (existing) return json({ error: "That username is already in use." }, 409);
-
-      // Synthetic, non-routable email lets Supabase Auth handle passwords securely.
-      const email = username + "@employees.apexcomputers.internal";
+      // 15 random bytes produce a high-entropy, URL-safe passcode.
+      const bytes = new Uint8Array(15);
+      crypto.getRandomValues(bytes);
+      const passcode = Array.from(bytes, b => "abcdefghjkmnpqrstuvwxyz23456789"[b % 32]).join("");
+      const username = passcode;
+      const email = passcode + "@employees.apexcomputers.internal";
       const { data: created, error: createError } = await admin.auth.admin.createUser({
-        email, password, email_confirm: true,
+        email, password: passcode, email_confirm: true,
         user_metadata: { account_type: "employee" }
       });
       if (createError || !created.user) return json({ error: createError?.message || "Could not create employee login." }, 400);
-
       const { error: profileError } = await admin.from("employee_profiles").insert({
         user_id: created.user.id, username, display_name: displayName, active: true
       });
@@ -61,7 +54,7 @@ Deno.serve(async (req) => {
         await admin.auth.admin.deleteUser(created.user.id);
         return json({ error: profileError.message }, 500);
       }
-      return json({ success: true, employee: { user_id: created.user.id, username, display_name: displayName, active: true } });
+      return json({ success: true, passcode, employee: { user_id: created.user.id, display_name: displayName, active: true } });
     }
 
     if (action === "set_active") {
@@ -79,6 +72,16 @@ Deno.serve(async (req) => {
         const { error: unbanError } = await admin.auth.admin.updateUserById(userId, { ban_duration: "none" });
         if (unbanError) return json({ error: unbanError.message }, 400);
       }
+      return json({ success: true });
+    }
+
+    if (action === "delete") {
+      const userId = String(body.user_id || "");
+      const { data: target, error: lookupError } = await admin.from("employee_profiles").select("user_id").eq("user_id", userId).maybeSingle();
+      if (lookupError) return json({ error: lookupError.message }, 400);
+      if (!target) return json({ error: "Employee account was not found." }, 404);
+      const { error: deleteError } = await admin.auth.admin.deleteUser(userId);
+      if (deleteError) return json({ error: deleteError.message }, 400);
       return json({ success: true });
     }
 
