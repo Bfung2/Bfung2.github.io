@@ -552,7 +552,7 @@ async function assignJob(kind,id,userId){
 }
 function employeeLogin(){
   if(isEmployee){go("/employee");return "";}
-  return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Employee login</h2><p>Enter the unique passcode provided by the owner.</p></div></div><form class="panel" onsubmit="return tryEmployeeLogin(event)"><div class="field"><label for="employeePasscode">Employee passcode</label><input id="employeePasscode" required minlength="12" maxlength="32" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"></div><button class="btn gold" type="submit">Sign in</button><p id="employeeLoginError" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p></form><p style="margin-top:18px"><a href="#/staff">Owner login</a></p></div>`;
+  return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Employee login</h2><p>Enter the unique passcode provided by the owner.</p></div></div><form class="panel" onsubmit="return tryEmployeeLogin(event)"><div class="field"><label for="employeePasscode">Employee passcode</label><input id="employeePasscode" type="text" required minlength="6" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" autocomplete="one-time-code" aria-label="Six-digit employee passcode"></div><button class="btn gold" type="submit">Sign in</button><p id="employeeLoginError" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p></form><p style="margin-top:18px"><a href="#/staff">Owner login</a></p></div>`;
 }
 function employeesPage(){
   if(!isOwner)return staff();if(!employeesLoaded&&!employeesLoading)loadEmployees();
