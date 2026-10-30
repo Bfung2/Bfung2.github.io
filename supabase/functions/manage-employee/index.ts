@@ -67,6 +67,9 @@ Deno.serve(async (req) => {
     if (action === "set_active") {
       const userId = String(body.user_id || "");
       const active = body.active === true;
+      const { data: target, error: lookupError } = await admin.from("employee_profiles").select("user_id").eq("user_id", userId).maybeSingle();
+      if (lookupError) return json({ error: lookupError.message }, 400);
+      if (!target) return json({ error: "Employee account was not found." }, 404);
       const { error } = await admin.from("employee_profiles").update({ active }).eq("user_id", userId);
       if (error) return json({ error: error.message }, 400);
       if (!active) {
