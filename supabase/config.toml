@@ -2,3 +2,6 @@ project_id = "arvdrrrbobjpmmygojfm"
 
 [functions.manage-employee]
 verify_jwt = true
+
+[functions.send-gmail]
+verify_jwt = true
