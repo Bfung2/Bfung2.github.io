@@ -1095,7 +1095,7 @@ function tech(){
       </div>
     </div></div>`;
 }
-async async function submitRequest(e){
+async function submitRequest(e){
   e.preventDefault();const r={id:uid()+"-"+Date.now().toString(36),at:new Date().toISOString(),reason:rr.value,name:rn.value,email:re.value,phone:rp.value,when:rw.value,address:ra.value,device:rd.value,issue:ri.value};
   const btn=e.submitter;if(btn){btn.disabled=true;btn.textContent="Submitting…";}
   try{const {error}=await supabaseClient.from("apex_service_requests").insert([{id:r.id,created_at:r.at,customer_name:r.name,customer_email:r.email,customer_phone:r.phone,customer_address:r.address,availability:r.when,reason:r.reason,device:r.device,details:r.issue,status:"requested"}]);if(error)throw error;
