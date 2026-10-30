@@ -47,6 +47,6 @@ Employee usernames are converted internally to synthetic Supabase Auth email add
 
 ## Notes
 
-- New service requests are now submitted to Supabase so they are available across devices. Requests that were previously saved only in a browser's local `data.json` are historical local records and are not automatically migrated.
+- New service requests are now submitted to Supabase so they are available across devices. Existing requests saved in `data.json` can be imported from the owner dashboard using the **Import older local requests into shared inbox** button in Orders & requests. Importing is safe to repeat because existing request IDs are skipped.
 - Existing orders remain in `apex_orders`; the SQL adds the assignment column without deleting order data.
 - The Edge Function creates accounts and disables/enables them. Employee password resets are not yet included in this first version; disabling and re-enabling an account is supported.
