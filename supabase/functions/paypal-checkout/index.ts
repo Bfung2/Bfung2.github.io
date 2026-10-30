@@ -24,10 +24,15 @@ async function paypalToken(base: string, clientId: string, secret: string) {
 }
 
 async function loadPublicCatalog() {
-  const response = await fetch(
-    "https://raw.githubusercontent.com/Bfung2/Bfung2.github.io/main/data.json",
-    { cache: "no-store" },
-  );
+  // Add a unique query string so GitHub's raw-content CDN cannot reuse
+  // an older catalog/settings snapshot during checkout after an owner edit.
+  const catalogUrl =
+    "https://raw.githubusercontent.com/Bfung2/Bfung2.github.io/main/data.json" +
+    "?checkout_catalog=" + Date.now();
+  const response = await fetch(catalogUrl, {
+    cache: "no-store",
+    headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
+  });
   if (!response.ok) throw new Error("The shop catalog could not be loaded.");
   return await response.json();
 }
