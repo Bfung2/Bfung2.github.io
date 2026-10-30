@@ -1492,7 +1492,8 @@ function inbox(){
     <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;shipped&quot;)">Shipped</button>
-    <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;delivered&quot;)">Delivered</button></td></tr>`).join("");
+    <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;delivered&quot;)">Delivered</button>
+    <button class="btn sm danger" onclick="deleteWorkItem('order',&quot;${esc(o.id)}&quot;)">Done</button></td></tr>`).join("");
   return `<div class="wrap"><div class="pagehead"><div><h2>Orders &amp; requests</h2></div></div>
   ${cloudOrdersLoading?`<p class="muted">Loading customer orders…</p>`:""}
   ${cloudOrdersError?`<div class="notice">Could not load online orders: ${esc(cloudOrdersError)} <button class="btn sm ghost" onclick="cloudOrdersLoaded=false;loadCloudOrders()">Try again</button></div>`:""}
@@ -1500,9 +1501,26 @@ function inbox(){
   ${allOrders.length?`<div class="scroll"><table><tr><th>Ref</th><th>When</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>${orderRows}</table></div>`:`<div class="empty">No orders yet.</div>`}
   <h3 style="margin-top:32px">Service requests (${cloudRequests.length})</h3>
   ${(S.requests||[]).length?'<button class="btn sm ghost" style="margin-bottom:12px" onclick="migrateLegacyRequests()">Import '+S.requests.length+' older local request(s) into shared inbox</button>':""}
-  ${cloudRequests.length?`<div class="scroll"><table><tr><th>When</th><th>Reason</th><th>Customer</th><th>Device</th><th>Details</th><th>Assigned to</th></tr>
-  ${cloudRequests.map(r=>`<tr><td>${new Date(r.created_at).toLocaleDateString()}</td><td><small>${esc(r.reason)}</small></td><td>${esc(r.customer_name)}<br><small class="muted">${esc(r.customer_email)}<br>${esc(r.customer_phone)}<br>${esc(r.customer_address)}</small></td><td>${esc(r.device)}</td><td><small>${esc(r.details)}<br>Availability: ${esc(r.availability)}</small></td><td>${assignmentSelect("request",r.id,r.assigned_to)}</td></tr>`).join("")}</table></div>`:`<div class="empty">No service requests yet.</div>`}
+  ${cloudRequests.length?`<div class="scroll"><table><tr><th>When</th><th>Reason</th><th>Customer</th><th>Device</th><th>Details</th><th>Assigned to</th><th></th></tr>
+  ${cloudRequests.map(r=>`<tr><td>${new Date(r.created_at).toLocaleDateString()}</td><td><small>${esc(r.reason)}</small></td><td>${esc(r.customer_name)}<br><small class="muted">${esc(r.customer_email)}<br>${esc(r.customer_phone)}<br>${esc(r.customer_address)}</small></td><td>${esc(r.device)}</td><td><small>${esc(r.details)}<br>Availability: ${esc(r.availability)}</small></td><td>${assignmentSelect("request",r.id,r.assigned_to)}</td><td><button class="btn sm danger" onclick="deleteWorkItem('request',&quot;${esc(r.id)}&quot;)">Done</button></td></tr>`).join("")}</table></div>`:`<div class="empty">No service requests yet.</div>`}
   <p class="muted" style="margin-top:16px">Older requests saved only on this browser: ${(S.requests||[]).length}. New requests are stored in Supabase.</p></div>`;
+}
+async function deleteWorkItem(kind,id){
+  if(!isOwner || !["order","request"].includes(kind) || !id) return;
+  const label = kind==="order" ? "order" : "service request";
+  if(!confirm("Mark this "+label+" as done and permanently delete it? This cannot be undone.")) return;
+  const table = kind==="order" ? "apex_orders" : "apex_service_requests";
+  const {error}=await supabaseClient.from(table).delete().eq("id",id);
+  if(error){toast("Could not delete the "+label+": "+error.message);return;}
+  if(kind==="order"){
+    cloudOrders=cloudOrders.filter(x=>x.id!==id);
+    S.orders=(S.orders||[]).filter(x=>x.id!==id);
+  }else{
+    cloudRequests=cloudRequests.filter(x=>x.id!==id);
+    S.requests=(S.requests||[]).filter(x=>x.id!==id);
+  }
+  render();
+  toast("The "+label+" was deleted.");
 }
 function findOrder(orderId){return cloudOrders.find(x=>x.id===orderId)||(S.orders||[]).find(x=>x.id===orderId);}
 async function updateOrderStatus(o,status){
