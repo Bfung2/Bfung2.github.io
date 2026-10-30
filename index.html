@@ -1260,12 +1260,10 @@ async function submitOrder(e){
       },
       onCancel:function(){
         document.getElementById("paypalStatus").textContent="Payment was cancelled. Your order is saved but not paid. You can try PayPal again below.";
-        if(btn){btn.disabled=false;btn.textContent="Continue to PayPal";}
       },
       onError:function(err){
         console.error("PayPal checkout error:",err);
         document.getElementById("paypalStatus").textContent="PayPal had a problem. Your order is saved but not marked paid. Please try again or contact Apex Computers.";
-        if(btn){btn.disabled=false;btn.textContent="Continue to PayPal";}
       }
     }).render("#paypalButtons");
   }catch(err){
