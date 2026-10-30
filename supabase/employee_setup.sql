@@ -83,6 +83,11 @@ using (
   and (assigned_to is null or assigned_to = auth.uid())
 );
 
+-- API privileges. Row-level security below determines which rows each role can access.
+grant select, insert, update, delete on public.employee_profiles to authenticated;
+grant insert, select, update on public.apex_service_requests to anon, authenticated;
+grant select, update on public.apex_orders to authenticated;
+
 -- Claiming is atomic: two employees cannot claim the same job.
 create or replace function public.apex_claim_job(job_kind text, job_id text)
 returns boolean
