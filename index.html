@@ -502,7 +502,7 @@ async function tryEmployeeLogin(e){
 }
 async function callEmployeeAdmin(payload){const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body:payload});if(error)throw error;if(data&&data.error)throw new Error(data.error);return data;}
 async function createEmployee(e){
-  e.preventDefault();const username=newEmployeeUsername.value.trim().toLowerCase(),display_name=newEmployeeName.value.trim(),password=newEmployeePassword.value;
+  e.preventDefault();const username=document.getElementById("newEmployeeUsername").value.trim().toLowerCase(),display_name=document.getElementById("newEmployeeName").value.trim(),password=document.getElementById("newEmployeePassword").value;
   try{await callEmployeeAdmin({action:"create",username,display_name,password});e.target.reset();employeesLoaded=false;toast("Employee account created.");render();}
   catch(err){toast("Could not create employee: "+err.message);}return false;
 }
@@ -573,7 +573,7 @@ async function loadCloudOrders(){
   try{
     const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status}));
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,assigned_to:row.assigned_to||null}));
     cloudOrdersLoaded=true;
     await loadOwnerWorkData();
   }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
@@ -1434,7 +1434,7 @@ function inbox(){
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
     <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}</td>
-    <td><small>${statusLabel[o.status]||o.status}</small><br>${assignmentSelect("order",o.id,o.assigned_to)}</td><td class="row" style="flex-wrap:wrap">
+    <td><small>${statusLabel[o.status]||o.status}</small><br>${cloudOrders.some(x=>x.id===o.id)?assignmentSelect("order",o.id,o.assigned_to):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">
     <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;shipped&quot;)">Shipped</button>
