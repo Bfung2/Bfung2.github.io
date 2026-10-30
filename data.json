@@ -23,7 +23,8 @@
       "Peripherals",
       "Networking",
       "Accessories",
-      "Tech Service"
+      "Tech Service",
+      "Donation"
     ],
     "cpuTypes": [
       "Ryzen 3",
@@ -540,6 +541,19 @@
       "tdp": "",
       "watts": "",
       "power": "5"
+    },
+    {
+      "id": "mgiia8k",
+      "name": "Donation",
+      "category": "Donation",
+      "cpuType": "",
+      "processor": "",
+      "brand": "Donation",
+      "price": 0.01,
+      "desc": "",
+      "longDesc": "",
+      "featured": false,
+      "image": ""
     }
   ],
   "parts": [
