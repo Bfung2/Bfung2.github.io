@@ -1654,7 +1654,7 @@
       "shipping": 15,
       "tax": 12.075,
       "total": 142.075,
-      "status": "delivered"
+      "status": "shipped"
     }
   ],
   "requests": [
