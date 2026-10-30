@@ -43,3 +43,8 @@ with check ((auth.jwt() ->> 'email') = 'apexcomputers039@gmail.com');
 
 -- Anonymous visitors must not be able to read or edit private service requests.
 revoke select, update, delete on table public.apex_service_requests from anon;
+
+-- Let the authenticated owner permanently remove completed inbox items.
+-- Existing owner-only "Owner manages orders" and "Owner manages service requests"
+-- RLS policies still restrict which rows can be deleted.
+grant delete on public.apex_orders, public.apex_service_requests to authenticated;
