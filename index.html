@@ -491,21 +491,24 @@ async function tryLogin(e){
   }
   isOwner=true; go("/manage"); toast("Signed in securely."); return false;
 }
-function employeeAuthEmail(username){return String(username||"").trim().toLowerCase()+"@employees.apexcomputers.internal";}
+function employeeAuthEmail(passcode){return String(passcode||"").trim().toLowerCase()+"@employees.apexcomputers.internal";}
 async function tryEmployeeLogin(e){
   e.preventDefault();
-  const username=document.getElementById("employeeUsername").value.trim().toLowerCase(),password=document.getElementById("employeePassword").value;
-  const {data,error}=await supabaseClient.auth.signInWithPassword({email:employeeAuthEmail(username),password});
-  if(error||!data.user||data.user.email===OWNER_EMAIL){const el=document.getElementById("employeeLoginError");if(el)el.textContent="Username or password is incorrect, or the account is disabled.";return false;}
+  const passcode=document.getElementById("employeePasscode").value.trim().toLowerCase();
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email:employeeAuthEmail(passcode),password:passcode});
+  if(error||!data.user||data.user.email===OWNER_EMAIL){const el=document.getElementById("employeeLoginError");if(el)el.textContent="That passcode is incorrect, or the account is disabled.";return false;}
   const {data:profile,error:pe}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,active").eq("user_id",data.user.id).eq("active",true).maybeSingle();
   if(pe||!profile){await supabaseClient.auth.signOut();const el=document.getElementById("employeeLoginError");if(el)el.textContent="This employee account is not active.";return false;}
   isEmployee=true;employeeProfile=profile;go("/employee");toast("Welcome, "+profile.display_name+".");return false;
 }
 async function callEmployeeAdmin(payload){const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body:payload});if(error)throw error;if(data&&data.error)throw new Error(data.error);return data;}
 async function createEmployee(e){
-  e.preventDefault();const username=document.getElementById("newEmployeeUsername").value.trim().toLowerCase(),display_name=document.getElementById("newEmployeeName").value.trim(),password=document.getElementById("newEmployeePassword").value;
-  try{await callEmployeeAdmin({action:"create",username,display_name,password});e.target.reset();employeesLoaded=false;toast("Employee account created.");render();}
+  e.preventDefault();const display_name=document.getElementById("newEmployeeName").value.trim();
+  try{const result=await callEmployeeAdmin({action:"create",display_name});e.target.reset();employeesLoaded=false;await loadEmployees();render();showEmployeePasscode(result.passcode,result.employee.display_name);}
   catch(err){toast("Could not create employee: "+err.message);}return false;
+}
+function showEmployeePasscode(code,name){
+  openDlg(`<div class="dlg"><h3>Employee created</h3><p>Give this unique passcode to <strong>${esc(name)}</strong>. It will only be shown once.</p><div class="field"><input id="createdEmployeeCode" readonly value="${esc(code)}" style="font-family:monospace;font-size:1.2rem;letter-spacing:.08em"></div><div class="row"><button class="btn gold" onclick="navigator.clipboard.writeText(document.getElementById('createdEmployeeCode').value).then(()=>toast('Passcode copied.')).catch(()=>toast('Select and copy the passcode.'))">Copy passcode</button><button class="btn ghost" onclick="editDlg.close()">Done</button></div></div>`);
 }
 let employeesLoaded=false,employeesLoading=false,employeesError="";
 async function loadEmployees(){
@@ -517,6 +520,11 @@ async function loadEmployees(){
 async function setEmployeeActive(userId,active){
   try{await callEmployeeAdmin({action:"set_active",user_id:userId,active});employeesLoaded=false;await loadEmployees();render();toast(active?"Employee enabled.":"Employee disabled.");}
   catch(err){toast("Could not update employee: "+err.message);}
+}
+async function deleteEmployee(userId,name){
+  if(!confirm("Permanently delete "+name+"'s employee account? They will lose access immediately. Assigned jobs will become unassigned."))return;
+  try{await callEmployeeAdmin({action:"delete",user_id:userId});employeesLoaded=false;await loadEmployees();render();toast("Employee deleted.");}
+  catch(err){toast("Could not delete employee: "+err.message);}
 }
 async function loadEmployeeJobs(){
   if(!isEmployee||employeeJobsLoading)return;employeeJobsLoading=true;
@@ -544,13 +552,13 @@ async function assignJob(kind,id,userId){
 }
 function employeeLogin(){
   if(isEmployee){go("/employee");return "";}
-  return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Employee login</h2><p>Use the username and password provided by the owner.</p></div></div><form class="panel" onsubmit="return tryEmployeeLogin(event)"><div class="field"><label for="employeeUsername">Username</label><input id="employeeUsername" required autocomplete="username"></div><div class="field"><label for="employeePassword">Password</label><input id="employeePassword" type="password" required autocomplete="current-password"></div><button class="btn gold" type="submit">Sign in</button><p id="employeeLoginError" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p></form><p style="margin-top:18px"><a href="#/staff">Owner login</a></p></div>`;
+  return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Employee login</h2><p>Enter the unique passcode provided by the owner.</p></div></div><form class="panel" onsubmit="return tryEmployeeLogin(event)"><div class="field"><label for="employeePasscode">Employee passcode</label><input id="employeePasscode" required minlength="12" maxlength="32" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"></div><button class="btn gold" type="submit">Sign in</button><p id="employeeLoginError" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p></form><p style="margin-top:18px"><a href="#/staff">Owner login</a></p></div>`;
 }
 function employeesPage(){
   if(!isOwner)return staff();if(!employeesLoaded&&!employeesLoading)loadEmployees();
   return `<div class="wrap"><div class="pagehead"><div><h2>Employees</h2><p>Create and manage employee logins.</p></div><a class="btn ghost" href="#/manage">Back to settings</a></div>
-  <form class="panel" onsubmit="return createEmployee(event)"><h3>Create employee login</h3><div class="fields2"><div class="field"><label for="newEmployeeName">Employee name</label><input id="newEmployeeName" required maxlength="100"></div><div class="field"><label for="newEmployeeUsername">Username</label><input id="newEmployeeUsername" required minlength="3" maxlength="30" pattern="[A-Za-z0-9][A-Za-z0-9._-]*" autocomplete="off"></div></div><div class="field"><label for="newEmployeePassword">Temporary password</label><input id="newEmployeePassword" type="password" required minlength="10" maxlength="128" autocomplete="new-password"><small class="muted">At least 10 characters. Share it privately.</small></div><button class="btn gold" type="submit">Create employee</button></form>
-  <div class="panel" style="margin-top:20px"><h3>Employee accounts</h3>${employeesLoading?"<p>Loading…</p>":""}${employeesError?'<p class="notice">'+esc(employeesError)+'</p>':""}${employeeProfiles.length?'<div class="scroll"><table><tr><th>Name</th><th>Username</th><th>Status</th><th></th></tr>'+employeeProfiles.map(p=>'<tr><td>'+esc(p.display_name)+'</td><td>'+esc(p.username)+'</td><td>'+(p.active?"Active":"Disabled")+'</td><td><button class="btn sm '+(p.active?"danger":"ghost")+'" onclick="setEmployeeActive(\''+p.user_id+'\','+(!p.active)+')">'+(p.active?"Disable":"Enable")+'</button></td></tr>').join("")+'</table></div>':'<p class="muted">No employee accounts yet.</p>'}</div></div>`;
+  <form class="panel" onsubmit="return createEmployee(event)"><h3>Create employee login</h3><div class="field"><label for="newEmployeeName">Employee name</label><input id="newEmployeeName" required maxlength="100"></div><p class="muted">A unique secure passcode will be generated automatically after creation.</p><button class="btn gold" type="submit">Create employee</button></form>
+  <div class="panel" style="margin-top:20px"><h3>Employee accounts</h3>${employeesLoading?"<p>Loading…</p>":""}${employeesError?'<p class="notice">'+esc(employeesError)+'</p>':""}${employeeProfiles.length?'<div class="scroll"><table><tr><th>Name</th><th>Passcode</th><th>Status</th><th>Actions</th></tr>'+employeeProfiles.map(p=>'<tr><td>'+esc(p.display_name)+'</td><td><code>••••••••••••</code></td><td>'+(p.active?"Active":"Disabled")+'</td><td><div class="row"><button class="btn sm '+(p.active?"danger":"ghost")+'" onclick="setEmployeeActive(\''+p.user_id+'\','+(!p.active)+')">'+(p.active?"Disable":"Enable")+'</button><button class="btn sm danger" onclick="deleteEmployee(\''+p.user_id+'\',\''+esc(p.display_name)+'\')">Delete</button></div></td></tr>').join("")+'</table></div>':'<p class="muted">No employee accounts yet.</p>'}</div></div>`;
 }
 function employeeJobCard(kind,j){
   const order=kind==="order",id=j.id,assigned=j.assigned_to===employeeProfile.user_id,customer=j.customer_name,email=j.customer_email,phone=j.customer_phone,address=order?j.shipping_address:j.customer_address;
