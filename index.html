@@ -458,7 +458,7 @@ const esc = s => String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 /* ---------- session ---------- */
 let isOwner = false, isEmployee = false, employeeProfile = null;
 let cloudRequests = [], cloudRequestsLoaded = false, employeeProfiles = [];
-let employeeJobsLoading = false, employeeJobs = {orders:[],requests:[]};
+let employeeJobsLoading = false, employeeJobsLoaded = false, employeeJobs = {orders:[],requests:[]};
 let me = null;
 try{ me = JSON.parse(localStorage.getItem("apex.customer")||"null"); }catch(e){}
 async function applyAuthSession(session){
@@ -470,7 +470,7 @@ async function applyAuthSession(session){
     if(!error && data){isEmployee=true;employeeProfile=data;}
   }
   cloudOrdersLoaded=false;cloudOrders=[];cloudRequestsLoaded=false;cloudRequests=[];
-  employeeJobs={orders:[],requests:[]};render();
+  employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();
 }
 async function initializeSupabaseAuth(){
   try{const {data,error}=await supabaseClient.auth.getSession();if(error)throw error;await applyAuthSession(data.session);}
@@ -519,13 +519,13 @@ async function setEmployeeActive(userId,active){
 }
 async function loadEmployeeJobs(){
   if(!isEmployee||employeeJobsLoading)return;employeeJobsLoading=true;
-  try{const [o,q]=await Promise.all([supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false}),supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false})]);if(o.error)throw o.error;if(q.error)throw q.error;employeeJobs.orders=o.data||[];employeeJobs.requests=q.data||[];}
+  try{const [o,q]=await Promise.all([supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false}),supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false})]);if(o.error)throw o.error;if(q.error)throw q.error;employeeJobs.orders=o.data||[];employeeJobs.requests=q.data||[];employeeJobsLoaded=true;}
   catch(err){toast("Could not load assignments: "+err.message);}
-  finally{employeeJobsLoading=false;if(route()==="/employee")render();}
+  finally{employeeJobsLoading=false;employeeJobsLoaded=true;if(route()==="/employee")render();}
 }
 async function claimEmployeeJob(kind,id){
   const {data,error}=await supabaseClient.rpc("apex_claim_job",{job_kind:kind,job_id:id});if(error){toast("Could not claim job: "+error.message);return;}
-  toast(data?"Job claimed.":"Someone else already claimed this job.");employeeJobs={orders:[],requests:[]};render();loadEmployeeJobs();
+  toast(data?"Job claimed.":"Someone else already claimed this job.");employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();loadEmployeeJobs();
 }
 async function employeeSetJobStatus(kind,id,status){
   const {data,error}=await supabaseClient.rpc("apex_employee_update_job",{job_kind:kind,job_id:id,new_status:status});if(error||!data){toast("Could not update job: "+(error?error.message:"Assignment changed."));return;}
@@ -558,13 +558,13 @@ function employeeJobCard(kind,j){
   ${assigned?'<label class="field">Update status<select onchange="employeeSetJobStatus(\''+kind+'\',\''+id+'\',this.value)"><option value="requested" '+(j.status==="requested"?"selected":"")+'>Requested</option><option value="working" '+(j.status==="working"?"selected":"")+'>In progress</option><option value="waiting" '+(j.status==="waiting"?"selected":"")+'>Waiting on customer</option><option value="completed" '+(j.status==="completed"?"selected":"")+'>Completed</option><option value="shipped" '+(j.status==="shipped"?"selected":"")+'>Shipped</option><option value="delivered" '+(j.status==="delivered"?"selected":"")+'>Delivered</option></select></label>':'<button class="btn gold" onclick="claimEmployeeJob(\''+kind+'\',\''+id+'\')">Claim this '+(order?"order":"request")+'</button>'}</div>`;
 }
 function employeeDashboard(){
-  if(!isEmployee||!employeeProfile)return employeeLogin();if(!employeeJobsLoading&&!employeeJobs.orders.length&&!employeeJobs.requests.length)loadEmployeeJobs();
+  if(!isEmployee||!employeeProfile)return employeeLogin();if(!employeeJobsLoading&&!employeeJobsLoaded)loadEmployeeJobs();
   const all=[...employeeJobs.orders.map(j=>({kind:"order",j})),...employeeJobs.requests.map(j=>({kind:"request",j}))],mine=all.filter(x=>x.j.assigned_to===employeeProfile.user_id),open=all.filter(x=>!x.j.assigned_to);
-  return `<div class="wrap"><div class="pagehead"><div><h2>Welcome, ${esc(employeeProfile.display_name)}</h2><p>Your Apex Computers employee dashboard.</p></div><button class="btn ghost" onclick="logout()">Sign out</button></div>${employeeJobsLoading?'<p>Loading jobs…</p>':""}<h3>My assignments (${mine.length})</h3>${mine.length?mine.map(x=>employeeJobCard(x.kind,x.j)).join(""):'<div class="empty">No assigned jobs yet.</div>'}<h3 style="margin-top:28px">Available to claim (${open.length})</h3>${open.length?open.map(x=>employeeJobCard(x.kind,x.j)).join(""):'<div class="empty">No unassigned jobs right now.</div>'}<button class="btn ghost" style="margin-top:14px" onclick="employeeJobs={orders:[],requests:[]};render();loadEmployeeJobs()">Refresh jobs</button></div>`;
+  return `<div class="wrap"><div class="pagehead"><div><h2>Welcome, ${esc(employeeProfile.display_name)}</h2><p>Your Apex Computers employee dashboard.</p></div><button class="btn ghost" onclick="logout()">Sign out</button></div>${employeeJobsLoading?'<p>Loading jobs…</p>':""}<h3>My assignments (${mine.length})</h3>${mine.length?mine.map(x=>employeeJobCard(x.kind,x.j)).join(""):'<div class="empty">No assigned jobs yet.</div>'}<h3 style="margin-top:28px">Available to claim (${open.length})</h3>${open.length?open.map(x=>employeeJobCard(x.kind,x.j)).join(""):'<div class="empty">No unassigned jobs right now.</div>'}<button class="btn ghost" style="margin-top:14px" onclick="employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();loadEmployeeJobs()">Refresh jobs</button></div>`;
 }
 
 async function logout(){
-  await supabaseClient.auth.signOut(); isOwner=false; cloudOrders=[]; cloudOrdersLoaded=false;
+  await supabaseClient.auth.signOut(); isOwner=false; isEmployee=false; employeeProfile=null; cloudOrders=[]; cloudOrdersLoaded=false; employeeJobsLoaded=false;
   go("/"); toast("Signed out.");
 }
 async function loadCloudOrders(){
@@ -1095,7 +1095,7 @@ function tech(){
       </div>
     </div></div>`;
 }
-async function submitRequest(e){
+async async function submitRequest(e){
   e.preventDefault();const r={id:uid()+"-"+Date.now().toString(36),at:new Date().toISOString(),reason:rr.value,name:rn.value,email:re.value,phone:rp.value,when:rw.value,address:ra.value,device:rd.value,issue:ri.value};
   const btn=e.submitter;if(btn){btn.disabled=true;btn.textContent="Submitting…";}
   try{const {error}=await supabaseClient.from("apex_service_requests").insert([{id:r.id,created_at:r.at,customer_name:r.name,customer_email:r.email,customer_phone:r.phone,customer_address:r.address,availability:r.when,reason:r.reason,device:r.device,details:r.issue,status:"requested"}]);if(error)throw error;
