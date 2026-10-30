@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.paypal.com/sdk/js?client-id=BAAlPLONXlaUYEz_n2BXsvTsGGRbLBR2yyVyn4TSrSNz4p_7J5VfqAc1YBOfYph9NeebpnoO7TlqErQk1U&currency=USD&intent=capture&components=buttons"></script>
 <style>
 :root{
   --board:#0C3B2E; --board-2:#082A20; --gold:#C9A227; --gold-2:#8E7118;
@@ -1165,7 +1166,7 @@ function checkout(){
   const t = cartTotals();
   const a = (me&&me.address)||{};
   if(!myCart.length){ return `<div class="wrap"><div class="empty"><strong>Your cart is empty</strong></div></div>`; }
-  return `<div class="wrap"><div class="pagehead"><div><h2>Checkout</h2><p>This sends your order to us — nothing is charged here. We'll email you an invoice to pay by Zelle, PayPal or Apple Pay.</p></div></div>
+  return `<div class="wrap"><div class="pagehead"><div><h2>Checkout</h2><p>Submit your details, then securely pay with PayPal. Your order is confirmed after PayPal verifies the payment.</p></div></div>
   <div class="split">
     <form class="panel" onsubmit="return submitOrder(event)">
       <div class="fields2">
@@ -1183,8 +1184,9 @@ function checkout(){
       <p id="addrWarn" ${looksLikeAddress(a)?"hidden":""} class="muted" style="font-size:.82rem;color:var(--alert);margin:6px 0 14px">This doesn't look complete yet — a street number, city, state and 5-digit ZIP are needed so the invoice reaches the right place.</p>
       ${me?"":`<div class="notice" style="margin-bottom:14px">Have an account? <a href="#/login">Sign in</a> and these fields fill themselves in.</div>`}
       <div class="field"><label for="cnote">Anything else we should know</label><textarea id="cnote" style="min-height:60px"></textarea></div>
-      <div class="notice">We don't take card numbers on this site. After you submit, we'll follow up by email with an itemized invoice you can pay by Zelle, PayPal or Apple Pay.</div>
-      <button class="btn gold" type="submit">Submit order</button>
+      <div class="notice">Your payment is processed by PayPal. Apex Computers does not receive or store your card details.</div>
+      <button class="btn gold" type="submit">Continue to PayPal</button>
+      <div id="paypalPayment" hidden style="margin-top:18px"><p id="paypalStatus" class="muted">Your order is saved. Complete payment below.</p><div id="paypalButtons"></div></div>
     </form>
     <div class="summary panel">
       ${myCart.map(i=>`<div class="lineitem"><span>${esc(i.name)}</span><span>${money(i.price)}</span></div>`).join("")}
@@ -1201,7 +1203,7 @@ function orderText(o){
   (o.shipping?`\nShipping: ${money(o.shipping)}`:"")+
   (o.tax?`\nTax: ${money(o.tax)}`:"")+
   `\nTOTAL DUE: ${money(o.total)}\n\nCustomer notes: ${o.notes||"—"}\n\n`+
-  `Next step: send ${o.name} an invoice for ${money(o.total)} by Zelle, PayPal or Apple Pay.`;
+  `Payment: PayPal payment completed and verified.`;
 }
 function invoiceText(o){
   const s = S.settings;
@@ -1222,22 +1224,54 @@ async function submitOrder(e){
   const addr=currentCheckoutAddress();
   if(!looksLikeAddress(addr)){addrWarn.hidden=false;c_street.focus();return false;}
   if(!myCart.length){toast("Your cart is empty.");return false;}
+  if(typeof paypal === "undefined" || !paypal.Buttons){toast("PayPal could not load. Refresh the page and try again.");return false;}
   const t=cartTotals();
   const o={id:uid()+"-"+Date.now().toString(36),ref:"AC-"+Date.now().toString(36).toUpperCase(),at:new Date().toISOString(),
     name:cn.value.trim(),email:ce.value.trim(),phone:cp.value.trim(),address:combineAddress(addr),notes:cnote.value.trim(),
     items:structuredClone(myCart),sub:t.sub,shipping:t.shipping,tax:t.tax,total:t.total,status:"requested"};
-  const btn=e.submitter||e.target.querySelector('button[type="submit"]');
-  if(btn){btn.disabled=true;btn.textContent="Submitting…";}
+  const form=e.target;
+  const btn=e.submitter||form.querySelector('button[type="submit"]');
+  if(btn){btn.disabled=true;btn.textContent="Saving order…";}
   try{
     const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status}]);
     if(error) throw error;
-    myCart=[];saveCart();lastOrder=o;
-    mailOwner("Order request "+o.ref+" — "+o.name,orderText(o));
-    go("/done");
+    lastOrder=o;
+    form.querySelectorAll("input,textarea,button[type=submit]").forEach(el=>el.disabled=true);
+    const payment=document.getElementById("paypalPayment");
+    payment.hidden=false;
+    document.getElementById("paypalStatus").textContent="Order "+o.ref+" saved. Complete your payment securely with PayPal below.";
+    paypal.Buttons({
+      style:{layout:"vertical",color:"gold",shape:"rect",label:"paypal"},
+      createOrder:async function(){
+        const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"create",orderId:o.id}});
+        if(error) throw new Error(error.message||"Could not start PayPal checkout.");
+        if(!data||!data.id) throw new Error(data?.error||"PayPal did not return an order ID.");
+        return data.id;
+      },
+      onApprove:async function(data){
+        document.getElementById("paypalStatus").textContent="Payment received by PayPal. Verifying it now…";
+        const {data:result,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"capture",orderId:o.id,paypalOrderId:data.orderID}});
+        if(error) throw new Error(error.message||"Payment verification failed.");
+        if(!result||!result.success) throw new Error(result?.error||"PayPal could not verify the payment.");
+        o.status="paid";
+        myCart=[];saveCart();
+        mailOwner("PAID order "+o.ref+" — "+o.name,orderText(o));
+        go("/done");
+      },
+      onCancel:function(){
+        document.getElementById("paypalStatus").textContent="Payment was cancelled. Your order is saved but not paid. You can try PayPal again below.";
+        if(btn){btn.disabled=false;btn.textContent="Continue to PayPal";}
+      },
+      onError:function(err){
+        console.error("PayPal checkout error:",err);
+        document.getElementById("paypalStatus").textContent="PayPal had a problem. Your order is saved but not marked paid. Please try again or contact Apex Computers.";
+        if(btn){btn.disabled=false;btn.textContent="Continue to PayPal";}
+      }
+    }).render("#paypalButtons");
   }catch(err){
     console.error("Order submission failed:",err);
-    toast("Order wasn't submitted. Your cart is still saved. Please try again.");
-    if(btn){btn.disabled=false;btn.textContent="Submit order";}
+    toast("Checkout couldn't start: "+(err.message||"Please try again."));
+    if(btn){btn.disabled=false;btn.textContent="Continue to PayPal";}
   }
   return false;
 }
@@ -1246,7 +1280,7 @@ function done(){
   if(!lastOrder) return `<div class="wrap"><div class="empty"><strong>Nothing to show</strong></div></div>`;
   const o = lastOrder;
   return `<div class="wrap"><div class="pagehead"><div><h2>Order ${esc(o.ref)} submitted</h2>
-  <p>Your order was saved successfully. An email draft should also have opened in your mail app. Please send it so we can follow up with your invoice.</p></div></div>
+  <p>Your PayPal payment was verified and your order is confirmed. An email draft with the order details should have opened in your mail app.</p></div></div>
   <div class="panel"><pre style="white-space:pre-wrap;font-size:.88rem;margin:0">${esc(orderText(o))}</pre></div>
   <div class="row" style="margin-top:16px">
     <button class="btn" onclick="mailOwner('Order request ${esc(o.ref)}', orderText(lastOrder))">Re-open the email</button>
@@ -1448,7 +1482,7 @@ function inbox(){
   if(!isOwner)return staff();
   if(!cloudOrdersLoaded&&!cloudOrdersLoading)loadCloudOrders();
   if(!cloudRequestsLoaded)loadOwnerWorkData();
-  const statusLabel={requested:"Awaiting invoice",invoiced:"Invoice sent",working:"Working on it",waiting:"Waiting on customer",completed:"Completed",shipped:"Shipped",delivered:"Delivered"};
+  const statusLabel={requested:"Awaiting payment",paid:"Paid",invoiced:"Invoice sent",working:"Working on it",waiting:"Waiting on customer",completed:"Completed",shipped:"Shipped",delivered:"Delivered"};
   const allOrders=[...cloudOrders,...(S.orders||[])];
   const assignmentSelect=(kind,id,assigned)=>'<select style="min-width:130px" onchange="assignJob(\''+kind+'\',\''+id+'\',this.value)"><option value="">Unassigned</option>'+employeeProfiles.filter(p=>p.active).map(p=>'<option value="'+p.user_id+'" '+(assigned===p.user_id?"selected":"")+'>'+esc(p.display_name)+'</option>').join("")+'</select>';
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
