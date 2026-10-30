@@ -39,7 +39,7 @@ Deno.serve(async (req) => {
       // 15 random bytes produce a high-entropy, URL-safe passcode.
       const bytes = new Uint8Array(15);
       crypto.getRandomValues(bytes);
-      const passcode = Array.from(bytes, b => "abcdefghjkmnpqrstuvwxyz23456789"[b % 32]).join("");
+      const passcode = Array.from(bytes, b => "abcdefghjkmnpqrstuvwxyz23456789"[b % "abcdefghjkmnpqrstuvwxyz23456789".length]).join("");
       const username = passcode;
       const email = passcode + "@employees.apexcomputers.internal";
       const { data: created, error: createError } = await admin.auth.admin.createUser({
