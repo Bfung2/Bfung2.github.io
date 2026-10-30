@@ -16,7 +16,7 @@ function base64UrlUtf8(value: string): string {
   const bytes = new TextEncoder().encode(value);
   let binary = "";
   for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary).replace(/\\+/g, "-").replace(/\\//g, "_").replace(/=+$/g, "");
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
 
 Deno.serve(async (req) => {
@@ -47,10 +47,10 @@ Deno.serve(async (req) => {
     const to = String(input.to || "").trim();
     const subject = String(input.subject || "").trim();
     const body = String(input.body || "");
-    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(to) || to.length > 254) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to) || to.length > 254) {
       return json({ error: "A valid recipient email is required." }, 400);
     }
-    if (!subject || subject.length > 180 || /[\\r\\n]/.test(subject)) {
+    if (!subject || subject.length > 180 || /[\r\n]/.test(subject)) {
       return json({ error: "A valid subject is required." }, 400);
     }
     if (!body.trim() || body.length > 20000) {
@@ -82,8 +82,8 @@ Deno.serve(async (req) => {
       'Content-Type: text/plain; charset="UTF-8"',
       "Content-Transfer-Encoding: base64",
       "",
-      btoa(String.fromCharCode(...new TextEncoder().encode(body))).replace(/.{1,76}/g, "$&\\r\\n"),
-    ].join("\\r\\n");
+      btoa(String.fromCharCode(...new TextEncoder().encode(body))).replace(/.{1,76}/g, "$&\r\n"),
+    ].join("\r\n");
 
     const gmailResponse = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages/send", {
       method: "POST",
