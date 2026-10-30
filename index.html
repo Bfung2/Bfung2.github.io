@@ -1484,17 +1484,24 @@ function replyToRequest(reqId){
   const body = `Hi ${r.name},\n\nGot your request about: ${r.issue}\n\nLet's get you scheduled — `;
   mailCustomer(r.email, "Re: your service request", body);
 }
-function mailCustomer(to,subject,body){
-  copyText(body);
-  const url = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  const a = document.createElement("a"); a.href = url; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove();
-  toast("Opening your email app — if nothing appears, the message is on your clipboard to paste in.");
+async function mailCustomer(to,subject,body){
+  const {data,error} = await supabaseClient.functions.invoke("send-gmail", {
+    body: { to, subject, body }
+  });
+  if(error || !data?.success){
+    console.error("Gmail send failed:", error || data?.error);
+    copyText(body);
+    toast("Email could not be sent: "+(data?.error || error?.message || "Please try again."));
+    return false;
+  }
+  toast("Email sent successfully to "+to+".");
+  return true;
 }
 async function sendInvoice(orderId){
   const o=findOrder(orderId); if(!o) return;
   if(!await updateOrderStatus(o,"invoiced")) return;
-  mailCustomer(o.email, `Invoice for order ${o.ref}`, invoiceText(o));
-  render(); toast("Invoice email opened. Send it to "+o.email+".");
+  await mailCustomer(o.email, `Invoice for order ${o.ref}`, invoiceText(o));
+  render();
 }
 const STATUS_TEXT = {
   working: {subj:"Your order is being worked on", line:"Wanted to let you know we've started work on your order."},
@@ -1507,8 +1514,8 @@ async function sendStatusEmail(orderId, statusKey){
   if(!await updateOrderStatus(o,statusKey)) return;
   const body = `Hi ${o.name},\n\n${t.line}\n\nOrder ${o.ref}:\n`+o.items.map(i=>`- ${i.name}`).join("\n")+
     `\n\nQuestions? Just reply to this email.\n\n${S.settings.shopName||"Apex Computers"}`;
-  mailCustomer(o.email, `${t.subj} — ${o.ref}`, body);
-  render(); toast("Status updated and email opened for "+o.email+".");
+  await mailCustomer(o.email, `${t.subj} — ${o.ref}`, body);
+  render();
 }
 
 
