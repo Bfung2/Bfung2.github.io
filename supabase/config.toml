@@ -5,3 +5,6 @@ verify_jwt = true
 
 [functions.send-gmail]
 verify_jwt = true
+
+[functions.paypal-checkout]
+verify_jwt = false
