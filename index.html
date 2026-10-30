@@ -1430,7 +1430,7 @@ function inbox(){
   if(!cloudRequestsLoaded)loadOwnerWorkData();
   const statusLabel={requested:"Awaiting invoice",invoiced:"Invoice sent",working:"Working on it",waiting:"Waiting on customer",completed:"Completed",shipped:"Shipped",delivered:"Delivered"};
   const allOrders=[...cloudOrders,...(S.orders||[])];
-  const assignmentSelect=(kind,id,assigned)=>'<select style="min-width:130px" onchange="assignJob(\''+kind+'\',\''+id+'\',this.value)"><option value="">Unassigned</option>'+employeeProfiles.map(p=>'<option value="'+p.user_id+'" '+(assigned===p.user_id?"selected":"")+'>'+esc(p.display_name)+'</option>').join("")+'</select>';
+  const assignmentSelect=(kind,id,assigned)=>'<select style="min-width:130px" onchange="assignJob(\''+kind+'\',\''+id+'\',this.value)"><option value="">Unassigned</option>'+employeeProfiles.filter(p=>p.active).map(p=>'<option value="'+p.user_id+'" '+(assigned===p.user_id?"selected":"")+'>'+esc(p.display_name)+'</option>').join("")+'</select>';
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
     <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}</td>
