@@ -36,25 +36,37 @@ Deno.serve(async (req) => {
     if (action === "create") {
       const displayName = String(body.display_name || "").trim();
       if (displayName.length < 1 || displayName.length > 100) return json({ error: "Enter an employee display name." }, 400);
-      // 15 random bytes produce a high-entropy, URL-safe passcode.
-      const bytes = new Uint8Array(15);
-      crypto.getRandomValues(bytes);
-      const passcode = Array.from(bytes, b => "abcdefghjkmnpqrstuvwxyz23456789"[b % "abcdefghjkmnpqrstuvwxyz23456789".length]).join("");
+      // Generate a unique six-digit numeric passcode. Retry if another employee
+      // already has the same code, since each code maps to a unique Auth email.
+      let passcode = "";
+      let createdUser: { id: string } | null = null;
+      for (let attempt = 0; attempt < 20; attempt++) {
+        const random = new Uint32Array(1);
+        crypto.getRandomValues(random);
+        passcode = String(random[0] % 1_000_000).padStart(6, "0");
+        const email = passcode + "@employees.apexcomputers.internal";
+        const { data: created, error: createError } = await admin.auth.admin.createUser({
+          email, password: passcode, email_confirm: true,
+          user_metadata: { account_type: "employee" }
+        });
+        if (!createError && created.user) {
+          createdUser = created.user;
+          break;
+        }
+        const message = createError?.message || "Could not create employee login.";
+        if (!/already|registered|duplicate|exists/i.test(message)) return json({ error: message }, 400);
+      }
+      if (!createdUser) return json({ error: "Could not generate an unused passcode. Please try again." }, 503);
       const username = passcode;
-      const email = passcode + "@employees.apexcomputers.internal";
-      const { data: created, error: createError } = await admin.auth.admin.createUser({
-        email, password: passcode, email_confirm: true,
-        user_metadata: { account_type: "employee" }
-      });
-      if (createError || !created.user) return json({ error: createError?.message || "Could not create employee login." }, 400);
+      const created = { user: createdUser };
       const { error: profileError } = await admin.from("employee_profiles").insert({
         user_id: created.user.id, username, display_name: displayName, active: true
       });
       if (profileError) {
-        await admin.auth.admin.deleteUser(created.user.id);
+        await admin.auth.admin.deleteUser(createdUser.id);
         return json({ error: profileError.message }, 500);
       }
-      return json({ success: true, passcode, employee: { user_id: created.user.id, display_name: displayName, active: true } });
+      return json({ success: true, passcode, employee: { user_id: createdUser.id, display_name: displayName, active: true } });
     }
 
     if (action === "set_active") {
