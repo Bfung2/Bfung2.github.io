@@ -6,7 +6,7 @@
     "phone": "9252065399",
     "address": "",
     "buildFee": 250,
-    "shippingFee": 15,
+    "shippingFee": 0,
     "taxRate": 10.5,
     "aboutText": "",
     "contactText": "",
