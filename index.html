@@ -474,7 +474,7 @@ async function applyAuthSession(session){
   isEmployee=false; employeeProfile=null;
   if(user && !isOwner){
     const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions").eq("user_id",user.id).eq("active",true).maybeSingle();
-    if(!error && data){isEmployee=true;employeeProfile=data;}
+    if(!error && data){isEmployee=true;employeeProfile=data;setGhToken("");}
   }
   cloudOrdersLoaded=false;cloudOrders=[];cloudRequestsLoaded=false;cloudRequests=[];
   employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();
@@ -506,9 +506,10 @@ async function tryEmployeeLogin(e){
   const {data:profile,error:pe}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions").eq("user_id",data.user.id).eq("active",true).maybeSingle();
   if(pe||!profile){await supabaseClient.auth.signOut();const el=document.getElementById("employeeLoginError");if(el)el.textContent="This employee account is not active.";return false;}
   const {error:loginLogError}=await supabaseClient.rpc("apex_record_employee_login",{p_user_agent:navigator.userAgent||""});if(loginLogError)console.error("Employee login could not be recorded:",loginLogError);
+  setGhToken("");
   isEmployee=true;employeeProfile=profile;go("/employee");toast("Welcome, "+profile.display_name+".");return false;
 }
-async function callEmployeeAdmin(payload){const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body:payload});if(error)throw error;if(data&&data.error)throw new Error(data.error);return data;}
+async function callEmployeeAdmin(payload){const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body:payload});if(error)throw error;if(data&&data.error)throw new Error(data.error);employeeAuditLoaded=false;return data;}
 async function createEmployee(e){
   e.preventDefault();
   const display_name=document.getElementById("newEmployeeName").value.trim();
@@ -658,6 +659,7 @@ function employeeDashboard(){
 }
 
 async function logout(){
+  if(isEmployee||isOwner)setGhToken("");
   await supabaseClient.auth.signOut(); isOwner=false; isEmployee=false; employeeProfile=null; cloudOrders=[]; cloudOrdersLoaded=false; employeeJobsLoaded=false;
   go("/"); toast("Signed out.");
 }
