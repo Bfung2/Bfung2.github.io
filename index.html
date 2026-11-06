@@ -464,7 +464,7 @@ const esc = s => String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 
 /* ---------- session ---------- */
 let isOwner = false, isEmployee = false, employeeProfile = null;
-let cloudRequests = [], cloudRequestsLoaded = false, employeeProfiles = [];
+let cloudRequests = [], cloudRequestsLoaded = false, employeeProfiles = [], employeeAudit = [], employeeAuditLoaded = false, employeeAuditLoading = false, employeeAuditError = "";
 let employeeJobsLoading = false, employeeJobsLoaded = false, employeeJobs = {orders:[],requests:[]};
 let me = null;
 try{ me = JSON.parse(localStorage.getItem("apex.customer")||"null"); }catch(e){}
@@ -473,7 +473,7 @@ async function applyAuthSession(session){
   isOwner=!!(user && (user.email||"").toLowerCase()===OWNER_EMAIL);
   isEmployee=false; employeeProfile=null;
   if(user && !isOwner){
-    const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,active").eq("user_id",user.id).eq("active",true).maybeSingle();
+    const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions").eq("user_id",user.id).eq("active",true).maybeSingle();
     if(!error && data){isEmployee=true;employeeProfile=data;}
   }
   cloudOrdersLoaded=false;cloudOrders=[];cloudRequestsLoaded=false;cloudRequests=[];
@@ -503,8 +503,9 @@ async function tryEmployeeLogin(e){
   const passcode=document.getElementById("employeePasscode").value.trim().toLowerCase();
   const {data,error}=await supabaseClient.auth.signInWithPassword({email:employeeAuthEmail(passcode),password:passcode});
   if(error||!data.user||data.user.email===OWNER_EMAIL){const el=document.getElementById("employeeLoginError");if(el)el.textContent="That passcode is incorrect, or the account is disabled.";return false;}
-  const {data:profile,error:pe}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,active").eq("user_id",data.user.id).eq("active",true).maybeSingle();
+  const {data:profile,error:pe}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions").eq("user_id",data.user.id).eq("active",true).maybeSingle();
   if(pe||!profile){await supabaseClient.auth.signOut();const el=document.getElementById("employeeLoginError");if(el)el.textContent="This employee account is not active.";return false;}
+  const {error:loginLogError}=await supabaseClient.rpc("apex_record_employee_login",{p_user_agent:navigator.userAgent||""});if(loginLogError)console.error("Employee login could not be recorded:",loginLogError);
   isEmployee=true;employeeProfile=profile;go("/employee");toast("Welcome, "+profile.display_name+".");return false;
 }
 async function callEmployeeAdmin(payload){const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body:payload});if(error)throw error;if(data&&data.error)throw new Error(data.error);return data;}
@@ -549,10 +550,18 @@ function showEmployeePasscode(code,name){
 let employeesLoaded=false,employeesLoading=false,employeesError="";
 async function loadEmployees(){
   if(!isOwner||employeesLoading||employeesLoaded)return;employeesLoading=true;employeesError="";
-  try{const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,created_at").order("created_at",{ascending:false});if(error)throw error;employeeProfiles=data||[];employeesLoaded=true;}
+  try{const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions,created_at").order("created_at",{ascending:false});if(error)throw error;employeeProfiles=data||[];employeesLoaded=true;}
   catch(err){employeesError=err.message||"Could not load employees.";}
   finally{employeesLoading=false;if(route()==="/employees")render();}
 }
+async function loadEmployeeAudit(){
+  if(!isOwner||employeeAuditLoading||employeeAuditLoaded)return;
+  employeeAuditLoading=true;employeeAuditError="";
+  try{const {data,error}=await supabaseClient.from("employee_activity_logs").select("id,created_at,actor_user_id,actor_name,target_user_id,event_type,job_kind,job_id,details").order("created_at",{ascending:false}).limit(150);if(error)throw error;employeeAudit=data||[];employeeAuditLoaded=true;}
+  catch(err){employeeAuditError=err.message||"Could not load employee activity history.";}
+  finally{employeeAuditLoading=false;if(route()==="/employees")render();}
+}
+function refreshEmployeeAudit(){employeeAuditLoaded=false;loadEmployeeAudit();}
 async function setEmployeeActive(userId,active){
   try{await callEmployeeAdmin({action:"set_active",user_id:userId,active});employeesLoaded=false;await loadEmployees();render();toast(active?"Employee enabled.":"Employee disabled.");}
   catch(err){toast("Could not update employee: "+err.message);}
@@ -564,21 +573,23 @@ async function deleteEmployee(userId,name){
 }
 async function loadEmployeeJobs(){
   if(!isEmployee||employeeJobsLoading)return;employeeJobsLoading=true;
-  try{const [o,q]=await Promise.all([supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false}),supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false})]);if(o.error)throw o.error;if(q.error)throw q.error;employeeJobs.orders=o.data||[];employeeJobs.requests=q.data||[];employeeJobsLoaded=true;}
+  try{const {data,error}=await supabaseClient.rpc("apex_employee_get_jobs");if(error)throw error;employeeJobs.orders=data?.orders||[];employeeJobs.requests=data?.requests||[];employeeJobsLoaded=true;}
   catch(err){toast("Could not load assignments: "+err.message);}
   finally{employeeJobsLoading=false;employeeJobsLoaded=true;if(route()==="/employee")render();}
 }
 async function claimEmployeeJob(kind,id){
+  if(!employeeProfile?.permissions?.claim_jobs){toast("Your account does not have permission to claim jobs.");return;}
   const {data,error}=await supabaseClient.rpc("apex_claim_job",{job_kind:kind,job_id:id});if(error){toast("Could not claim job: "+error.message);return;}
   toast(data?"Job claimed.":"Someone else already claimed this job.");employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();loadEmployeeJobs();
 }
 async function employeeSetJobStatus(kind,id,status){
+  if(!employeeProfile?.permissions?.update_status){toast("Your account does not have permission to update job status.");return;}
   const {data,error}=await supabaseClient.rpc("apex_employee_update_job",{job_kind:kind,job_id:id,new_status:status});if(error||!data){toast("Could not update job: "+(error?error.message:"Assignment changed."));return;}
   employeeJobs={orders:[],requests:[]};render();loadEmployeeJobs();toast("Job status updated.");
 }
 async function loadOwnerWorkData(){
   if(!isOwner)return;
-  try{const [q,e]=await Promise.all([supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false}),supabaseClient.from("employee_profiles").select("user_id,username,display_name,active").eq("active",true).order("display_name")]);if(q.error)throw q.error;if(e.error)throw e.error;cloudRequests=q.data||[];cloudRequestsLoaded=true;employeeProfiles=e.data||[];}
+  try{const [q,e]=await Promise.all([supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false}),supabaseClient.from("employee_profiles").select("user_id,username,display_name,active,permissions").eq("active",true).order("display_name")]);if(q.error)throw q.error;if(e.error)throw e.error;cloudRequests=q.data||[];cloudRequestsLoaded=true;employeeProfiles=e.data||[];}
   catch(err){console.error(err);cloudOrdersError=err.message||"Could not load requests and employees.";}
   finally{if(route()==="/inbox")render();}
 }
