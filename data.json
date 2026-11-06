@@ -2015,6 +2015,22 @@
       "tdp": "180",
       "watts": "600",
       "power": "180"
+    },
+    {
+      "id": "gpu5070gigawindforce3x",
+      "name": "GIGABYTE WindForce GeForce RTX 5070 12GB OC",
+      "category": "Graphics card",
+      "brand": "GIGABYTE",
+      "price": 924.99,
+      "desc": "12GB GDDR7 - 192-bit - PCIe 5.0 - Triple Fan - 2542 MHz Boost",
+      "longDesc": "NVIDIA GeForce RTX 5070 (Blackwell) with 6,144 CUDA cores, 12GB GDDR7 memory on a 192-bit bus, 28 Gbps effective memory speed, and a 2542 MHz boost clock. PCI Express 5.0 interface. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Triple-fan WINDFORCE cooling, 282 mm maximum length, 16-pin power connector, 250W thermal design power, and 750W recommended PSU. Newegg price: $909.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-932-777-02.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR7",
+      "tdp": "250",
+      "watts": "750",
+      "power": "250"
     }
   ]
 }
