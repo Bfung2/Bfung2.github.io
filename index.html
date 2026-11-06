@@ -622,12 +622,14 @@ const CATS = ["CPU","Motherboard","Memory","Graphics card","Storage","Power supp
 function socketList(){ return (S.settings.sockets && S.settings.sockets.length) ? S.settings.sockets : DEFAULTS.settings.sockets; }
 
 function fitsCPU(part, cpu, need){
+  // PSU sizing applies even before a CPU is selected; an unknown/blank PSU
+  // output is not treated as an unlimited wattage rating.
+  if(part.category==="Power supply") return (+part.watts||0) > 0 && (+part.watts||0) >= need;
   if(!cpu) return true;
   switch(part.category){
     case "Motherboard": return !part.socket || part.socket===cpu.socket;
     case "Memory":      return !part.memType || !cpu.memType || part.memType===cpu.memType;
     case "CPU cooler":  return !part.socket || part.socket===cpu.socket;
-    case "Power supply":return (+part.watts||0) === 0 || (+part.watts||0) >= need;
     default: return true;
   }
 }
@@ -816,7 +818,9 @@ function partDetail(id,ctx){
   detailDialog({
     image:p.image, name:p.name, price:p.price, note,
     rows:[["Category",p.category],["Brand",p.brand],["CPU type",p.cpuType],["Socket",p.socket],["Memory type",p.memType],
-          ["CPU TDP",p.tdp?p.tdp+" W":""],["PSU output",p.watts?p.watts+" W":""],["Power draw",p.power?p.power+" W":""]],
+          ...(p.category==="CPU"&&p.tdp?[["CPU TDP",p.tdp+" W"]]:[]),
+          ...(p.category==="Power supply"&&p.watts?[["PSU output",p.watts+" W"]]:[]),
+          ...(p.category!=="CPU"&&p.category!=="Power supply"&&p.power!==""&&p.power!=null?[["Power draw",p.power+" W"]]:[])],
     summary:p.desc, full:p.longDesc,
     actions:`<button class="btn gold" onclick="pickPart('${p.category}','${p.id}');editDlg.close()">${picked?"Remove from build":"Add to build"}</button>`
       +(ctx==="products"?`<button class="btn" onclick="addToCart(${cartPayload(p)});editDlg.close()">Add to cart</button>`:"")
@@ -1608,6 +1612,7 @@ function readSelectWithAdd(id, key){
 function toggleProductSpecs(){
   const s = document.getElementById("p_cat"), box = document.getElementById("partSpecBox");
   if(s && box) box.style.display = isPartCat(s.value) ? "" : "none";
+  updatePowerSpecFields("p",s&&s.value);
 }
 function editProduct(id){
   if(!isOwner) return;
@@ -1620,10 +1625,10 @@ function editProduct(id){
       <div class="field"><label>Socket</label>${selectWithAdd("p_sock","sockets",p.socket||"","—")}</div>
       <div class="field"><label>Memory type</label><select id="p_mem"><option value="">—</option><option ${p.memType==="DDR5"?"selected":""}>DDR5</option><option ${p.memType==="DDR4"?"selected":""}>DDR4</option></select></div>
       <div class="fields2">
-        <div class="field"><label>CPU TDP (W)</label><input id="p_tdp" type="number" value="${p.tdp||""}"></div>
-        <div class="field"><label>PSU output (W)</label><input id="p_watts" type="number" value="${p.watts||""}"></div>
+        <div class="field" id="p_tdp_wrap"><label>CPU TDP (W)</label><input id="p_tdp" type="number" value="${p.tdp||""}"></div>
+        <div class="field" id="p_watts_wrap"><label>PSU output (W)</label><input id="p_watts" type="number" value="${p.watts||""}"></div>
       </div>
-      <div class="field"><label>Power draw (W) — everything except the CPU and PSU</label><input id="p_power" type="number" value="${p.power||""}"></div>
+      <div class="field" id="p_power_wrap"><label>Power draw (W) — component power consumption</label><input id="p_power" type="number" value="${p.power||""}"></div>
     </div>
     <label style="display:flex;gap:10px;align-items:center;font-weight:500;margin-bottom:14px"><input type="checkbox" id="p_feat" style="width:auto" ${p.featured?"checked":""}> ★ Feature this at the top of the Products page</label>
     <div class="fields2">
@@ -1674,7 +1679,9 @@ function saveProduct(id,exists){
     featured:p_feat.checked,image:p_img.value.trim()};
   if(isPartCat(rec.category)){
     rec.socket = readSelectWithAdd("p_sock","sockets"); rec.memType = p_mem.value;
-    rec.tdp = p_tdp.value; rec.watts = p_watts.value; rec.power = p_power.value;
+    rec.tdp = rec.category==="CPU" ? p_tdp.value : "";
+    rec.watts = rec.category==="Power supply" ? p_watts.value : "";
+    rec.power = (rec.category!=="CPU"&&rec.category!=="Power supply") ? p_power.value : "";
   }
   if(!rec.name){ toast("Give it a name first."); return; }
   if(exists) S.products = S.products.map(x=>x.id===id?rec:x); else S.products.push(rec);
@@ -1707,10 +1714,10 @@ function editPart(id,presetCat){
       <div class="field"><label>Socket</label>${selectWithAdd("q_sock","sockets",p.socket||"","—")}</div>
       <div class="field"><label>Memory type</label><select id="q_mem"><option value="">—</option><option ${p.memType==="DDR5"?"selected":""}>DDR5</option><option ${p.memType==="DDR4"?"selected":""}>DDR4</option></select></div>
       <div class="fields2">
-        <div class="field"><label>CPU TDP (W)</label><input id="q_tdp" type="number" value="${p.tdp||""}"></div>
-        <div class="field"><label>PSU output (W)</label><input id="q_watts" type="number" value="${p.watts||""}"></div>
+        <div class="field" id="q_tdp_wrap"><label>CPU TDP (W)</label><input id="q_tdp" type="number" value="${p.tdp||""}"></div>
+        <div class="field" id="q_watts_wrap"><label>PSU output (W)</label><input id="q_watts" type="number" value="${p.watts||""}"></div>
       </div>
-      <div class="field"><label>Power draw (W) — for everything except the CPU and the PSU itself</label><input id="q_power" type="number" value="${p.power||""}"></div>
+      <div class="field" id="q_power_wrap"><label>Power draw (W) — component power consumption</label><input id="q_power" type="number" value="${p.power||""}"></div>
       <p class="muted" style="font-size:.82rem">Socket and memory type are what the builder matches boards/coolers/memory on. CPU TDP, and power draw on every other part (mainly the graphics card), are what it adds up to size the power supply. Brand feeds the filter dropdown on this page.</p>
     </div>
     <div class="row"><button class="btn gold" onclick="savePart('${p.id}',${!!id})">Save</button>
@@ -1721,7 +1728,10 @@ function savePart(id,exists){
   const rec = {id,name:q_name.value.trim(),category:q_cat.value,brand:q_brand.value.trim(),price:+q_price.value||0,desc:q_desc.value.trim(),longDesc:q_long.value.trim(),
     image:q_img.value.trim(),socket:readSelectWithAdd("q_sock","sockets"),
     cpuType:(q_cat.value==="CPU"?readSelectWithAdd("q_cpu","cpuTypes"):""),
-    memType:q_mem.value,tdp:q_tdp.value,watts:q_watts.value,power:q_power.value};
+    memType:q_mem.value,
+    tdp:q_cat.value==="CPU"?q_tdp.value:"",
+    watts:q_cat.value==="Power supply"?q_watts.value:"",
+    power:(q_cat.value!=="CPU"&&q_cat.value!=="Power supply")?q_power.value:""};
   if(!rec.name){ toast("Give it a name first."); return; }
   if(exists) S.parts = S.parts.map(x=>x.id===id?rec:x); else S.parts.push(rec);
   save(); editDlg.close(); render(); toast("Part saved.");
@@ -1730,6 +1740,13 @@ function delPart(id){ if(confirm("Delete this part?")){ S.parts=S.parts.filter(x
 function toggleSpecs(){
   const box = document.getElementById("cpuTypeBox"), cat = document.getElementById("q_cat");
   if(box && cat) box.style.display = cat.value==="CPU" ? "" : "none";
+  updatePowerSpecFields("q",cat&&cat.value);
+}
+function updatePowerSpecFields(prefix,category){
+  const show=(id,visible)=>{const el=document.getElementById(prefix+"_"+id+"_wrap");if(el)el.style.display=visible?"":"none";};
+  show("tdp",category==="CPU");
+  show("watts",category==="Power supply");
+  show("power",category!=="CPU"&&category!=="Power supply");
 }
 
 function editText(key,label){
