@@ -36,6 +36,8 @@ using ((auth.jwt() ->> 'email') = 'apexcomputers039@gmail.com');
 
 revoke all on public.employee_activity_logs from anon, authenticated;
 grant select on public.employee_activity_logs to authenticated;
+grant all on public.employee_activity_logs to service_role;
+grant usage, select on sequence public.employee_activity_logs_id_seq to service_role;
 
 -- Employees may read their own profile, but may not enumerate or edit other profiles.
 drop policy if exists "Owner manages employee profiles" on public.employee_profiles;
