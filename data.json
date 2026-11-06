@@ -607,7 +607,7 @@
       "desc": "ATX - LGA1851",
       "longDesc": "ASRock Z890 Pro RS is an ATX LGA1851 motherboard for Intel Core Ultra processors (Series 2). It supports four DDR5 DIMMs, high-speed memory overclocking, a multi-phase power design, PCIe 5.0 graphics, high-speed M.2 storage and 2.5Gb Ethernet. It also includes modern USB connectivity, HDMI and DisplayPort outputs, and BIOS Flashback. Check the Newegg listing for the complete current port and slot configuration.",
       "featured": false,
-      "image": "",
+      "image": "https://c1.neweggimages.com/productimage/nb300/13-162-176-11.png",
       "socket": "LGA1851",
       "memType": "DDR5",
       "tdp": "",
