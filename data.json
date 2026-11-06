@@ -2534,6 +2534,48 @@
       "tdp": "430",
       "watts": "1000",
       "power": 430
+    },
+    {
+      "id": "gpu9070xtasrocksteellegend3x",
+      "name": "ASRock Steel Legend Radeon RX 9070 XT 16GB",
+      "category": "Graphics card",
+      "brand": "ASRock",
+      "price": 984.99,
+      "neweggPrice": 969.99,
+      "desc": "16GB GDDR6 - 256-bit - PCIe 5.0 x16 - Triple Fan - Up to 2970 MHz Boost",
+      "longDesc": "AMD Radeon RX 9070 XT with RDNA 4 architecture and 4,096 stream processors. Includes 16GB GDDR6 memory on a 256-bit interface with an effective 20 Gbps memory data rate. Boost clock up to 2970 MHz and PCI Express 5.0 x16 connectivity. Display outputs include 1x HDMI 2.1b and 3x DisplayPort 2.1a. Triple-fan ASRock Steel Legend cooling, white design, 298 mm card length, 2.9-slot width, and two 8-pin power connectors. Typical graphics power draw: 304W. Newegg price: $969.99; Apex price includes exactly $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-930-136-05.jpg",
+      "sourceUrl": "https://www.newegg.com/asrock-steel-legend-rx9070xt-sl-16g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814930136?Item=N82E16814930136&SoldByNewegg=1",
+      "memType": "GDDR6",
+      "power": 304
+    },
+    {
+      "id": "gpurx9070xtsapphirepulse3x",
+      "name": "SAPPHIRE PULSE Radeon RX 9070 XT 16GB",
+      "category": "Graphics card",
+      "brand": "SAPPHIRE",
+      "price": 1064.99,
+      "neweggPrice": 1049.99,
+      "desc": "16GB GDDR6 - 256-bit - PCIe 5.0 x16 - Triple Fan - Up to 2970 MHz Boost",
+      "longDesc": "AMD Radeon RX 9070 XT with RDNA 4 architecture and 4,096 stream processors. Includes 16GB GDDR6 memory on a 256-bit interface with an effective 20 Gbps data rate. Game clock up to 2400 MHz and boost clock up to 2970 MHz. PCI Express 5.0 x16 connectivity with 2x HDMI and 2x DisplayPort 2.1a outputs. Triple-fan SAPPHIRE PULSE cooling, 320 mm card length, 3-slot width, and two 8-pin power connectors. Typical graphics power draw: 304W. Newegg price: $1,049.99; Apex price includes exactly $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-202-450-01.png",
+      "sourceUrl": "https://www.newegg.com/sapphire-tech-pulse-11348-03-20g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814202450?Item=N82E16814202450&SoldByNewegg=1",
+      "memType": "GDDR6",
+      "power": 304
+    },
+    {
+      "id": "gpurx9060xtsapphirepulse2x16",
+      "name": "SAPPHIRE PULSE Radeon RX 9060 XT 16GB",
+      "category": "Graphics card",
+      "brand": "SAPPHIRE",
+      "price": 764.99,
+      "neweggPrice": 749.99,
+      "desc": "16GB GDDR6 - 128-bit - PCIe 5.0 x16 - Dual Fan - Up to 3290 MHz Boost",
+      "longDesc": "AMD Radeon RX 9060 XT with RDNA 4 architecture and 2,048 stream processors. Includes 16GB GDDR6 memory on a 128-bit interface with an effective 20 Gbps memory data rate. Game clock 2700 MHz and boost clock up to 3290 MHz. PCI Express 5.0 x16 connectivity with 2x HDMI and 1x DisplayPort 2.1a outputs. Dual-fan SAPPHIRE PULSE cooling, 240 mm card length, 2.3-slot width, and one 8-pin power connector. Typical graphics power draw: 170W. Newegg price: $749.99; Apex price includes exactly $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-202-457-01.jpg",
+      "sourceUrl": "https://www.newegg.com/sapphire-tech-pulse-11350-03-20g-radeon-rx-9060-xt-16gb-graphics-card-double-fans/p/N82E16814202457?Item=N82E16814202457&SoldByNewegg=1",
+      "memType": "GDDR6",
+      "power": 170
     }
   ]
 }
