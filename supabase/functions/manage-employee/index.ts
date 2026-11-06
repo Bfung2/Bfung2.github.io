@@ -33,6 +33,25 @@ Deno.serve(async (req) => {
     const action = String(body.action || "");
     const validEmail = (value: string) => !value || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
+    const permissionKeys = ["orders", "requests", "customer_details", "claim_jobs", "update_status"] as const;
+    const defaultPermissions = { orders: true, requests: true, customer_details: true, claim_jobs: true, update_status: true };
+    const readPermissions = (value: unknown) => {
+      if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Employee permissions are missing or invalid.");
+      const input = value as Record<string, unknown>;
+      const output: Record<string, boolean> = {};
+      for (const key of permissionKeys) {
+        if (typeof input[key] !== "boolean") throw new Error("Every employee permission must be enabled or disabled.");
+        output[key] = input[key];
+      }
+      return output;
+    };
+    const logOwnerActivity = async (eventType: string, targetUserId: string, details: Record<string, unknown>) => {
+      const { error } = await admin.from("employee_activity_logs").insert({
+        actor_user_id: user.id, actor_name: "Owner", target_user_id: targetUserId, event_type: eventType, details
+      });
+      if (error) console.error("Could not write employee audit event:", error.message);
+    };
+
     if (action === "create") {
       const displayName = String(body.display_name || "").trim();
       const contactEmail = String(body.email || "").trim().toLowerCase();
@@ -56,13 +75,14 @@ Deno.serve(async (req) => {
       if (!createdUser) return json({ error: "Could not generate an unused passcode. Please try again." }, 503);
       const { error: profileError } = await admin.from("employee_profiles").insert({
         user_id: createdUser.id, username: passcode, display_name: displayName,
-        email: contactEmail || null, active: true
+        email: contactEmail || null, active: true, permissions: defaultPermissions
       });
       if (profileError) {
         await admin.auth.admin.deleteUser(createdUser.id);
         return json({ error: profileError.message }, 500);
       }
-      return json({ success: true, passcode, employee: { user_id: createdUser.id, display_name: displayName, email: contactEmail || null, active: true } });
+      await logOwnerActivity("employee_created", createdUser.id, { display_name: displayName, email: contactEmail || null });
+      return json({ success: true, passcode, employee: { user_id: createdUser.id, display_name: displayName, email: contactEmail || null, active: true, permissions: defaultPermissions } });
     }
 
     if (action === "update") {
@@ -72,15 +92,19 @@ Deno.serve(async (req) => {
       if (!userId) return json({ error: "Employee user ID is required." }, 400);
       if (displayName.length < 1 || displayName.length > 100) return json({ error: "Enter an employee display name." }, 400);
       if (contactEmail.length > 254 || !validEmail(contactEmail)) return json({ error: "Enter a valid employee email address." }, 400);
-      const { data: target, error: lookupError } = await admin.from("employee_profiles").select("user_id").eq("user_id", userId).maybeSingle();
+      const { data: target, error: lookupError } = await admin.from("employee_profiles").select("user_id,display_name").eq("user_id", userId).maybeSingle();
       if (lookupError) return json({ error: lookupError.message }, 400);
       if (!target) return json({ error: "Employee account was not found." }, 404);
-      const { error } = await admin.from("employee_profiles").update({ display_name: displayName, email: contactEmail || null }).eq("user_id", userId);
+      let permissions: Record<string, boolean>;
+      try { permissions = readPermissions(body.permissions); }
+      catch (error) { return json({ error: error instanceof Error ? error.message : "Invalid employee permissions." }, 400); }
+      const { error } = await admin.from("employee_profiles").update({ display_name: displayName, email: contactEmail || null, permissions }).eq("user_id", userId);
       if (error) return json({ error: error.message }, 400);
       const { error: metadataError } = await admin.auth.admin.updateUserById(userId, {
         user_metadata: { display_name: displayName, account_type: "employee" }
       });
       if (metadataError) return json({ error: metadataError.message }, 400);
+      await logOwnerActivity("employee_updated", userId, { display_name: displayName, email: contactEmail || null, permissions });
       return json({ success: true });
     }
 
@@ -105,6 +129,7 @@ Deno.serve(async (req) => {
       if (!updated) return json({ error: "Could not generate an unused passcode. Please try again." }, 503);
       const { error: profileError } = await admin.from("employee_profiles").update({ username: passcode }).eq("user_id", userId);
       if (profileError) return json({ error: "The new code was set, but the profile could not be updated: " + profileError.message }, 500);
+      await logOwnerActivity("employee_passcode_reset", userId, {});
       return json({ success: true, passcode });
     }
 
@@ -118,6 +143,7 @@ Deno.serve(async (req) => {
       if (error) return json({ error: error.message }, 400);
       const { error: banError } = await admin.auth.admin.updateUserById(userId, { ban_duration: active ? "none" : "876000h" });
       if (banError) return json({ error: banError.message }, 400);
+      await logOwnerActivity(active ? "employee_enabled" : "employee_disabled", userId, { active });
       return json({ success: true });
     }
 
@@ -126,6 +152,7 @@ Deno.serve(async (req) => {
       const { data: target, error: lookupError } = await admin.from("employee_profiles").select("user_id").eq("user_id", userId).maybeSingle();
       if (lookupError) return json({ error: lookupError.message }, 400);
       if (!target) return json({ error: "Employee account was not found." }, 404);
+      await logOwnerActivity("employee_deleted", userId, { user_id: userId });
       const { error: deleteError } = await admin.auth.admin.deleteUser(userId);
       if (deleteError) return json({ error: deleteError.message }, 400);
       return json({ success: true });
