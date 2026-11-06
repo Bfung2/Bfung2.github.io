@@ -1518,7 +1518,7 @@
       "brand": "ASUS",
       "price": 415,
       "desc": "ATX - AM5 - 4 x DDR5- Black - Wifi 7 - Dynamic OC Switcher",
-      "longDesc": "Ready for Advanced AI PC: Designed for the future of AI computing, with the power and connectivity needed for demanding AI applications.\nAMD AM5 Socket: Ready for AMD Ryzen\u2122 9000, 8000 and 7000 series desktop processors.\nIntelligent Control: ASUS-exclusive AI Overclocking, AI Cooling II, AI Networking and AEMP to simplify setup and improve performance.\nROG Strix Overclocking technologies: Dynamic OC Switcher, Core Flex, Asynchronous Clock and PBO Enhancement.\nRobust Power Solution: 18+2+2 power solution rated for 110A per stage with dual ProCool II power connectors, high-quality alloy chokes and durable capacitors to support multi-core processors.\nLatest M.2 Support: Three onboard PCIe\u00ae 5.0 M.2 slots, and two PCIe 4.0 M.2 slots, all with substantial cooling solutions.\nAbundant Connectivity: Dual USB4\u00ae Type-C ports, USB 20Gbps Type-C\u00ae front-panel connector, one USB 10Gbps port with PD 3.0 up to 30W and USB Wattage Watcher, nine additional USB 10Gbps ports",
+      "longDesc": "Ready for Advanced AI PC: Designed for the future of AI computing, with the power and connectivity needed for demanding AI applications.\nAMD AM5 Socket: Ready for AMD Ryzen™ 9000, 8000 and 7000 series desktop processors.\nIntelligent Control: ASUS-exclusive AI Overclocking, AI Cooling II, AI Networking and AEMP to simplify setup and improve performance.\nROG Strix Overclocking technologies: Dynamic OC Switcher, Core Flex, Asynchronous Clock and PBO Enhancement.\nRobust Power Solution: 18+2+2 power solution rated for 110A per stage with dual ProCool II power connectors, high-quality alloy chokes and durable capacitors to support multi-core processors.\nLatest M.2 Support: Three onboard PCIe® 5.0 M.2 slots, and two PCIe 4.0 M.2 slots, all with substantial cooling solutions.\nAbundant Connectivity: Dual USB4® Type-C ports, USB 20Gbps Type-C® front-panel connector, one USB 10Gbps port with PD 3.0 up to 30W and USB Wattage Watcher, nine additional USB 10Gbps ports",
       "image": "https://c1.neweggimages.com/productimage/nb640/13-119-682-16.jpg",
       "socket": "AM5",
       "cpuType": "",
@@ -1702,6 +1702,22 @@
       "tdp": "160",
       "watts": "450",
       "power": 160
+    },
+    {
+      "id": "gpu3060msiventus2x",
+      "name": "MSI Ventus GeForce RTX 3060 12GB VENTUS 2X 12G OCV1",
+      "category": "Graphics card",
+      "brand": "MSI",
+      "price": 494.99,
+      "desc": "12GB GDDR6 - 192-bit - PCIe 4.0 - Dual Fan - 1807 MHz Boost",
+      "longDesc": "NVIDIA GeForce RTX 3060 (Ampere) graphics card with 3,584 CUDA cores, 12GB GDDR6 memory on a 192-bit bus, 15 Gbps effective memory speed, and a 1807 MHz boost clock. PCI Express 4.0 interface. Video outputs: 1x HDMI 2.1 and 3x DisplayPort 1.4. Dual-fan TORX 3.0 cooling, 235 mm maximum length, one 8-pin power connector, 170W thermal design power, and 550W recommended PSU. Newegg price: $479.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-982-013-06.webp",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR6",
+      "tdp": "170",
+      "watts": "550",
+      "power": 170
     }
   ]
 }
