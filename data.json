@@ -1967,6 +1967,54 @@
       "tdp": "304",
       "watts": "850",
       "power": "304"
+    },
+    {
+      "id": "gpu5060ventus2x",
+      "name": "MSI Ventus GeForce RTX 5060 8GB VENTUS 2X OC",
+      "category": "Graphics card",
+      "brand": "MSI",
+      "price": 534.99,
+      "desc": "8GB GDDR7 - 128-bit - PCIe 5.0 x8 - Dual Fan - 2527 MHz Boost",
+      "longDesc": "NVIDIA GeForce RTX 5060 (Blackwell) with 3,840 CUDA cores, 8GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2527 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Dual-fan cooling, 197 mm maximum length, 8-pin power connector, 145W thermal design power, and 550W recommended PSU. Newegg price: $519.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-137-975-03.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR7",
+      "tdp": "145",
+      "watts": "550",
+      "power": "145"
+    },
+    {
+      "id": "gpu5060tiventus2x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
+      "category": "Graphics card",
+      "brand": "MSI",
+      "price": 864.99,
+      "desc": "16GB GDDR7 - 128-bit - PCIe 5.0 x8 - Dual Fan - 2602 MHz Boost",
+      "longDesc": "NVIDIA GeForce RTX 5060 Ti (Blackwell) with 4,608 CUDA cores, 16GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2602 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Dual-fan cooling, 227 mm maximum length, 8-pin power connector, 180W thermal design power, and 600W recommended PSU. Newegg price: $849.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-137-992-01.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR7",
+      "tdp": "180",
+      "watts": "600",
+      "power": "180"
+    },
+    {
+      "id": "gpu5060tiventus3x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 3X OC",
+      "category": "Graphics card",
+      "brand": "MSI",
+      "price": 814.99,
+      "desc": "16GB GDDR7 - 128-bit - PCIe 5.0 x8 - Triple Fan - 2602 MHz Boost",
+      "longDesc": "NVIDIA GeForce RTX 5060 Ti (Blackwell) with 4,608 CUDA cores, 16GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2602 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Triple-fan cooling, 304 mm maximum length, 8-pin power connector, 180W thermal design power, and 600W recommended PSU. Newegg price: $799.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-137-957-06.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR7",
+      "tdp": "180",
+      "watts": "600",
+      "power": "180"
     }
   ]
 }
