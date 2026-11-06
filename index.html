@@ -757,6 +757,7 @@ function render(){
   ].filter(Boolean).join(" &nbsp;·&nbsp; ");
 
   const r = route();
+  if(isEmployee && ["/manage","/employees","/inbox","/inventory"].includes(r)){go("/employee");return;}
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
