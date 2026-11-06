@@ -64,13 +64,15 @@ declare
   v_orders_enabled boolean;
   v_requests_enabled boolean;
   v_customer_details boolean;
+  v_claim_enabled boolean;
   v_orders jsonb := '[]'::jsonb;
   v_requests jsonb := '[]'::jsonb;
 begin
   select coalesce((permissions ->> 'orders')::boolean, false),
          coalesce((permissions ->> 'requests')::boolean, false),
-         coalesce((permissions ->> 'customer_details')::boolean, false)
-    into v_orders_enabled, v_requests_enabled, v_customer_details
+         coalesce((permissions ->> 'customer_details')::boolean, false),
+         coalesce((permissions ->> 'claim_jobs')::boolean, false)
+    into v_orders_enabled, v_requests_enabled, v_customer_details, v_claim_enabled
   from public.employee_profiles
   where user_id = v_user and active = true;
 
@@ -87,7 +89,7 @@ begin
     ), '[]'::jsonb)
     into v_orders
     from public.apex_orders o
-    where o.assigned_to is null or o.assigned_to = v_user;
+    where o.assigned_to = v_user or (v_claim_enabled and o.assigned_to is null);
   end if;
 
   if v_requests_enabled then
@@ -99,7 +101,7 @@ begin
     ), '[]'::jsonb)
     into v_requests
     from public.apex_service_requests r
-    where r.assigned_to is null or r.assigned_to = v_user;
+    where r.assigned_to = v_user or (v_claim_enabled and r.assigned_to is null);
   end if;
 
   return jsonb_build_object('orders', v_orders, 'requests', v_requests);
