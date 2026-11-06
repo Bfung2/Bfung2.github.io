@@ -523,18 +523,23 @@ async function createEmployee(e){
 function editEmployee(userId){
   if(!isOwner)return;
   const p=employeeProfiles.find(x=>x.user_id===userId);if(!p)return;
+  const perms=p.permissions||{orders:true,requests:true,customer_details:true,claim_jobs:true,update_status:true};
+  const options=[["orders","View orders"],["requests","View service requests"],["customer_details","View customer contact details"],["claim_jobs","Claim unassigned jobs"],["update_status","Update assigned job status"]];
+  const permissionMarkup=options.map(([key,label])=>'<label style="display:flex;align-items:center;gap:9px;margin:8px 0"><input id="perm_'+key+'" type="checkbox" style="width:auto" '+(perms[key]?'checked':'')+'> '+label+'</label>').join("");
   openDlg(`<div class="dlg"><h3>Edit employee</h3>
     <div class="field"><label for="editEmployeeName">Employee name</label><input id="editEmployeeName" maxlength="100" value="${esc(p.display_name)}"></div>
     <div class="field"><label for="editEmployeeEmail">Email address</label><input id="editEmployeeEmail" type="email" maxlength="254" value="${esc(p.email||"")}" placeholder="employee@example.com"></div>
     <p class="muted">This is the employee's contact email. Their six-digit sign-in code remains separate.</p>
+    <h4 style="margin-top:18px">Permissions</h4><p class="muted">These are checked by Supabase before employee data or actions are allowed.</p>${permissionMarkup}
     <div class="row"><button class="btn gold" onclick="saveEmployeeEdit('${userId}')">Save changes</button><button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`);
 }
 async function saveEmployeeEdit(userId){
   const display_name=document.getElementById("editEmployeeName").value.trim();
   const email=document.getElementById("editEmployeeEmail").value.trim().toLowerCase();
+  const permissions={orders:document.getElementById("perm_orders").checked,requests:document.getElementById("perm_requests").checked,customer_details:document.getElementById("perm_customer_details").checked,claim_jobs:document.getElementById("perm_claim_jobs").checked,update_status:document.getElementById("perm_update_status").checked};
   try{
-    await callEmployeeAdmin({action:"update",user_id:userId,display_name,email});
-    editDlg.close();employeesLoaded=false;await loadEmployees();render();toast("Employee details updated.");
+    await callEmployeeAdmin({action:"update",user_id:userId,display_name,email,permissions});
+    editDlg.close();employeesLoaded=false;await loadEmployees();render();toast("Employee details and permissions updated.");
   }catch(err){toast("Could not update employee: "+err.message);}
 }
 async function resetEmployeePasscode(userId,name){
