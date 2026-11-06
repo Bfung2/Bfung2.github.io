@@ -1750,6 +1750,22 @@
       "tdp": "220",
       "watts": "750",
       "power": 220
+    },
+    {
+      "id": "gpurx9070greasusprime3x",
+      "name": "ASUS Prime Radeon RX 9070 GRE EVO OC 12GB",
+      "category": "Graphics card",
+      "brand": "ASUS",
+      "price": 794.99,
+      "desc": "12GB GDDR6 - 192-bit - PCIe 5.0 x16 - Triple Fan - Up to 2880 MHz Boost",
+      "longDesc": "AMD Radeon RX 9070 GRE (RDNA 4) with 3,072 stream processors, 12GB GDDR6 memory on a 192-bit bus, 18 Gbps effective memory speed, a 2300 MHz game clock, and up to 2880 MHz boost clock. PCI Express 5.0 x16 interface. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1a. Triple-fan ASUS Prime EVO cooling, 304 mm maximum length, two 8-pin power connectors, 220W typical board power (AMD reference), and 650W recommended PSU. Newegg price: $779.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-126-841-02.png",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR6",
+      "tdp": "220",
+      "watts": "650",
+      "power": 220
     }
   ]
 }
