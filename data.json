@@ -1718,6 +1718,38 @@
       "tdp": "170",
       "watts": "550",
       "power": 170
+    },
+    {
+      "id": "gpu5060gigablp3x",
+      "name": "GIGABYTE Low Profile GeForce RTX 5060 8GB OC",
+      "category": "Graphics card",
+      "brand": "GIGABYTE",
+      "price": 524.99,
+      "desc": "8GB GDDR7 - 128-bit - PCIe 5.0 - Triple Fan - 2512 MHz Core Clock",
+      "longDesc": "NVIDIA GeForce RTX 5060 (Blackwell) with 3,840 CUDA cores, 8GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2512 MHz core clock. PCI Express 5.0 interface. Video outputs: 1x HDMI 2.1b, 2x DisplayPort 2.1b, and 1x DisplayPort 1.4a. Triple-fan low-profile cooling, 182 mm maximum length, 8-pin power connector, 145W thermal design power, and 450W recommended PSU. Newegg price: $509.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-932-801-11.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR7",
+      "tdp": "145",
+      "watts": "450",
+      "power": 145
+    },
+    {
+      "id": "gpurx9070gigagaming3x",
+      "name": "GIGABYTE Gaming Radeon RX 9070 16GB OC",
+      "category": "Graphics card",
+      "brand": "GIGABYTE",
+      "price": 964.99,
+      "desc": "16GB GDDR6 - 256-bit - PCIe 5.0 x16 - Triple Fan - Up to 2700 MHz Boost",
+      "longDesc": "AMD Radeon RX 9070 (RDNA 4) with 3,584 stream processors, 16GB GDDR6 memory on a 256-bit bus, 20 Gbps effective memory speed, 2210 MHz game clock, and up to 2700 MHz boost clock. PCI Express 5.0 x16 interface. Video outputs: 2x HDMI and 2x DisplayPort. Triple-fan WINDFORCE cooling, 288 mm maximum length, two 8-pin power connectors, 220W thermal design power, and 750W recommended PSU. Newegg price: $949.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-932-752-05.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR6",
+      "tdp": "220",
+      "watts": "750",
+      "power": 220
     }
   ]
 }
