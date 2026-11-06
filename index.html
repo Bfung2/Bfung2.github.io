@@ -464,7 +464,7 @@ const esc = s => String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 
 /* ---------- session ---------- */
 let isOwner = false, isEmployee = false, employeeProfile = null;
-let cloudRequests = [], cloudRequestsLoaded = false, employeeProfiles = [];
+let cloudRequests = [], cloudRequestsLoaded = false, employeeProfiles = [], employeeAudit = [], employeeAuditLoaded = false, employeeAuditLoading = false, employeeAuditError = "";
 let employeeJobsLoading = false, employeeJobsLoaded = false, employeeJobs = {orders:[],requests:[]};
 let me = null;
 try{ me = JSON.parse(localStorage.getItem("apex.customer")||"null"); }catch(e){}
@@ -473,8 +473,8 @@ async function applyAuthSession(session){
   isOwner=!!(user && (user.email||"").toLowerCase()===OWNER_EMAIL);
   isEmployee=false; employeeProfile=null;
   if(user && !isOwner){
-    const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,active").eq("user_id",user.id).eq("active",true).maybeSingle();
-    if(!error && data){isEmployee=true;employeeProfile=data;}
+    const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions").eq("user_id",user.id).eq("active",true).maybeSingle();
+    if(!error && data){isEmployee=true;employeeProfile=data;setGhToken("");}
   }
   cloudOrdersLoaded=false;cloudOrders=[];cloudRequestsLoaded=false;cloudRequests=[];
   employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();
@@ -503,11 +503,13 @@ async function tryEmployeeLogin(e){
   const passcode=document.getElementById("employeePasscode").value.trim().toLowerCase();
   const {data,error}=await supabaseClient.auth.signInWithPassword({email:employeeAuthEmail(passcode),password:passcode});
   if(error||!data.user||data.user.email===OWNER_EMAIL){const el=document.getElementById("employeeLoginError");if(el)el.textContent="That passcode is incorrect, or the account is disabled.";return false;}
-  const {data:profile,error:pe}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,active").eq("user_id",data.user.id).eq("active",true).maybeSingle();
+  const {data:profile,error:pe}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions").eq("user_id",data.user.id).eq("active",true).maybeSingle();
   if(pe||!profile){await supabaseClient.auth.signOut();const el=document.getElementById("employeeLoginError");if(el)el.textContent="This employee account is not active.";return false;}
+  const {error:loginLogError}=await supabaseClient.rpc("apex_record_employee_login",{p_user_agent:navigator.userAgent||""});if(loginLogError)console.error("Employee login could not be recorded:",loginLogError);
+  setGhToken("");
   isEmployee=true;employeeProfile=profile;go("/employee");toast("Welcome, "+profile.display_name+".");return false;
 }
-async function callEmployeeAdmin(payload){const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body:payload});if(error)throw error;if(data&&data.error)throw new Error(data.error);return data;}
+async function callEmployeeAdmin(payload){const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body:payload});if(error)throw error;if(data&&data.error)throw new Error(data.error);employeeAuditLoaded=false;return data;}
 async function createEmployee(e){
   e.preventDefault();
   const display_name=document.getElementById("newEmployeeName").value.trim();
@@ -522,18 +524,23 @@ async function createEmployee(e){
 function editEmployee(userId){
   if(!isOwner)return;
   const p=employeeProfiles.find(x=>x.user_id===userId);if(!p)return;
+  const perms=p.permissions||{orders:true,requests:true,customer_details:true,claim_jobs:true,update_status:true};
+  const options=[["orders","View orders"],["requests","View service requests"],["customer_details","View customer contact details"],["claim_jobs","Claim unassigned jobs"],["update_status","Update assigned job status"]];
+  const permissionMarkup=options.map(([key,label])=>'<label style="display:flex;align-items:center;gap:9px;margin:8px 0"><input id="perm_'+key+'" type="checkbox" style="width:auto" '+(perms[key]?'checked':'')+'> '+label+'</label>').join("");
   openDlg(`<div class="dlg"><h3>Edit employee</h3>
     <div class="field"><label for="editEmployeeName">Employee name</label><input id="editEmployeeName" maxlength="100" value="${esc(p.display_name)}"></div>
     <div class="field"><label for="editEmployeeEmail">Email address</label><input id="editEmployeeEmail" type="email" maxlength="254" value="${esc(p.email||"")}" placeholder="employee@example.com"></div>
     <p class="muted">This is the employee's contact email. Their six-digit sign-in code remains separate.</p>
+    <h4 style="margin-top:18px">Permissions</h4><p class="muted">These are checked by Supabase before employee data or actions are allowed.</p>${permissionMarkup}
     <div class="row"><button class="btn gold" onclick="saveEmployeeEdit('${userId}')">Save changes</button><button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`);
 }
 async function saveEmployeeEdit(userId){
   const display_name=document.getElementById("editEmployeeName").value.trim();
   const email=document.getElementById("editEmployeeEmail").value.trim().toLowerCase();
+  const permissions={orders:document.getElementById("perm_orders").checked,requests:document.getElementById("perm_requests").checked,customer_details:document.getElementById("perm_customer_details").checked,claim_jobs:document.getElementById("perm_claim_jobs").checked,update_status:document.getElementById("perm_update_status").checked};
   try{
-    await callEmployeeAdmin({action:"update",user_id:userId,display_name,email});
-    editDlg.close();employeesLoaded=false;await loadEmployees();render();toast("Employee details updated.");
+    await callEmployeeAdmin({action:"update",user_id:userId,display_name,email,permissions});
+    editDlg.close();employeesLoaded=false;await loadEmployees();render();toast("Employee details and permissions updated.");
   }catch(err){toast("Could not update employee: "+err.message);}
 }
 async function resetEmployeePasscode(userId,name){
@@ -549,10 +556,18 @@ function showEmployeePasscode(code,name){
 let employeesLoaded=false,employeesLoading=false,employeesError="";
 async function loadEmployees(){
   if(!isOwner||employeesLoading||employeesLoaded)return;employeesLoading=true;employeesError="";
-  try{const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,created_at").order("created_at",{ascending:false});if(error)throw error;employeeProfiles=data||[];employeesLoaded=true;}
+  try{const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions,created_at").order("created_at",{ascending:false});if(error)throw error;employeeProfiles=data||[];employeesLoaded=true;}
   catch(err){employeesError=err.message||"Could not load employees.";}
   finally{employeesLoading=false;if(route()==="/employees")render();}
 }
+async function loadEmployeeAudit(){
+  if(!isOwner||employeeAuditLoading||employeeAuditLoaded)return;
+  employeeAuditLoading=true;employeeAuditError="";
+  try{const {data,error}=await supabaseClient.from("employee_activity_logs").select("id,created_at,actor_user_id,actor_name,target_user_id,event_type,job_kind,job_id,details").order("created_at",{ascending:false}).limit(150);if(error)throw error;employeeAudit=data||[];employeeAuditLoaded=true;}
+  catch(err){employeeAuditError=err.message||"Could not load employee activity history.";}
+  finally{employeeAuditLoading=false;if(route()==="/employees")render();}
+}
+function refreshEmployeeAudit(){employeeAuditLoaded=false;loadEmployeeAudit();}
 async function setEmployeeActive(userId,active){
   try{await callEmployeeAdmin({action:"set_active",user_id:userId,active});employeesLoaded=false;await loadEmployees();render();toast(active?"Employee enabled.":"Employee disabled.");}
   catch(err){toast("Could not update employee: "+err.message);}
@@ -564,21 +579,23 @@ async function deleteEmployee(userId,name){
 }
 async function loadEmployeeJobs(){
   if(!isEmployee||employeeJobsLoading)return;employeeJobsLoading=true;
-  try{const [o,q]=await Promise.all([supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false}),supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false})]);if(o.error)throw o.error;if(q.error)throw q.error;employeeJobs.orders=o.data||[];employeeJobs.requests=q.data||[];employeeJobsLoaded=true;}
+  try{const {data,error}=await supabaseClient.rpc("apex_employee_get_jobs");if(error)throw error;employeeJobs.orders=data?.orders||[];employeeJobs.requests=data?.requests||[];employeeJobsLoaded=true;}
   catch(err){toast("Could not load assignments: "+err.message);}
   finally{employeeJobsLoading=false;employeeJobsLoaded=true;if(route()==="/employee")render();}
 }
 async function claimEmployeeJob(kind,id){
+  if(!employeeProfile?.permissions?.claim_jobs){toast("Your account does not have permission to claim jobs.");return;}
   const {data,error}=await supabaseClient.rpc("apex_claim_job",{job_kind:kind,job_id:id});if(error){toast("Could not claim job: "+error.message);return;}
   toast(data?"Job claimed.":"Someone else already claimed this job.");employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();loadEmployeeJobs();
 }
 async function employeeSetJobStatus(kind,id,status){
+  if(!employeeProfile?.permissions?.update_status){toast("Your account does not have permission to update job status.");return;}
   const {data,error}=await supabaseClient.rpc("apex_employee_update_job",{job_kind:kind,job_id:id,new_status:status});if(error||!data){toast("Could not update job: "+(error?error.message:"Assignment changed."));return;}
   employeeJobs={orders:[],requests:[]};render();loadEmployeeJobs();toast("Job status updated.");
 }
 async function loadOwnerWorkData(){
   if(!isOwner)return;
-  try{const [q,e]=await Promise.all([supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false}),supabaseClient.from("employee_profiles").select("user_id,username,display_name,active").eq("active",true).order("display_name")]);if(q.error)throw q.error;if(e.error)throw e.error;cloudRequests=q.data||[];cloudRequestsLoaded=true;employeeProfiles=e.data||[];}
+  try{const [q,e]=await Promise.all([supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false}),supabaseClient.from("employee_profiles").select("user_id,username,display_name,active,permissions").eq("active",true).order("display_name")]);if(q.error)throw q.error;if(e.error)throw e.error;cloudRequests=q.data||[];cloudRequestsLoaded=true;employeeProfiles=e.data||[];}
   catch(err){console.error(err);cloudOrdersError=err.message||"Could not load requests and employees.";}
   finally{if(route()==="/inbox")render();}
 }
@@ -591,29 +608,58 @@ function employeeLogin(){
   return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Employee login</h2><p>Enter the unique passcode provided by the owner.</p></div></div><form class="panel" onsubmit="return tryEmployeeLogin(event)"><div class="field"><label for="employeePasscode">Employee passcode</label><input id="employeePasscode" type="text" required minlength="6" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" autocomplete="one-time-code" aria-label="Six-digit employee passcode"></div><button class="btn gold" type="submit">Sign in</button><p id="employeeLoginError" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p></form><p style="margin-top:18px"><a href="#/staff">Owner login</a></p></div>`;
 }
 function employeesPage(){
-  if(!isOwner)return staff();if(!employeesLoaded&&!employeesLoading)loadEmployees();
-  return `<div class="wrap"><div class="pagehead"><div><h2>Employees</h2><p>Create and manage employee logins, contact emails, and access.</p></div><a class="btn ghost" href="#/manage">Back to settings</a></div>
+  if(!isOwner)return staff();
+  if(!employeesLoaded&&!employeesLoading)loadEmployees();
+  if(!employeeAuditLoaded&&!employeeAuditLoading)loadEmployeeAudit();
+  const auditRows=employeeAudit.map(x=>'<tr><td>'+new Date(x.created_at).toLocaleString()+'</td><td>'+esc(x.actor_name||"Unknown")+'</td><td>'+esc(x.event_type)+'</td><td>'+esc(x.job_kind?x.job_kind+" "+(x.job_id||""):"")+'</td><td><small>'+esc(JSON.stringify(x.details||{}))+'</small></td></tr>').join("");
+  return `<div class="wrap"><div class="pagehead"><div><h2>Employees</h2><p>Create and manage employee logins, contact emails, permissions, and account access.</p></div><a class="btn ghost" href="#/manage">Back to settings</a></div>
   <form class="panel" onsubmit="return createEmployee(event)"><h3>Create employee login</h3>
     <div class="field"><label for="newEmployeeName">Employee name</label><input id="newEmployeeName" required maxlength="100"></div>
     <div class="field"><label for="newEmployeeEmail">Employee email</label><input id="newEmployeeEmail" type="email" maxlength="254" placeholder="employee@example.com"></div>
-    <p class="muted">A unique six-digit sign-in code will be generated automatically. The email is their contact email, not their login code.</p>
+    <p class="muted">A unique six-digit sign-in code will be generated automatically. New employees start with order and service-request access. You can change their permissions after creation.</p>
     <button class="btn gold" type="submit">Create employee</button></form>
   <div class="panel" style="margin-top:20px"><h3>Employee accounts</h3>${employeesLoading?"<p>Loading…</p>":""}${employeesError?'<p class="notice">'+esc(employeesError)+'</p>':""}
-  ${employeeProfiles.length?'<div class="scroll"><table><tr><th>Name</th><th>Email</th><th>Passcode</th><th>Status</th><th>Actions</th></tr>'+employeeProfiles.map(p=>'<tr><td>'+esc(p.display_name)+'</td><td>'+esc(p.email||"Not set")+'</td><td><code>••••••</code></td><td>'+(p.active?"Active":"Disabled")+'</td><td><div class="row"><button class="btn sm ghost" onclick="editEmployee(\''+p.user_id+'\')">Edit</button><button class="btn sm ghost" onclick="resetEmployeePasscode(\''+p.user_id+'\',\''+esc(p.display_name)+'\')">Reset code</button><button class="btn sm '+(p.active?"danger":"ghost")+'" onclick="setEmployeeActive(\''+p.user_id+'\','+(!p.active)+')">'+(p.active?"Disable":"Enable")+'</button><button class="btn sm danger" onclick="deleteEmployee(\''+p.user_id+'\',\''+esc(p.display_name)+'\')">Delete</button></div></td></tr>').join("")+'</table></div>':'<p class="muted">No employee accounts yet.</p>'}</div></div>`;
+  ${employeeProfiles.length?'<div class="scroll"><table><tr><th>Name</th><th>Email</th><th>Passcode</th><th>Status</th><th>Actions</th></tr>'+employeeProfiles.map(p=>'<tr><td>'+esc(p.display_name)+'</td><td>'+esc(p.email||"Not set")+'</td><td><code>••••••</code></td><td>'+(p.active?"Active":"Disabled")+'</td><td><div class="row"><button class="btn sm ghost" onclick="editEmployee(\''+p.user_id+'\')">Edit / permissions</button><button class="btn sm ghost" onclick="resetEmployeePasscode(\''+p.user_id+'\',\''+esc(p.display_name)+'\')">Reset code</button><button class="btn sm '+(p.active?"danger":"ghost")+'" onclick="setEmployeeActive(\''+p.user_id+'\','+(!p.active)+')">'+(p.active?"Disable":"Enable")+'</button><button class="btn sm danger" onclick="deleteEmployee(\''+p.user_id+'\',\''+esc(p.display_name)+'\')">Delete</button></div></td></tr>').join("")+'</table></div>':'<p class="muted">No employee accounts yet.</p>'}</div>
+  <div class="panel" style="margin-top:20px"><div class="row" style="justify-content:space-between"><h3>Login & activity history</h3><button class="btn sm ghost" onclick="refreshEmployeeAudit()">Refresh</button></div>
+  ${employeeAuditLoading?'<p>Loading activity…</p>':""}${employeeAuditError?'<p class="notice">'+esc(employeeAuditError)+'</p>':""}
+  ${employeeAudit.length?'<div class="scroll"><table><tr><th>When</th><th>Who</th><th>Event</th><th>Work item</th><th>Details</th></tr>'+auditRows+'</table></div>':'<p class="muted">No employee activity has been recorded yet.</p>'}
+  <p class="muted" style="margin-top:10px;font-size:.82rem">Showing the latest 150 login, account-management, order, and service-request events.</p></div></div>`;
 }
 function employeeJobCard(kind,j){
-  const order=kind==="order",id=j.id,assigned=j.assigned_to===employeeProfile.user_id,customer=j.customer_name,email=j.customer_email,phone=j.customer_phone,address=order?j.shipping_address:j.customer_address;
+  const order=kind==="order",id=j.id,assigned=j.assigned_to===employeeProfile.user_id,perms=employeeProfile.permissions||{};
   const detail=order?(j.items||[]).map(x=>x.name+" × "+(x.qty||1)).join(", "):((j.device?j.device+" · ":"")+j.details);
-  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div><p><strong>${esc(customer)}</strong><br><a href="mailto:${esc(email)}">${esc(email)}</a><br>${phone?'<a href="tel:'+esc(phone)+'">'+esc(phone)+'</a><br>':""}${esc(address||"No address provided")}</p><p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}
-  ${assigned?'<label class="field">Update status<select onchange="employeeSetJobStatus(\''+kind+'\',\''+id+'\',this.value)"><option value="requested" '+(j.status==="requested"?"selected":"")+'>Requested</option><option value="working" '+(j.status==="working"?"selected":"")+'>In progress</option><option value="waiting" '+(j.status==="waiting"?"selected":"")+'>Waiting on customer</option><option value="completed" '+(j.status==="completed"?"selected":"")+'>Completed</option><option value="shipped" '+(j.status==="shipped"?"selected":"")+'>Shipped</option><option value="delivered" '+(j.status==="delivered"?"selected":"")+'>Delivered</option></select></label>':'<button class="btn gold" onclick="claimEmployeeJob(\''+kind+'\',\''+id+'\')">Claim this '+(order?"order":"request")+'</button>'}</div>`;
+  const customerMarkup=perms.customer_details
+    ? '<p><strong>'+esc(j.customer_name||"Customer")+'</strong><br><a href="mailto:'+esc(j.customer_email||"")+'">'+esc(j.customer_email||"")+'</a><br>'+(j.customer_phone?'<a href="tel:'+esc(j.customer_phone)+'">'+esc(j.customer_phone)+'</a><br>':"")+esc((order?j.shipping_address:j.customer_address)||"No address provided")+'</p>'
+    : '<p class="muted">Customer contact details are restricted for this account.</p>';
+  let actionMarkup="";
+  if(assigned){
+    actionMarkup=perms.update_status
+      ? '<label class="field">Update status<select onchange="employeeSetJobStatus(\''+kind+'\',\''+id+'\',this.value)"><option value="requested" '+(j.status==="requested"?"selected":"") +'>Requested</option><option value="working" '+(j.status==="working"?"selected":"") +'>In progress</option><option value="waiting" '+(j.status==="waiting"?"selected":"") +'>Waiting on customer</option><option value="completed" '+(j.status==="completed"?"selected":"") +'>Completed</option><option value="shipped" '+(j.status==="shipped"?"selected":"") +'>Shipped</option><option value="delivered" '+(j.status==="delivered"?"selected":"") +'>Delivered</option></select></label>'
+      : '<p class="muted">Status updates are disabled for this account.</p>';
+  }else{
+    actionMarkup=perms.claim_jobs?'<button class="btn gold" onclick="claimEmployeeJob(\''+kind+'\',\''+id+'\')">Claim this '+(order?"order":"request")+'</button>':'<p class="muted">Claiming jobs is disabled for this account.</p>';
+  }
+  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div>${customerMarkup}<p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}${actionMarkup}</div>`;
 }
 function employeeDashboard(){
-  if(!isEmployee||!employeeProfile)return employeeLogin();if(!employeeJobsLoading&&!employeeJobsLoaded)loadEmployeeJobs();
-  const all=[...employeeJobs.orders.map(j=>({kind:"order",j})),...employeeJobs.requests.map(j=>({kind:"request",j}))],mine=all.filter(x=>x.j.assigned_to===employeeProfile.user_id),open=all.filter(x=>!x.j.assigned_to);
-  return `<div class="wrap"><div class="pagehead"><div><h2>Welcome, ${esc(employeeProfile.display_name)}</h2><p>Your Apex Computers employee dashboard.</p></div><button class="btn ghost" onclick="logout()">Sign out</button></div>${employeeJobsLoading?'<p>Loading jobs…</p>':""}<h3>My assignments (${mine.length})</h3>${mine.length?mine.map(x=>employeeJobCard(x.kind,x.j)).join(""):'<div class="empty">No assigned jobs yet.</div>'}<h3 style="margin-top:28px">Available to claim (${open.length})</h3>${open.length?open.map(x=>employeeJobCard(x.kind,x.j)).join(""):'<div class="empty">No unassigned jobs right now.</div>'}<button class="btn ghost" style="margin-top:14px" onclick="employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();loadEmployeeJobs()">Refresh jobs</button></div>`;
+  if(!isEmployee||!employeeProfile)return employeeLogin();
+  if(!employeeJobsLoading&&!employeeJobsLoaded)loadEmployeeJobs();
+  const perms=employeeProfile.permissions||{};
+  const mineOrders=perms.orders?employeeJobs.orders.filter(j=>j.assigned_to===employeeProfile.user_id):[];
+  const mineRequests=perms.requests?employeeJobs.requests.filter(j=>j.assigned_to===employeeProfile.user_id):[];
+  const openOrders=perms.orders&&perms.claim_jobs?employeeJobs.orders.filter(j=>!j.assigned_to):[];
+  const openRequests=perms.requests&&perms.claim_jobs?employeeJobs.requests.filter(j=>!j.assigned_to):[];
+  const section=(title,items,kind)=>'<h3 style="margin-top:24px">'+title+' ('+items.length+')</h3>'+(items.length?items.map(j=>employeeJobCard(kind,j)).join(""):'<div class="empty">No '+title.toLowerCase()+' right now.</div>');
+  let sections="";
+  if(perms.orders)sections+=section("My orders",mineOrders,"order");
+  if(perms.requests)sections+=section("My service requests",mineRequests,"request");
+  if(perms.claim_jobs&&perms.orders)sections+=section("Unassigned orders",openOrders,"order");
+  if(perms.claim_jobs&&perms.requests)sections+=section("Unassigned service requests",openRequests,"request");
+  return `<div class="wrap"><div class="pagehead"><div><h2>Welcome, ${esc(employeeProfile.display_name)}</h2><p>Your Apex Computers employee dashboard.</p></div><button class="btn ghost" onclick="logout()">Sign out</button></div>${employeeJobsLoading?'<p>Loading jobs…</p>':""}${(!perms.orders&&!perms.requests)?'<div class="notice">Your account currently has no order or service-request access. Contact the owner if you need access.</div>':""}${sections}<button class="btn ghost" style="margin-top:14px" onclick="employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();loadEmployeeJobs()">Refresh jobs</button></div>`;
 }
 
 async function logout(){
+  if(isEmployee||isOwner)setGhToken("");
   await supabaseClient.auth.signOut(); isOwner=false; isEmployee=false; employeeProfile=null; cloudOrders=[]; cloudOrdersLoaded=false; employeeJobsLoaded=false;
   go("/"); toast("Signed out.");
 }
@@ -713,6 +759,7 @@ function render(){
   ].filter(Boolean).join(" &nbsp;·&nbsp; ");
 
   const r = route();
+  if(isEmployee && ["/manage","/employees","/inbox","/inventory"].includes(r)){go("/employee");return;}
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
