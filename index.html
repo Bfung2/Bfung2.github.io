@@ -1648,6 +1648,7 @@ function editProduct(id){
     <div class="row"><button class="btn gold" onclick="saveProduct('${p.id}',${!!id})">Save</button>
     <button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`;
   openDlg(html);
+  toggleProductSpecs();
 }
 function handleImageUpload(e, fieldId, previewId){
   const file = e.target.files[0]; if(!file) return;
@@ -1723,6 +1724,7 @@ function editPart(id,presetCat){
     <div class="row"><button class="btn gold" onclick="savePart('${p.id}',${!!id})">Save</button>
     <button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`;
   openDlg(html);
+  toggleSpecs();
 }
 function savePart(id,exists){
   const rec = {id,name:q_name.value.trim(),category:q_cat.value,brand:q_brand.value.trim(),price:+q_price.value||0,desc:q_desc.value.trim(),longDesc:q_long.value.trim(),
