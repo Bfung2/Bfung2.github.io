@@ -465,6 +465,7 @@ const esc = s => String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 /* ---------- session ---------- */
 let isOwner = false, isEmployee = false, employeeProfile = null;
 let cloudRequests = [], cloudRequestsLoaded = false, employeeProfiles = [], employeeAudit = [], employeeAuditLoaded = false, employeeAuditLoading = false, employeeAuditError = "";
+let performanceData = [], performanceLoaded = false, performanceLoading = false, performanceError = "";
 let employeeJobsLoading = false, employeeJobsLoaded = false, employeeJobs = {orders:[],requests:[]};
 let me = null;
 try{ me = JSON.parse(localStorage.getItem("apex.customer")||"null"); }catch(e){}
@@ -568,6 +569,37 @@ async function loadEmployeeAudit(){
   finally{employeeAuditLoading=false;if(route()==="/employees")render();}
 }
 function refreshEmployeeAudit(){employeeAuditLoaded=false;loadEmployeeAudit();}
+async function loadOwnerPerformance(){
+  if(!isOwner||performanceLoading||performanceLoaded)return;
+  performanceLoading=true;performanceError="";
+  try{
+    const {data,error}=await supabaseClient.rpc("apex_owner_employee_performance");
+    if(error)throw error;
+    performanceData=Array.isArray(data?.employees)?data.employees:[];
+    performanceLoaded=true;
+  }catch(err){performanceError=err.message||"Could not load employee performance.";}
+  finally{performanceLoading=false;if(route()==="/performance")render();}
+}
+function refreshOwnerPerformance(){performanceLoaded=false;loadOwnerPerformance();}
+function performancePage(){
+  if(!isOwner)return staff();
+  if(!performanceLoaded&&!performanceLoading)loadOwnerPerformance();
+  const employees=performanceData||[];
+  const totalAssigned=employees.reduce((n,p)=>n+(+p.assigned_jobs||0),0);
+  const totalCompleted=employees.reduce((n,p)=>n+(+p.completed_jobs||0),0);
+  const totalClaims=employees.reduce((n,p)=>n+(+p.claimed_jobs||0),0);
+  const totalActivity=employees.reduce((n,p)=>n+(+p.activity_30d||0),0);
+  const rows=employees.map(p=>'<tr><td><strong>'+esc(p.display_name||"Employee")+'</strong><br><small class="muted">'+(p.active?'Active':'Disabled')+'</small></td><td>'+Number(p.assigned_jobs||0)+'</td><td>'+Number(p.active_jobs||0)+'</td><td>'+Number(p.completed_jobs||0)+'</td><td>'+Number(p.claimed_jobs||0)+'</td><td>'+Number(p.activity_30d||0)+'</td><td><small>'+ (p.last_activity?new Date(p.last_activity).toLocaleString():"No activity yet")+'</small></td></tr>').join("");
+  const metric=(label,value)=>'<div class="panel"><small class="muted">'+label+'</small><div style="font-size:1.8rem;font-weight:700;margin-top:5px">'+value+'</div></div>';
+  return '<div class="wrap"><div class="pagehead"><div><h2>Employee performance</h2><p>Workload, completed jobs, claims, and recent team activity.</p></div><div class="row"><button class="btn sm ghost" onclick="refreshOwnerPerformance()">Refresh</button><a class="btn ghost" href="#/employees">Manage employees</a><a class="btn ghost" href="#/manage">Back to settings</a></div></div>'+
+    (performanceError?'<div class="notice">'+esc(performanceError)+'</div>':"")+
+    (performanceLoading?'<p class="muted">Loading performance data…</p>':"")+
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px">'+
+    metric("Active employees",employees.filter(p=>p.active).length)+metric("Currently assigned jobs",totalAssigned)+metric("Completed jobs tracked",totalCompleted)+metric("Jobs claimed",totalClaims)+metric("Activity, last 30 days",totalActivity)+'</div>'+
+    '<div class="panel"><h3>Employee breakdown</h3>'+
+    (employees.length?'<div class="scroll"><table><tr><th>Employee</th><th>Assigned</th><th>In progress</th><th>Completed</th><th>Claimed</th><th>Activity · 30 days</th><th>Last activity</th></tr>'+rows+'</table></div>':'<div class="empty">No employee accounts to report yet.</div>')+
+    '<p class="muted" style="font-size:.82rem;margin-top:12px">Completed-job and claim totals are tracked from activity recorded after this performance update is installed. Existing older audit entries did not save enough job detail to reconstruct those totals. Activity counts include logins and recorded work actions.</p></div></div>';
+}
 async function setEmployeeActive(userId,active){
   try{await callEmployeeAdmin({action:"set_active",user_id:userId,active});employeesLoaded=false;await loadEmployees();render();toast(active?"Employee enabled.":"Employee disabled.");}
   catch(err){toast("Could not update employee: "+err.message);}
@@ -612,7 +644,7 @@ function employeesPage(){
   if(!employeesLoaded&&!employeesLoading)loadEmployees();
   if(!employeeAuditLoaded&&!employeeAuditLoading)loadEmployeeAudit();
   const auditRows=employeeAudit.map(x=>'<tr><td>'+new Date(x.created_at).toLocaleString()+'</td><td>'+esc(x.actor_name||"Unknown")+'</td><td>'+esc(x.event_type)+'</td><td>'+esc(x.job_kind?x.job_kind+" "+(x.job_id||""):"")+'</td><td><small>'+esc(JSON.stringify(x.details||{}))+'</small></td></tr>').join("");
-  return `<div class="wrap"><div class="pagehead"><div><h2>Employees</h2><p>Create and manage employee logins, contact emails, permissions, and account access.</p></div><a class="btn ghost" href="#/manage">Back to settings</a></div>
+  return `<div class="wrap"><div class="pagehead"><div><h2>Employees</h2><p>Create and manage employee logins, contact emails, permissions, and account access.</p></div><div class="row"><a class="btn gold" href="#/performance">Performance</a><a class="btn ghost" href="#/manage">Back to settings</a></div></div>
   <form class="panel" onsubmit="return createEmployee(event)"><h3>Create employee login</h3>
     <div class="field"><label for="newEmployeeName">Employee name</label><input id="newEmployeeName" required maxlength="100"></div>
     <div class="field"><label for="newEmployeeEmail">Employee email</label><input id="newEmployeeEmail" type="email" maxlength="254" placeholder="employee@example.com"></div>
@@ -759,11 +791,11 @@ function render(){
   ].filter(Boolean).join(" &nbsp;·&nbsp; ");
 
   const r = route();
-  if(isEmployee && ["/manage","/employees","/inbox","/inventory"].includes(r)){go("/employee");return;}
+  if(isEmployee && ["/manage","/employees","/inbox","/inventory","/performance"].includes(r)){go("/employee");return;}
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
-    "/employees":employeesPage,"/manage":manage,"/inbox":inbox,"/done":done};
+    "/employees":employeesPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
   const keep = (ae && ae.id && app.contains(ae)) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
   const rows = {};
@@ -1434,7 +1466,7 @@ function staff(){
 function manage(){
   if(!isOwner) return staff();
   const s = S.settings;
-  return `<div class="wrap"><div class="pagehead"><div><h2>Site settings</h2><p>Everything here shows on the public site. No code editing needed.</p></div><a class="btn gold" href="#/employees">Manage employees</a><a class="btn ghost" href="#/inbox">Orders &amp; requests</a></div>
+  return `<div class="wrap"><div class="pagehead"><div><h2>Site settings</h2><p>Everything here shows on the public site. No code editing needed.</p></div><a class="btn gold" href="#/employees">Manage employees</a><a class="btn ghost" href="#/performance">Employee performance</a><a class="btn ghost" href="#/inbox">Orders &amp; requests</a></div>
   <div class="notice" style="margin-bottom:22px">${ghConfigured?(cloudConnected?"Connected — reading and writing data.json in your GitHub repo, so every device stays in sync.":`Not connected${cloudError?": "+esc(cloudError):" yet"}. Check that data.json exists in the repo, and that GITHUB_OWNER/GITHUB_REPO/GITHUB_BRANCH in the file match it exactly.`):"No shared file configured — see the setup note at the top of the HTML file (look for GITHUB_OWNER). Until then, changes here only show on this device."}</div>
   <div class="panel" style="margin-bottom:22px"><h3>Connection check</h3>
     <table>
