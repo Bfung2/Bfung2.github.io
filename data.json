@@ -769,7 +769,7 @@
       "desc": "mATX - LGA1700",
       "longDesc": "ASUS B760M-AYW WIFI D4 II is a micro-ATX LGA1700 motherboard for 12th-, 13th- and 14th-generation Intel Core processors. This DDR4 model includes a PCIe 5.0 x16 graphics slot, two M.2 sockets, Wi-Fi connectivity and a compact layout for smaller desktop builds. Check the Newegg listing for full memory capacity and rear-I/O details.",
       "featured": false,
-      "image": "",
+      "image": "https://c1.neweggimages.com/productimage/nb1280/13-119-744-01.png",
       "socket": "LGA1700",
       "memType": "DDR4",
       "tdp": "",
