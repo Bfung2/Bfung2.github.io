@@ -2401,22 +2401,6 @@
       "power": 430
     },
     {
-      "id": "i2yoah6",
-      "name": "test",
-      "category": "Power supply",
-      "brand": "",
-      "price": 111,
-      "desc": "",
-      "longDesc": "",
-      "image": "",
-      "socket": "",
-      "cpuType": "",
-      "memType": "",
-      "tdp": "",
-      "watts": "161",
-      "power": ""
-    },
-    {
       "id": "t7lnhm3",
       "name": "test 2",
       "category": "Power supply",
