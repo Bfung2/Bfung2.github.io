@@ -2415,6 +2415,22 @@
       "tdp": "",
       "watts": "161",
       "power": ""
+    },
+    {
+      "id": "t7lnhm3",
+      "name": "test 2",
+      "category": "Power supply",
+      "brand": "",
+      "price": 11111112,
+      "desc": "",
+      "longDesc": "",
+      "image": "",
+      "socket": "",
+      "cpuType": "",
+      "memType": "",
+      "tdp": "",
+      "watts": "159",
+      "power": ""
     }
   ]
 }
