@@ -625,15 +625,36 @@ function employeesPage(){
   <p class="muted" style="margin-top:10px;font-size:.82rem">Showing the latest 150 login, account-management, order, and service-request events.</p></div></div>`;
 }
 function employeeJobCard(kind,j){
-  const order=kind==="order",id=j.id,assigned=j.assigned_to===employeeProfile.user_id,customer=j.customer_name,email=j.customer_email,phone=j.customer_phone,address=order?j.shipping_address:j.customer_address;
+  const order=kind==="order",id=j.id,assigned=j.assigned_to===employeeProfile.user_id,perms=employeeProfile.permissions||{};
   const detail=order?(j.items||[]).map(x=>x.name+" × "+(x.qty||1)).join(", "):((j.device?j.device+" · ":"")+j.details);
-  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div><p><strong>${esc(customer)}</strong><br><a href="mailto:${esc(email)}">${esc(email)}</a><br>${phone?'<a href="tel:'+esc(phone)+'">'+esc(phone)+'</a><br>':""}${esc(address||"No address provided")}</p><p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}
-  ${assigned?'<label class="field">Update status<select onchange="employeeSetJobStatus(\''+kind+'\',\''+id+'\',this.value)"><option value="requested" '+(j.status==="requested"?"selected":"")+'>Requested</option><option value="working" '+(j.status==="working"?"selected":"")+'>In progress</option><option value="waiting" '+(j.status==="waiting"?"selected":"")+'>Waiting on customer</option><option value="completed" '+(j.status==="completed"?"selected":"")+'>Completed</option><option value="shipped" '+(j.status==="shipped"?"selected":"")+'>Shipped</option><option value="delivered" '+(j.status==="delivered"?"selected":"")+'>Delivered</option></select></label>':'<button class="btn gold" onclick="claimEmployeeJob(\''+kind+'\',\''+id+'\')">Claim this '+(order?"order":"request")+'</button>'}</div>`;
+  const customerMarkup=perms.customer_details
+    ? '<p><strong>'+esc(j.customer_name||"Customer")+'</strong><br><a href="mailto:'+esc(j.customer_email||"")+'">'+esc(j.customer_email||"")+'</a><br>'+(j.customer_phone?'<a href="tel:'+esc(j.customer_phone)+'">'+esc(j.customer_phone)+'</a><br>':"")+esc((order?j.shipping_address:j.customer_address)||"No address provided")+'</p>'
+    : '<p class="muted">Customer contact details are restricted for this account.</p>';
+  let actionMarkup="";
+  if(assigned){
+    actionMarkup=perms.update_status
+      ? '<label class="field">Update status<select onchange="employeeSetJobStatus(\''+kind+'\',\''+id+'\',this.value)"><option value="requested" '+(j.status==="requested"?"selected":"") +'>Requested</option><option value="working" '+(j.status==="working"?"selected":"") +'>In progress</option><option value="waiting" '+(j.status==="waiting"?"selected":"") +'>Waiting on customer</option><option value="completed" '+(j.status==="completed"?"selected":"") +'>Completed</option><option value="shipped" '+(j.status==="shipped"?"selected":"") +'>Shipped</option><option value="delivered" '+(j.status==="delivered"?"selected":"") +'>Delivered</option></select></label>'
+      : '<p class="muted">Status updates are disabled for this account.</p>';
+  }else{
+    actionMarkup=perms.claim_jobs?'<button class="btn gold" onclick="claimEmployeeJob(\''+kind+'\',\''+id+'\')">Claim this '+(order?"order":"request")+'</button>':'<p class="muted">Claiming jobs is disabled for this account.</p>';
+  }
+  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div>${customerMarkup}<p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}${actionMarkup}</div>`;
 }
 function employeeDashboard(){
-  if(!isEmployee||!employeeProfile)return employeeLogin();if(!employeeJobsLoading&&!employeeJobsLoaded)loadEmployeeJobs();
-  const all=[...employeeJobs.orders.map(j=>({kind:"order",j})),...employeeJobs.requests.map(j=>({kind:"request",j}))],mine=all.filter(x=>x.j.assigned_to===employeeProfile.user_id),open=all.filter(x=>!x.j.assigned_to);
-  return `<div class="wrap"><div class="pagehead"><div><h2>Welcome, ${esc(employeeProfile.display_name)}</h2><p>Your Apex Computers employee dashboard.</p></div><button class="btn ghost" onclick="logout()">Sign out</button></div>${employeeJobsLoading?'<p>Loading jobs…</p>':""}<h3>My assignments (${mine.length})</h3>${mine.length?mine.map(x=>employeeJobCard(x.kind,x.j)).join(""):'<div class="empty">No assigned jobs yet.</div>'}<h3 style="margin-top:28px">Available to claim (${open.length})</h3>${open.length?open.map(x=>employeeJobCard(x.kind,x.j)).join(""):'<div class="empty">No unassigned jobs right now.</div>'}<button class="btn ghost" style="margin-top:14px" onclick="employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();loadEmployeeJobs()">Refresh jobs</button></div>`;
+  if(!isEmployee||!employeeProfile)return employeeLogin();
+  if(!employeeJobsLoading&&!employeeJobsLoaded)loadEmployeeJobs();
+  const perms=employeeProfile.permissions||{};
+  const mineOrders=perms.orders?employeeJobs.orders.filter(j=>j.assigned_to===employeeProfile.user_id):[];
+  const mineRequests=perms.requests?employeeJobs.requests.filter(j=>j.assigned_to===employeeProfile.user_id):[];
+  const openOrders=perms.orders&&perms.claim_jobs?employeeJobs.orders.filter(j=>!j.assigned_to):[];
+  const openRequests=perms.requests&&perms.claim_jobs?employeeJobs.requests.filter(j=>!j.assigned_to):[];
+  const section=(title,items,kind)=>'<h3 style="margin-top:24px">'+title+' ('+items.length+')</h3>'+(items.length?items.map(j=>employeeJobCard(kind,j)).join(""):'<div class="empty">No '+title.toLowerCase()+' right now.</div>');
+  let sections="";
+  if(perms.orders)sections+=section("My orders",mineOrders,"order");
+  if(perms.requests)sections+=section("My service requests",mineRequests,"request");
+  if(perms.claim_jobs&&perms.orders)sections+=section("Unassigned orders",openOrders,"order");
+  if(perms.claim_jobs&&perms.requests)sections+=section("Unassigned service requests",openRequests,"request");
+  return `<div class="wrap"><div class="pagehead"><div><h2>Welcome, ${esc(employeeProfile.display_name)}</h2><p>Your Apex Computers employee dashboard.</p></div><button class="btn ghost" onclick="logout()">Sign out</button></div>${employeeJobsLoading?'<p>Loading jobs…</p>':""}${(!perms.orders&&!perms.requests)?'<div class="notice">Your account currently has no order or service-request access. Contact the owner if you need access.</div>':""}${sections}<button class="btn ghost" style="margin-top:14px" onclick="employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;render();loadEmployeeJobs()">Refresh jobs</button></div>`;
 }
 
 async function logout(){
