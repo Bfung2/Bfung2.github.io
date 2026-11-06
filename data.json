@@ -1220,8 +1220,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "220",
+      "watts": "650",
       "power": 220,
       "sourceUrl": "https://www.newegg.com/asus-radeon-rx-9070-gre-12gb-graphics-card/p/N82E16814126841"
     },
@@ -1237,8 +1237,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "220",
+      "watts": "750",
       "power": 220,
       "sourceUrl": "https://www.newegg.com/gigabyte-gv-r9070gaming-oc-16gd-radeon-rx-9070-16gb-graphics-card-triple-fans/p/14-932-752"
     },
@@ -1254,8 +1254,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "145",
+      "watts": "550",
       "power": "145",
       "sourceUrl": "https://www.newegg.com/msi-rtx-5060-8g-ventus-2x-oc-geforce-rtx-5060-8gb-graphics-card-double-fans/p/N82E16814137975"
     },
@@ -1271,8 +1271,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "180",
+      "watts": "600",
       "power": "180",
       "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992"
     },
@@ -1288,8 +1288,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "180",
+      "watts": "600",
       "power": "180",
       "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-3x-oc-geforce-rtx-5060-ti-16gb-graphics-card-triple-fans/p/N82E16814137957"
     },
@@ -1305,8 +1305,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "240",
+      "watts": "650",
       "power": 240,
       "sourceUrl": "https://www.newegg.com/sapphire-tech-pulse-radeon-rx-9070-gre-graphics-12gb-graphics-card-double-fans/p/N82E16814202478"
     },
@@ -1322,8 +1322,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "170",
+      "watts": "550",
       "power": 170,
       "sourceUrl": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013"
     },
@@ -1339,8 +1339,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "70",
+      "watts": "300",
       "power": 70,
       "sourceUrl": "https://www.newegg.com/msi-rtx-3050-ventus-2x-6g-oc-geforce-rtx-3050-6gb-graphics-card-double-fans/p/N82E16814137878"
     },
@@ -1356,8 +1356,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "250",
+      "watts": "750",
       "power": 250,
       "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777"
     },
@@ -1373,8 +1373,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "300",
+      "watts": "750",
       "power": 300,
       "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n507twf3oc-16gd-geforce-rtx-5070-ti-16gb-graphics-card-triple-fans/p/N82E16814932771"
     },
@@ -1390,8 +1390,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "415",
+      "watts": "1000",
       "power": 415,
       "sourceUrl": "https://www.newegg.com/gigabyte-gv-n5090aorus-if-32gd-geforce-rtx-5090-32gb-graphics-card/p/N82E16814932838"
     },
@@ -1407,8 +1407,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "360",
+      "watts": "850",
       "power": 360,
       "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5080wf3oc-16gd-geforce-rtx-5080-16gb-graphics-card-triple-fans/p/N82E16814932754"
     },
@@ -1424,8 +1424,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "170",
+      "watts": "550",
       "power": 170,
       "sourceUrl": "https://www.newegg.com/gigabyte-gv-n3060gaming-oc-12gd-geforce-rtx-3060-12gb-graphics-card-windforce-3x/p/N82E16814932433"
     },
@@ -1441,8 +1441,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "115",
+      "watts": "500",
       "power": 115,
       "sourceUrl": "https://www.newegg.com/msi-rtx-3050-ventus-2x-xs-8g-oc-geforce-rtx-3050-8gb-graphics-card-double-fans/p/N82E16814137810"
     }
@@ -2172,8 +2172,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "115",
+      "watts": "500",
       "power": "115"
     },
     {
@@ -2188,8 +2188,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "300",
+      "watts": "750",
       "power": "300"
     },
     {
@@ -2204,8 +2204,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "160",
+      "watts": "550",
       "power": "160"
     },
     {
@@ -2220,8 +2220,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "304",
+      "watts": "850",
       "power": "304"
     },
     {
@@ -2236,8 +2236,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "145",
+      "watts": "550",
       "power": "145"
     },
     {
@@ -2252,8 +2252,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "180",
+      "watts": "600",
       "power": "180"
     },
     {
@@ -2268,8 +2268,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "180",
+      "watts": "600",
       "power": "180"
     },
     {
@@ -2284,8 +2284,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "250",
+      "watts": "750",
       "power": "250"
     },
     {
@@ -2300,8 +2300,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "160",
+      "watts": "450",
       "power": 160
     },
     {
@@ -2316,8 +2316,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "170",
+      "watts": "550",
       "power": 170
     },
     {
@@ -2332,8 +2332,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "145",
+      "watts": "450",
       "power": 145
     },
     {
@@ -2348,8 +2348,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "220",
+      "watts": "750",
       "power": 220
     },
     {
@@ -2364,8 +2364,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "220",
+      "watts": "650",
       "power": 220
     },
     {
@@ -2380,8 +2380,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "",
-      "watts": "",
+      "tdp": "240",
+      "watts": "650",
       "power": 240
     },
     {
@@ -2396,8 +2396,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "",
-      "watts": "",
+      "tdp": "430",
+      "watts": "1000",
       "power": 430
     },
     {
@@ -2414,6 +2414,22 @@
       "memType": "",
       "tdp": "",
       "watts": "159",
+      "power": ""
+    },
+    {
+      "id": "o9hoi4k",
+      "name": "test",
+      "category": "Power supply",
+      "brand": "",
+      "price": 1231240,
+      "desc": "",
+      "longDesc": "",
+      "image": "",
+      "socket": "",
+      "cpuType": "",
+      "memType": "",
+      "tdp": "",
+      "watts": "161",
       "power": ""
     }
   ]
