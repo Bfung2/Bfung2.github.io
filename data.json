@@ -1766,6 +1766,22 @@
       "tdp": "220",
       "watts": "650",
       "power": 220
+    },
+    {
+      "id": "gpurx9070gresapphirepulse2x",
+      "name": "SAPPHIRE PULSE Radeon RX 9070 GRE 12GB",
+      "category": "Graphics card",
+      "brand": "SAPPHIRE",
+      "price": 794.99,
+      "desc": "12GB GDDR6 - 192-bit - PCIe 5.0 x16 - Dual Fan - RX 9070 GRE",
+      "longDesc": "AMD Radeon RX 9070 GRE (RDNA 4) with 12GB GDDR6 memory on a 192-bit bus and PCI Express 5.0 x16 interface. Video outputs: 2x HDMI 2.1b and 2x DisplayPort 2.1a. Dual-fan SAPPHIRE PULSE cooling, 280 mm maximum length, two 8-pin power connectors, 240W thermal design power, and 650W recommended PSU. Newegg price: $779.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-202-478-08.png",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR6",
+      "tdp": "240",
+      "watts": "650",
+      "power": 240
     }
   ]
 }
