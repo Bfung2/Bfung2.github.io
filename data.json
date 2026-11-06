@@ -1309,6 +1309,40 @@
       "watts": "600",
       "power": "180",
       "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-3x-oc-geforce-rtx-5060-ti-16gb-graphics-card-triple-fans/p/N82E16814137957"
+    },
+    {
+      "id": "gpurx9070gresapphirepulse2x",
+      "name": "SAPPHIRE PULSE Radeon RX 9070 GRE 12GB",
+      "category": "Graphics card",
+      "brand": "SAPPHIRE",
+      "price": 794.99,
+      "desc": "12GB GDDR6 - 192-bit - PCIe 5.0 x16 - Dual Fan - RX 9070 GRE",
+      "longDesc": "AMD Radeon RX 9070 GRE (RDNA 4) with 12GB GDDR6 memory on a 192-bit bus and PCI Express 5.0 x16 interface. Video outputs: 2x HDMI 2.1b and 2x DisplayPort 2.1a. Dual-fan SAPPHIRE PULSE cooling, 280 mm maximum length, two 8-pin power connectors, 240W thermal design power, and 650W recommended PSU. Newegg price: $779.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-202-478-08.png",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR6",
+      "tdp": "240",
+      "watts": "650",
+      "power": 240,
+      "sourceUrl": "https://www.newegg.com/sapphire-tech-pulse-radeon-rx-9070-gre-graphics-12gb-graphics-card-double-fans/p/N82E16814202478"
+    },
+    {
+      "id": "gpu3060msiventus2x",
+      "name": "MSI Ventus GeForce RTX 3060 12GB VENTUS 2X 12G OCV1",
+      "category": "Graphics card",
+      "brand": "MSI",
+      "price": 494.99,
+      "desc": "12GB GDDR6 - 192-bit - PCIe 4.0 - Dual Fan - 1807 MHz Boost",
+      "longDesc": "NVIDIA GeForce RTX 3060 (Ampere) graphics card with 3,584 CUDA cores, 12GB GDDR6 memory on a 192-bit bus, 15 Gbps effective memory speed, and a 1807 MHz boost clock. PCI Express 4.0 interface. Video outputs: 1x HDMI 2.1 and 3x DisplayPort 1.4. Dual-fan TORX 3.0 cooling, 235 mm maximum length, one 8-pin power connector, 170W thermal design power, and 550W recommended PSU. Newegg price: $479.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-982-013-06.webp",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR6",
+      "tdp": "170",
+      "watts": "550",
+      "power": 170,
+      "sourceUrl": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013"
     }
   ],
   "parts": [
