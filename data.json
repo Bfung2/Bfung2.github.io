@@ -1782,6 +1782,22 @@
       "tdp": "240",
       "watts": "650",
       "power": 240
+    },
+    {
+      "id": "gpu5090aorusmasterice3x",
+      "name": "GIGABYTE AORUS GeForce RTX 5090 MASTER ICE 32GB",
+      "category": "Graphics card",
+      "brand": "GIGABYTE",
+      "price": 6774.99,
+      "desc": "32GB GDDR7 - 512-bit - PCIe 5.0 x16 - Triple Fan - 2655 MHz Core Clock",
+      "longDesc": "NVIDIA GeForce RTX 5090 (Blackwell) with 21,760 CUDA cores, 32GB GDDR7 memory on a 512-bit bus, 28 Gbps effective memory speed, and a 2655 MHz core clock. PCI Express 5.0 x16 interface. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Triple-fan WINDFORCE cooling, 360 mm maximum length, one 16-pin power connector, 430W thermal design power, and 1000W recommended PSU. Newegg price: $6,759.99; Apex price includes $15 markup.",
+      "image": "https://c1.neweggimages.com/productimage/nb640/14-932-765-02.jpg",
+      "socket": "",
+      "cpuType": "",
+      "memType": "GDDR7",
+      "tdp": "430",
+      "watts": "1000",
+      "power": 430
     }
   ]
 }
