@@ -63,7 +63,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "GIGABYTE",
-      "price": 264.99,
+      "price": 275,
       "desc": "WIFI7 - ATX - 4 Ram slots",
       "longDesc": "\"AMD Socket AM5: Supports AMD Ryzen 9000 / Ryzen 8000 / Ryzen 7000 Series Processors\nDDR5 Compatible: 4*DIMMs with AMD EXPO Support\nPower Design: 16+2+2\nThermals: VRM and M.2 Thermal Guard\nConnectivity: PCIe 5.0, 4x M.2 Slots, Dual USB4, Front and Rear USB-C, Sensor Panel Link\nDIY Friendly: M.2 EZ-Latch, PCIe EZ-Latch, Wi-Fi EZ-Plug, EZ-Debug Zone\nNetworking: Wi-Fi 7, 2.5GbE LAN",
       "featured": false,
@@ -72,8 +72,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "45",
-      "sourceUrl": "https://www.newegg.com/gigabyte-x870-aorus-elite-wifi7-atx-motherboard-amd-x870-am5/p/N82E16813145519"
+      "power": "45"
     },
     {
       "id": "xjyzxl1",
@@ -82,7 +81,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "GIGABYTE",
-      "price": 304.99,
+      "price": 300,
       "desc": "ATX - AM5 - WIFI7 - 4x288pin DDR5",
       "longDesc": "\"AMD Socket AM5: Supports AMD Ryzen 9000 / Ryzen 8000 / Ryzen 7000 Series Processors\nDDR5 Compatible: 4*DIMMs with AMD EXPO Support\nPower Design: 16+2+2\nThermals: VRM and M.2 Thermal Guard\nConnectivity: PCIe 5.0, 4x M.2 Slots, Dual USB4, Front and Rear USB-C, Sensor Panel Link\nDIY Friendly: M.2 EZ-Latch, PCIe EZ-Latch, Wi-Fi EZ-Plug, EZ-Debug Zone\nNetworking: Wi-Fi 7, 2.5GbE LAN",
       "featured": false,
@@ -91,8 +90,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "45",
-      "sourceUrl": "https://www.newegg.com/GIGABYTE-X870E-AORUS-ELITE-WIFI7-ATX-Motherboard-AMD-X870E-AM5/p/N82E16813145517"
+      "power": "45"
     },
     {
       "id": "yo23yhu",
@@ -227,7 +225,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "GIGABYTE",
-      "price": 174.99,
+      "price": 177.99,
       "desc": "B650 mATX, white design, DDR5, Wi-Fi",
       "longDesc": "White-themed AM5 motherboard with DDR5, Wi-Fi, 2.5GbE LAN, PCIe 5.0 M.2 support, and tool-friendly latches.",
       "featured": false,
@@ -236,8 +234,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/gigabyte-b650m-aorus-elite-ax-ice-micro-atx-motherboard-amd-b650-am5/p/N82E16813145511"
+      "power": "5"
     },
     {
       "id": "gigaby612",
@@ -246,7 +243,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "GIGABYTE",
-      "price": 131.99,
+      "price": 130,
       "desc": "B650 mATX, DDR5, Wi-Fi 6E, 2.5GbE",
       "longDesc": "AM5 motherboard featuring DDR5, Wi-Fi 6E, 2.5GbE LAN, PCIe 4.0 storage connectivity, and USB-C.",
       "featured": false,
@@ -255,8 +252,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/gigabyte-b650m-gaming-plus-wifi-micro-atx-motherboard-amd-b650-am5/p/N82E16813145502"
+      "power": "5"
     },
     {
       "id": "gigaby53e",
@@ -355,7 +351,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "ASRock",
-      "price": 173.99,
+      "price": 174.99,
       "desc": "B850 mATX, DDR5, Wi-Fi, 2.5GbE",
       "longDesc": "AM5 B850 motherboard with DDR5, Wi-Fi, 2.5Gb Ethernet, and modern PCIe and M.2 connectivity.",
       "featured": false,
@@ -364,8 +360,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/asrock-b850m-pro-rs-wifi-micro-atx-motherboard-amd-b850-am5/p/N82E16813162196"
+      "power": "5"
     },
     {
       "id": "asrockac6",
@@ -374,7 +369,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "ASRock",
-      "price": 144.99,
+      "price": 164.99,
       "desc": "B850 mATX, DDR5, 2.5GbE",
       "longDesc": "AM5 B850 micro-ATX motherboard with DDR5 support, 2.5Gb Ethernet, and M.2 storage expansion.",
       "featured": false,
@@ -428,7 +423,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "ASRock",
-      "price": 164.99,
+      "price": 194.99,
       "desc": "B850 mATX, DDR5, Wi-Fi, Steel Legend styling",
       "longDesc": "AM5 motherboard with DDR5, Wi-Fi, 2.5GbE networking, and Steel Legend styling for gaming and general-purpose builds.",
       "featured": false,
@@ -437,8 +432,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/asrock-b850m-steel-legend-wifi-micro-atx-motherboard-amd-b850-am5/p/N82E16813162194"
+      "power": "5"
     },
     {
       "id": "asrock836",
@@ -447,7 +441,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "ASRock",
-      "price": 203.99,
+      "price": 204.99,
       "desc": "B850 mATX, DDR5, Wi-Fi, gaming features",
       "longDesc": "AM5 B850 gaming motherboard with DDR5, Wi-Fi, high-speed networking, and M.2 expansion.",
       "featured": false,
@@ -456,8 +450,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/asrock-b850m-riptide-wifi-micro-atx-motherboard-amd-b850-am5/p/N82E16813162193"
+      "power": "5"
     },
     {
       "id": "asrockad4",
@@ -484,7 +477,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "ASRock",
-      "price": 155.99,
+      "price": 184.99,
       "desc": "B850 mATX, DDR5, Wi-Fi",
       "longDesc": "AM5 B850 motherboard with DDR5, Wi-Fi, M.2 storage support, and micro-ATX form factor.",
       "featured": false,
@@ -493,8 +486,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/asrock-micro-atx-22-motherboards-amd-amd-b850-am5/p/N82E16813162244"
+      "power": "5"
     },
     {
       "id": "gigaby47e",
@@ -503,7 +495,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "GIGABYTE",
-      "price": 154.99,
+      "price": 167.99,
       "desc": "B850 mATX, DDR5, PCIe 5.0, 2x M.2, 2.5GbE",
       "longDesc": "AM5 motherboard with DDR5, 8+2+2 power design, PCIe 5.0 graphics and M.2 support, dual M.2 slots, USB-C, and 2.5GbE LAN.",
       "featured": false,
@@ -512,8 +504,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/gigabyte-b850m-ds3h-micro-atx-motherboard-amd-b850-am5/p/N82E16813145551"
+      "power": "5"
     },
     {
       "id": "gigabyb6b",
@@ -594,7 +585,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "ASRock",
-      "price": 163.99,
+      "price": 164.99,
       "desc": "ATX - LGA1851",
       "longDesc": "ASRock B860 Pro RS is an ATX motherboard for Intel Core Ultra processors (Series 2) on LGA1851. It has four DDR5 DIMM slots supporting up to 8666+ MT/s (OC), a 10+1+1+1+1 Dr.MOS power design, PCIe 5.0 x16 graphics, one PCIe 4.0 x16 slot, one PCIe 5.0 M.2 socket and two PCIe 4.0 M.2 sockets. Other features include 2.5Gb Ethernet, HDMI, DisplayPort, USB-C, BIOS Flashback and an M.2 heatsink.",
       "featured": false,
@@ -603,8 +594,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/asrock-b860-pro-rs-atx-motherboard-intel-b860-lga-1851/p/N82E16813162205"
+      "power": "5"
     },
     {
       "id": "intel1851a4",
@@ -613,7 +603,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "ASRock",
-      "price": 184.99,
+      "price": 229.99,
       "desc": "ATX - LGA1851",
       "longDesc": "ASRock Z890 Pro RS is an ATX LGA1851 motherboard for Intel Core Ultra processors (Series 2). It supports four DDR5 DIMMs, high-speed memory overclocking, a multi-phase power design, PCIe 5.0 graphics, high-speed M.2 storage and 2.5Gb Ethernet. It also includes modern USB connectivity, HDMI and DisplayPort outputs, and BIOS Flashback. Check the Newegg listing for the complete current port and slot configuration.",
       "featured": false,
@@ -622,8 +612,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/asrock-z890-pro-rs-atx-motherboard-intel-z890-lga-1851/p/N82E16813162176"
+      "power": "5"
     },
     {
       "id": "intel1851a5",
@@ -686,7 +675,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "ASUS",
-      "price": 192.99,
+      "price": 178.99,
       "desc": "mATX - LGA1851",
       "longDesc": "ASUS PRIME B860M-A WIFI-CSM is a micro-ATX LGA1851 motherboard for Intel Core Ultra processors (Series 2). It supports DDR5 memory, a PCIe 5.0 x16 slot, two M.2 sockets, Wi-Fi 6E and 2.5Gb Ethernet. It also features USB Type-C connectivity, HDMI display output and ASUS Aura Sync lighting support.",
       "featured": false,
@@ -695,8 +684,7 @@
       "memType": "DDR5",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/asus-prime-b860m-a-wifi-csm-micro-atx-motherboard-intel-b860-lga-1851/p/N82E16813119714"
+      "power": "5"
     },
     {
       "id": "intel1851m4",
@@ -723,7 +711,7 @@
       "cpuType": "",
       "processor": "",
       "brand": "MSI",
-      "price": 153.99,
+      "price": 154.99,
       "desc": "ATX - LGA1700",
       "longDesc": "MSI PRO B760-P WIFI DDR4 is an ATX LGA1700 motherboard for 12th-, 13th- and 14th-generation Intel Core processors. This DDR4 version supports four memory slots, PCIe 4.0 expansion, M.2 SSD storage, Wi-Fi 6 and 2.5Gb Ethernet. It also includes multiple USB connections and MSI PRO-series features for everyday productivity and desktop builds.",
       "featured": false,
@@ -732,8 +720,7 @@
       "memType": "DDR4",
       "tdp": "",
       "watts": "",
-      "power": "5",
-      "sourceUrl": "https://www.newegg.com/msi-pro-b760-p-wifi-ddr4-atx-motherboard-intel-b760-lga-1700/p/N82E16813144587"
+      "power": "5"
     },
     {
       "id": "intel1700a2",
@@ -904,7 +891,7 @@
       "cpuType": "Ryzen 7",
       "processor": "Ryzen 7 5800X3D 10th Anniversary Edition",
       "brand": "AMD",
-      "price": 364,
+      "price": 363.99,
       "desc": "8-Core / 16-Thread • 3.4 GHz Base • Up to 4.5 GHz Boost • 105W • 3D V-Cache • AM4 • DDR4",
       "longDesc": "AMD Ryzen 7 5800X3D 10th Anniversary Edition desktop processor. 8 cores and 16 threads, 3.4 GHz base clock and up to 4.5 GHz max boost, 100MB total cache, 105W TDP. Socket AM4; supports DDR4 memory. Integrated graphics: None. Newegg direct-sold listing price checked: $348.99. Apex price includes the $15 markup.",
       "featured": false,
@@ -985,7 +972,7 @@
       "cpuType": "Ryzen 5",
       "processor": "Ryzen 5 7600X",
       "brand": "AMD",
-      "price": 199,
+      "price": 214,
       "desc": "6-Core / 12-Thread • 4.7 GHz Base • Up to 5.3 GHz Boost • 105W • AM5 • DDR5 • Integrated Radeon Graphics",
       "longDesc": "AMD Ryzen 5 7600X desktop processor. 6 cores and 12 threads, 4.7 GHz base clock and up to 5.3 GHz max boost, 38MB total cache, 105W TDP. Socket AM5; supports DDR5 memory. Integrated graphics: AMD Radeon Graphics. Newegg direct-sold listing price checked: $199.00. Apex price includes the $15 markup.",
       "featured": false,
@@ -1012,7 +999,7 @@
       "cpuType": "Ryzen 7",
       "processor": "Ryzen 7 7700X",
       "brand": "AMD",
-      "price": 276,
+      "price": 254,
       "desc": "8-Core / 16-Thread • 4.5 GHz Base • Up to 5.4 GHz Boost • 105W • AM5 • DDR5 • Integrated Radeon Graphics",
       "longDesc": "AMD Ryzen 7 7700X desktop processor. 8 cores and 16 threads, 4.5 GHz base clock and up to 5.4 GHz max boost, 40MB total cache, 105W TDP. Socket AM5; supports DDR5 memory. Integrated graphics: AMD Radeon Graphics. Newegg direct-sold listing price checked: $239.00. Apex price includes the $15 markup.",
       "featured": false,
@@ -1039,7 +1026,7 @@
       "cpuType": "Ryzen 7",
       "processor": "Ryzen 7 7800X3D",
       "brand": "AMD",
-      "price": 435,
+      "price": 404,
       "desc": "8-Core / 16-Thread • 4.2 GHz Base • Up to 5.0 GHz Boost • 120W • 3D V-Cache • AM5 • DDR5 • Integrated Radeon Graphics",
       "longDesc": "AMD Ryzen 7 7800X3D desktop processor. 8 cores and 16 threads, 4.2 GHz base clock and up to 5.0 GHz max boost, 104MB total cache, 120W TDP. Socket AM5; supports DDR5 memory. Integrated graphics: AMD Radeon Graphics. Newegg direct-sold listing price checked: $389.00. Apex price includes the $15 markup.",
       "featured": false,
@@ -1066,7 +1053,7 @@
       "cpuType": "Ryzen 9",
       "processor": "Ryzen 9 7900X",
       "brand": "AMD",
-      "price": 348.99,
+      "price": 330,
       "desc": "12-Core / 24-Thread • 4.7 GHz Base • Up to 5.6 GHz Boost • 170W • AM5 • DDR5 • Integrated Radeon Graphics",
       "longDesc": "AMD Ryzen 9 7900X desktop processor. 12 cores and 24 threads, 4.7 GHz base clock and up to 5.6 GHz max boost, 76MB total cache, 170W TDP. Socket AM5; supports DDR5 memory. Integrated graphics: AMD Radeon Graphics. Newegg direct-sold listing price checked: $315.00. Apex price includes the $15 markup.",
       "featured": false,
@@ -1201,7 +1188,7 @@
       "cpuType": "Ryzen 9",
       "processor": "Ryzen 9 9950X3D",
       "brand": "AMD",
-      "price": 639,
+      "price": 714,
       "desc": "16-Core / 32-Thread • 4.3 GHz Base • Up to 5.7 GHz Boost • 170W • 3D V-Cache • AM5 • DDR5 • Integrated Radeon Graphics",
       "longDesc": "AMD Ryzen 9 9950X3D desktop processor. 16 cores and 32 threads, 4.3 GHz base clock and up to 5.7 GHz max boost, 144MB total cache, 170W TDP. Socket AM5; supports DDR5 memory. Integrated graphics: AMD Radeon Graphics. Newegg direct-sold listing price checked: $699.00. Apex price includes the $15 markup.",
       "featured": false,
@@ -1226,7 +1213,7 @@
       "name": "ASUS Prime Radeon RX 9070 GRE EVO OC 12GB",
       "category": "Graphics card",
       "brand": "ASUS",
-      "price": 594.99,
+      "price": 794.99,
       "desc": "12GB GDDR6 - 192-bit - PCIe 5.0 x16 - Triple Fan - Up to 2880 MHz Boost",
       "longDesc": "AMD Radeon RX 9070 GRE (RDNA 4) with 3,072 stream processors, 12GB GDDR6 memory on a 192-bit bus, 18 Gbps effective memory speed, a 2300 MHz game clock, and up to 2880 MHz boost clock. PCI Express 5.0 x16 interface. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1a. Triple-fan ASUS Prime EVO cooling, 304 mm maximum length, two 8-pin power connectors, 220W typical board power (AMD reference), and 650W recommended PSU. Newegg price: $779.99; Apex price includes $15 markup.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-126-841-02.png",
@@ -1260,7 +1247,7 @@
       "name": "MSI Ventus GeForce RTX 5060 8GB VENTUS 2X OC",
       "category": "Graphics card",
       "brand": "MSI",
-      "price": 524.99,
+      "price": 534.99,
       "desc": "8GB GDDR7 - 128-bit - PCIe 5.0 x8 - Dual Fan - 2527 MHz Boost",
       "longDesc": "NVIDIA GeForce RTX 5060 (Blackwell) with 3,840 CUDA cores, 8GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2527 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Dual-fan cooling, 197 mm maximum length, 8-pin power connector, 145W thermal design power, and 550W recommended PSU. Newegg price: $519.99; Apex price includes $15 markup.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-137-975-03.jpg",
@@ -1277,7 +1264,7 @@
       "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
       "category": "Graphics card",
       "brand": "MSI",
-      "price": 804.99,
+      "price": 864.99,
       "desc": "16GB GDDR7 - 128-bit - PCIe 5.0 x8 - Dual Fan - 2602 MHz Boost",
       "longDesc": "NVIDIA GeForce RTX 5060 Ti (Blackwell) with 4,608 CUDA cores, 16GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2602 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Dual-fan cooling, 227 mm maximum length, 8-pin power connector, 180W thermal design power, and 600W recommended PSU. Newegg price: $849.99; Apex price includes $15 markup.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-137-992-01.jpg",
@@ -1362,7 +1349,7 @@
       "name": "GIGABYTE WINDFORCE GeForce RTX 5070 12GB OC",
       "category": "Graphics card",
       "brand": "GIGABYTE",
-      "price": 854.99,
+      "price": 924.99,
       "desc": "12GB GDDR7 - 192-bit - PCIe 5.0 x16 - Triple Fan - 2542 MHz Boost Clock",
       "longDesc": "NVIDIA GeForce RTX 5070 (Blackwell) with 6,144 CUDA cores, 12GB GDDR7 memory on a 192-bit bus, and a 2542 MHz boost clock. PCI Express 5.0 x16 interface. Triple-fan WINDFORCE cooling, one 16-pin power connector, 250W total graphics power, and 750W recommended PSU. Newegg direct price: $909.99; Apex price includes the $15 markup.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-932-777-02.jpg",
