@@ -372,6 +372,59 @@ footer.site a{color:var(--gold)}
  .home-reveal{opacity:1;transform:none;transition:none}
 }
 
+
+/* ---------- Product page motion + finishing layer ---------- */
+.products-hero{isolation:isolate}
+.products-hero:before{content:"";position:absolute;width:440px;height:440px;right:5%;top:-230px;border-radius:50%;background:radial-gradient(circle,rgba(216,178,60,.2),transparent 68%);pointer-events:none;animation:shopGlow 9s ease-in-out infinite alternate}
+.products-hero-inner{animation:shopEnter .8s cubic-bezier(.2,.75,.25,1) both}
+.products-hero-copy>*{animation:shopTextIn .7s ease both}
+.products-hero-copy>*:nth-child(2){animation-delay:.08s}
+.products-hero-copy>*:nth-child(3){animation-delay:.16s}
+.products-hero-copy>*:nth-child(4){animation-delay:.24s}
+.products-hero-art{animation:shopArtFloat 7s ease-in-out infinite}
+.products-hero-art .ring-one{animation:shopRing 24s linear infinite}
+.products-hero-art .ring-two{animation:shopRing 32s linear infinite reverse}
+.products-hero-art .art-chip{transition:transform .35s ease,filter .35s ease}
+.products-hero-art:hover .art-chip{transform:translateY(-5px) rotate(-4deg);filter:drop-shadow(0 18px 24px rgba(216,178,60,.25))}
+.products-content{position:relative}
+.products-heading{position:relative}
+.products-kicker{letter-spacing:.2em}
+.products-filters{position:relative;overflow:hidden;transition:border-color .2s ease,box-shadow .2s ease}
+.products-filters:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--gold),transparent);opacity:.8}
+.products-filters:focus-within{border-color:var(--gold);box-shadow:0 8px 28px rgba(12,59,46,.09)}
+.products-filters input,.products-filters select{transition:border-color .18s ease,box-shadow .18s ease,background .18s ease}
+.products-filters input:focus,.products-filters select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.13);outline:0}
+.products-page .shelf{opacity:1;transform:none}
+.products-page .shelf.products-reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1)}
+.products-page .shelf.products-reveal.is-visible{opacity:1;transform:translateY(0)}
+.products-page .shelf-row>.product-card{position:relative;isolation:isolate}
+.products-page .shelf-row>.product-card:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.32) 48%,transparent 72%);opacity:0;transform:translateX(-110%);transition:opacity .25s ease}
+.products-page .shelf-row>.product-card:hover:after{opacity:1;animation:shopCardShine .8s ease}
+.products-page .product-thumb{position:relative;overflow:hidden}
+.products-page .product-thumb:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(201,162,39,.12),transparent 65%);pointer-events:none}
+.products-page .product-thumb img{transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .3s ease}
+.products-page .product-card:hover .product-thumb img{transform:scale(1.055)}
+.products-page .product-card .btn{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.products-page .product-card .btn:hover{transform:translateY(-2px);box-shadow:0 5px 12px rgba(12,59,46,.13)}
+.products-page .shelf-arrows button:active{transform:scale(.94)}
+.products-page .empty{border-radius:var(--radius);padding:52px 24px}
+@keyframes shopEnter{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
+@keyframes shopTextIn{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
+@keyframes shopArtFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
+@keyframes shopRing{to{rotate:360deg}}
+@keyframes shopGlow{from{transform:translate3d(0,0,0) scale(.9);opacity:.55}to{transform:translate3d(-35px,35px,0) scale(1.12);opacity:1}}
+@keyframes shopCardShine{0%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
+@media(max-width:700px){
+ .products-hero-art{animation-duration:9s}
+ .products-page .shelf.products-reveal{transform:translateY(14px)}
+ .products-page .shelf-row>.product-card:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .products-hero-inner,.products-hero-copy>*,.products-hero-art,.products-hero-art .ring-one,.products-hero-art .ring-two,.products-hero:before{animation:none!important}
+ .products-page .shelf.products-reveal{opacity:1;transform:none;transition:none}
+ .products-page .product-thumb img,.products-page .product-card .btn{transition:none}
+ .products-page .shelf-row>.product-card:after{display:none}
+}
 </style>
 </head>
 <body>
@@ -1002,6 +1055,7 @@ function render(){
   document.querySelectorAll(".shelf-row").forEach(el=>{ if(el.id) rows[el.id] = el.scrollLeft; });
   app.innerHTML = (views[r]||home)();
   if(r==="/") setupHomeMotion();
+  if(r==="/products") setupProductsMotion();
   Object.keys(rows).forEach(id=>{ const el = document.getElementById(id); if(el) el.scrollLeft = rows[id]; });
   if(keep){
     const el = document.getElementById(keep.id);
@@ -1348,6 +1402,34 @@ function products(){
         :`<div class="empty"><strong>Nothing matches those filters</strong><button class="btn sm ghost" style="margin-top:12px" onclick="clearProductFilters()">Clear filters</button></div>`}
     </div>
   </div>`;
+}
+
+
+/* Small scroll-reveal layer for the catalog. Content remains visible if motion is reduced. */
+let productsMotionCleanup=null;
+function setupProductsMotion(){
+  if(productsMotionCleanup) productsMotionCleanup();
+  const page=document.querySelector(".products-page");
+  if(!page) return;
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce) return;
+  const targets=[...page.querySelectorAll(".products-heading,.products-filters,.products-page .shelf")];
+  if(!("IntersectionObserver" in window)){return;}
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:.08,rootMargin:"0px 0px -35px 0px"});
+  targets.forEach((el,i)=>{
+    if(el.classList.contains("shelf")) el.classList.add("products-reveal");
+    else el.classList.add("products-reveal");
+    el.style.transitionDelay=Math.min(i*55,330)+"ms";
+    observer.observe(el);
+  });
+  productsMotionCleanup=()=>observer.disconnect();
 }
 
 /* ---- build page ---- */
