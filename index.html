@@ -425,6 +425,80 @@ footer.site a{color:var(--gold)}
  .products-page .product-thumb img,.products-page .product-card .btn{transition:none}
  .products-page .shelf-row>.product-card:after{display:none}
 }
+
+/* ---------- Newegg-inspired Apex catalog layout ---------- */
+.products-content{max-width:1320px}
+.products-heading{align-items:center;margin:26px 0 20px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.products-heading h2{margin:5px 0 7px}
+.products-heading p{margin:0;color:var(--ink-2)}
+.shop-layout{display:grid;grid-template-columns:238px minmax(0,1fr);gap:25px;align-items:start}
+.shop-sidebar{position:sticky;top:16px;background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:0 8px 26px rgba(7,39,28,.055)}
+.shop-sidebar-head{padding:18px 17px 14px;background:linear-gradient(140deg,#0a3024,#14513d);color:#fff;border-bottom:2px solid var(--gold)}
+.shop-side-eyebrow,.shop-section-kicker{display:block;font-size:.64rem;letter-spacing:.16em;font-weight:800;color:var(--gold);margin-bottom:5px}
+.shop-sidebar-head strong{display:block;font:800 1.05rem Archivo,sans-serif}
+.shop-sidebar-hint{display:block;color:#c4d6cb;font-size:.75rem;margin-top:5px;line-height:1.4}
+.shop-side-nav{padding:8px;display:grid;gap:3px}
+.shop-side-link{width:100%;display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--ink);text-align:left;cursor:pointer;font-size:.85rem;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.shop-side-link:hover{background:var(--paper);border-color:var(--line);transform:translateX(2px)}
+.shop-side-link.active{background:rgba(201,162,39,.13);border-color:rgba(201,162,39,.42);color:var(--board);font-weight:700}
+:root[data-theme="dark"] .shop-side-link.active,:root:not([data-theme="light"]) .shop-side-link.active{color:var(--gold)}
+.shop-side-icon{width:25px;height:25px;display:grid;place-items:center;flex:none;border-radius:7px;background:var(--paper);color:var(--board);font-weight:800}
+.shop-side-link small{margin-left:auto;color:var(--ink-2);font-size:.7rem;font-variant-numeric:tabular-nums}
+.shop-sidebar-promo{margin:8px;padding:13px;border-radius:9px;background:linear-gradient(140deg,rgba(12,59,46,.09),rgba(201,162,39,.12));border:1px solid rgba(201,162,39,.25)}
+.shop-sidebar-promo span{font-size:.67rem;font-weight:800;letter-spacing:.1em;color:var(--gold-2)}
+.shop-sidebar-promo p{font-size:.78rem;line-height:1.45;margin:6px 0 8px;color:var(--ink-2)}
+.shop-sidebar-promo a{font-size:.8rem;font-weight:800;color:var(--board);text-decoration:none}
+:root[data-theme="dark"] .shop-sidebar-promo a,:root:not([data-theme="light"]) .shop-sidebar-promo a{color:var(--gold)}
+.shop-main{min-width:0;scroll-margin-top:16px}
+.shop-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 15px;margin-bottom:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.shop-toolbar>div{display:flex;align-items:center;gap:9px}
+.shop-toolbar strong{font:800 .92rem Archivo,sans-serif}
+.shop-toolbar-note{font-size:.75rem;color:var(--ink-2)}
+.shop-toolbar-dot{width:8px;height:8px;border-radius:50%;background:#27a36b;box-shadow:0 0 0 4px rgba(39,163,107,.12)}
+.shop-main .products-filters{margin-bottom:27px;padding:17px 18px;border-radius:11px}
+.products-page .shelf{scroll-margin-top:20px;margin-bottom:35px}
+.products-page .shelf-head{align-items:end;border-bottom:1px solid var(--line);padding-bottom:12px}
+.products-page .shelf-head h3{font-size:1.28rem;margin:0}
+.products-page .shop-section-kicker{color:var(--gold-2);font-size:.6rem;margin-bottom:4px}
+.products-page .shelf-row{gap:13px}
+.products-page .shelf-row>.product-card{flex-basis:225px}
+.products-page .shelf-row.feat>.product-card{flex-basis:265px}
+.products-page .product-card{background:var(--panel);border:1px solid var(--line);box-shadow:0 3px 13px rgba(0,0,0,.045)}
+.products-page .product-card:hover{border-color:var(--gold);box-shadow:0 12px 26px rgba(12,59,46,.12)}
+.products-page .product-card>.row:first-of-type{gap:5px}
+.products-page .product-card>h3{font-size:.92rem;min-height:2.55em}
+.products-page .product-card>.price{font-size:1.4rem;letter-spacing:-.025em}
+.products-page .product-card .btn:first-child{background:var(--board);color:#fff}
+.products-page .product-card .btn:first-child:hover{background:#14513d}
+.products-page .product-card .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.products-page .product-card .btn.ghost:hover{border-color:var(--gold)}
+.products-page .shelf-row::-webkit-scrollbar{height:8px}
+.products-page .shelf-row::-webkit-scrollbar-thumb{background:#b8c7bd;border-radius:99px}
+.products-page .shelf-row::-webkit-scrollbar-track{background:var(--paper);border-radius:99px}
+@media(max-width:900px){
+ .shop-layout{grid-template-columns:1fr;gap:14px}
+ .shop-sidebar{position:relative;top:auto}
+ .shop-sidebar-head{padding:13px 15px}
+ .shop-sidebar-hint,.shop-sidebar-promo{display:none}
+ .shop-side-nav{display:flex;gap:7px;overflow-x:auto;padding:9px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+ .shop-side-link{width:auto;white-space:nowrap;flex:none;padding:8px 10px}
+ .shop-side-link:hover{transform:translateY(-1px)}
+ .shop-side-link small{margin-left:0}
+ .shop-side-icon{width:22px;height:22px}
+}
+@media(max-width:560px){
+ .products-content{padding-left:14px;padding-right:14px}
+ .products-heading{align-items:flex-start}
+ .shop-toolbar-note{display:none}
+ .products-page .shelf-row>.product-card{flex-basis:205px}
+ .products-page .shelf-row.feat>.product-card{flex-basis:230px}
+ .shop-side-nav{margin:0 -1px}
+}
+@media(prefers-reduced-motion:reduce){
+ .shop-side-link{transition:none}
+ .shop-side-link:hover{transform:none}
+}
+
 </style>
 </head>
 <body>
@@ -1328,14 +1402,23 @@ function moveProduct(id,dir){
 }
 function shelf(title, items, idx, feat){
   const rid = "shelf_"+String(title).replace(/[^a-z0-9]/gi,"_");
-  return `<div class="shelf">
-    <div class="shelf-head"><h3>${feat?"★ ":""}${esc(title)} <span class="muted" style="font-weight:500;font-size:.85rem">(${items.length})</span></h3>
+  return `<section class="shelf" id="shop_${rid}">
+    <div class="shelf-head"><div><span class="shop-section-kicker">${feat?"APEX PICKS":"BROWSE CATEGORY"}</span><h3>${feat?"✦ ":""}${esc(title)} <span class="muted" style="font-weight:500;font-size:.85rem">(${items.length})</span></h3></div>
       <div class="shelf-arrows"><button aria-label="Scroll left" onclick="scrollShelf('${rid}',-1)">‹</button><button aria-label="Scroll right" onclick="scrollShelf('${rid}',1)">›</button></div></div>
     <div class="shelf-row ${feat?'feat':''}" id="${rid}">${items.map(productCard).join("")}</div>
-  </div>`;
+  </section>`;
 }
 function scrollShelf(id,dir){ const el=document.getElementById(id); if(el) el.scrollBy({left:dir*Math.max(260,el.clientWidth*0.8),behavior:"smooth"}); }
 
+function jumpProductSection(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  if(id==="shopCatalogTop"){
+    const search=document.getElementById("prod_f_q");
+    if(search && window.innerWidth>700) search.focus({preventScroll:true});
+  }
+}
 function products(){
   const f = productFilters;
   const order = S.settings.productCategories||[];
@@ -1379,6 +1462,16 @@ function products(){
     <div class="field" style="margin-bottom:0"><label>Search</label><input id="prod_f_q" placeholder="Name, description, processor…" value="${esc(f.q)}" oninput="setProductFilter('q',this.value)"></div>
     ${active?`<button class="btn sm ghost" style="margin-top:10px" onclick="clearProductFilters()">Clear filters</button>`:""}
   </div>` : "";
+  const navItem=(label,count,target,icon,active=false)=>`<button class="shop-side-link ${active?"active":""}" onclick="jumpProductSection('${target}')"><span class="shop-side-icon">${icon}</span><span>${esc(label)}</span><small>${count}</small></button>`;
+  const sideMenu=`<aside class="shop-sidebar" aria-label="Product categories">
+    <div class="shop-sidebar-head"><span class="shop-side-eyebrow">QUICK NAVIGATION</span><strong>Shop by category</strong><span class="shop-sidebar-hint">Jump straight to what you're looking for</span></div>
+    <nav class="shop-side-nav">
+      ${navItem("All products",shown.length,"shopCatalogTop","⌂",true)}
+      ${featured.length?navItem("Featured",featured.length,"shop_shelf_Featured","✦"):""}
+      ${allCats.map((c,i)=>navItem(c,shown.filter(p=>displayCat(p)===c).length,"shop_shelf_"+String(c).replace(/[^a-z0-9]/gi,"_"),(["▣","◈","▤","◉","▱","ϟ","▦","❄","＋"][i%9]))).join("")}
+    </nav>
+    <div class="shop-sidebar-promo"><span>✦ APEX TIP</span><p>Not sure what fits? Try the PC builder to check component compatibility.</p><a href="#/build">Build a PC ↗</a></div>
+  </aside>`;
   return `<div class="products-page">
     <section class="products-hero">
       <div class="wrap products-hero-inner">
@@ -1393,13 +1486,19 @@ function products(){
     </section>
     <div class="wrap products-content">
       <div class="products-heading">
-        <div><span class="products-kicker">THE CATALOG</span><h2>Shop components &amp; products</h2><p>Browse by category or narrow things down with filters.</p></div>
+        <div><span class="products-kicker">THE CATALOG</span><h2>Shop components &amp; products</h2><p>Find your next upgrade, one component at a time.</p></div>
         ${isOwner?`<div class="row"><button class="btn gold" onclick="editProduct()">＋ Add a product</button><button class="btn ghost" onclick="go('/manage')">Manage categories</button></div>`:""}
       </div>
-      ${filterBar}
-      ${!items.length?`<div class="empty"><strong>Nothing listed yet</strong>${isOwner?"Use “Add a product” to put your first item up.":"Check back soon, or ask us what's on the bench."}</div>`
-        : shown.length?shelves
-        :`<div class="empty"><strong>Nothing matches those filters</strong><button class="btn sm ghost" style="margin-top:12px" onclick="clearProductFilters()">Clear filters</button></div>`}
+      <div class="shop-layout">
+        ${sideMenu}
+        <div class="shop-main" id="shopCatalogTop">
+          <div class="shop-toolbar"><div><span class="shop-toolbar-dot"></span><strong>${shown.length} products</strong><span class="muted">ready to explore</span></div><span class="shop-toolbar-note">Scroll a row or jump categories from the side menu</span></div>
+          ${filterBar}
+          ${!items.length?`<div class="empty"><strong>Nothing listed yet</strong>${isOwner?"Use “Add a product” to put your first item up.":"Check back soon, or ask us what's on the bench."}</div>`
+            : shown.length?shelves
+            :`<div class="empty"><strong>Nothing matches those filters</strong><button class="btn sm ghost" style="margin-top:12px" onclick="clearProductFilters()">Clear filters</button></div>`}
+        </div>
+      </div>
     </div>
   </div>`;
 }
