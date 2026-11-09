@@ -2470,6 +2470,24 @@ function editProduct(id){
       <div class="notice" style="font-size:.86rem">This is a PC part, so it also appears on the Build a PC page. These details let that page match it with other parts.</div>
       <div class="field"><label>Socket</label>${selectWithAdd("p_sock","sockets",p.socket||"","—")}</div>
       <div class="field"><label>Memory type</label><select id="p_mem"><option value="">—</option><option ${p.memType==="DDR5"?"selected":""}>DDR5</option><option ${p.memType==="DDR4"?"selected":""}>DDR4</option></select></div>
+      <details class="field" style="margin-top:10px"><summary style="cursor:pointer;font-weight:700">Physical fit specifications (optional)</summary>
+        <p class="muted" style="font-size:.8rem">Enter measurements from the manufacturer's specifications. These are used by Build a PC to check case, cooler, board and power-connector fit.</p>
+        <div class="fields2">
+          <div class="field"><label>Motherboard form factor</label><input id="p_form_factor" value="${esc(p.formFactor||"")}" placeholder="ATX, Micro-ATX, Mini-ITX"></div>
+          <div class="field"><label>Case-supported board sizes</label><input id="p_case_form_factors" value="${esc(p.caseFormFactors||"")}" placeholder="ATX, Micro-ATX, Mini-ITX"></div>
+          <div class="field"><label>GPU length (mm)</label><input id="p_length_mm" type="number" value="${p.lengthMm||""}"></div>
+          <div class="field"><label>Case max GPU length (mm)</label><input id="p_max_gpu_mm" type="number" value="${p.maxGpuLengthMm||""}"></div>
+          <div class="field"><label>Cooler height (mm)</label><input id="p_height_mm" type="number" value="${p.heightMm||""}"></div>
+          <div class="field"><label>Case max cooler height (mm)</label><input id="p_max_cooler_mm" type="number" value="${p.maxCoolerHeightMm||""}"></div>
+          <div class="field"><label>RAM height (mm)</label><input id="p_ram_height_mm" type="number" value="${p.heightMm||""}"></div>
+          <div class="field"><label>Cooler max RAM clearance (mm)</label><input id="p_max_ram_mm" type="number" value="${p.maxRamHeightMm||""}"></div>
+          <div class="field"><label>Cooler-supported CPU sockets</label><input id="p_supported_sockets" value="${esc(p.supportedSockets||"")}" placeholder="AM5, AM4, LGA1700"></div>
+          <div class="field"><label>PSU form factor</label><input id="p_psu_form_factor" value="${esc(p.formFactor||"")}" placeholder="ATX, SFX, SFX-L"></div>
+          <div class="field"><label>Case-supported PSU sizes</label><input id="p_psu_supported" value="${esc(p.supportedPSUFormFactors||"")}" placeholder="ATX, SFX"></div>
+          <div class="field"><label>GPU required power connectors</label><input id="p_gpu_connectors" value="${esc(p.requiredPowerConnectors||"")}" placeholder="2x8-pin, 12V-2x6"></div>
+          <div class="field"><label>PSU GPU power connectors</label><input id="p_psu_connectors" value="${esc(p.gpuPowerConnectors||"")}" placeholder="2x8-pin, 12V-2x6"></div>
+        </div>
+      </details>
       <div class="fields2">
         <div class="field" id="p_tdp_wrap"><label>CPU TDP (W)</label><input id="p_tdp" type="number" value="${p.tdp||""}"></div>
         <div class="field" id="p_watts_wrap"><label>PSU output (W)</label><input id="p_watts" type="number" value="${p.watts||""}"></div>
@@ -2520,10 +2538,23 @@ function handleImageUpload(e, fieldId, previewId){
   };
   reader.readAsDataURL(file);
 }
+function recHeightForCategory(category,ramId,otherId){
+  const el=document.getElementById(category==="Memory"?ramId:otherId);
+  return el?el.value:"";
+}
 function saveProduct(id,exists){
   const rec = {id,name:p_name.value.trim(),category:readSelectWithAdd("p_cat","productCategories"),cpuType:readSelectWithAdd("p_cpu","cpuTypes"),
     processor:p_proc.value.trim(),brand:p_brand.value.trim(),price:+p_price.value||0,desc:p_desc.value.trim(),longDesc:p_long.value.trim(),
-    featured:p_feat.checked,image:p_img.value.trim()};
+    featured:p_feat.checked,image:p_img.value.trim(),
+    formFactor:document.getElementById("p_form_factor")?.value.trim()||document.getElementById("p_psu_form_factor")?.value.trim()||"",
+    caseFormFactors:document.getElementById("p_case_form_factors")?.value.trim()||"",
+    lengthMm:document.getElementById("p_length_mm")?.value||"", maxGpuLengthMm:document.getElementById("p_max_gpu_mm")?.value||"",
+    heightMm:recHeightForCategory(p_cat.value, "p_ram_height_mm", "p_height_mm"),
+    maxCoolerHeightMm:document.getElementById("p_max_cooler_mm")?.value||"", maxRamHeightMm:document.getElementById("p_max_ram_mm")?.value||"",
+    supportedSockets:document.getElementById("p_supported_sockets")?.value.trim()||"",
+    supportedPSUFormFactors:document.getElementById("p_psu_supported")?.value.trim()||"",
+    requiredPowerConnectors:document.getElementById("p_gpu_connectors")?.value.trim()||"",
+    gpuPowerConnectors:document.getElementById("p_psu_connectors")?.value.trim()||""};
   if(isPartCat(rec.category)){
     rec.socket = readSelectWithAdd("p_sock","sockets"); rec.memType = p_mem.value;
     rec.tdp = rec.category==="CPU" ? p_tdp.value : "";
