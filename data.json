@@ -7098,6 +7098,30 @@
       "seller": "Newegg",
       "stockStatus": "In Stock",
       "verifiedDate": "2026-11-09"
+    },
+    {
+      "id": "psuttDockpower850",
+      "name": "Thermaltake Dockpower FI 850W Gold Snow",
+      "brand": "Thermaltake",
+      "price": 144.99,
+      "neweggPrice": 129.99,
+      "sourceUrl": "https://www.newegg.com/thermaltake-atx-3-1-compatible-850-w-80-plus-gold-certified-power-supply-snow-dockpower-fi-850w/p/N82E16817153500",
+      "image": "https://c1.neweggimages.com/productimage/nb640/17-153-500-06.png",
+      "watts": "850",
+      "efficiency": "80 PLUS Gold",
+      "modular": "Fully Modular",
+      "formFactor": "ATX",
+      "atxStandard": "ATX 3.1",
+      "gpuPowerConnectors": "12V-2x6, 8-pin",
+      "warranty": "5 years",
+      "desc": "850W • 80 PLUS Gold • Fully Modular • ATX • ATX 3.1 • White\nGPU power: 12V-2x6 • Detachable dock module",
+      "longDesc": "Fully modular 850W 80 PLUS Gold ATX 3.1 power supply with detachable dock module, pre-managed low-profile cables, gold-plated docking contacts, native 600W 12V-2x6 PCIe 5.1 cable and 5-year warranty.",
+      "category": "Power supply",
+      "tdp": "",
+      "power": "",
+      "seller": "Newegg",
+      "stockStatus": "In Stock",
+      "verifiedDate": "2026-11-09"
     }
   ]
 }
