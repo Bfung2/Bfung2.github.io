@@ -1817,8 +1817,7 @@ function guideInfo(cat){return BUILD_GUIDE[cat]||{title:"Choose your components"
 function nextGuidedCategory(){
   const slots=CATS.filter(cat=>partsAll().some(p=>p.category===cat));
   const next=slots.find(cat=>!pickedIn(cat));
-  const target=next||slots[0];
-  if(target)focusSection(target);
+  if(next)focusSection(next);
   else {const el=document.querySelector(".build-summary-panel");if(el)el.scrollIntoView({behavior:"smooth",block:"center"});}
 }
 
