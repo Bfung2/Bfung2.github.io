@@ -1800,6 +1800,10 @@ function build(){
   const need = requiredWatts(cpu, chosenExcludingPSU);
   const pickedIn = cat => buildSel[cat] ? partsAll().find(p=>p.id===buildSel[cat]) : null;
   const selectedParts = CATS.map(pickedIn).filter(Boolean);
+  const fitAlerts = [...new Set(selectedParts.flatMap(part=>{
+    const review=compatibilityReview(part,cpu,need,selectedParts);
+    return [...review.fails,...review.warnings].map(message=>part.name+": "+message);
+  }))];
   const head = (n, cat, count) => {
     const pk = pickedIn(cat);
     return `<summary><h3><span class="n">${n}</span>${esc(cat==="CPU"?"Processor":cat)}</h3>
@@ -1876,7 +1880,12 @@ function build(){
         <div class="row" style="justify-content:space-between;align-items:baseline"><h3 style="margin:0">Your build list</h3><small class="muted">${chosen.length} of ${slots.length} picked</small></div>
         <p class="muted" style="font-size:.82rem;margin:4px 0 12px">Tap a picture for details, × to remove, or an empty slot to jump to it. Saved on this device.</p>
         <div class="blist">${slots.map(tile).join("")}</div>
-        ${powerLine}
+${powerLine}
+        <div class="notice" style="margin:0 0 14px">
+          <strong>Compatibility check</strong>
+          ${fitAlerts.length?`<ul style="margin:6px 0 0;padding-left:20px">${fitAlerts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<p style="margin:5px 0 0">No conflicts found in the specifications currently entered.</p>`}
+          <small class="muted">Physical fit checks need accurate measurements for the selected parts. Missing data is flagged in the part list as “check fit”.</small>
+        </div>
         <label style="display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;font-weight:500">
           <input type="checkbox" style="width:auto;margin-top:4px" ${wantAssembly?"checked":""} onchange="wantAssembly=this.checked;saveBuild();render()">
           <span>Have us assemble and test it — <strong>${money(S.settings.buildFee)}</strong><br><small class="muted">Leave unchecked and the parts ship loose for you to build.</small></span>
