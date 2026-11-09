@@ -645,6 +645,10 @@ footer.site a{color:var(--gold)}
 
 /* ---------- Build summary report ---------- */
 .build-summary-panel{border-color:rgba(201,162,39,.4);background:linear-gradient(160deg,var(--panel),rgba(201,162,39,.035))}.summary-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.summary-heading h3{font-size:1.2rem}.summary-count{font-family:Archivo;font-weight:800;font-size:1.05rem;padding:6px 10px;border-radius:99px;background:var(--paper);border:1px solid var(--line)}.summary-status{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:8px;padding:10px 12px;border-radius:var(--radius);margin:13px 0 10px;background:var(--paper);border:1px solid var(--line)}.summary-status>span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font-weight:800;background:var(--line)}.summary-status strong{font-size:.83rem}.summary-status small{font-size:.72rem;color:var(--ink-2);text-align:right}.summary-status.good{border-color:rgba(49,135,91,.35)}.summary-status.good>span{background:rgba(49,135,91,.13);color:var(--ok)}.summary-status.warn{border-color:rgba(201,162,39,.5)}.summary-status.warn>span{background:rgba(201,162,39,.15);color:var(--gold-2)}.summary-status.bad{border-color:rgba(190,70,60,.45)}.summary-status.bad>span{background:rgba(190,70,60,.13);color:var(--alert)}.summary-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:10px}.summary-stats>div{min-width:0;padding:9px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius)}.summary-stats small{display:block;color:var(--ink-2);font-size:.68rem}.summary-stats strong{display:block;font-family:Archivo;font-size:.96rem;margin-top:3px;overflow-wrap:anywhere}.summary-hint{font-size:.77rem;margin:0 0 10px}.summary-breakdown{margin:2px 0 14px}.summary-section-title{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;font-weight:800;margin-bottom:6px}.summary-section-title small{font-size:.7rem;color:var(--ink-2);font-weight:500}.summary-part-row{display:grid;grid-template-columns:29px minmax(0,1fr) auto 12px;align-items:center;gap:8px;width:100%;text-align:left;padding:9px 2px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}.summary-part-row:hover .summary-part-copy>span{color:var(--gold-2)}.summary-part-icon{display:grid;place-items:center;width:27px;height:27px;border-radius:7px;background:var(--paper);border:1px solid var(--line);font-size:.62rem;font-weight:800;color:var(--ink-2)}.summary-part-copy{display:grid;min-width:0;gap:2px}.summary-part-copy>strong{font-size:.68rem;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}.summary-part-copy>span{font-size:.78rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.summary-part-copy small{display:block;font-size:.67rem;color:var(--ink-2);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.summary-part-price{font-family:Archivo;font-size:.82rem;white-space:nowrap}.summary-part-arrow{color:var(--ink-2);font-size:1.1rem}.summary-compatibility{font-size:.83rem}.summary-compatibility ul{font-size:.78rem}
+
+/* ---------- Saved builds and comparison ---------- */
+.saved-builds{margin:18px 0 22px}.saved-builds-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:12px}.saved-builds-heading h3{margin:2px 0 3px;font-size:1.12rem}.saved-builds-heading p{margin:0;font-size:.8rem}.saved-build-list{display:grid;gap:8px}.saved-build-card{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}.saved-build-main{display:grid;gap:3px;min-width:0}.saved-build-main strong{font-size:.87rem;overflow-wrap:anywhere}.saved-build-main small{font-size:.73rem;color:var(--ink-2)}.compare-check{display:flex;align-items:center;gap:5px;font-size:.75rem;white-space:nowrap}.compare-check input{width:auto}.saved-build-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.saved-empty{font-size:.82rem;margin:8px 0}.saved-compare-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:16px 0 8px;padding-top:12px;border-top:1px solid var(--line);font-size:.86rem}.build-compare-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}.build-compare{width:100%;border-collapse:collapse;font-size:.76rem;min-width:460px}.build-compare th,.build-compare td{padding:9px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}.build-compare thead th{background:var(--paper);font-weight:800}.build-compare tbody th{white-space:nowrap;color:var(--ink-2)}.build-compare tr:last-child th,.build-compare tr:last-child td{border-bottom:0}.saved-local-note{display:block;margin-top:10px;font-size:.7rem}
+@media(max-width:760px){.saved-builds-heading{align-items:flex-start;flex-direction:column}.saved-build-card{grid-template-columns:minmax(0,1fr) auto}.saved-build-actions{grid-column:1/-1;justify-content:flex-start}.saved-compare-heading{align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -1740,6 +1744,9 @@ function setupProductsMotion(){
 
 /* ---- build page ---- */
 let buildSel = {}; let wantAssembly = false; let psuSafetyMargin = 20; let buildBudget = 0;
+let savedBuilds=[]; let compareBuildIds=[];
+try{ const stored=JSON.parse(localStorage.getItem("apex.savedBuilds")||"[]"); if(Array.isArray(stored)) savedBuilds=stored.filter(b=>b&&b.id&&b.sel&&typeof b.sel==="object").slice(0,10); }catch(e){}
+try{ const storedCompare=JSON.parse(localStorage.getItem("apex.compareBuilds")||"[]"); if(Array.isArray(storedCompare)) compareBuildIds=storedCompare.filter(id=>savedBuilds.some(b=>b.id===id)).slice(0,3); }catch(e){}
 try{ const b = JSON.parse(localStorage.getItem("apex.build")||"null"); if(b){ buildSel = b.sel||{}; wantAssembly = !!b.assembly; } }catch(e){}
 try{ const savedMargin=Number(localStorage.getItem("apex.psuSafetyMargin")); if([0,10,15,20,25,30].includes(savedMargin)) psuSafetyMargin=savedMargin; }catch(e){}
 try{ const savedBudget=Number(localStorage.getItem("apex.buildBudget")); if(Number.isFinite(savedBudget)&&savedBudget>0) buildBudget=savedBudget; }catch(e){}
@@ -1747,6 +1754,42 @@ function setPsuSafetyMargin(value){ const n=Number(value); if([0,10,15,20,25,30]
 function setBuildBudget(value){ const n=Number(value); buildBudget=Number.isFinite(n)&&n>0?Math.round(n*100)/100:0; try{if(buildBudget) localStorage.setItem("apex.buildBudget",String(buildBudget)); else localStorage.removeItem("apex.buildBudget");}catch(e){} render(); }
 function clearBuildBudget(){ buildBudget=0; try{localStorage.removeItem("apex.buildBudget");}catch(e){} render(); }
 function saveBuild(){ try{ localStorage.setItem("apex.build", JSON.stringify({sel:buildSel, assembly:wantAssembly})); }catch(e){} }
+function persistSavedBuilds(){ try{localStorage.setItem("apex.savedBuilds",JSON.stringify(savedBuilds));localStorage.setItem("apex.compareBuilds",JSON.stringify(compareBuildIds));}catch(e){toast("Could not save builds on this device. Storage may be full.");} }
+function saveNamedBuild(){
+  const selected=CATS.map(cat=>buildSel[cat]).filter(Boolean);
+  if(!selected.length){toast("Choose at least one component before saving a build.");return;}
+  if(savedBuilds.length>=10){toast("You can save up to 10 builds. Delete one to make room.");return;}
+  const name=prompt("Name this PC build:", "My PC build "+(savedBuilds.length+1));
+  if(name===null)return;
+  const clean=name.trim().slice(0,48);
+  if(!clean){toast("Please enter a name for your build.");return;}
+  const snap={id:"build_"+Date.now().toString(36),name:clean,sel:{...buildSel},assembly:wantAssembly,budget:buildBudget,savedAt:new Date().toISOString()};
+  savedBuilds.unshift(snap);persistSavedBuilds();render();toast("Build saved.");
+}
+function loadSavedBuild(id){
+  const item=savedBuilds.find(b=>b.id===id);if(!item)return;
+  const valid={};CATS.forEach(cat=>{const part=partsAll().find(p=>p.id===item.sel[cat]&&p.category===cat);if(part)valid[cat]=part.id;});
+  buildSel=valid;wantAssembly=!!item.assembly;
+  if(Number.isFinite(+item.budget)&&+item.budget>0)buildBudget=+item.budget;
+  saveBuild();render();go("/build");toast("Saved build loaded.");
+}
+function renameSavedBuild(id){
+  const item=savedBuilds.find(b=>b.id===id);if(!item)return;
+  const name=prompt("Rename this build:",item.name);if(name===null)return;
+  const clean=name.trim().slice(0,48);if(!clean){toast("Please enter a name.");return;}
+  item.name=clean;persistSavedBuilds();render();
+}
+function deleteSavedBuild(id){
+  const item=savedBuilds.find(b=>b.id===id);if(!item||!confirm("Delete saved build \""+item.name+"\"?"))return;
+  savedBuilds=savedBuilds.filter(b=>b.id!==id);compareBuildIds=compareBuildIds.filter(x=>x!==id);persistSavedBuilds();render();
+}
+function toggleBuildCompare(id,checked){
+  if(checked){if(compareBuildIds.length>=3){toast("Compare up to 3 builds at a time.");return;}if(!compareBuildIds.includes(id))compareBuildIds.push(id);}
+  else compareBuildIds=compareBuildIds.filter(x=>x!==id);
+  persistSavedBuilds();render();
+}
+function clearBuildCompare(){compareBuildIds=[];persistSavedBuilds();render();}
+
 function removePick(cat){ delete buildSel[cat]; saveBuild(); render(); }
 function clearBuild(){ if(!confirm("Clear your whole build list?")) return; buildSel={}; wantAssembly=false; saveBuild(); render(); }
 function focusSection(cat){
@@ -1890,6 +1933,21 @@ function build(){
   const chosen = CATS.map(pickedIn).filter(Boolean);
   const partsTotal = chosen.reduce((n,p)=>n+(+p.price||0),0);
   const fee = wantAssembly ? (+S.settings.buildFee||0) : 0;
+  const savedBuildCards = savedBuilds.length ? savedBuilds.map(item=>{
+    const parts=CATS.map(cat=>partsAll().find(p=>p.id===item.sel[cat]&&p.category===cat)).filter(Boolean);
+    const total=parts.reduce((sum,p)=>sum+(+p.price||0),0)+(item.assembly?(+S.settings.buildFee||0):0);
+    const missing=Object.keys(item.sel).length-parts.length;
+    const checked=compareBuildIds.includes(item.id);
+    return `<article class="saved-build-card"><div class="saved-build-main"><strong>${esc(item.name)}</strong><small>${parts.length} components · ${money(total)}${missing?` · ${missing} unavailable part(s)`:""}</small></div><label class="compare-check"><input type="checkbox" ${checked?"checked":""} onchange="toggleBuildCompare('${item.id}',this.checked)"> Compare</label><div class="saved-build-actions"><button class="btn sm gold" onclick="loadSavedBuild('${item.id}')">Load</button><button class="btn sm ghost" onclick="renameSavedBuild('${item.id}')">Rename</button><button class="btn sm danger" onclick="deleteSavedBuild('${item.id}')">Delete</button></div></article>`;
+  }).join("") : '<p class="muted saved-empty">No saved builds yet. Save your current configuration to keep a few PC ideas handy.</p>';
+  const compareBuilds=savedBuilds.filter(item=>compareBuildIds.includes(item.id));
+  const compareRows=compareBuilds.length?(()=>{
+    const categories=CATS.filter(cat=>compareBuilds.some(item=>item.sel[cat]));
+    const totalFor=item=>CATS.reduce((sum,cat)=>{const p=partsAll().find(x=>x.id===item.sel[cat]&&x.category===cat);return sum+(+p?.price||0);},0)+(item.assembly?(+S.settings.buildFee||0):0);
+    return `<div class="build-compare-wrap"><table class="build-compare"><thead><tr><th>Component</th>${compareBuilds.map(item=>`<th>${esc(item.name)}</th>`).join("")}</tr></thead><tbody>${categories.map(cat=>`<tr><th>${esc(cat==="CPU"?"Processor":cat)}</th>${compareBuilds.map(item=>{const p=partsAll().find(x=>x.id===item.sel[cat]&&x.category===cat);return `<td>${p?esc(p.name):item.sel[cat]?"Unavailable":"Not selected"}</td>`;}).join("")}</tr>`).join("")}<tr><th>Parts + assembly</th>${compareBuilds.map(item=>`<td><strong>${money(totalFor(item))}</strong></td>`).join("")}</tr><tr><th>Assembly</th>${compareBuilds.map(item=>`<td>${item.assembly?"Included":"Not included"}</td>`).join("")}</tr></tbody></table></div>`;
+  })():"";
+  const savedBuildManager=`<section class="saved-builds panel"><div class="saved-builds-heading"><div><span class="build-eyebrow">YOUR PC IDEAS</span><h3>Saved builds</h3><p class="muted">Keep up to 10 configurations on this device. Select up to 3 to compare.</p></div><button class="btn gold" onclick="saveNamedBuild()" ${chosen.length?"":"disabled"}>Save current build</button></div><div class="saved-build-list">${savedBuildCards}</div>${compareRows?`<div class="saved-compare-heading"><strong>Build comparison</strong><button class="btn sm ghost" onclick="clearBuildCompare()">Clear comparison</button></div>${compareRows}`:""}<small class="muted saved-local-note">Saved builds stay in this browser on this device. They are not synced between devices.</small></section>`;
+
 
   const pickedCount = chosen.length;
   const progress = slots.length ? Math.round(pickedCount/slots.length*100) : 0;
@@ -1903,6 +1961,7 @@ function build(){
     <div class="build-progress panel"><div class="build-progress-top"><div><strong>Your build journey</strong><small>${pickedCount} of ${slots.length} components selected</small></div><b>${progress}%</b></div><div class="build-progress-track"><span style="width:${progress}%"></span></div></div>
     <div class="pagehead build-heading"><div><h2>Choose your components</h2><p>Work from top to bottom, or jump straight to a category. Compatible options are prioritized automatically.</p></div></div>
     ${budgetPanel}
+    ${savedBuildManager}
     ${!partsAll().length?`<div class="empty"><strong>No parts uploaded yet</strong>${isOwner?"Add a CPU first, then boards, memory and the rest. Fill in socket and memory type so the matching works.":"Parts are being added. Check back shortly."}</div>`: `
     ${filterBar}
     <nav class="build-nav" aria-label="Build categories">${jumpLinks}</nav>
