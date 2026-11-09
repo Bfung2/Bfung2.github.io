@@ -642,6 +642,9 @@ footer.site a{color:var(--gold)}
 /* ---------- Build-a-PC budget planner ---------- */
 .budget-planner{display:grid;grid-template-columns:1.2fr .8fr;gap:16px 28px;align-items:center;margin:18px 0 22px;border-color:rgba(201,162,39,.55);background:linear-gradient(120deg,var(--panel),rgba(201,162,39,.055))}.budget-copy h3{margin:0 0 5px;font-size:1.18rem}.budget-copy p{font-size:.84rem;margin:0;max-width:55ch}.budget-controls label{font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}.budget-input-row{display:flex;align-items:center;gap:8px}.budget-input-row>span{font-family:Archivo;font-weight:800;font-size:1.15rem}.budget-input-row input{min-width:0}.budget-meter{grid-column:1/-1}.budget-meter-top{display:flex;justify-content:space-between;gap:12px;font-size:.84rem;margin-bottom:7px}.budget-meter .build-progress-track{margin:0 0 6px}.budget-meter .build-progress-track span.over{background:var(--alert)}.budget-fit{display:block;font-size:.67rem;line-height:1.2;font-weight:600;color:var(--ok);white-space:nowrap}.budget-fit.over{color:var(--alert)}
 @media(max-width:700px){.budget-planner{grid-template-columns:1fr;gap:12px}.budget-meter{grid-column:auto}.budget-controls{max-width:100%}}
+
+/* ---------- Build summary report ---------- */
+.build-summary-panel{border-color:rgba(201,162,39,.4);background:linear-gradient(160deg,var(--panel),rgba(201,162,39,.035))}.summary-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.summary-heading h3{font-size:1.2rem}.summary-count{font-family:Archivo;font-weight:800;font-size:1.05rem;padding:6px 10px;border-radius:99px;background:var(--paper);border:1px solid var(--line)}.summary-status{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:8px;padding:10px 12px;border-radius:var(--radius);margin:13px 0 10px;background:var(--paper);border:1px solid var(--line)}.summary-status>span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font-weight:800;background:var(--line)}.summary-status strong{font-size:.83rem}.summary-status small{font-size:.72rem;color:var(--ink-2);text-align:right}.summary-status.good{border-color:rgba(49,135,91,.35)}.summary-status.good>span{background:rgba(49,135,91,.13);color:var(--ok)}.summary-status.warn{border-color:rgba(201,162,39,.5)}.summary-status.warn>span{background:rgba(201,162,39,.15);color:var(--gold-2)}.summary-status.bad{border-color:rgba(190,70,60,.45)}.summary-status.bad>span{background:rgba(190,70,60,.13);color:var(--alert)}.summary-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:10px}.summary-stats>div{min-width:0;padding:9px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius)}.summary-stats small{display:block;color:var(--ink-2);font-size:.68rem}.summary-stats strong{display:block;font-family:Archivo;font-size:.96rem;margin-top:3px;overflow-wrap:anywhere}.summary-hint{font-size:.77rem;margin:0 0 10px}.summary-breakdown{margin:2px 0 14px}.summary-section-title{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;font-weight:800;margin-bottom:6px}.summary-section-title small{font-size:.7rem;color:var(--ink-2);font-weight:500}.summary-part-row{display:grid;grid-template-columns:29px minmax(0,1fr) auto 12px;align-items:center;gap:8px;width:100%;text-align:left;padding:9px 2px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}.summary-part-row:hover .summary-part-copy>span{color:var(--gold-2)}.summary-part-icon{display:grid;place-items:center;width:27px;height:27px;border-radius:7px;background:var(--paper);border:1px solid var(--line);font-size:.62rem;font-weight:800;color:var(--ink-2)}.summary-part-copy{display:grid;min-width:0;gap:2px}.summary-part-copy>strong{font-size:.68rem;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}.summary-part-copy>span{font-size:.78rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.summary-part-copy small{display:block;font-size:.67rem;color:var(--ink-2);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.summary-part-price{font-family:Archivo;font-size:.82rem;white-space:nowrap}.summary-part-arrow{color:var(--ink-2);font-size:1.1rem}.summary-compatibility{font-size:.83rem}.summary-compatibility ul{font-size:.78rem}
 </style>
 </head>
 <body>
@@ -1818,10 +1821,16 @@ function build(){
   const recommendedNeed = recommendedPSUWatts(need);
   const pickedIn = cat => buildSel[cat] ? partsAll().find(p=>p.id===buildSel[cat]) : null;
   const selectedParts = CATS.map(pickedIn).filter(Boolean);
-  const fitAlerts = [...new Set(selectedParts.flatMap(part=>{
-    const review=compatibilityReview(part,cpu,need,selectedParts);
-    return [...review.fails,...review.warnings].map(message=>part.name+": "+message);
-  }))];
+  const fitReviews = selectedParts.map(part=>({part,review:compatibilityReview(part,cpu,need,selectedParts)}));
+  const fitFailures = [...new Set(fitReviews.flatMap(({part,review})=>review.fails.map(message=>part.name+": "+message)))];
+  const fitWarnings = [...new Set(fitReviews.flatMap(({part,review})=>review.warnings.map(message=>part.name+": "+message)))];
+  const fitAlerts = [...fitFailures,...fitWarnings];
+  const compatibilityState = fitFailures.length ? {label:"Compatibility issue",tone:"bad",icon:"!"} : fitWarnings.length ? {label:"Review fit details",tone:"warn",icon:"!"} : selectedParts.length ? {label:"No conflicts found",tone:"good",icon:"✓"} : {label:"Build not started",tone:"neutral",icon:"·"};
+  const summaryRows = selectedParts.map(part=>{
+    const label=part.category==="CPU"?"Processor":part.category;
+    const detail=[part.socket,part.memType,part.formFactor,part.tdp?part.tdp+"W TDP":part.watts?part.watts+"W PSU":part.power?part.power+"W draw":""].filter(Boolean).join(" · ");
+    return `<button type="button" class="summary-part-row" onclick="partDetail('${part.id}')"><span class="summary-part-icon">${esc(label.slice(0,2).toUpperCase())}</span><span class="summary-part-copy"><strong>${esc(label)}</strong><span>${esc(part.name)}${detail?`<small>${esc(detail)}</small>`:""}</span></span><strong class="summary-part-price">${money(part.price)}</strong><span class="summary-part-arrow">›</span></button>`;
+  }).join("");
   const head = (n, cat, count) => {
     const pk = pickedIn(cat);
     return `<summary><h3><span class="n">${n}</span>${esc(cat==="CPU"?"Processor":cat)}</h3>
@@ -1907,15 +1916,18 @@ function build(){
         </details></div>
         ${sections}
       </div>
-      <div class="summary panel">
-        <div class="row" style="justify-content:space-between;align-items:baseline"><h3 style="margin:0">Your build list</h3><small class="muted">${chosen.length} of ${slots.length} picked</small></div>
-        <p class="muted" style="font-size:.82rem;margin:4px 0 12px">Tap a picture for details, × to remove, or an empty slot to jump to it. Saved on this device.</p>
+      <div class="summary panel build-summary-panel">
+        <div class="summary-heading"><div><span class="build-eyebrow">YOUR CONFIGURATION</span><h3 style="margin:2px 0 0">Build summary</h3></div><span class="summary-count">${chosen.length}/${slots.length}</span></div>
+        <div class="summary-status ${compatibilityState.tone}"><span>${compatibilityState.icon}</span><strong>${compatibilityState.label}</strong><small>${fitFailures.length?`${fitFailures.length} issue${fitFailures.length===1?"":"s"}`:fitWarnings.length?`${fitWarnings.length} item${fitWarnings.length===1?"":"s"} to review`:selectedParts.length?"Based on the specs provided":"Choose components to begin"}</small></div>
+        <div class="summary-stats"><div><small>Components</small><strong>${chosen.length}</strong></div><div><small>Estimated draw</small><strong>${need?need+" W":"—"}</strong></div><div><small>PSU target</small><strong>${need?recommendedNeed+" W":"—"}</strong></div></div>
+        <p class="muted summary-hint">Select a tile to view details. Use × to remove a part, or choose an empty slot to jump to that category.</p>
         <div class="blist">${slots.map(tile).join("")}</div>
+        ${summaryRows?`<div class="summary-breakdown"><div class="summary-section-title">Selected components <small>${chosen.length} item${chosen.length===1?"":"s"}</small></div>${summaryRows}</div>`:""}
 ${powerLine}
-        <div class="notice" style="margin:0 0 14px">
-          <strong>Compatibility check</strong>
-          ${fitAlerts.length?`<ul style="margin:6px 0 0;padding-left:20px">${fitAlerts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<p style="margin:5px 0 0">No conflicts found in the specifications currently entered.</p>`}
-          <small class="muted">Physical fit checks need accurate measurements for the selected parts. Missing data is flagged in the part list as “check fit”.</small>
+        <div class="notice summary-compatibility" style="margin:0 0 14px">
+          <strong>Compatibility details</strong>
+          ${fitAlerts.length?`<ul style="margin:6px 0 0;padding-left:20px">${fitAlerts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:selectedParts.length?`<p style="margin:5px 0 0">No conflicts found in the specifications currently entered.</p>`:`<p style="margin:5px 0 0">Compatibility checks will appear as you add components.</p>`}
+          <small class="muted">Physical fit checks depend on accurate measurements being available for each part.</small>
         </div>
         <label style="display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;font-weight:500">
           <input type="checkbox" style="width:auto;margin-top:4px" ${wantAssembly?"checked":""} onchange="wantAssembly=this.checked;saveBuild();render()">
