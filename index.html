@@ -1894,11 +1894,11 @@ function build(){
     <div class="fields2" style="margin-top:12px;align-items:flex-end">
       <div class="field"><label>PSU wattage</label><select onchange="setPartFilter('psuWatts',this.value)">
         <option value="">All wattages</option>
-        ${["500","550","600","650","750","850","1000","1050","1200","1250","1300","1500","1600","1650"].map(w=>`<option value="${w}" ${f.psuWatts===w?"selected":""}>${w}W</option>`).join("")}
+        ${["500","550","600","650","750","850","1000","1050","1100","1200","1250","1300","1500","1600","1650"].map(w=>`<option value="${w}" ${f.psuWatts===w?"selected":""}>${w}W</option>`).join("")}
       </select></div>
       <div class="field"><label>Efficiency rating</label><select onchange="setPartFilter('psuEfficiency',this.value)">
         <option value="">All ratings</option>
-        ${["80 PLUS Standard","80 PLUS White","80 PLUS Bronze","80 PLUS Silver","80 PLUS Gold","80 PLUS Platinum","80 PLUS Titanium","Cybenetics Gold","Cybenetics Platinum","Cybenetics Titanium"].map(e=>`<option value="${e}" ${f.psuEfficiency===e?"selected":""}>${e}</option>`).join("")}
+        ${["80 PLUS Standard","80 PLUS White","80 PLUS Bronze","80 PLUS Silver","80 PLUS Gold","80 PLUS Platinum","80 PLUS Titanium","Cybenetics Bronze","Cybenetics Silver","Cybenetics Gold","Cybenetics Platinum","Cybenetics Titanium"].map(e=>`<option value="${e}" ${f.psuEfficiency===e?"selected":""}>${e}</option>`).join("")}
       </select></div>
       <div class="field"><label>Cable modularity</label><select onchange="setPartFilter('psuModular',this.value)">
         <option value="">All cable types</option>
