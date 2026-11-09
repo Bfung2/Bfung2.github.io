@@ -4933,9 +4933,10 @@
       "category": "Power supply",
       "tdp": "",
       "power": "",
-      "seller": "Newegg",
-      "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "seller": "IPC Store",
+      "stockStatus": "Third-party seller",
+      "verifiedDate": "2026-11-09",
+      "active": false
     },
     {
       "id": "psuasusprime750",
