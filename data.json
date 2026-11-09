@@ -3149,9 +3149,10 @@
       "atxStandard": "ATX 3.1",
       "gpuPowerConnectors": "8-pin, 12V-2x6",
       "seller": "Newegg",
-      "stockStatus": "In Stock",
+      "stockStatus": "Backorder",
       "verifiedDate": "2026-11-09",
-      "warranty": "10 years"
+      "warranty": "10 years",
+      "active": false
     },
     {
       "id": "psu850b",
