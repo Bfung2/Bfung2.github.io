@@ -1084,7 +1084,10 @@ function requiredWatts(cpu, chosenExcludingPSU){
 
 /* ---------- cart ---------- */
 function cartCount(){ return myCart.reduce((n,i)=>n+(i.qty||1),0); }
-function addToCart(item){ myCart.push(item); saveCart(); render(); toast("Added to cart."); }
+function addToCart(item){
+  if(item && item.id && S.products.some(p=>p.id===item.id && p.active===false)){toast("This product is temporarily unavailable.");return;}
+  myCart.push(item); saveCart(); render(); toast("Added to cart.");
+}
 function removeCart(i){ myCart.splice(i,1); saveCart(); render(); }
 function cartTotals(){
   let sub = 0;
@@ -1227,7 +1230,7 @@ function home(){
   const showcase = featured.length ? featured : newest;
   const showcaseTitle = featured.length ? "Featured gear" : "Fresh off the bench";
   const extraNew = featured.length ? newest.filter(p=>!featured.some(f=>f.id===p.id)).slice(0,8) : [];
-  const nP = S.products.filter(p=>!isPartCat(p.category)).length, nParts = partsAll().length;
+  const nP = S.products.filter(p=>p.active!==false && !isPartCat(p.category)).length, nParts = partsAll().length;
   const marquee = (items, title, kicker) => items.length ? `
     <section class="home-showcase home-reveal" aria-label="${esc(title)}">
       <div class="home-section-head">
@@ -1296,7 +1299,7 @@ const isPartCat = c => CATS.includes(c) && c!=="Other";
 const nameKey = p => String(p.category||"")+"|"+String(p.name||"").trim().toLowerCase();
 function dupeOfPart(p){ return isPartCat(p.category) && S.parts.some(x=>nameKey(x)===nameKey(p)); }
 function partsAll(){ return [...S.parts, ...S.products.filter(p=>isPartCat(p.category) && !dupeOfPart(p))]; }
-function catalogAll(){ return [...S.products.filter(p=>!dupeOfPart(p)), ...S.parts]; }
+function catalogAll(){ return [...S.products.filter(p=>p.active!==false && !dupeOfPart(p)), ...S.parts]; }
 function displayCat(p){ return (S.parts.includes(p) && p.category==="Other") ? "Other parts" : (p.category||""); }
 function findRec(id){
   let rec = S.products.find(x=>x.id===id); if(rec) return {rec, arr:S.products, kind:"product"};
@@ -1347,6 +1350,7 @@ function detailDialog(o){
 }
 function productDetail(id){
   const f = findRec(id); if(!f) return;
+  if(f.rec.active===false){toast("This product is temporarily unavailable while Newegg is backordered.");return;}
   if(f.kind==="part" || isPartCat(f.rec.category)) return partDetail(id,"products");
   const p = f.rec;
   detailDialog({
