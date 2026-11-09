@@ -638,6 +638,10 @@ footer.site a{color:var(--gold)}
 @media(max-width:520px){.build-intro{padding:24px 18px;border-radius:13px}.build-intro h2{font-size:2.05rem}.build-intro p{font-size:.92rem;max-width:34ch}.build-quickfacts{display:grid;gap:5px;font-size:.77rem}.build-progress{padding:13px}.build-page .step{padding:14px 12px}.build-page .summary{padding:15px}.build-page .pick img{width:46px!important;height:46px!important}}
 @media(prefers-reduced-motion:reduce){.build-intro-copy,.build-page .step,.build-page .pick{animation:none}.ring-one,.ring-two,.build-orbit:before{animation:none}.build-page .step,.build-page .pick,.build-page .btile,.build-jump,.build-progress-track span{transition:none}.build-page .pick:hover,.build-page .btile:hover,.build-jump:hover{transform:none}}
 
+
+/* ---------- Build-a-PC budget planner ---------- */
+.budget-planner{display:grid;grid-template-columns:1.2fr .8fr;gap:16px 28px;align-items:center;margin:18px 0 22px;border-color:rgba(201,162,39,.55);background:linear-gradient(120deg,var(--panel),rgba(201,162,39,.055))}.budget-copy h3{margin:0 0 5px;font-size:1.18rem}.budget-copy p{font-size:.84rem;margin:0;max-width:55ch}.budget-controls label{font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}.budget-input-row{display:flex;align-items:center;gap:8px}.budget-input-row>span{font-family:Archivo;font-weight:800;font-size:1.15rem}.budget-input-row input{min-width:0}.budget-meter{grid-column:1/-1}.budget-meter-top{display:flex;justify-content:space-between;gap:12px;font-size:.84rem;margin-bottom:7px}.budget-meter .build-progress-track{margin:0 0 6px}.budget-meter .build-progress-track span.over{background:var(--alert)}.budget-fit{display:block;font-size:.67rem;line-height:1.2;font-weight:600;color:var(--ok);white-space:nowrap}.budget-fit.over{color:var(--alert)}
+@media(max-width:700px){.budget-planner{grid-template-columns:1fr;gap:12px}.budget-meter{grid-column:auto}.budget-controls{max-width:100%}}
 </style>
 </head>
 <body>
@@ -1732,10 +1736,13 @@ function setupProductsMotion(){
 }
 
 /* ---- build page ---- */
-let buildSel = {}; let wantAssembly = false; let psuSafetyMargin = 20;
+let buildSel = {}; let wantAssembly = false; let psuSafetyMargin = 20; let buildBudget = 0;
 try{ const b = JSON.parse(localStorage.getItem("apex.build")||"null"); if(b){ buildSel = b.sel||{}; wantAssembly = !!b.assembly; } }catch(e){}
 try{ const savedMargin=Number(localStorage.getItem("apex.psuSafetyMargin")); if([0,10,15,20,25,30].includes(savedMargin)) psuSafetyMargin=savedMargin; }catch(e){}
+try{ const savedBudget=Number(localStorage.getItem("apex.buildBudget")); if(Number.isFinite(savedBudget)&&savedBudget>0) buildBudget=savedBudget; }catch(e){}
 function setPsuSafetyMargin(value){ const n=Number(value); if([0,10,15,20,25,30].includes(n)){ psuSafetyMargin=n; try{localStorage.setItem("apex.psuSafetyMargin",String(n));}catch(e){} render(); } }
+function setBuildBudget(value){ const n=Number(value); buildBudget=Number.isFinite(n)&&n>0?Math.round(n*100)/100:0; try{if(buildBudget) localStorage.setItem("apex.buildBudget",String(buildBudget)); else localStorage.removeItem("apex.buildBudget");}catch(e){} render(); }
+function clearBuildBudget(){ buildBudget=0; try{localStorage.removeItem("apex.buildBudget");}catch(e){} render(); }
 function saveBuild(){ try{ localStorage.setItem("apex.build", JSON.stringify({sel:buildSel, assembly:wantAssembly})); }catch(e){} }
 function removePick(cat){ delete buildSel[cat]; saveBuild(); render(); }
 function clearBuild(){ if(!confirm("Clear your whole build list?")) return; buildSel={}; wantAssembly=false; saveBuild(); render(); }
@@ -1773,6 +1780,10 @@ function build(){
   const cpuTypesUsed = [...new Set(partsAll().filter(p=>p.category==="CPU").map(p=>p.cpuType).filter(Boolean))];
   const f = partFilters;
   const filterActive = f.brand||f.socket||f.cpuType||f.q||f.min||f.max;
+  const budgetSpent = Object.values(buildSel).reduce((sum,id)=>{const p=partsAll().find(x=>x.id===id);return sum+(+p?.price||0);},0);
+  const budgetRemaining = buildBudget>0 ? buildBudget-budgetSpent : null;
+  const budgetPercent = buildBudget>0 ? Math.min(100,Math.round(budgetSpent/buildBudget*100)) : 0;
+  const budgetPanel = `<section class="budget-planner panel"><div class="budget-copy"><span class="build-eyebrow">SPEND WITH A PLAN</span><h3>Set your PC budget</h3><p class="muted">Track your selected components against a target. Compatible parts remain the priority, with budget guidance shown as you browse.</p></div><div class="budget-controls"><label for="build_budget_input">Your target budget (USD)</label><div class="budget-input-row"><span>$</span><input id="build_budget_input" type="number" min="1" step="25" placeholder="e.g. 1200" value="${buildBudget||""}" onchange="setBuildBudget(this.value)">${buildBudget?`<button class="btn sm ghost" onclick="clearBuildBudget()">Clear</button>`:""}</div></div>${buildBudget?`<div class="budget-meter"><div class="budget-meter-top"><strong>${money(budgetSpent)} used</strong><strong class="${budgetRemaining<0?"nofit":"fit"}">${budgetRemaining<0?money(Math.abs(budgetRemaining))+" over budget":money(budgetRemaining)+" remaining"}</strong></div><div class="build-progress-track"><span class="${budgetRemaining<0?"over":""}" style="width:${budgetPercent}%"></span></div><small class="muted">Parts only. Assembly, tax and shipping are not included in this target.</small></div>`:""}</section>`;
   const filterBar = partsAll().length ? `<div class="panel" style="margin-bottom:20px">
     <div class="fields2" style="align-items:flex-end">
       ${brands.length?`<div class="field"><label>Brand</label><select onchange="setPartFilter('brand',this.value)">
@@ -1882,6 +1893,7 @@ function build(){
     </section>
     <div class="build-progress panel"><div class="build-progress-top"><div><strong>Your build journey</strong><small>${pickedCount} of ${slots.length} components selected</small></div><b>${progress}%</b></div><div class="build-progress-track"><span style="width:${progress}%"></span></div></div>
     <div class="pagehead build-heading"><div><h2>Choose your components</h2><p>Work from top to bottom, or jump straight to a category. Compatible options are prioritized automatically.</p></div></div>
+    ${budgetPanel}
     ${!partsAll().length?`<div class="empty"><strong>No parts uploaded yet</strong>${isOwner?"Add a CPU first, then boards, memory and the rest. Fill in socket and memory type so the matching works.":"Parts are being added. Check back shortly."}</div>`: `
     ${filterBar}
     <nav class="build-nav" aria-label="Build categories">${jumpLinks}</nav>
@@ -1920,6 +1932,9 @@ ${powerLine}
 }
 function pickRow(p,cat,ok){
   const sel = buildSel[cat]===p.id;
+  const spentElsewhere = Object.entries(buildSel).filter(([c])=>c!==cat).reduce((sum,[,id])=>{const chosen=partsAll().find(x=>x.id===id);return sum+(+chosen?.price||0);},0);
+  const budgetRoom = buildBudget>0 ? buildBudget-spentElsewhere : null;
+  const withinBudget = budgetRoom===null || (+p.price||0)<=budgetRoom;
   const spec = [p.cpuType,p.socket,p.memType,p.watts?p.watts+"W output":"",p.tdp?p.tdp+"W TDP":"",p.power?p.power+"W draw":"",p.lengthMm?p.lengthMm+"mm long":"",p.formFactor||""].filter(Boolean).join(" · ");
   const review = compatibilityReview(p,buildSel["CPU"]?partsAll().find(x=>x.id===buildSel["CPU"]):null,currentBuildNeed().need);
   const label = !ok ? "doesn't fit" : review.warnings.length ? "check fit" : "fits";
@@ -1932,7 +1947,7 @@ function pickRow(p,cat,ok){
         <small>${esc(p.desc||"")}${spec?` — ${esc(spec)}`:""}</small></div>
     </div>
     <div class="row" style="flex:none">
-      <span class="price" style="font-size:1rem">${money(p.price)}</span>
+      <span class="price" style="font-size:1rem">${money(p.price)}${buildBudget?`<small class="budget-fit ${withinBudget?"":"over"}">${withinBudget?"Within budget":"Over remaining"}</small>`:""}</span>
       <button class="btn sm ${sel?'ghost':''}" onclick="pickPart('${cat}','${p.id}')">${sel?"Remove":"Choose"}</button>
       ${isOwner?`<button class="btn sm ghost" onclick="editItem('${p.id}')">Edit</button><button class="btn sm danger" onclick="delItem('${p.id}')">×</button>`:""}
     </div></div>`;
