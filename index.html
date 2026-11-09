@@ -1821,16 +1821,23 @@ function nextGuidedCategory(){
   else {const el=document.querySelector(".build-summary-panel");if(el)el.scrollIntoView({behavior:"smooth",block:"center"});}
 }
 
-let partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:""};
+let partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""};
 let sectionOpen = {};
 function secOpen(k){ return sectionOpen[k]!==false ? "open" : ""; }
 function setPartFilter(key,val){ partFilters[key]=val; render(); }
-function clearPartFilters(){ partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:""}; render(); }
+function clearPartFilters(){ partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""}; render(); }
 function matchesPartFilter(p){
   const f = partFilters;
   if(f.min && (+p.price||0) < +f.min) return false;
   if(f.max && (+p.price||0) > +f.max) return false;
   if(f.brand && (p.brand||"") !== f.brand) return false;
+  if(p.category==="Power supply"){
+    if(f.psuWatts && String(p.watts||"")!==f.psuWatts) return false;
+    const ratings=String(p.efficiency||"").split("/").map(x=>x.trim().toLowerCase());
+    if(f.psuEfficiency && !ratings.includes(f.psuEfficiency.toLowerCase())) return false;
+    if(f.psuModular && String(p.modular||"")!==f.psuModular) return false;
+    if(f.psuFormFactor && String(p.formFactor||"")!==f.psuFormFactor) return false;
+  }
   if(f.q){
     const hay = (p.name+" "+(p.desc||"")+" "+(p.brand||"")+" "+(p.cpuType||"")).toLowerCase();
     if(!hay.includes(f.q.toLowerCase())) return false;
