@@ -571,6 +571,73 @@ footer.site a{color:var(--gold)}
 }
 
 
+
+/* ---------- Build-a-PC configurator experience ---------- */
+.build-page{padding-bottom:52px}
+.build-intro{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 210px;align-items:center;gap:28px;margin:0 0 20px;padding:34px 38px;border-radius:18px;color:#f3f6f2;background:radial-gradient(circle at 82% 48%,rgba(201,162,39,.19),transparent 28%),linear-gradient(120deg,#082a20,#0c3b2e 64%,#14513d);border:1px solid rgba(201,162,39,.45);box-shadow:0 14px 38px rgba(8,42,32,.13)}
+.build-intro:after{content:"";position:absolute;inset:0;z-index:-1;opacity:.18;background-image:linear-gradient(rgba(201,162,39,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(201,162,39,.35) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(90deg,transparent,#000)}
+.build-intro-copy{max-width:680px;animation:buildRise .65s both}
+.build-eyebrow{display:inline-block;color:#e2c65f;font-size:.72rem;font-weight:800;letter-spacing:.16em;margin-bottom:10px}
+.build-intro h2{font-size:clamp(2rem,4.5vw,3.15rem);margin:0 0 10px;color:#fff}
+.build-intro h2 em{font-style:normal;color:#e2c65f}
+.build-intro p{max-width:58ch;color:#d0ded6;margin:0 0 17px}
+.build-quickfacts{display:flex;gap:9px 18px;flex-wrap:wrap;color:#dce7e0;font-size:.82rem}
+.build-quickfacts span{white-space:nowrap}
+.build-orbit{height:170px;width:190px;position:relative;display:grid;place-items:center;justify-self:center}
+.orbit-ring{position:absolute;border:1px solid rgba(226,198,95,.55);border-radius:50%;transform:rotate(-28deg)}
+.ring-one{width:150px;height:76px;animation:buildOrbit 12s linear infinite}
+.ring-two{width:165px;height:112px;transform:rotate(58deg);border-color:rgba(255,255,255,.27);animation:buildOrbit 17s linear infinite reverse}
+.build-orbit:before{content:"";position:absolute;width:116px;height:116px;border:1px dashed rgba(226,198,95,.3);border-radius:50%;animation:buildSpin 24s linear infinite}
+.orbit-core{width:68px;height:68px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,#e2c65f,#a9851c);color:#10271d;font:800 1.8rem Archivo;box-shadow:0 0 34px rgba(226,198,95,.3);transform:rotate(-8deg)}
+.orbit-core span{font-size:.8rem;vertical-align:top}
+.orbit-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#fff0ad;box-shadow:0 0 16px #e2c65f;top:17px;right:28px}
+.build-admin{grid-column:1/-1}
+.build-progress{padding:15px 18px;margin-bottom:18px;border-radius:13px;box-shadow:0 5px 18px rgba(0,0,0,.035)}
+.build-progress-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.build-progress-top strong{display:block;font-family:Archivo;font-size:.98rem}
+.build-progress-top small{display:block;color:var(--ink-2);font-size:.8rem}
+.build-progress-top b{font-family:Archivo;color:var(--gold-2);font-size:1.15rem}
+:root[data-theme="dark"] .build-progress-top b{color:var(--gold)}
+.build-progress-track{height:8px;border-radius:99px;background:var(--paper);overflow:hidden}
+.build-progress-track span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#0c3b2e,#c9a227);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.build-heading{margin:0 0 15px;border-bottom:0;padding:0}
+.build-heading h2{font-size:1.55rem;margin:0}
+.build-nav{display:flex;gap:8px;overflow-x:auto;padding:3px 2px 13px;margin-bottom:6px;scrollbar-width:thin;scroll-snap-type:x proximity}
+.build-jump{display:flex;align-items:center;gap:7px;flex:none;scroll-snap-align:start;padding:8px 12px;border:1px solid var(--line);border-radius:99px;background:var(--panel);text-decoration:none;font-size:.8rem;font-weight:600;color:var(--ink-2);transition:transform .18s,border-color .18s,background .18s}
+.build-jump span{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:var(--paper);font-size:.68rem}
+.build-jump:hover{transform:translateY(-2px);border-color:var(--gold);color:var(--ink)}
+.build-jump.done{border-color:rgba(30,110,79,.55);color:var(--ok);background:rgba(30,110,79,.055)}
+.build-jump.done span{background:var(--ok);color:#fff}
+.build-page .steps{gap:10px;background:transparent;border:0}
+.build-page .step{border:1px solid var(--line);border-radius:13px;padding:17px 18px;box-shadow:0 3px 14px rgba(0,0,0,.035);transition:border-color .2s,box-shadow .2s,transform .2s;animation:buildRise .45s both}
+.build-page .step:hover{border-color:rgba(201,162,39,.7);box-shadow:0 8px 22px rgba(0,0,0,.06)}
+.build-page .step>details>summary{min-height:35px}
+.build-page .step h3 .n{width:31px;height:31px;border-radius:9px;box-shadow:0 3px 8px rgba(12,59,46,.16)}
+.build-page .step>details>summary:after{content:"⌄";margin-left:auto;color:var(--ink-2);font-size:1.2rem;transition:transform .2s}
+.build-page .step>details[open]>summary:after{transform:rotate(180deg)}
+.build-page .pick{border-radius:10px;padding:12px 13px;transition:border-color .18s,background .18s,transform .18s;animation:buildRise .35s both}
+.build-page .pick:hover{border-color:rgba(201,162,39,.7);background:var(--paper);transform:translateX(2px)}
+.build-page .pick.sel{background:rgba(201,162,39,.07)}
+.build-page .pick img{border-radius:8px!important;background:var(--paper);padding:3px}
+.build-page .pick strong{line-height:1.35}
+.build-page .pick .btn{white-space:nowrap}
+.build-page .summary{top:14px;border-radius:15px;padding:19px;box-shadow:0 10px 30px rgba(0,0,0,.07);border-color:rgba(201,162,39,.42)}
+.build-page .summary h3{font-size:1.2rem}
+.build-page .blist{gap:9px}
+.build-page .btile{border-radius:10px;padding:8px;transition:transform .18s,border-color .18s,box-shadow .18s}
+.build-page .btile:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 5px 14px rgba(0,0,0,.07)}
+.build-page .btile .pic{border-radius:7px}
+.build-page .btile.empty .pic{color:var(--gold-2)}
+.build-page .summary .total{border-top:1px solid var(--line);margin-top:5px;padding-top:14px;font-size:1.4rem}
+.build-page .summary>.btn.gold{border-radius:9px;box-shadow:0 5px 14px rgba(12,59,46,.18)}
+.build-page .summary>.btn.gold:not([disabled]):hover{box-shadow:0 8px 20px rgba(12,59,46,.25);transform:translateY(-2px)}
+@keyframes buildRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes buildOrbit{to{transform:rotate(332deg)}}
+@keyframes buildSpin{to{transform:rotate(360deg)}}
+@media(max-width:820px){.build-intro{grid-template-columns:1fr;padding:26px 23px;min-height:0}.build-orbit{position:absolute;right:-28px;top:8px;opacity:.28;transform:scale(.82)}.build-intro-copy{position:relative;z-index:1}.build-quickfacts{max-width:85%}.build-page .summary{position:static;max-height:none;overflow:visible}.build-page .pick{align-items:flex-start;flex-direction:column}.build-page .pick>.row:last-child{width:100%;justify-content:space-between;align-items:center}}
+@media(max-width:520px){.build-intro{padding:24px 18px;border-radius:13px}.build-intro h2{font-size:2.05rem}.build-intro p{font-size:.92rem;max-width:34ch}.build-quickfacts{display:grid;gap:5px;font-size:.77rem}.build-progress{padding:13px}.build-page .step{padding:14px 12px}.build-page .summary{padding:15px}.build-page .pick img{width:46px!important;height:46px!important}}
+@media(prefers-reduced-motion:reduce){.build-intro-copy,.build-page .step,.build-page .pick{animation:none}.ring-one,.ring-two,.build-orbit:before{animation:none}.build-page .step,.build-page .pick,.build-page .btile,.build-jump,.build-progress-track span{transition:none}.build-page .pick:hover,.build-page .btile:hover,.build-jump:hover{transform:none}}
+
 </style>
 </head>
 <body>
@@ -1727,11 +1794,20 @@ function build(){
   const partsTotal = chosen.reduce((n,p)=>n+(+p.price||0),0);
   const fee = wantAssembly ? (+S.settings.buildFee||0) : 0;
 
-  return `<div class="wrap">
-    <div class="pagehead"><div><h2>Build a PC</h2><p>Choose a processor first — the rest of the list narrows to parts that match its socket, memory type and power draw. Once you pick a part, the other options in that category tuck away until you remove it.</p></div>
-    ${isOwner?`<div class="row"><button class="btn gold" onclick="editPart()">Add a part</button><button class="btn ghost" onclick="go('/inventory')">Manage parts</button></div>`:""}</div>
-    ${!partsAll().length?`<div class="empty"><strong>No parts uploaded yet</strong>${isOwner?"Add a CPU first, then boards, memory and the rest. Fill in socket and memory type so the matching works.":"Parts are being added. Check back shortly."}</div>`:`
+  const pickedCount = chosen.length;
+  const progress = slots.length ? Math.round(pickedCount/slots.length*100) : 0;
+  const jumpLinks = slots.map((cat,i)=>`<a class="build-jump ${pickedIn(cat)?"done":""}" href="#sec_${cat.replace(/\\W+/g,"_")}"><span>${pickedIn(cat)?"✓":String(i+1).padStart(2,"0")}</span>${esc(cat==="CPU"?"Processor":cat)}</a>`).join("");
+  return `<div class="wrap build-page">
+    <section class="build-intro">
+      <div class="build-intro-copy"><span class="build-eyebrow">APEX CUSTOM CONFIGURATOR</span><h2>Build a PC that’s <em>yours.</em></h2><p>Start with your processor, then choose compatible parts. Your build stays saved on this device while you explore.</p><div class="build-quickfacts"><span>✦ Compatibility guidance</span><span>✦ Live price total</span><span>✦ Saved as you go</span></div></div>
+      <div class="build-orbit" aria-hidden="true"><div class="orbit-ring ring-one"></div><div class="orbit-ring ring-two"></div><div class="orbit-core">A<span>+</span></div><i class="orbit-dot"></i></div>
+      ${isOwner?`<div class="build-admin row"><button class="btn gold" onclick="editPart()">Add a part</button><button class="btn ghost" onclick="go('/inventory')">Manage parts</button></div>`:""}
+    </section>
+    <div class="build-progress panel"><div class="build-progress-top"><div><strong>Your build journey</strong><small>${pickedCount} of ${slots.length} components selected</small></div><b>${progress}%</b></div><div class="build-progress-track"><span style="width:${progress}%"></span></div></div>
+    <div class="pagehead build-heading"><div><h2>Choose your components</h2><p>Work from top to bottom, or jump straight to a category. Compatible options are prioritized automatically.</p></div></div>
+    ${!partsAll().length?`<div class="empty"><strong>No parts uploaded yet</strong>${isOwner?"Add a CPU first, then boards, memory and the rest. Fill in socket and memory type so the matching works.":"Parts are being added. Check back shortly."}</div>`: `
     ${filterBar}
+    <nav class="build-nav" aria-label="Build categories">${jumpLinks}</nav>
     <div class="split">
       <div class="steps">
         <div class="step" id="sec_CPU"><details ${secOpen("CPU")} ontoggle="sectionOpen['CPU']=this.open">
