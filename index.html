@@ -1595,10 +1595,20 @@ function partDetail(id,ctx){
     rows:[["Category",p.category],["Brand",p.brand],["CPU type",p.cpuType],["Socket",p.socket],["Memory type",p.memType],
           ...(p.category==="CPU"&&p.tdp?[["CPU TDP",p.tdp+" W"]]:[]),
           ...(p.category==="Power supply"&&p.watts?[["PSU output",p.watts+" W"]]:[]),
+          ...(p.category==="Power supply"&&p.efficiency?[["Efficiency",p.efficiency]]:[]),
+          ...(p.category==="Power supply"&&p.modular?[["Modularity",p.modular]]:[]),
+          ...(p.category==="Power supply"&&p.formFactor?[["Form factor",p.formFactor]]:[]),
+          ...(p.category==="Power supply"&&p.atxStandard?[["ATX standard",p.atxStandard]]:[]),
+          ...(p.category==="Power supply"&&p.gpuPowerConnectors?[["GPU power connectors",p.gpuPowerConnectors]]:[]),
+          ...(p.category==="Power supply"&&p.warranty?[["Warranty",p.warranty]]:[]),
+          ...(p.category==="Power supply"&&p.neweggPrice!=null?[["Newegg reference price",money(p.neweggPrice)]]:[]),
+          ...(p.category==="Power supply"&&p.stockStatus?[["Newegg stock",p.stockStatus]]:[]),
+          ...(p.category==="Power supply"&&p.seller?[["Seller",p.seller]]:[]),
           ...(p.category!=="CPU"&&p.category!=="Power supply"&&p.power!==""&&p.power!=null?[["Power draw",p.power+" W"]]:[])],
     summary:p.desc, full:p.longDesc,
     actions:`<button class="btn gold" onclick="pickPart('${p.category}','${p.id}');editDlg.close()">${picked?"Remove from build":"Add to build"}</button>`
       +(ctx==="products"?`<button class="btn" onclick="addToCart(${cartPayload(p)});editDlg.close()">Add to cart</button>`:"")
+      +(p.category==="Power supply"&&p.sourceUrl?`<a class="btn ghost" href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">View Newegg listing ↗</a>`:"")
       +(isOwner?`<button class="btn ghost" onclick="editItem('${p.id}')">Edit</button>`:"")
   });
 }
@@ -1821,16 +1831,23 @@ function nextGuidedCategory(){
   else {const el=document.querySelector(".build-summary-panel");if(el)el.scrollIntoView({behavior:"smooth",block:"center"});}
 }
 
-let partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:""};
+let partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""};
 let sectionOpen = {};
 function secOpen(k){ return sectionOpen[k]!==false ? "open" : ""; }
 function setPartFilter(key,val){ partFilters[key]=val; render(); }
-function clearPartFilters(){ partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:""}; render(); }
+function clearPartFilters(){ partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""}; render(); }
 function matchesPartFilter(p){
   const f = partFilters;
   if(f.min && (+p.price||0) < +f.min) return false;
   if(f.max && (+p.price||0) > +f.max) return false;
   if(f.brand && (p.brand||"") !== f.brand) return false;
+  if(p.category==="Power supply"){
+    if(f.psuWatts && String(p.watts||"")!==f.psuWatts) return false;
+    const ratings=String(p.efficiency||"").split("/").map(x=>x.trim().toLowerCase());
+    if(f.psuEfficiency && !ratings.includes(f.psuEfficiency.toLowerCase())) return false;
+    if(f.psuModular && String(p.modular||"")!==f.psuModular) return false;
+    if(f.psuFormFactor && String(p.formFactor||"")!==f.psuFormFactor) return false;
+  }
   if(f.q){
     const hay = (p.name+" "+(p.desc||"")+" "+(p.brand||"")+" "+(p.cpuType||"")).toLowerCase();
     if(!hay.includes(f.q.toLowerCase())) return false;
@@ -1849,7 +1866,7 @@ function build(){
   const brands = [...new Set(partsAll().map(p=>p.brand).filter(Boolean))].sort();
   const cpuTypesUsed = [...new Set(partsAll().filter(p=>p.category==="CPU").map(p=>p.cpuType).filter(Boolean))];
   const f = partFilters;
-  const filterActive = f.brand||f.socket||f.cpuType||f.q||f.min||f.max;
+  const filterActive = f.brand||f.socket||f.cpuType||f.q||f.min||f.max||f.psuWatts||f.psuEfficiency||f.psuModular||f.psuFormFactor;
   const budgetSpent = Object.values(buildSel).reduce((sum,id)=>{const p=partsAll().find(x=>x.id===id);return sum+(+p?.price||0);},0);
   const budgetRemaining = buildBudget>0 ? buildBudget-budgetSpent : null;
   const budgetPercent = buildBudget>0 ? Math.min(100,Math.round(budgetSpent/buildBudget*100)) : 0;
@@ -1873,6 +1890,24 @@ function build(){
       </select></div>
       <div class="field"><label>Min price</label><input id="part_f_min" type="number" value="${esc(f.min)}" oninput="setPartFilter('min',this.value)"></div>
       <div class="field"><label>Max price</label><input id="part_f_max" type="number" value="${esc(f.max)}" oninput="setPartFilter('max',this.value)"></div>
+    </div>
+    <div class="fields2" style="margin-top:12px;align-items:flex-end">
+      <div class="field"><label>PSU wattage</label><select onchange="setPartFilter('psuWatts',this.value)">
+        <option value="">All wattages</option>
+        ${["500","550","600","650","750","850","1000","1050","1100","1200","1250","1300","1500","1600","1650"].map(w=>`<option value="${w}" ${f.psuWatts===w?"selected":""}>${w}W</option>`).join("")}
+      </select></div>
+      <div class="field"><label>Efficiency rating</label><select onchange="setPartFilter('psuEfficiency',this.value)">
+        <option value="">All ratings</option>
+        ${["80 PLUS Standard","80 PLUS White","80 PLUS Bronze","80 PLUS Silver","80 PLUS Gold","80 PLUS Platinum","80 PLUS Titanium","Cybenetics Bronze","Cybenetics Silver","Cybenetics Gold","Cybenetics Platinum","Cybenetics Titanium"].map(e=>`<option value="${e}" ${f.psuEfficiency===e?"selected":""}>${e}</option>`).join("")}
+      </select></div>
+      <div class="field"><label>Cable modularity</label><select onchange="setPartFilter('psuModular',this.value)">
+        <option value="">All cable types</option>
+        ${["Fully Modular","Semi-Modular","Non-Modular"].map(m=>`<option value="${m}" ${f.psuModular===m?"selected":""}>${m}</option>`).join("")}
+      </select></div>
+      <div class="field"><label>PSU form factor</label><select onchange="setPartFilter('psuFormFactor',this.value)">
+        <option value="">All form factors</option>
+        ${["ATX","SFX","SFX-L"].map(ff=>`<option value="${ff}" ${f.psuFormFactor===ff?"selected":""}>${ff}</option>`).join("")}
+      </select></div>
     </div>
     <div class="field" style="margin-bottom:0"><label>Search</label><input id="part_f_q" placeholder="Name, description, brand…" value="${esc(f.q)}" oninput="setPartFilter('q',this.value)"></div>
     ${filterActive?`<button class="btn sm ghost" style="margin-top:10px" onclick="clearPartFilters()">Clear filters</button>`:""}
