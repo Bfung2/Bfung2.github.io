@@ -649,7 +649,12 @@ footer.site a{color:var(--gold)}
 /* ---------- Saved builds and comparison ---------- */
 .saved-builds{margin:18px 0 22px}.saved-builds-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:12px}.saved-builds-heading h3{margin:2px 0 3px;font-size:1.12rem}.saved-builds-heading p{margin:0;font-size:.8rem}.saved-build-list{display:grid;gap:8px}.saved-build-card{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}.saved-build-main{display:grid;gap:3px;min-width:0}.saved-build-main strong{font-size:.87rem;overflow-wrap:anywhere}.saved-build-main small{font-size:.73rem;color:var(--ink-2)}.compare-check{display:flex;align-items:center;gap:5px;font-size:.75rem;white-space:nowrap}.compare-check input{width:auto}.saved-build-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.saved-empty{font-size:.82rem;margin:8px 0}.saved-compare-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:16px 0 8px;padding-top:12px;border-top:1px solid var(--line);font-size:.86rem}.build-compare-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}.build-compare{width:100%;border-collapse:collapse;font-size:.76rem;min-width:460px}.build-compare th,.build-compare td{padding:9px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}.build-compare thead th{background:var(--paper);font-weight:800}.build-compare tbody th{white-space:nowrap;color:var(--ink-2)}.build-compare tr:last-child th,.build-compare tr:last-child td{border-bottom:0}.saved-local-note{display:block;margin-top:10px;font-size:.7rem}
 @media(max-width:760px){.saved-builds-heading{align-items:flex-start;flex-direction:column}.saved-build-card{grid-template-columns:minmax(0,1fr) auto}.saved-build-actions{grid-column:1/-1;justify-content:flex-start}.saved-compare-heading{align-items:flex-start}}
-.compare-specs{display:block;font-size:.68rem;color:var(--ink-2);margin-top:3px}.compare-price{display:block;font-size:.72rem;font-weight:800;margin-top:4px}</style>
+.compare-specs{display:block;font-size:.68rem;color:var(--ink-2);margin-top:3px}.compare-price{display:block;font-size:.72rem;font-weight:800;margin-top:4px}
+/* Guided PC builder coaching */
+.guided-coach{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:14px 0 18px;padding:17px 19px;border:1px solid rgba(201,162,39,.38);background:linear-gradient(115deg,rgba(201,162,39,.09),var(--panel) 68%);border-radius:14px}.guided-coach-copy{display:grid;gap:4px;min-width:0}.guided-coach-copy>strong{font-size:.98rem}.guided-coach-copy p{font-size:.8rem;color:var(--ink-2);margin:0;max-width:650px}.guided-coach>.btn{flex:none}.guide-step-note{margin:13px 0 15px;padding:12px 14px;border-left:3px solid var(--gold);border-radius:0 9px 9px 0;background:rgba(201,162,39,.065)}.guide-step-note strong{font-size:.87rem}.guide-step-note p{margin:4px 0 6px;font-size:.8rem;color:var(--ink-2);line-height:1.5}.guide-step-note small{display:block;font-size:.75rem;color:var(--ink-2);line-height:1.45}
+@media(max-width:650px){.guided-coach{align-items:stretch;flex-direction:column}.guided-coach>.btn{width:100%}}
+@media(prefers-reduced-motion:reduce){.guided-coach,.guide-step-note{scroll-behavior:auto}}
+</style>
 </head>
 <body>
 
@@ -1797,6 +1802,25 @@ function focusSection(cat){
   const el = document.getElementById("sec_"+cat.replace(/\W+/g,"_"));
   if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
 }
+const BUILD_GUIDE = {
+  CPU:{title:"1. Start with your processor",why:"The CPU is the brain of your computer. It affects performance and determines which motherboard socket and memory platform you need.",tip:"Choose the CPU first. The builder uses its socket and memory requirements to narrow down compatible parts."},
+  Motherboard:{title:"2. Choose a motherboard",why:"The motherboard connects every component. Its socket must match your CPU, and its form factor must fit your case.",tip:"Check the CPU socket, memory generation (DDR4 or DDR5), and board size before choosing."},
+  Memory:{title:"3. Add memory (RAM)",why:"RAM gives your computer room to work with active apps and games. More capacity helps with multitasking, while the motherboard determines which memory generation fits.",tip:"Match DDR4 or DDR5 to your motherboard. Capacity and speed depend on your workload and budget."},
+  "Graphics card":{title:"4. Choose a graphics card",why:"The GPU renders games, 3D graphics, and many creative workloads. It is often one of the biggest factors in gaming performance.",tip:"Consider your monitor resolution, GPU power draw, physical length, and the power connectors your PSU needs."},
+  Storage:{title:"5. Pick your storage",why:"Storage holds Windows, applications, games, and files. SSDs make booting and loading much faster than traditional hard drives.",tip:"An NVMe M.2 SSD is a common choice for a modern gaming or everyday PC. Choose capacity based on your library and files."},
+  "Power supply":{title:"6. Power everything safely",why:"The power supply delivers electricity to every component. Too little capacity or missing connectors can prevent a build from working reliably.",tip:"The recommended wattage includes your selected safety margin. Also check PSU form factor and GPU power connectors."},
+  Case:{title:"7. Pick a case",why:"The case houses and cools your components. It needs room for your motherboard, graphics card, cooler, and power supply.",tip:"Check motherboard form factor, GPU length, cooler height, airflow, and radiator support where applicable."},
+  "CPU cooler":{title:"8. Keep your CPU cool",why:"The CPU cooler removes heat so your processor can maintain performance without overheating.",tip:"Confirm socket support, cooler height, RAM clearance, and whether your case supports the cooler or radiator."},
+  Other:{title:"9. Finish the extras",why:"This category covers additional parts and accessories that round out your setup.",tip:"Check each item's requirements and whether you actually need it for your build."}
+};
+function guideInfo(cat){return BUILD_GUIDE[cat]||{title:"Choose your components",why:"Select a part that fits your needs and budget.",tip:"Review the compatibility notes before adding it."};}
+function nextGuidedCategory(){
+  const slots=CATS.filter(cat=>partsAll().some(p=>p.category===cat));
+  const next=slots.find(cat=>!pickedIn(cat));
+  if(next)focusSection(next);
+  else {const el=document.querySelector(".build-summary-panel");if(el)el.scrollIntoView({behavior:"smooth",block:"center"});}
+}
+
 let partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:""};
 let sectionOpen = {};
 function secOpen(k){ return sectionOpen[k]!==false ? "open" : ""; }
@@ -1886,11 +1910,13 @@ function build(){
     if(!all.length && !pk) return "";
     const total = partsAll().filter(p=>p.category===cat).length;
     let body;
+    const guide=guideInfo(cat);
+    const guideNote=`<div class="guide-step-note"><strong>${esc(guide.title)}</strong><p>${esc(guide.why)}</p><small>💡 ${esc(guide.tip)}</small></div>`;
     if(pk){
-      body = pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need));
+      body = guideNote + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need));
     } else {
       const good = sortParts(all.filter(p=>fitsCPU(p,cpu,need))), bad = sortParts(all.filter(p=>!fitsCPU(p,cpu,need)));
-      body = `${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
+      body = `${guideNote}${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
       ${good.map(p=>pickRow(p,cat,true)).join("") || `<p class="muted">Nothing in this category fits that CPU yet.</p>`}
       ${bad.length?`<details style="margin-top:10px"><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${bad.length} that may not fit</summary><div style="margin-top:10px">${bad.map(p=>pickRow(p,cat,false)).join("")}</div></details>`:""}`;
     }
@@ -1959,6 +1985,7 @@ function build(){
       ${isOwner?`<div class="build-admin row"><button class="btn gold" onclick="editPart()">Add a part</button><button class="btn ghost" onclick="go('/inventory')">Manage parts</button></div>`:""}
     </section>
     <div class="build-progress panel"><div class="build-progress-top"><div><strong>Your build journey</strong><small>${pickedCount} of ${slots.length} components selected</small></div><b>${progress}%</b></div><div class="build-progress-track"><span style="width:${progress}%"></span></div></div>
+    <section class="guided-coach panel"><div class="guided-coach-copy"><span class="build-eyebrow">BUILDING MADE SIMPLE</span><strong>${pickedCount===0?"Let's start with your processor":pickedCount>=slots.length?"Your component checklist is complete!":"You're making progress. Next up: "+esc(guideInfo(slots.find(cat=>!pickedIn(cat))||slots[0]).title.replace(/^\d+\. /,""))}</strong><p>${pickedCount===0?"Choose a CPU first. We'll use it to guide the motherboard and memory options.":pickedCount>=slots.length?"Review your compatibility summary, budget, and power recommendation before adding your build to the cart.":"Choose one component at a time. You can skip around or change any selection whenever you like."}</p></div><button class="btn gold" onclick="nextGuidedCategory()">${pickedCount>=slots.length?"Review build summary":pickedCount===0?"Choose a processor":"Continue to next step"} <span aria-hidden="true">→</span></button></section>
     <div class="pagehead build-heading"><div><h2>Choose your components</h2><p>Work from top to bottom, or jump straight to a category. Compatible options are prioritized automatically.</p></div></div>
     ${budgetPanel}
     ${savedBuildManager}
@@ -1969,6 +1996,7 @@ function build(){
       <div class="steps">
         <div class="step" id="sec_CPU"><details ${secOpen("CPU")} ontoggle="sectionOpen['CPU']=this.open">
           ${head(1,"CPU",cpu?partsAll().filter(p=>p.category==="CPU").length:cpus.length)}
+          <div class="guide-step-note"><strong>${esc(guideInfo("CPU").title)}</strong><p>${esc(guideInfo("CPU").why)}</p><small>💡 ${esc(guideInfo("CPU").tip)}</small></div>
           ${cpu?pickNote:""}
           ${cpusShown.length?cpusShown.map(p=>pickRow(p,"CPU",true)).join(""):(filterActive?`<p class="muted">No CPUs match those filters.</p>`:`<p class="muted">No CPUs listed yet.</p>`)}
           ${isOwner?`<button class="btn sm ghost" onclick="editPart(null,'CPU')">Add CPU</button>`:""}
