@@ -1218,7 +1218,8 @@ function compatibilityReview(part,cpu,need,chosen=currentChosenParts()){
   const pcCase=part.category==="Case"?part:get("Case");
   if(part.category==="Power supply"){
     const watts=+part.watts||0;
-    if(!watts || watts<need) fails.push("PSU wattage is below the estimated build requirement");
+    const target=recommendedPSUWatts(need);
+    if(!watts || watts<target) fails.push(`PSU output is below the ${target} W recommendation (including ${psuSafetyMargin}% headroom)`);
   }
   if(cpu && part.category==="Motherboard"){
     if(part.socket && cpu.socket && part.socket!==cpu.socket) fails.push("Motherboard socket does not match the CPU");
@@ -1272,6 +1273,9 @@ function requiredWatts(cpu, chosenExcludingPSU){
   const cpuW = cpu ? (+cpu.tdp||0) : 0;
   const restW = chosenExcludingPSU.reduce((n,p)=>n+(+p.power||0),0);
   return cpuW + restW;
+}
+function recommendedPSUWatts(baseWatts){
+  return Math.ceil(((+baseWatts||0)*(1+psuSafetyMargin/100))/10)*10;
 }
 
 /* ---------- cart ---------- */
@@ -1728,8 +1732,10 @@ function setupProductsMotion(){
 }
 
 /* ---- build page ---- */
-let buildSel = {}; let wantAssembly = false;
+let buildSel = {}; let wantAssembly = false; let psuSafetyMargin = 20;
 try{ const b = JSON.parse(localStorage.getItem("apex.build")||"null"); if(b){ buildSel = b.sel||{}; wantAssembly = !!b.assembly; } }catch(e){}
+try{ const savedMargin=Number(localStorage.getItem("apex.psuSafetyMargin")); if([0,10,15,20,25,30].includes(savedMargin)) psuSafetyMargin=savedMargin; }catch(e){}
+function setPsuSafetyMargin(value){ const n=Number(value); if([0,10,15,20,25,30].includes(n)){ psuSafetyMargin=n; try{localStorage.setItem("apex.psuSafetyMargin",String(n));}catch(e){} render(); } }
 function saveBuild(){ try{ localStorage.setItem("apex.build", JSON.stringify({sel:buildSel, assembly:wantAssembly})); }catch(e){} }
 function removePick(cat){ delete buildSel[cat]; saveBuild(); render(); }
 function clearBuild(){ if(!confirm("Clear your whole build list?")) return; buildSel={}; wantAssembly=false; saveBuild(); render(); }
@@ -1798,6 +1804,7 @@ function build(){
     .filter(([cat])=>cat!=="CPU" && cat!=="Power supply")
     .map(([,id])=>partsAll().find(p=>p.id===id)).filter(Boolean);
   const need = requiredWatts(cpu, chosenExcludingPSU);
+  const recommendedNeed = recommendedPSUWatts(need);
   const pickedIn = cat => buildSel[cat] ? partsAll().find(p=>p.id===buildSel[cat]) : null;
   const selectedParts = CATS.map(pickedIn).filter(Boolean);
   const fitAlerts = [...new Set(selectedParts.flatMap(part=>{
@@ -1820,7 +1827,7 @@ function build(){
       body = pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need));
     } else {
       const good = sortParts(all.filter(p=>fitsCPU(p,cpu,need))), bad = sortParts(all.filter(p=>!fitsCPU(p,cpu,need)));
-      body = `${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — needs ${need}W or more based on the parts picked so far`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
+      body = `${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
       ${good.map(p=>pickRow(p,cat,true)).join("") || `<p class="muted">Nothing in this category fits that CPU yet.</p>`}
       ${bad.length?`<details style="margin-top:10px"><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${bad.length} that may not fit</summary><div style="margin-top:10px">${bad.map(p=>pickRow(p,cat,false)).join("")}</div></details>`:""}`;
     }
@@ -1846,7 +1853,19 @@ function build(){
   };
   const psu = pickedIn("Power supply");
   const powerLine = need>0
-    ? `<p class="muted" style="font-size:.84rem;margin:0 0 12px">Estimated power draw: <strong>${need} W</strong>${psu?((+psu.watts||0)>=need||!(+psu.watts)?` · your PSU covers it`:` · <span class="nofit">your PSU is rated lower than that</span>`):` — pick a power supply rated ${need} W or more`}</p>` : "";
+    ? `<div class="psu-guidance panel" style="padding:12px 13px;margin:0 0 14px">
+        <div class="row" style="justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <strong style="font-size:.88rem">Power supply guidance</strong>
+          <label style="display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:600">Safety margin
+            <select aria-label="Power supply safety margin" style="width:auto;min-width:86px;padding:6px 25px 6px 9px" onchange="setPsuSafetyMargin(this.value)">${[0,10,15,20,25,30].map(n=>`<option value="${n}" ${psuSafetyMargin===n?"selected":""}>${n}%</option>`).join("")}</select>
+          </label>
+        </div>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:10px">
+          <span class="muted" style="font-size:.82rem">Estimated draw <strong>${need} W</strong></span>
+          <span style="font-size:.82rem">Recommended PSU <strong>${recommendedNeed} W or higher</strong></span>
+        </div>
+        <p class="muted" style="font-size:.8rem;margin:7px 0 0">${psu?((+psu.watts||0)>=recommendedNeed?`✓ Your ${psu.watts} W PSU meets this recommendation.`:`<span class="nofit">Your ${psu.watts||"unknown"} W PSU is below the ${recommendedNeed} W recommendation.</span>`):`Choose a PSU with at least ${recommendedNeed} W output. The recommendation includes ${psuSafetyMargin}% headroom.`}</p>
+      </div>` : "";
 
   const chosen = CATS.map(pickedIn).filter(Boolean);
   const partsTotal = chosen.reduce((n,p)=>n+(+p.price||0),0);
