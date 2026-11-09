@@ -1200,18 +1200,71 @@ addEventListener("hashchange", ()=>{ render(); scrollTo({top:0}); });
 const CATS = ["CPU","Motherboard","Memory","Graphics card","Storage","Power supply","Case","CPU cooler","Other"];
 function socketList(){ return (S.settings.sockets && S.settings.sockets.length) ? S.settings.sockets : DEFAULTS.settings.sockets; }
 
-function fitsCPU(part, cpu, need){
-  // PSU sizing applies even before a CPU is selected; an unknown/blank PSU
-  // output is not treated as an unlimited wattage rating.
-  if(part.category==="Power supply") return (+part.watts||0) > 0 && (+part.watts||0) >= need;
-  if(!cpu) return true;
-  switch(part.category){
-    case "Motherboard": return !part.socket || part.socket===cpu.socket;
-    case "Memory":      return !part.memType || !cpu.memType || part.memType===cpu.memType;
-    case "CPU cooler":  return !part.socket || part.socket===cpu.socket;
-    default: return true;
-  }
+function listSpec(value){
+  return String(value||"").split(/[,;|]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
 }
+function currentChosenParts(){
+  return CATS.map(cat=>buildSel[cat] ? partsAll().find(p=>p.id===buildSel[cat]) : null).filter(Boolean);
+}
+/* Missing measurements are a "check fit" warning, never a false promise. */
+function compatibilityReview(part,cpu,need,chosen=currentChosenParts()){
+  const fails=[], warnings=[];
+  const get=cat=>chosen.find(p=>p.category===cat);
+  const board=part.category==="Motherboard"?part:get("Motherboard");
+  const gpu=part.category==="Graphics card"?part:get("Graphics card");
+  const ram=part.category==="Memory"?part:get("Memory");
+  const cooler=part.category==="CPU cooler"?part:get("CPU cooler");
+  const psu=part.category==="Power supply"?part:get("Power supply");
+  const pcCase=part.category==="Case"?part:get("Case");
+  if(part.category==="Power supply"){
+    const watts=+part.watts||0;
+    if(!watts || watts<need) fails.push("PSU wattage is below the estimated build requirement");
+  }
+  if(cpu && part.category==="Motherboard"){
+    if(part.socket && cpu.socket && part.socket!==cpu.socket) fails.push("Motherboard socket does not match the CPU");
+    else if(!part.socket || !cpu.socket) warnings.push("Confirm the CPU and motherboard socket match");
+    if(part.memType && cpu.memType && part.memType!==cpu.memType) fails.push("Motherboard memory type does not match the CPU");
+    else if(!part.memType || !cpu.memType) warnings.push("Confirm supported memory generation");
+  }
+  if(cpu && part.category==="Memory" && part.memType && cpu.memType && part.memType!==cpu.memType) fails.push("Memory generation does not match the CPU platform");
+  if(cpu && part.category==="CPU cooler"){
+    const sockets=listSpec(part.supportedSockets||part.socket);
+    if(sockets.length && cpu.socket && !sockets.includes(cpu.socket.toLowerCase())) fails.push("Cooler does not list support for this CPU socket");
+    else if(!sockets.length) warnings.push("Confirm cooler socket support");
+  }
+  if(board && pcCase){
+    const supported=listSpec(pcCase.caseFormFactors);
+    if(board.formFactor && supported.length && !supported.includes(String(board.formFactor).toLowerCase())) fails.push("Motherboard form factor is not supported by the case");
+    else if(!board.formFactor || !supported.length) warnings.push("Confirm motherboard and case form-factor compatibility");
+  }
+  if(gpu && pcCase){
+    const length=+(gpu.lengthMm||0), clearance=+(pcCase.maxGpuLengthMm||0);
+    if(length && clearance && length>clearance) fails.push("Graphics card is longer than the case clearance");
+    else if(!length || !clearance) warnings.push("Confirm graphics-card length against case clearance");
+  }
+  if(cooler && pcCase){
+    const height=+(cooler.heightMm||0), clearance=+(pcCase.maxCoolerHeightMm||0);
+    if(height && clearance && height>clearance) fails.push("CPU cooler is taller than the case clearance");
+    else if(!height || !clearance) warnings.push("Confirm CPU-cooler height against case clearance");
+  }
+  if(ram && cooler){
+    const height=+(ram.heightMm||0), clearance=+(cooler.maxRamHeightMm||0);
+    if(height && clearance && height>clearance) fails.push("RAM is taller than the cooler's available memory clearance");
+    else if(!height || !clearance) warnings.push("Confirm RAM height and CPU-cooler memory clearance");
+  }
+  if(psu && pcCase){
+    const supported=listSpec(pcCase.supportedPSUFormFactors);
+    if(psu.formFactor && supported.length && !supported.includes(String(psu.formFactor).toLowerCase())) fails.push("PSU form factor is not supported by the case");
+    else if(!psu.formFactor || !supported.length) warnings.push("Confirm PSU and case form-factor compatibility");
+  }
+  if(gpu && psu){
+    const required=listSpec(gpu.requiredPowerConnectors), available=listSpec(psu.gpuPowerConnectors);
+    if(required.length && available.length && required.some(x=>!available.includes(x))) fails.push("PSU does not list all required GPU power connectors");
+    else if(required.length && !available.length) warnings.push("Confirm the PSU has the GPU's required power connectors");
+  }
+  return {fits:fails.length===0, fails, warnings};
+}
+function fitsCPU(part,cpu,need){ return compatibilityReview(part,cpu,need).fits; }
 /* Sums the CPU's own TDP plus the power-draw field on every other selected
    part (graphics card mainly) to get the watts the build actually needs —
    then only power supplies rated at or above that number are shown as fits. */
@@ -1511,12 +1564,12 @@ function partDetail(id,ctx){
   const p = partsAll().find(x=>x.id===id); if(!p) return;
   const {cpu, need} = currentBuildNeed();
   const picked = buildSel[p.category]===p.id;
-  let note = "";
-  if(cpu && p.category!=="CPU"){
-    note = fitsCPU(p,cpu,need)
-      ? `<p class="fit" style="font-size:.9rem">✓ Fits the ${esc(cpu.name)} you picked</p>`
-      : `<p class="nofit" style="font-size:.9rem">⚠ May not fit the ${esc(cpu.name)} you picked — check the socket, memory type or power rating below</p>`;
-  }
+  const review=compatibilityReview(p,cpu,need);
+  const note = review.fails.length
+    ? `<p class="nofit" style="font-size:.9rem">⚠ ${esc(review.fails.join("; "))}</p>`
+    : review.warnings.length
+      ? `<p class="nofit" style="font-size:.86rem">Check fit: ${esc(review.warnings.join("; "))}</p>`
+      : (cpu && p.category!=="CPU" ? `<p class="fit" style="font-size:.9rem">✓ No compatibility conflicts found with the selected CPU</p>` : "");
   detailDialog({
     image:p.image, name:p.name, price:p.price, note,
     rows:[["Category",p.category],["Brand",p.brand],["CPU type",p.cpuType],["Socket",p.socket],["Memory type",p.memType],
@@ -1746,6 +1799,7 @@ function build(){
     .map(([,id])=>partsAll().find(p=>p.id===id)).filter(Boolean);
   const need = requiredWatts(cpu, chosenExcludingPSU);
   const pickedIn = cat => buildSel[cat] ? partsAll().find(p=>p.id===buildSel[cat]) : null;
+  const selectedParts = CATS.map(pickedIn).filter(Boolean);
   const head = (n, cat, count) => {
     const pk = pickedIn(cat);
     return `<summary><h3><span class="n">${n}</span>${esc(cat==="CPU"?"Processor":cat)}</h3>
@@ -1838,11 +1892,15 @@ function build(){
 }
 function pickRow(p,cat,ok){
   const sel = buildSel[cat]===p.id;
-  const spec = [p.cpuType,p.socket,p.memType,p.watts?p.watts+"W output":"",p.tdp?p.tdp+"W TDP":"",p.power?p.power+"W draw":""].filter(Boolean).join(" · ");
+  const spec = [p.cpuType,p.socket,p.memType,p.watts?p.watts+"W output":"",p.tdp?p.tdp+"W TDP":"",p.power?p.power+"W draw":"",p.lengthMm?p.lengthMm+"mm long":"",p.formFactor||""].filter(Boolean).join(" · ");
+  const review = compatibilityReview(p,buildSel["CPU"]?partsAll().find(x=>x.id===buildSel["CPU"]):null,currentBuildNeed().need);
+  const label = !ok ? "doesn't fit" : review.warnings.length ? "check fit" : "fits";
+  const tip = [...review.fails,...review.warnings].join("; ");
   return `<div class="pick ${sel?'sel':''}">
     <div class="row" style="flex:1;min-width:0;cursor:pointer" title="Tap for full details" onclick="partDetail('${p.id}')">
       ${p.image?`<img src="${esc(p.image)}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:4px;flex:none">`:""}
-      <div><strong>${esc(p.name)}</strong> <span class="${ok?'fit':'nofit'}">${ok?'fits':'check fit'}</span> <span class="muted" style="font-size:.74rem;text-decoration:underline">details ›</span>
+      <div><strong>${esc(p.name)}</strong> <span class="${ok&&!review.warnings.length?'fit':'nofit'}" title="${esc(tip)}">${label}</span> <span class="muted" style="font-size:.74rem;text-decoration:underline">details ›</span>
+        ${tip?`<small class="nofit">${esc(tip)}</small>`:""}
         <small>${esc(p.desc||"")}${spec?` — ${esc(spec)}`:""}</small></div>
     </div>
     <div class="row" style="flex:none">
@@ -2493,6 +2551,24 @@ function editPart(id,presetCat){
       <div class="field" id="cpuTypeBox" style="${p.category==="CPU"?"":"display:none"}"><label>CPU type</label>${selectWithAdd("q_cpu","cpuTypes",p.cpuType||"","— none —")}</div>
       <div class="field"><label>Socket</label>${selectWithAdd("q_sock","sockets",p.socket||"","—")}</div>
       <div class="field"><label>Memory type</label><select id="q_mem"><option value="">—</option><option ${p.memType==="DDR5"?"selected":""}>DDR5</option><option ${p.memType==="DDR4"?"selected":""}>DDR4</option></select></div>
+      <details class="field" style="margin-top:10px"><summary style="cursor:pointer;font-weight:700">Physical fit specifications (optional)</summary>
+        <p class="muted" style="font-size:.8rem">Add these when entering cases, motherboards, graphics cards, coolers, RAM or power supplies. Missing measurements are shown as “check fit”, not guaranteed compatible.</p>
+        <div class="fields2">
+          <div class="field"><label>Motherboard form factor</label><input id="q_form_factor" value="${esc(p.formFactor||"")}" placeholder="ATX, Micro-ATX, Mini-ITX"></div>
+          <div class="field"><label>Case-supported board sizes</label><input id="q_case_form_factors" value="${esc(p.caseFormFactors||"")}" placeholder="ATX, Micro-ATX, Mini-ITX"></div>
+          <div class="field"><label>GPU length (mm)</label><input id="q_length_mm" type="number" value="${p.lengthMm||""}"></div>
+          <div class="field"><label>Case max GPU length (mm)</label><input id="q_max_gpu_mm" type="number" value="${p.maxGpuLengthMm||""}"></div>
+          <div class="field"><label>Cooler height (mm)</label><input id="q_height_mm" type="number" value="${p.heightMm||""}"></div>
+          <div class="field"><label>Case max cooler height (mm)</label><input id="q_max_cooler_mm" type="number" value="${p.maxCoolerHeightMm||""}"></div>
+          <div class="field"><label>RAM height (mm)</label><input id="q_ram_height_mm" type="number" value="${p.heightMm||""}"></div>
+          <div class="field"><label>Cooler max RAM clearance (mm)</label><input id="q_max_ram_mm" type="number" value="${p.maxRamHeightMm||""}"></div>
+          <div class="field"><label>Cooler-supported CPU sockets</label><input id="q_supported_sockets" value="${esc(p.supportedSockets||"")}" placeholder="AM5, AM4, LGA1700"></div>
+          <div class="field"><label>PSU form factor</label><input id="q_psu_form_factor" value="${esc(p.formFactor||"")}" placeholder="ATX, SFX, SFX-L"></div>
+          <div class="field"><label>Case-supported PSU sizes</label><input id="q_psu_supported" value="${esc(p.supportedPSUFormFactors||"")}" placeholder="ATX, SFX"></div>
+          <div class="field"><label>GPU required power connectors</label><input id="q_gpu_connectors" value="${esc(p.requiredPowerConnectors||"")}" placeholder="2x8-pin, 12V-2x6"></div>
+          <div class="field"><label>PSU GPU power connectors</label><input id="q_psu_connectors" value="${esc(p.gpuPowerConnectors||"")}" placeholder="2x8-pin, 12V-2x6"></div>
+        </div>
+      </details>
       <div class="fields2">
         <div class="field" id="q_tdp_wrap"><label>CPU TDP (W)</label><input id="q_tdp" type="number" value="${p.tdp||""}"></div>
         <div class="field" id="q_watts_wrap"><label>PSU output (W)</label><input id="q_watts" type="number" value="${p.watts||""}"></div>
@@ -2512,7 +2588,16 @@ function savePart(id,exists){
     memType:q_mem.value,
     tdp:q_cat.value==="CPU"?q_tdp.value:"",
     watts:q_cat.value==="Power supply"?q_watts.value:"",
-    power:(q_cat.value!=="CPU"&&q_cat.value!=="Power supply")?q_power.value:""};
+    power:(q_cat.value!=="CPU"&&q_cat.value!=="Power supply")?q_power.value:"",
+    formFactor:q_form_factor.value.trim()||q_psu_form_factor.value.trim(),
+    caseFormFactors:q_case_form_factors.value.trim(),
+    lengthMm:q_length_mm.value, maxGpuLengthMm:q_max_gpu_mm.value,
+    heightMm:q_cat.value==="Memory"?q_ram_height_mm.value:q_height_mm.value,
+    maxCoolerHeightMm:q_max_cooler_mm.value, maxRamHeightMm:q_max_ram_mm.value,
+    supportedSockets:q_supported_sockets.value.trim(),
+    supportedPSUFormFactors:q_psu_supported.value.trim(),
+    requiredPowerConnectors:q_gpu_connectors.value.trim(),
+    gpuPowerConnectors:q_psu_connectors.value.trim()};
   if(!rec.name){ toast("Give it a name first."); return; }
   if(exists) S.parts = S.parts.map(x=>x.id===id?rec:x); else S.parts.push(rec);
   save(); editDlg.close(); render(); toast("Part saved.");
