@@ -7307,7 +7307,8 @@
       "caseFormFactors": "ATX, Micro ATX, Mini-ITX",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-09",
+      "maxGpuLengthMm": 358
     },
     {
       "id": "caseDiypcMatx06Wood",
@@ -7322,7 +7323,9 @@
       "longDesc": "DIYPC DIY-mATX06-Wood compact Micro-ATX mid-tower with a walnut wood front panel, tempered-glass side panel, and four pre-installed PWM fans. Check exact motherboard and component clearances against the manufacturer's specifications before finalizing a build.",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-09",
+      "caseFormFactors": "Micro ATX, Mini-ITX",
+      "maxGpuLengthMm": 402
     },
     {
       "id": "caseFractalNorthXLDark",
@@ -7337,7 +7340,9 @@
       "longDesc": "Fractal Design North XL full-tower PC case in charcoal black with walnut front accents and a dark-tinted tempered-glass side panel. Designed for spacious ATX-class builds with expanded cooling and component room. Confirm exact motherboard and component clearances against Fractal Design's specifications before finalizing a build.",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-09",
+      "caseFormFactors": "E-ATX, ATX, Micro ATX, Mini-ITX",
+      "maxGpuLengthMm": 413
     },
     {
       "id": "caseDiypcVanguardF1",
@@ -7352,7 +7357,9 @@
       "longDesc": "DIYPC Vanguard-F1-BK black ATX full-tower gaming case. Includes four ARGB PWM fans, three mounted along the motherboard side and one rear fan, plus dual tempered-glass panels and USB Type-C front I/O. Verify exact motherboard and component clearances before purchase.",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-09",
+      "caseFormFactors": "E-ATX, ATX, Micro ATX, Mini-ITX",
+      "maxGpuLengthMm": 470
     },
     {
       "id": "caseNzxtH6FlowWhite",
@@ -7385,7 +7392,9 @@
       "longDesc": "Fractal Design North XL full-tower in charcoal black with walnut front accents and a mesh side panel. Offers a spacious layout for high-end builds. Confirm exact motherboard and component clearances against Fractal Design's specifications before finalizing a build.",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-09",
+      "caseFormFactors": "E-ATX, ATX, Micro ATX, Mini-ITX",
+      "maxGpuLengthMm": 413
     },
     {
       "id": "caseDiypcIdx6",
@@ -7403,9 +7412,9 @@
       "watts": "",
       "power": "",
       "formFactor": "ATX",
-      "caseFormFactors": "",
+      "caseFormFactors": "ATX, Micro ATX, Mini-ITX",
       "lengthMm": "",
-      "maxGpuLengthMm": "",
+      "maxGpuLengthMm": 415,
       "heightMm": "",
       "maxCoolerHeightMm": "",
       "maxRamHeightMm": "",
@@ -7427,7 +7436,9 @@
       "longDesc": "DIYPC DIY-G18-WD black ATX mid-tower with a walnut wood front panel, tempered-glass side panel, and four pre-installed 120mm PWM fans. Check exact component clearances and supported board sizes against the manufacturer's current specifications.",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-09",
+      "caseFormFactors": "E-ATX, ATX, Micro ATX, Mini-ITX",
+      "maxGpuLengthMm": 340
     },
     {
       "id": "caseLianLiLancool217",
@@ -7442,7 +7453,9 @@
       "longDesc": "Lian Li LANCOOL 217 black ATX mid-tower with walnut accents and five pre-installed PWM fans: two 170mm, two 120mm, and one 140mm. Features flexible PSU and cable installation. Confirm motherboard and component clearances against Lian Li's specifications before finalizing a build.",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-09",
+      "caseFormFactors": "E-ATX, ATX, Micro ATX, Mini-ITX",
+      "maxGpuLengthMm": 380
     }
   ]
 }
