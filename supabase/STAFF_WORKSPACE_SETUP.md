@@ -71,3 +71,11 @@ node --check staff-workspace.js
 Tests run the existing schema, all prior employee migrations, and the new migration twice, then exercise customers, anonymous sessions, owner, tech, market, disabled staff, role changes, individual denies, job access, note audiences/content editors, conflicting schedules, stale writes, and employee reports. They never connect to production.
 
 Browser checks use disposable sample staff and a mocked Supabase client for UI behavior. Production SQL activation and real-account end-to-end testing remain a separate deployment step.
+
+## Sales contribution update
+
+After the staff workspace migration, run `migrations/202611100002_sales_attribution.sql` in Supabase SQL Editor, then merge the sales attribution PR. No Edge Function deployment is needed.
+
+In **Orders & requests**, the owner uses **Credit sale / lead** to select the employee who brought in that customer. This is independent of the employee assigned to perform the work. One primary contributor is recorded per order/request; only the owner can assign, change or remove that credit.
+
+Employees, including Market staff, can open **Sales contributions** to see their own credited customer names and order/request references. Other customer contact information is not returned. They cannot claim credit or inspect another employee’s contributions. The owner sees all contributions and an employee’s credits in their individual report. Tech requests are labeled as leads, not paid sales; no commission or paid-revenue calculation is implied. Credits retain a snapshot after a job is removed with Done.
