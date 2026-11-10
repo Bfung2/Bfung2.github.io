@@ -2139,7 +2139,7 @@ function build(){
   const sections = CATS.filter(c=>c===activeBuildCategory && c!=="CPU").map((cat,idx)=>{
     const all = partsAll().filter(p=>p.category===cat).filter(p=>cat!=="Storage"||!buildStorageType||String(p.driveType||"").toUpperCase().includes(buildStorageType)).filter(matchesPartFilter);
     const pk = pickedIn(cat);
-    if(!all.length && !pk) return `<div class="step"><h3>${esc(cat)}</h3><p class="muted">No ${esc(cat.toLowerCase())} options match your current filters.</p><button class="btn sm ghost" onclick="clearPartFilters()">Clear filters</button></div>`;
+    if(!all.length && !pk && !(cat==="Storage"&&buildStorageType)) return `<div class="step"><h3>${esc(cat)}</h3><p class="muted">No ${esc(cat.toLowerCase())} options match your current filters.</p><button class="btn sm ghost" onclick="clearPartFilters()">Clear filters</button></div>`;
     const total = partsAll().filter(p=>p.category===cat).length;
     let body;
     const guide=guideInfo(cat);
