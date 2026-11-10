@@ -685,6 +685,30 @@ footer.site a{color:var(--gold)}
 @media(max-width:900px){.build-workspace{display:block;margin-top:12px}.build-menu-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;padding:9px 12px;border:1px solid rgba(201,162,39,.55);border-radius:9px;background:var(--board);color:#fff;font-size:.78rem;font-weight:700;box-shadow:0 4px 12px rgba(8,42,32,.15);cursor:pointer}.build-sidebar{position:fixed;z-index:181;top:0;right:0;bottom:0;width:min(90vw,410px);max-height:100dvh;overflow-y:auto;padding:20px;border:0;border-left:1px solid var(--line);border-radius:16px 0 0 16px;background:var(--panel);box-shadow:-18px 0 55px rgba(0,0,0,.27);transform:translateX(110%);visibility:hidden;transition:transform .24s ease,visibility .24s}.build-sidebar.open{transform:translateX(0);visibility:visible}.build-sidebar-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}.build-sidebar-head>div{grid-column:1/-1}.build-menu-close{display:block;grid-column:2;grid-row:1;width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-size:1.4rem;cursor:pointer}.build-sidebar .build-menu-toggle{display:none}.build-nav{grid-template-columns:1fr 1fr;gap:7px}.build-jump{min-width:0;font-size:.76rem}.build-filter-panel .fields2{grid-template-columns:1fr 1fr;gap:0 10px}.build-filter-panel .field:nth-child(1),.build-filter-panel .field:nth-child(2){grid-column:1/-1}.build-menu-backdrop.open{display:block;position:fixed;inset:0;z-index:180;border:0;background:rgba(4,18,13,.58);backdrop-filter:blur(2px);cursor:pointer}body.build-menu-open{overflow:hidden}}
 @media(max-width:520px){.build-sidebar{width:min(94vw,410px);padding:17px}.build-sidebar .build-nav{grid-template-columns:1fr 1fr}.build-filter-panel .fields2{grid-template-columns:1fr}.build-filter-panel .field:nth-child(1),.build-filter-panel .field:nth-child(2){grid-column:auto}.build-content .split{gap:15px}}
 @media(pointer:coarse){.build-page .step,.build-page .pick,.build-page .btile,.build-jump{animation:none!important;transition:none!important}.build-page .step:hover,.build-page .pick:hover,.build-page .btile:hover,.build-jump:hover{transform:none!important;box-shadow:none}}
+
+/* Full-width, category-first PC builder workspace */
+.build-page{max-width:none;width:100%;padding-left:clamp(12px,1.6vw,26px);padding-right:clamp(12px,1.6vw,26px)}
+.build-workspace{display:grid;grid-template-columns:220px minmax(0,1fr) 310px;gap:16px;align-items:start;margin-top:10px}
+.build-workspace-toolbar{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 2px}
+.build-toolbar-left,.build-toolbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.build-toolbar-toggle,.build-picker-toggle{display:inline-flex;align-items:center;justify-content:center;padding:8px 11px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--ink);font-size:.76rem;font-weight:700;cursor:pointer}
+.build-picker-toggle{background:var(--board);border-color:rgba(201,162,39,.5);color:#fff}
+.build-menu-toggle{display:inline-flex!important;align-items:center;justify-content:center;gap:7px;margin:0!important;padding:8px 11px!important;font-size:.76rem!important}
+.build-workspace.nav-collapsed{grid-template-columns:minmax(0,1fr) 310px}.build-workspace.picker-collapsed{grid-template-columns:220px minmax(0,1fr)}.build-workspace.nav-collapsed.picker-collapsed{grid-template-columns:minmax(0,1fr)}
+.build-workspace.nav-collapsed .build-sidebar,.build-workspace.picker-collapsed .build-summary-panel{display:none!important}
+.build-sidebar{grid-column:1;grid-row:2;min-width:0}.build-content{grid-column:2;grid-row:2;min-width:0}.build-workspace.nav-collapsed .build-content{grid-column:1}.build-content>.split{display:contents!important}.build-content .steps{display:block;grid-column:auto;min-width:0}.build-content .step{width:100%;min-width:0}.build-summary-panel{grid-column:3;grid-row:2;min-width:0;position:sticky;top:14px;max-height:calc(100vh - 28px);overflow-y:auto}.build-summary-mobile-head{display:none}.build-picker-backdrop{display:none}
+.build-jump.active{border-color:var(--gold);background:rgba(201,162,39,.1);color:var(--ink)}.btile.active{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold),0 4px 14px rgba(201,162,39,.12)}
+@media(max-width:1120px){.build-workspace{grid-template-columns:190px minmax(0,1fr) 270px;gap:11px}.build-workspace.nav-collapsed{grid-template-columns:minmax(0,1fr) 270px}.build-workspace.picker-collapsed{grid-template-columns:190px minmax(0,1fr)}}
+@media(max-width:900px){.build-workspace,.build-workspace.nav-collapsed,.build-workspace.picker-collapsed,.build-workspace.nav-collapsed.picker-collapsed{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}.build-workspace-toolbar{grid-column:1;position:sticky;top:4px;z-index:20;padding:6px 0;background:var(--paper)}.build-toolbar-left,.build-toolbar-right{flex:1}.build-toolbar-left>* ,.build-toolbar-right>*{flex:1}.build-sidebar{position:fixed;z-index:181;top:0;right:0;bottom:0;width:min(94vw,410px);max-height:100dvh;overflow-y:auto;padding:18px;border:0;border-left:1px solid var(--line);border-radius:16px 0 0 16px;background:var(--panel);box-shadow:-18px 0 55px rgba(0,0,0,.27);transform:translateX(110%);visibility:hidden;transition:transform .24s ease,visibility .24s}.build-sidebar.open{transform:translateX(0);visibility:visible}.build-content,.build-workspace.nav-collapsed .build-content{grid-column:1;grid-row:2}.build-content>.split{display:contents!important}.build-summary-panel{position:fixed;z-index:181;top:0;right:0;bottom:0;width:min(94vw,430px);max-height:100dvh;overflow-y:auto;padding:18px;border:0;border-left:1px solid var(--line);border-radius:16px 0 0 16px;background:var(--panel);box-shadow:-18px 0 55px rgba(0,0,0,.27);transform:translateX(110%);visibility:hidden;transition:transform .24s ease,visibility .24s}.build-summary-panel.open{transform:translateX(0);visibility:visible}.build-summary-mobile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}.build-summary-mobile-head button{width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-size:1.4rem}.build-picker-backdrop.open{display:block;position:fixed;inset:0;z-index:180;border:0;background:rgba(4,18,13,.58);backdrop-filter:blur(2px);cursor:pointer}.build-sidebar .build-menu-toggle{display:none!important}body.build-menu-open{overflow:hidden}}
+@media(max-width:520px){.build-workspace-toolbar{align-items:stretch}.build-toolbar-left,.build-toolbar-right{min-width:0}.build-toolbar-left>* ,.build-toolbar-right>*{font-size:.7rem;padding:8px 6px!important}.build-content .pick{align-items:flex-start;flex-wrap:wrap;gap:8px}.build-content .pick>.row:last-child{width:100%;justify-content:space-between}.build-content .pick .row:first-child>div{min-width:0}}
+@media(pointer:coarse){.build-page .step,.build-page .pick,.build-page .btile,.build-jump{animation:none!important;transition:none!important}.build-page .step:hover,.build-page .pick:hover,.build-page .btile:hover,.build-jump:hover{transform:none!important;box-shadow:none}}
+
+@media(max-width:900px){.build-workspace.nav-collapsed .build-sidebar,.build-workspace.picker-collapsed .build-summary-panel{display:block!important}}
+
+.build-content{display:contents!important}.build-content>.split{display:contents!important}
+
+@media(min-width:901px){.build-toolbar-left .build-menu-toggle{display:none!important}}
+@media(max-width:900px){.build-toolbar-left .build-toolbar-toggle,.build-toolbar-right .build-toolbar-toggle{display:none!important}body.build-picker-open{overflow:hidden}}
 </style>
 </head>
 <body>
@@ -1554,8 +1578,16 @@ function home(){
 let productFilters = {category:"", cpuType:"", q:"", min:"", max:""};
 let shopFiltersOpen=false;
 let buildMenuOpen=false;
+let buildPickerOpen=false;
+let buildNavVisible=true;
+let buildPickerVisible=true;
+let activeBuildCategory='CPU';
 function toggleBuildMenu(force){buildMenuOpen=typeof force==="boolean"?force:!buildMenuOpen;const panel=document.getElementById("buildSidebar"),backdrop=document.getElementById("buildMenuBackdrop"),button=document.getElementById("buildMenuToggle");if(panel)panel.classList.toggle("open",buildMenuOpen);if(backdrop)backdrop.classList.toggle("open",buildMenuOpen);if(button)button.setAttribute("aria-expanded",String(buildMenuOpen));document.body.classList.toggle("build-menu-open",buildMenuOpen);}
-function jumpBuildSection(cat){toggleBuildMenu(false);const el=document.getElementById("sec_"+cat.replace(/\W+/g,"_"));if(el)el.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches||window.matchMedia("(pointer: coarse)").matches?"auto":"smooth",block:"start"});}
+function setActiveBuildCategory(cat){activeBuildCategory=cat;buildPickerOpen=false;toggleBuildMenu(false);render();}
+function jumpBuildSection(cat){setActiveBuildCategory(cat);}
+function toggleBuildNav(){buildNavVisible=!buildNavVisible;render();}
+function toggleBuildPicker(force){buildPickerOpen=typeof force==="boolean"?force:!buildPickerOpen;document.body.classList.toggle("build-picker-open",buildPickerOpen);render();}
+function toggleBuildPickerColumn(){buildPickerVisible=!buildPickerVisible;render();}
 function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
 function setProductFilter(key,val){ productFilters[key]=val; render(); }
 function clearProductFilters(){ productFilters = {category:"", cpuType:"", q:"", min:"", max:""}; render(); }
@@ -1866,11 +1898,7 @@ function clearBuildCompare(){compareBuildIds=[];persistSavedBuilds();render();}
 
 function removePick(cat){ delete buildSel[cat]; saveBuild(); render(); }
 function clearBuild(){ if(!confirm("Clear your whole build list?")) return; buildSel={}; wantAssembly=false; saveBuild(); render(); }
-function focusSection(cat){
-  sectionOpen[cat]=true; render();
-  const el = document.getElementById("sec_"+cat.replace(/\W+/g,"_"));
-  if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
-}
+function focusSection(cat){setActiveBuildCategory(cat);}
 const BUILD_GUIDE = {
   CPU:{title:"1. Start with your processor",why:"The CPU is the brain of your computer. It affects performance and determines which motherboard socket and memory platform you need.",tip:"Choose the CPU first. The builder uses its socket and memory requirements to narrow down compatible parts."},
   Motherboard:{title:"2. Choose a motherboard",why:"The motherboard connects every component. Its socket must match your CPU, and its form factor must fit your case.",tip:"Check the CPU socket, memory generation (DDR4 or DDR5), and board size before choosing."},
@@ -1998,10 +2026,12 @@ function build(){
       <small class="muted">${count} option${count===1?"":"s"}</small>${pk?`<span class="fit">✓ ${esc(pk.name)}</span>`:""}</summary>`;
   };
   const pickNote = `<p class="muted" style="font-size:.86rem">This is your pick — the other options are tucked away. Press Remove to see them again.</p>`;
-  const sections = CATS.filter(c=>c!=="CPU").map((cat,idx)=>{
+  const slots = CATS.filter(c=>partsAll().some(p=>p.category===c));
+  if(!slots.includes(activeBuildCategory)) activeBuildCategory=slots.find(c=>!buildSel[c])||slots[0]||"CPU";
+  const sections = CATS.filter(c=>c===activeBuildCategory && c!=="CPU").map((cat,idx)=>{
     const all = partsAll().filter(p=>p.category===cat).filter(matchesPartFilter);
     const pk = pickedIn(cat);
-    if(!all.length && !pk) return "";
+    if(!all.length && !pk) return `<div class="step"><h3>${esc(cat)}</h3><p class="muted">No ${esc(cat.toLowerCase())} options match your current filters.</p><button class="btn sm ghost" onclick="clearPartFilters()">Clear filters</button></div>`;
     const total = partsAll().filter(p=>p.category===cat).length;
     let body;
     const guide=guideInfo(cat);
@@ -2014,7 +2044,7 @@ function build(){
       ${good.map(p=>pickRow(p,cat,true,selectedParts,need)).join("") || `<p class="muted">Nothing in this category fits that CPU yet.</p>`}
       ${bad.length?`<details style="margin-top:10px"><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${bad.length} that may not fit</summary><div style="margin-top:10px">${bad.map(p=>pickRow(p,cat,false,selectedParts,need)).join("")}</div></details>`:""}`;
     }
-    return `<div class="step" id="sec_${cat.replace(/\W+/g,"_")}"><details ${secOpen(cat)} ontoggle="sectionOpen['${cat}']=this.open">
+    return `<div class="step build-category-step" id="sec_${cat.replace(/\W+/g,"_")}"><details ${secOpen(cat)} ontoggle="sectionOpen['${cat}']=this.open">
       ${head(idx+2, cat, pk?total:all.length)}
       ${body}
       ${isOwner?`<button class="btn sm ghost" onclick="editPart(null,'${cat}')">Add ${esc(cat.toLowerCase())}</button>`:""}
@@ -2022,12 +2052,11 @@ function build(){
   }).join("");
 
   // ----- the build list (right-hand side): one tile per slot, in build order -----
-  const slots = CATS.filter(c=>partsAll().some(p=>p.category===c));
   const tile = cat => {
     const p = pickedIn(cat), label = cat==="CPU" ? "Processor" : cat;
     if(!p) return `<div class="btile empty" onclick="focusSection('${cat}')" title="Pick ${esc(label)}"><div class="cat">${esc(label)}</div><div class="pic">+ Pick</div></div>`;
     const ok = cat==="CPU" || fitsCPU(p,cpu,need);
-    return `<div class="btile" onclick="partDetail('${p.id}')" title="${esc(p.name)}">
+    return `<div class="btile" onclick="focusSection('${cat}')" title="Show ${esc(label)} options">
       <button class="x" aria-label="Remove ${esc(p.name)}" onclick="event.stopPropagation();removePick('${cat}')">×</button>
       <div class="cat">${esc(label)}</div>
       <div class="pic">${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="${esc(p.name)}">`:esc(label)}</div>
@@ -2071,7 +2100,7 @@ function build(){
 
   const pickedCount = chosen.length;
   const progress = slots.length ? Math.round(pickedCount/slots.length*100) : 0;
-  const jumpLinks = slots.map((cat,i)=>`<button type="button" class="build-jump ${pickedIn(cat)?"done":""}" onclick="jumpBuildSection('${cat}')"><span>${pickedIn(cat)?"✓":String(i+1).padStart(2,"0")}</span>${esc(cat==="CPU"?"Processor":cat)}</button>`).join("");
+  const jumpLinks = slots.map((cat,i)=>`<button type="button" class="build-jump ${pickedIn(cat)?"done":""} ${activeBuildCategory===cat?"active":""}" onclick="jumpBuildSection('${cat}')"><span>${pickedIn(cat)?"✓":String(i+1).padStart(2,"0")}</span>${esc(cat==="CPU"?"Processor":cat)}</button>`).join("");
   return `<div class="wrap build-page">
     <section class="build-intro">
       <div class="build-intro-copy"><span class="build-eyebrow">APEX CUSTOM CONFIGURATOR</span><h2>Build a PC that’s <em>yours.</em></h2><p>Start with your processor, then choose compatible parts. Your build stays saved on this device while you explore.</p><div class="build-quickfacts"><span>✦ Compatibility guidance</span><span>✦ Live price total</span><span>✦ Saved as you go</span></div></div>
@@ -2084,8 +2113,7 @@ function build(){
     ${budgetPanel}
     ${savedBuildManager}
     ${!partsAll().length?`<div class="empty"><strong>No parts uploaded yet</strong>${isOwner?"Add a CPU first, then boards, memory and the rest. Fill in socket and memory type so the matching works.":"Parts are being added. Check back shortly."}</div>`: `
-    <div class="build-workspace">
-      <button class="build-menu-toggle" id="buildMenuToggle" type="button" onclick="toggleBuildMenu()" aria-controls="buildSidebar" aria-expanded="false">☷ Parts &amp; filters</button>
+    <div class="build-workspace ${buildNavVisible?"":"nav-collapsed"} ${buildPickerVisible?"":"picker-collapsed"}">\n      <div class="build-workspace-toolbar"><div class="build-toolbar-left"><button class="build-menu-toggle" id="buildMenuToggle" type="button" onclick="toggleBuildMenu()" aria-controls="buildSidebar" aria-expanded="false">☷ Categories &amp; filters</button><button class="build-toolbar-toggle" type="button" onclick="toggleBuildNav()">${buildNavVisible?"Hide":"Show"} left menu</button></div><div class="build-toolbar-right"><button class="build-toolbar-toggle" type="button" onclick="toggleBuildPickerColumn()">${buildPickerVisible?"Hide":"Show"} build picker</button><button class="build-picker-toggle" type="button" onclick="toggleBuildPicker()">My build</button></div></div>
       <aside class="build-sidebar" id="buildSidebar" aria-label="Build navigation and filters">
         <div class="build-sidebar-head"><div><span class="build-eyebrow">BUILD CONTROLS</span><strong>Parts &amp; filters</strong><small>Jump to a component or narrow your options</small></div><button class="build-menu-close" type="button" onclick="toggleBuildMenu(false)" aria-label="Close build menu">×</button></div>
         <nav class="build-nav" aria-label="Build categories">${jumpLinks}</nav>
@@ -2095,7 +2123,7 @@ function build(){
       <div class="build-content">
         <div class="split">
           <div class="steps">
-        <div class="step" id="sec_CPU"><details ${secOpen("CPU")} ontoggle="sectionOpen['CPU']=this.open">
+        <div class="step build-category-step" id="sec_CPU" style="${activeBuildCategory==="CPU"?"":"display:none"}"><details ${secOpen("CPU")} ontoggle="sectionOpen['CPU']=this.open">
           ${head(1,"CPU",cpu?partsAll().filter(p=>p.category==="CPU").length:cpus.length)}
           <div class="guide-step-note"><strong>${esc(guideInfo("CPU").title)}</strong><p>${esc(guideInfo("CPU").why)}</p><small>💡 ${esc(guideInfo("CPU").tip)}</small></div>
           ${cpu?pickNote:""}
@@ -2104,7 +2132,7 @@ function build(){
         </details></div>
         ${sections}
       </div>
-      <div class="summary panel build-summary-panel">
+      <button class="build-picker-backdrop ${buildPickerOpen?"open":""}" type="button" aria-label="Close build picker" onclick="toggleBuildPicker(false)"></button>\n      <div class="summary panel build-summary-panel ${buildPickerOpen?"open":""}"><div class="build-summary-mobile-head"><strong>My build</strong><button type="button" onclick="toggleBuildPicker(false)" aria-label="Close build picker">×</button></div>
         <div class="summary-heading"><div><span class="build-eyebrow">YOUR CONFIGURATION</span><h3 style="margin:2px 0 0">Build summary</h3></div><span class="summary-count">${chosen.length}/${slots.length}</span></div>
         <div class="summary-status ${compatibilityState.tone}"><span>${compatibilityState.icon}</span><strong>${compatibilityState.label}</strong><small>${fitFailures.length?`${fitFailures.length} issue${fitFailures.length===1?"":"s"}`:fitWarnings.length?`${fitWarnings.length} item${fitWarnings.length===1?"":"s"} to review`:selectedParts.length?"Based on the specs provided":"Choose components to begin"}</small></div>
         <div class="summary-stats"><div><small>Components</small><strong>${chosen.length}</strong></div><div><small>Estimated draw</small><strong>${need?need+" W":"—"}</strong></div><div><small>PSU target</small><strong>${need?recommendedNeed+" W":"—"}</strong></div></div>
