@@ -1669,6 +1669,9 @@ let buildPickerVisible=true;
 let activeBuildCategory='CPU';
 let buildStorageType='';
 let buildCpuVendor='';
+let buildBoardSize='';
+let buildGpuVendor='';
+let buildCaseSize='';
 let buildCategoryPages={};
 const BUILD_PAGE_SIZE=25;
 function setBuildPage(cat,page){buildCategoryPages[cat]=Math.max(1,Number(page)||1);render();}
@@ -1679,6 +1682,15 @@ function setBuildStorageType(type){buildStorageType=type;buildCategoryPages.Stor
 function resetBuildStorageType(){buildStorageType='';delete buildSel.Storage;buildCategoryPages.Storage=1;saveBuild();render();}
 function setBuildCpuVendor(vendor){buildCpuVendor=vendor;const chosen=partsAll().find(p=>p.id===buildSel.CPU);if(chosen&&String(chosen.brand||'').toUpperCase()!==vendor)delete buildSel.CPU;buildCategoryPages.CPU=1;saveBuild();render();}
 function resetBuildCpuVendor(){buildCpuVendor='';buildCategoryPages.CPU=1;render();}
+function setBuildBoardSize(size){buildBoardSize=size;const selected=partsAll().find(p=>p.id===buildSel.Motherboard);if(selected&&((size==="ATX"&&inferBoardSize(selected)!=="atx")||(size==="MATX"&&inferBoardSize(selected)!=="micro-atx")))delete buildSel.Motherboard;buildCategoryPages.Motherboard=1;saveBuild();render();}
+function resetBuildBoardSize(){buildBoardSize='';buildCategoryPages.Motherboard=1;render();}
+function gpuVendorOf(gpu){const t=[gpu?.name,gpu?.desc,gpu?.longDesc].join(" ").toLowerCase();if(/geforce|\brtx\b|\bgtx\b|nvidia/.test(t))return "NVIDIA";if(/radeon|\brx\s*\d|amd/.test(t))return "AMD";return "";}
+function setBuildGpuVendor(vendor){buildGpuVendor=vendor;const selected=partsAll().find(p=>p.id===buildSel["Graphics card"]);if(selected&&gpuVendorOf(selected)!==vendor)delete buildSel["Graphics card"];buildCategoryPages["Graphics card"]=1;saveBuild();render();}
+function resetBuildGpuVendor(){buildGpuVendor='';buildCategoryPages["Graphics card"]=1;render();}
+function buildCaseRequirement(){const board=partsAll().find(p=>p.id===buildSel.Motherboard),gpu=partsAll().find(p=>p.id===buildSel["Graphics card"]);const boardSize=inferBoardSize(board);const smallCases=partsAll().filter(p=>p.category==="Case").filter(p=>{const sizes=supportedCaseBoardSizes(p);return sizes.includes("micro-atx")&&!sizes.includes("atx");});const maxSmallGpu=smallCases.map(caseGpuClearanceMm).filter(n=>n>0).reduce((a,b)=>Math.max(a,b),0);const length=gpuLengthMm(gpu);const forced=boardSize==="atx"||boardSize==="e-atx"||(length>0&&maxSmallGpu>0&&length>maxSmallGpu);return {forced,boardSize,length,maxSmallGpu};}
+function setBuildCaseSize(size){buildCaseSize=size;const selected=partsAll().find(p=>p.id===buildSel.Case);if(selected){const sizes=supportedCaseBoardSizes(selected);if(size==="MATX"&&(sizes.includes("atx")||!sizes.includes("micro-atx")))delete buildSel.Case;if(size==="ATX"&&!sizes.includes("atx"))delete buildSel.Case;}buildCategoryPages.Case=1;saveBuild();render();}
+function resetBuildCaseSize(){buildCaseSize='';buildCategoryPages.Case=1;render();}
+
 function jumpBuildSection(cat){setActiveBuildCategory(cat);}
 function toggleBuildNav(){buildNavVisible=!buildNavVisible;render();}
 function toggleBuildPicker(force){buildPickerOpen=typeof force==="boolean"?force:!buildPickerOpen;document.body.classList.toggle("build-picker-open",buildPickerOpen);render();}
@@ -2141,15 +2153,36 @@ function build(){
   const slots = CATS.filter(c=>partsAll().some(p=>p.category===c));
   if(!slots.includes(activeBuildCategory)) activeBuildCategory=slots.find(c=>!buildSel[c])||slots[0]||"CPU";
   const sections = CATS.filter(c=>c===activeBuildCategory && c!=="CPU").map((cat,idx)=>{
-    const all = partsAll().filter(p=>p.category===cat).filter(p=>cat!=="Storage"||!buildStorageType||String(p.driveType||"").toUpperCase().includes(buildStorageType)).filter(matchesPartFilter);
+    const caseRequirement=cat==="Case"?buildCaseRequirement():null;
+    const all = partsAll().filter(p=>p.category===cat)
+      .filter(p=>cat!=="Storage"||!buildStorageType||String(p.driveType||"").toUpperCase().includes(buildStorageType))
+      .filter(p=>cat!=="Motherboard"||!buildBoardSize||inferBoardSize(p)===(buildBoardSize==="ATX"?"atx":"micro-atx"))
+      .filter(p=>cat!=="Graphics card"||!buildGpuVendor||gpuVendorOf(p)===buildGpuVendor)
+      .filter(p=>cat!=="Case"||((caseRequirement?.forced||buildCaseSize==="ATX")?supportedCaseBoardSizes(p).includes("atx"):buildCaseSize==="MATX"?(supportedCaseBoardSizes(p).includes("micro-atx")&&!supportedCaseBoardSizes(p).includes("atx")):true))
+      .filter(matchesPartFilter)
+      .filter(p=>cat!=="Motherboard"||!cpu||fitsCPU(p,cpu,need,selectedParts));
     const pk = pickedIn(cat);
-    if(!all.length && !pk && !(cat==="Storage"&&buildStorageType)) return `<div class="step"><h3>${esc(cat)}</h3><p class="muted">No ${esc(cat.toLowerCase())} options match your current filters.</p><button class="btn sm ghost" onclick="clearPartFilters()">Clear filters</button></div>`;
+    if(!all.length && !pk && !(cat==="Storage"&&buildStorageType) && !(cat==="Motherboard"&&!buildBoardSize) && !(cat==="Graphics card"&&!buildGpuVendor) && !(cat==="Case"&&(!buildCaseSize||caseRequirement?.forced))) return `<div class="step"><h3>${esc(cat)}</h3><p class="muted">No ${esc(cat.toLowerCase())} options match your current filters.</p><button class="btn sm ghost" onclick="clearPartFilters()">Clear filters</button></div>`;
     const total = partsAll().filter(p=>p.category===cat).length;
     let body;
     const guide=guideInfo(cat);
     const guideNote=`<div class="guide-step-note"><strong>${esc(guide.title)}</strong><p>${esc(guide.why)}</p><small>💡 ${esc(guide.tip)}</small></div>`;
     if(pk){
-      body = guideNote + (cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()">Change storage type</button>`:"") + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need,selectedParts),selectedParts,need);
+      body = guideNote + (cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()">Change storage type</button>`:cat==="Motherboard"?`<button type="button" class="btn sm ghost" onclick="resetBuildBoardSize()">Change board size</button>`:cat==="Graphics card"?`<button type="button" class="btn sm ghost" onclick="resetBuildGpuVendor()">Change GPU brand</button>`:cat==="Case"&&!caseRequirement?.forced?`<button type="button" class="btn sm ghost" onclick="resetBuildCaseSize()">Change case size</button>`:"") + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need,selectedParts),selectedParts,need);
+    } else if(cat==="Motherboard"&&!buildBoardSize){
+      const boards=partsAll().filter(p=>p.category==="Motherboard");
+      const atx=boards.filter(p=>inferBoardSize(p)==="atx"&&(!cpu||fitsCPU(p,cpu,need,selectedParts))).length;
+      const matx=boards.filter(p=>inferBoardSize(p)==="micro-atx"&&(!cpu||fitsCPU(p,cpu,need,selectedParts))).length;
+      body=`${guideNote}<section class="storage-choice build-storage-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE MOTHERBOARD SIZE</span><h2>Motherboard</h2><p>${cpu?"Showing boards compatible with "+esc(cpu.name)+". ":""}Choose ATX or Micro-ATX.</p></div><div class="storage-choice-grid"><button type="button" class="storage-choice-card" onclick="setBuildBoardSize('ATX')"><span class="storage-choice-icon">▦</span><strong>ATX</strong><small>Full-size motherboards</small><span class="storage-choice-count">${atx} options</span></button><button type="button" class="storage-choice-card" onclick="setBuildBoardSize('MATX')"><span class="storage-choice-icon">▤</span><strong>mATX</strong><small>Micro-ATX motherboards</small><span class="storage-choice-count">${matx} options</span></button></div></section>`;
+    } else if(cat==="Graphics card"&&!buildGpuVendor){
+      const gpus=partsAll().filter(p=>p.category==="Graphics card");
+      const nvidia=gpus.filter(p=>gpuVendorOf(p)==="NVIDIA").length,amd=gpus.filter(p=>gpuVendorOf(p)==="AMD").length;
+      body=`${guideNote}<section class="storage-choice build-storage-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE GPU PLATFORM</span><h2>Graphics card</h2><p>Choose NVIDIA or AMD to browse graphics cards.</p></div><div class="storage-choice-grid"><button type="button" class="storage-choice-card" onclick="setBuildGpuVendor('NVIDIA')"><span class="storage-choice-icon">◈</span><strong>NVIDIA</strong><small>GeForce graphics cards</small><span class="storage-choice-count">${nvidia} options</span></button><button type="button" class="storage-choice-card" onclick="setBuildGpuVendor('AMD')"><span class="storage-choice-icon">▦</span><strong>AMD</strong><small>Radeon graphics cards</small><span class="storage-choice-count">${amd} options</span></button></div></section>`;
+    } else if(cat==="Case"&&!caseRequirement.forced&&!buildCaseSize){
+      const cases=partsAll().filter(p=>p.category==="Case");
+      const matx=cases.filter(p=>{const sizes=supportedCaseBoardSizes(p);return sizes.includes("micro-atx")&&!sizes.includes("atx");}).length;
+      const atx=cases.filter(p=>supportedCaseBoardSizes(p).includes("atx")).length;
+      body=`${guideNote}<section class="storage-choice build-storage-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE CASE SIZE</span><h2>PC Case</h2><p>Choose a compact mATX case or a full-size ATX case.</p></div><div class="storage-choice-grid"><button type="button" class="storage-choice-card" onclick="setBuildCaseSize('MATX')"><span class="storage-choice-icon">▤</span><strong>mATX</strong><small>Compact Micro-ATX cases</small><span class="storage-choice-count">${matx} options</span></button><button type="button" class="storage-choice-card" onclick="setBuildCaseSize('ATX')"><span class="storage-choice-icon">▦</span><strong>ATX</strong><small>Full-size ATX cases</small><span class="storage-choice-count">${atx} options</span></button></div></section>`;
     } else if(cat==="Storage"&&!buildStorageType){
       const storageItems=partsAll().filter(p=>p.category==="Storage");
       const hddCount=storageItems.filter(p=>String(p.driveType||"").toUpperCase()==="HDD").length;
@@ -2159,7 +2192,7 @@ function build(){
       const good = sortParts(all.filter(p=>fitsCPU(p,cpu,need,selectedParts))), bad = sortParts(all.filter(p=>!fitsCPU(p,cpu,need,selectedParts)));
       const categoryPage=buildPageSlice(cat,[...good.map(p=>({part:p,ok:true})),...bad.map(p=>({part:p,ok:false}))]);
       const pageGood=categoryPage.items.filter(x=>x.ok).map(x=>x.part), pageBad=categoryPage.items.filter(x=>!x.ok).map(x=>x.part);
-      body = `${guideNote}${cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()" style="margin:0 0 12px">← Change storage type (${buildStorageType})</button>`:""}${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
+      body = `${guideNote}${cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()" style="margin:0 0 12px">← Change storage type (${buildStorageType})</button>`:cat==="Motherboard"?`<button type="button" class="btn sm ghost" onclick="resetBuildBoardSize()" style="margin:0 0 12px">← Change motherboard size</button>`:cat==="Graphics card"?`<button type="button" class="btn sm ghost" onclick="resetBuildGpuVendor()" style="margin:0 0 12px">← Change GPU brand</button>`:cat==="Case"&&!caseRequirement?.forced?`<button type="button" class="btn sm ghost" onclick="resetBuildCaseSize()" style="margin:0 0 12px">← Change case size</button>`:""}${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
       ${pageGood.map(p=>pickRow(p,cat,true,selectedParts,need)).join("") || (!pageBad.length?`<p class="muted">Nothing in this category fits that CPU yet.</p>`:"")}
       ${pageBad.length?`<details style="margin-top:10px" open><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${pageBad.length} of ${bad.length} that may not fit (page ${categoryPage.page})</summary><div style="margin-top:10px">${pageBad.map(p=>pickRow(p,cat,false,selectedParts,need)).join("")}</div></details>`:""}
       ${categoryPage.markup}`;
@@ -2308,6 +2341,13 @@ function pickRow(p,cat,ok,chosenParts,buildNeed){
 function pickPart(cat,id){
   const had = buildSel[cat]===id;
   if(had) delete buildSel[cat]; else buildSel[cat]=id;
+  if(!had&&(cat==="Motherboard"||cat==="Graphics card")&&buildSel.Case){
+    const chosen=CATS.map(c=>partsAll().find(p=>p.id===buildSel[c])).filter(Boolean);
+    const cpu=partsAll().find(p=>p.id===buildSel.CPU)||null;
+    const watts=requiredWatts(cpu,chosen.filter(p=>p.category!=="CPU"&&p.category!=="Power supply"));
+    const existingCase=chosen.find(p=>p.category==="Case");
+    if(existingCase&&!compatibilityReview(existingCase,cpu,watts,chosen).fits)delete buildSel.Case;
+  }
   saveBuild(); render();
   if(route()!=="/build") toast(had ? "Removed from your build list." : "Added to your build list — see it on Build a PC.");
 }
