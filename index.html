@@ -2341,6 +2341,13 @@ function pickRow(p,cat,ok,chosenParts,buildNeed){
 function pickPart(cat,id){
   const had = buildSel[cat]===id;
   if(had) delete buildSel[cat]; else buildSel[cat]=id;
+  if(!had&&(cat==="Motherboard"||cat==="Graphics card")&&buildSel.Case){
+    const chosen=CATS.map(c=>partsAll().find(p=>p.id===buildSel[c])).filter(Boolean);
+    const cpu=partsAll().find(p=>p.id===buildSel.CPU)||null;
+    const watts=requiredWatts(cpu,chosen.filter(p=>p.category!=="CPU"&&p.category!=="Power supply"));
+    const existingCase=chosen.find(p=>p.category==="Case");
+    if(existingCase&&!compatibilityReview(existingCase,cpu,watts,chosen).fits)delete buildSel.Case;
+  }
   saveBuild(); render();
   if(route()!=="/build") toast(had ? "Removed from your build list." : "Added to your build list — see it on Build a PC.");
 }
