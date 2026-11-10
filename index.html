@@ -669,6 +669,22 @@ footer.site a{color:var(--gold)}
 @media(max-width:760px){.bar{gap:9px;padding:10px 14px}.brand{font-size:1.02rem;margin-right:auto}.site-search{order:5;flex:1 1 100%;max-width:none;width:100%;height:44px}nav.main{order:6;display:flex;flex-wrap:nowrap;width:100%;margin:0;gap:3px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:2px 0 5px}nav.main::-webkit-scrollbar{display:none}nav.main a{white-space:nowrap;flex:none;padding:7px 10px;font-size:.83rem}.cartbtn{padding:7px 10px;font-size:.8rem}.global-search-results{position:fixed;left:12px;right:12px;top:142px;max-height:58vh;width:auto}}
 @media(max-width:560px){html,body{width:100%;max-width:100%;overflow-x:clip}body{font-size:15px}main{padding:30px 0 52px;overflow-x:clip}.wrap{padding-left:14px;padding-right:14px}.home-hero-inner{overflow:hidden}.home-hero-visual{right:0;width:145px;height:180px;transform:scale(.62);transform-origin:top right;opacity:.2}.home-hero h1{font-size:clamp(2.25rem,11vw,3.2rem);overflow-wrap:anywhere}.home-trust-row{max-width:100%}.home-stats>div{min-width:0}.home-stats span{overflow-wrap:anywhere}.products-hero-inner{overflow:hidden}.products-hero-copy{min-width:0}.products-hero h1{font-size:clamp(1.9rem,9vw,2.65rem);overflow-wrap:anywhere}.products-hero-meta{gap:8px;flex-wrap:wrap}.products-heading,.home-section-head{min-width:0}.products-page .shelf-row{margin-right:-14px;padding-right:14px}.products-page .shelf-row>.product-card{flex-basis:min(78vw,225px)}.home-marquee{max-width:100vw}.home-marquee-track{max-width:none}.home-marquee .product-card{flex-basis:210px;width:210px}.home-build-strip{min-width:0}.home-build-strip h2{font-size:1.35rem;overflow-wrap:anywhere}.home-build-strip .btn{white-space:normal;width:100%}.shop-toolbar{min-width:0}.shop-toolbar>div{flex-wrap:wrap}.fields2,.split,.shop-layout{min-width:0}.products-page .product-card .btn{white-space:normal}.adminstrip .wrap{padding-left:14px;padding-right:14px}}
 @media(max-width:380px){.bar{padding-left:11px;padding-right:11px}.brand{font-size:.94rem}.cartbtn{padding:6px 8px}.home-hero h1{font-size:2.15rem}.products-page .shelf-row>.product-card{flex-basis:205px}.shop-filter-panel .fields2{grid-template-columns:1fr}.shop-filter-panel .field:nth-child(1),.shop-filter-panel .field:nth-child(2){grid-column:auto}}
+
+/* Build-a-PC navigation island and mobile drawer */
+.build-workspace{display:grid;grid-template-columns:248px minmax(0,1fr);gap:22px;align-items:start;margin-top:10px}
+.build-sidebar{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;overscroll-behavior:contain;padding:14px;border:1px solid rgba(201,162,39,.34);border-radius:15px;background:var(--panel);box-shadow:0 10px 28px rgba(0,0,0,.065)}
+.build-sidebar-head{display:flex;flex-direction:column;gap:5px;padding:2px 2px 13px;border-bottom:1px solid var(--line);margin-bottom:12px;color:var(--ink)}
+.build-sidebar-head strong{font:800 1rem Archivo,sans-serif}.build-sidebar-head small{font-size:.72rem;line-height:1.4;color:var(--ink-2)}
+.build-nav{display:grid;gap:6px;padding:0;margin:0 0 14px;overflow:visible;scroll-snap-type:none}
+.build-jump{width:100%;justify-content:flex-start;text-align:left;border-radius:9px;padding:8px 9px;background:transparent;cursor:pointer}
+.build-jump:hover{transform:translateX(2px)}
+.build-filter-panel{margin:0!important;padding:13px!important;border-radius:11px!important;box-shadow:none!important}
+.build-filter-panel .fields2{grid-template-columns:1fr;gap:0}.build-filter-panel .field{margin-bottom:10px}.build-filter-panel .field label{font-size:.68rem}.build-filter-panel input,.build-filter-panel select{min-height:38px;font-size:.8rem}
+.build-content{min-width:0}.build-content>.split{margin-top:0}
+.build-menu-toggle,.build-menu-close,.build-menu-backdrop{display:none}
+@media(max-width:900px){.build-workspace{display:block;margin-top:12px}.build-menu-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;padding:9px 12px;border:1px solid rgba(255,255,255,.3);border-radius:9px;background:rgba(255,255,255,.1);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer}.build-sidebar{position:fixed;z-index:181;top:0;right:0;bottom:0;width:min(90vw,410px);max-height:100dvh;overflow-y:auto;padding:20px;border:0;border-left:1px solid var(--line);border-radius:16px 0 0 16px;background:var(--panel);box-shadow:-18px 0 55px rgba(0,0,0,.27);transform:translateX(110%);visibility:hidden;transition:transform .24s ease,visibility .24s}.build-sidebar.open{transform:translateX(0);visibility:visible}.build-sidebar-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}.build-sidebar-head>div{grid-column:1/-1}.build-menu-close{display:block;grid-column:2;grid-row:1;width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-size:1.4rem;cursor:pointer}.build-sidebar .build-menu-toggle{display:none}.build-nav{grid-template-columns:1fr 1fr;gap:7px}.build-jump{min-width:0;font-size:.76rem}.build-filter-panel .fields2{grid-template-columns:1fr 1fr;gap:0 10px}.build-filter-panel .field:nth-child(1),.build-filter-panel .field:nth-child(2){grid-column:1/-1}.build-menu-backdrop.open{display:block;position:fixed;inset:0;z-index:180;border:0;background:rgba(4,18,13,.58);backdrop-filter:blur(2px);cursor:pointer}body.build-menu-open{overflow:hidden}}
+@media(max-width:520px){.build-sidebar{width:min(94vw,410px);padding:17px}.build-sidebar .build-nav{grid-template-columns:1fr 1fr}.build-filter-panel .fields2{grid-template-columns:1fr}.build-filter-panel .field:nth-child(1),.build-filter-panel .field:nth-child(2){grid-column:auto}.build-content .split{gap:15px}}
+@media(pointer:coarse){.build-page .step,.build-page .pick,.build-page .btile,.build-jump{animation:none!important;transition:none!important}.build-page .step:hover,.build-page .pick:hover,.build-page .btile:hover,.build-jump:hover{transform:none!important;box-shadow:none}}
 </style>
 </head>
 <body>
@@ -1333,7 +1349,7 @@ function globalSearchInput(value){
  const products=catalogAll().filter(p=>searchableProductText(p).includes(q)).slice(0,7);
  const pageTerms={"/":["home","apex computers"],"/products":["products","shop","parts","components","computer parts"],"/build":["build a pc","custom pc","pc builder","computer build","compatibility"],"/tech":["tech support","repair","fix","installation","install","troubleshooting","home tech service"],"/about":["about us"],"/contact":["contact us","email","phone"]};
  const pages=PAGES.filter(([path,label])=>(label+" "+path+" "+(pageTerms[path]||[]).join(" ")).toLowerCase().includes(q)).slice(0,3);
- const productRows=products.map(p=>`<button class="global-search-result" type="button" data-id="${esc(p.id)}" onclick="globalSearchPickProduct(this.dataset.id)"><span class="global-result-thumb">${p.image?`<img src="${esc(p.image)}" alt="">`:"▣"}</span><span class="global-result-copy"><strong>${esc(p.name)}</strong><small>${esc(displayCat(p)||"Product")} · ${money(p.price)}</small></span><span class="global-result-arrow">↗</span></button>`).join("");
+ const productRows=products.map(p=>`<button class="global-search-result" type="button" data-id="${esc(p.id)}" onclick="globalSearchPickProduct(this.dataset.id)"><span class="global-result-thumb">${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="">`:"▣"}</span><span class="global-result-copy"><strong>${esc(p.name)}</strong><small>${esc(displayCat(p)||"Product")} · ${money(p.price)}</small></span><span class="global-result-arrow">↗</span></button>`).join("");
  const pageRows=pages.map(([path,label])=>`<button class="global-search-result global-page-result" type="button" data-path="${esc(path)}" onclick="globalSearchPickPage(this.dataset.path)"><span class="global-result-thumb">⌁</span><span class="global-result-copy"><strong>${esc(label)}</strong><small>Website page</small></span><span class="global-result-arrow">↗</span></button>`).join("");
  box.innerHTML=(productRows||pageRows)?`<div class="global-search-label">MATCHING RESULTS</div>${productRows}${pageRows}<button class="global-search-all" type="button" onclick="submitGlobalSearch()">See all results for “${esc(value)}” ↗</button>`:`<div class="global-search-empty">No matches for “${esc(value)}”. Try a product name or category.</div>`;box.hidden=false;
 }
@@ -1401,14 +1417,15 @@ function setupHomeMotion(){
   const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const coarse=window.matchMedia("(pointer: coarse)").matches;
   let width=0,height=0,raf=0,particles=[],observer=null,pointer={x:-1000,y:-1000};
-  const dpr=Math.min(window.devicePixelRatio||1,1.6);
+  const animate=!reduce&&!coarse;
+  const dpr=Math.min(window.devicePixelRatio||1,coarse?1:1.6);
   function resize(){
     const rect=canvas.getBoundingClientRect();
     width=rect.width;height=rect.height;
     canvas.width=Math.max(1,Math.floor(width*dpr));
     canvas.height=Math.max(1,Math.floor(height*dpr));
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    const count=Math.max(24,Math.min(78,Math.floor(width*height/10500)));
+    const count=coarse?18:Math.max(24,Math.min(78,Math.floor(width*height/10500)));
     particles=Array.from({length:count},()=>({
       x:Math.random()*width,y:Math.random()*height,
       vx:(Math.random()-.5)*.24,vy:(Math.random()-.5)*.24,
@@ -1419,7 +1436,7 @@ function setupHomeMotion(){
   function draw(t){
     if(!canvas.isConnected){cancelAnimationFrame(raf);return;}
     ctx.clearRect(0,0,width,height);
-    const link=coarse?105:135;
+    const link=coarse?0:135;
     for(let i=0;i<particles.length;i++){
       const p=particles[i];
       if(!reduce){
@@ -1443,11 +1460,11 @@ function setupHomeMotion(){
         }
       }
     }
-    if(!reduce) raf=requestAnimationFrame(draw);
+    if(animate) raf=requestAnimationFrame(draw);
   }
   function move(e){const rect=canvas.getBoundingClientRect();pointer.x=e.clientX-rect.left;pointer.y=e.clientY-rect.top;}
   resize();
-  if(!reduce){
+  if(animate){
     canvas.addEventListener("pointermove",move,{passive:true});
     window.addEventListener("resize",resize,{passive:true});
     raf=requestAnimationFrame(draw);
@@ -1536,6 +1553,9 @@ function home(){
 
 let productFilters = {category:"", cpuType:"", q:"", min:"", max:""};
 let shopFiltersOpen=false;
+let buildMenuOpen=false;
+function toggleBuildMenu(force){buildMenuOpen=typeof force==="boolean"?force:!buildMenuOpen;const panel=document.getElementById("buildSidebar"),backdrop=document.getElementById("buildMenuBackdrop"),button=document.getElementById("buildMenuToggle");if(panel)panel.classList.toggle("open",buildMenuOpen);if(backdrop)backdrop.classList.toggle("open",buildMenuOpen);if(button)button.setAttribute("aria-expanded",String(buildMenuOpen));document.body.classList.toggle("build-menu-open",buildMenuOpen);}
+function jumpBuildSection(cat){toggleBuildMenu(false);const el=document.getElementById("sec_"+cat.replace(/\W+/g,"_"));if(el)el.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches||window.matchMedia("(pointer: coarse)").matches?"auto":"smooth",block:"start"});}
 function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
 function setProductFilter(key,val){ productFilters[key]=val; render(); }
 function clearProductFilters(){ productFilters = {category:"", cpuType:"", q:"", min:"", max:""}; render(); }
@@ -1561,7 +1581,7 @@ function cartPayload(p){ return esc(JSON.stringify({id:p.id,name:p.name,price:+p
 
 function productCard(p){
   return `<div class="card product-card">
-    <div class="thumb product-thumb" style="cursor:pointer" onclick="productDetail('${p.id}')">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:"No photo"}</div>
+    <div class="thumb product-thumb" style="cursor:pointer" onclick="productDetail('${p.id}')">${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="${esc(p.name)}">`:"No photo"}</div>
     <div class="row" style="gap:6px">${p.featured?`<span class="badge-feat">★ Featured</span>`:""}${displayCat(p)?`<span class="tag">${esc(displayCat(p))}</span>`:""}</div>
     <h3 style="cursor:pointer" onclick="productDetail('${p.id}')">${esc(p.name)}</h3>
     ${(p.cpuType||p.processor)?`<p class="muted" style="font-size:.85rem;margin:0"><strong>Processor:</strong> ${esc([p.cpuType,p.processor].filter(Boolean).join(" · "))}</p>`:""}
@@ -1873,8 +1893,8 @@ function nextGuidedCategory(){
 let partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""};
 let sectionOpen = {};
 function secOpen(k){ return sectionOpen[k]!==false ? "open" : ""; }
-function setPartFilter(key,val){ partFilters[key]=val; render(); }
-function clearPartFilters(){ partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""}; render(); }
+function setPartFilter(key,val){ partFilters[key]=val; render(); if(buildMenuOpen)toggleBuildMenu(true); }
+function clearPartFilters(){ partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""}; render(); if(buildMenuOpen)toggleBuildMenu(true); }
 function matchesPartFilter(p){
   const f = partFilters;
   if(f.min && (+p.price||0) < +f.min) return false;
@@ -1910,7 +1930,7 @@ function build(){
   const budgetRemaining = buildBudget>0 ? buildBudget-budgetSpent : null;
   const budgetPercent = buildBudget>0 ? Math.min(100,Math.round(budgetSpent/buildBudget*100)) : 0;
   const budgetPanel = `<section class="budget-planner panel"><div class="budget-copy"><span class="build-eyebrow">SPEND WITH A PLAN</span><h3>Set your PC budget</h3><p class="muted">Track your selected components against a target. Compatible parts remain the priority, with budget guidance shown as you browse.</p></div><div class="budget-controls"><label for="build_budget_input">Your target budget (USD)</label><div class="budget-input-row"><span>$</span><input id="build_budget_input" type="number" min="1" step="25" placeholder="e.g. 1200" value="${buildBudget||""}" onchange="setBuildBudget(this.value)">${buildBudget?`<button class="btn sm ghost" onclick="clearBuildBudget()">Clear</button>`:""}</div></div>${buildBudget?`<div class="budget-meter"><div class="budget-meter-top"><strong>${money(budgetSpent)} used</strong><strong class="${budgetRemaining<0?"nofit":"fit"}">${budgetRemaining<0?money(Math.abs(budgetRemaining))+" over budget":money(budgetRemaining)+" remaining"}</strong></div><div class="build-progress-track"><span class="${budgetRemaining<0?"over":""}" style="width:${budgetPercent}%"></span></div><small class="muted">Parts only. Assembly, tax and shipping are not included in this target.</small></div>`:""}</section>`;
-  const filterBar = partsAll().length ? `<div class="panel" style="margin-bottom:20px">
+  const filterBar = partsAll().length ? `<div class="panel build-filter-panel" id="buildFilterPanel" style="margin-bottom:20px">
     <div class="fields2" style="align-items:flex-end">
       ${brands.length?`<div class="field"><label>Brand</label><select onchange="setPartFilter('brand',this.value)">
         <option value="">All brands</option>${brands.map(b=>`<option value="${esc(b)}" ${f.brand===b?"selected":""}>${esc(b)}</option>`).join("")}
@@ -2010,7 +2030,7 @@ function build(){
     return `<div class="btile" onclick="partDetail('${p.id}')" title="${esc(p.name)}">
       <button class="x" aria-label="Remove ${esc(p.name)}" onclick="event.stopPropagation();removePick('${cat}')">×</button>
       <div class="cat">${esc(label)}</div>
-      <div class="pic">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:esc(label)}</div>
+      <div class="pic">${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="${esc(p.name)}">`:esc(label)}</div>
       <div class="nm">${esc(p.name)}</div>
       <div class="pr">${money(p.price)}${ok?"":` <span class="nofit" title="May not fit your other parts">⚠</span>`}</div></div>`;
   };
@@ -2051,7 +2071,7 @@ function build(){
 
   const pickedCount = chosen.length;
   const progress = slots.length ? Math.round(pickedCount/slots.length*100) : 0;
-  const jumpLinks = slots.map((cat,i)=>`<a class="build-jump ${pickedIn(cat)?"done":""}" href="#sec_${cat.replace(/\W+/g,"_")}"><span>${pickedIn(cat)?"✓":String(i+1).padStart(2,"0")}</span>${esc(cat==="CPU"?"Processor":cat)}</a>`).join("");
+  const jumpLinks = slots.map((cat,i)=>`<button type="button" class="build-jump ${pickedIn(cat)?"done":""}" onclick="jumpBuildSection('${cat}')"><span>${pickedIn(cat)?"✓":String(i+1).padStart(2,"0")}</span>${esc(cat==="CPU"?"Processor":cat)}</button>`).join("");
   return `<div class="wrap build-page">
     <section class="build-intro">
       <div class="build-intro-copy"><span class="build-eyebrow">APEX CUSTOM CONFIGURATOR</span><h2>Build a PC that’s <em>yours.</em></h2><p>Start with your processor, then choose compatible parts. Your build stays saved on this device while you explore.</p><div class="build-quickfacts"><span>✦ Compatibility guidance</span><span>✦ Live price total</span><span>✦ Saved as you go</span></div></div>
@@ -2064,10 +2084,16 @@ function build(){
     ${budgetPanel}
     ${savedBuildManager}
     ${!partsAll().length?`<div class="empty"><strong>No parts uploaded yet</strong>${isOwner?"Add a CPU first, then boards, memory and the rest. Fill in socket and memory type so the matching works.":"Parts are being added. Check back shortly."}</div>`: `
-    ${filterBar}
-    <nav class="build-nav" aria-label="Build categories">${jumpLinks}</nav>
-    <div class="split">
-      <div class="steps">
+    <div class="build-workspace">
+      <aside class="build-sidebar" id="buildSidebar" aria-label="Build navigation and filters">
+        <div class="build-sidebar-head"><div><span class="build-eyebrow">BUILD CONTROLS</span><strong>Parts &amp; filters</strong><small>Jump to a component or narrow your options</small></div><button class="build-menu-toggle" id="buildMenuToggle" type="button" onclick="toggleBuildMenu()" aria-controls="buildSidebar" aria-expanded="false">☷ Menu &amp; filters</button><button class="build-menu-close" type="button" onclick="toggleBuildMenu(false)" aria-label="Close build menu">×</button></div>
+        <nav class="build-nav" aria-label="Build categories">${jumpLinks}</nav>
+        ${filterBar}
+      </aside>
+      <button class="build-menu-backdrop" id="buildMenuBackdrop" type="button" aria-label="Close build menu" onclick="toggleBuildMenu(false)"></button>
+      <div class="build-content">
+        <div class="split">
+          <div class="steps">
         <div class="step" id="sec_CPU"><details ${secOpen("CPU")} ontoggle="sectionOpen['CPU']=this.open">
           ${head(1,"CPU",cpu?partsAll().filter(p=>p.category==="CPU").length:cpus.length)}
           <div class="guide-step-note"><strong>${esc(guideInfo("CPU").title)}</strong><p>${esc(guideInfo("CPU").why)}</p><small>💡 ${esc(guideInfo("CPU").tip)}</small></div>
@@ -2099,6 +2125,7 @@ ${powerLine}
         <div class="total"><span>Total</span><span>${money(partsTotal+fee)}</span></div>
         <button class="btn gold" style="width:100%;margin-top:14px" ${chosen.length?"":"disabled"} onclick="addBuildToCart()">Add build to cart</button>
         ${chosen.length?`<button class="btn ghost" style="width:100%;margin-top:8px" onclick="clearBuild()">Clear list</button>`:""}
+        </div>
       </div>
     </div>`}
   </div>`;
@@ -2114,7 +2141,7 @@ function pickRow(p,cat,ok){
   const tip = [...review.fails,...review.warnings].join("; ");
   return `<div class="pick ${sel?'sel':''}">
     <div class="row" style="flex:1;min-width:0;cursor:pointer" title="Tap for full details" onclick="partDetail('${p.id}')">
-      ${p.image?`<img src="${esc(p.image)}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:4px;flex:none">`:""}
+      ${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:4px;flex:none">`:""}
       <div><strong>${esc(p.name)}</strong> <span class="${ok&&!review.warnings.length?'fit':'nofit'}" title="${esc(tip)}">${label}</span> <span class="muted" style="font-size:.74rem;text-decoration:underline">details ›</span>
         ${tip?`<small class="nofit">${esc(tip)}</small>`:""}
         <small>${esc(p.desc||"")}${spec?` — ${esc(spec)}`:""}</small></div>
@@ -2518,7 +2545,7 @@ function inventory(){
   ${groups.map(g=>`
     <h3 style="margin-top:28px">${esc(g.cat)} (${g.items.length})</h3>
     ${g.items.length?`<div class="scroll"><table><tr><th></th><th>Name</th><th>Brand</th><th>Price</th><th>Specs</th><th></th></tr>
-      ${g.items.map(p=>`<tr><td>${p.image?`<img src="${esc(p.image)}" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:4px">`:""}</td><td>${esc(p.name)}</td><td>${esc(p.brand||"—")}</td><td>${money(p.price)}</td>
+      ${g.items.map(p=>`<tr><td>${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:4px">`:""}</td><td>${esc(p.name)}</td><td>${esc(p.brand||"—")}</td><td>${money(p.price)}</td>
         <td><small>${[p.cpuType,p.socket,p.memType,p.watts?p.watts+"W output":"",p.tdp?p.tdp+"W TDP":"",p.power?p.power+"W draw":""].filter(Boolean).map(s=>esc(s)).join(" · ")||"—"}</small></td>
         <td class="row" style="flex-wrap:nowrap"><button class="btn sm ghost" onclick="editItem('${p.id}')">Edit</button><button class="btn sm danger" onclick="delItem('${p.id}')">Delete</button></td></tr>`).join("")}
     </table></div>`:`<p class="muted">None yet. <button class="btn sm ghost" onclick="editPart(null,'${g.cat}')">Add ${esc(g.cat.toLowerCase())}</button></p>`}`).join("")}
@@ -2712,7 +2739,7 @@ function editProduct(id){
     <div class="field"><label>Detailed description (shown when a customer taps Details)</label><textarea id="p_long" style="min-height:140px" placeholder="Full specs, what's included, warranty, who it's for…">${esc(p.longDesc||"")}</textarea></div>
     <div class="field"><label>Photo</label>
       <input type="file" accept="image/*" id="p_img_file" onchange="handleImageUpload(event,'p_img','p_img_preview')">
-      <div id="p_img_preview" style="margin-top:8px">${p.image?`<img src="${esc(p.image)}" style="max-height:130px;border-radius:4px;display:block">`:""}</div>
+      <div id="p_img_preview" style="margin-top:8px">${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" style="max-height:130px;border-radius:4px;display:block">`:""}</div>
       <p class="muted" style="font-size:.8rem;margin:10px 0 4px">Or paste an image link instead of uploading:</p>
       <input id="p_img" value="${esc(p.image||"")}" placeholder="https://..." oninput="document.getElementById('p_img_preview').innerHTML = this.value ? '<img src=\\''+this.value.replace(/'/g,'%27')+'\\' style=\\'max-height:130px;border-radius:4px;display:block\\'>' : '';">
     </div>
@@ -2790,7 +2817,7 @@ function editPart(id,presetCat){
     <div class="field"><label>Full description (shown when someone taps the part)</label><textarea id="q_long" style="min-height:140px" placeholder="Full specs, features, what's in the box, warranty…">${esc(p.longDesc||"")}</textarea></div>
     <div class="field"><label>Photo</label>
       <input type="file" accept="image/*" id="q_img_file" onchange="handleImageUpload(event,'q_img','q_img_preview')">
-      <div id="q_img_preview" style="margin-top:8px">${p.image?`<img src="${esc(p.image)}" style="max-height:130px;border-radius:4px;display:block">`:""}</div>
+      <div id="q_img_preview" style="margin-top:8px">${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" style="max-height:130px;border-radius:4px;display:block">`:""}</div>
       <p class="muted" style="font-size:.8rem;margin:10px 0 4px">Or paste an image link instead of uploading:</p>
       <input id="q_img" value="${esc(p.image||"")}" placeholder="https://..." oninput="document.getElementById('q_img_preview').innerHTML = this.value ? '<img src=\\''+this.value.replace(/'/g,'%27')+'\\' style=\\'max-height:130px;border-radius:4px;display:block\\'>' : '';">
     </div>
