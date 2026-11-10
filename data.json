@@ -7294,23 +7294,6 @@
       "verifiedDate": "2026-11-09"
     },
     {
-      "id": "casePhanteksEx5",
-      "name": "Phanteks EX5 ATX Multi-Chamber Case",
-      "category": "Case",
-      "brand": "Phanteks",
-      "neweggPrice": 109.99,
-      "price": 124.99,
-      "sourceUrl": "https://www.newegg.com/phanteks-atx-mid-tower-abs-steel-tempered-glass-computer-case-black-ph-ex526-dbk01/p/N82E16811854158?Item=N82E16811854158",
-      "image": "https://c1.neweggimages.com/productimage/nb640/11-854-158-01.jpg",
-      "desc": "Black ATX multi-chamber mid-tower with tempered-glass panels, ARGB lighting, and an included S25-120 fan.",
-      "longDesc": "Phanteks EX5 black ATX mid-tower multi-chamber PC case. Supports ATX, Micro-ATX, and Mini-ITX motherboards. Features a compartmentalized layout, tempered-glass panels, ARGB lighting, and an included S25-120 chassis fan. Check the manufacturer's current clearance specifications before selecting unusually large graphics cards or CPU coolers.",
-      "caseFormFactors": "ATX, Micro ATX, Mini-ITX",
-      "seller": "Newegg",
-      "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09",
-      "maxGpuLengthMm": 358
-    },
-    {
       "id": "caseDiypcMatx06Wood",
       "name": "DIYPC DIY-mATX06-Wood Micro-ATX Mid-Tower",
       "category": "Case",
