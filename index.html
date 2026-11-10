@@ -706,6 +706,9 @@ footer.site a{color:var(--gold)}
 @media(max-width:900px){.build-workspace.nav-collapsed .build-sidebar,.build-workspace.picker-collapsed .build-summary-panel{display:block!important}}
 
 .build-content{display:contents!important}.build-content>.split{display:contents!important}
+
+@media(min-width:901px){.build-toolbar-left .build-menu-toggle{display:none!important}}
+@media(max-width:900px){.build-toolbar-left .build-toolbar-toggle,.build-toolbar-right .build-toolbar-toggle{display:none!important}body.build-picker-open{overflow:hidden}}
 </style>
 </head>
 <body>
@@ -1583,7 +1586,7 @@ function toggleBuildMenu(force){buildMenuOpen=typeof force==="boolean"?force:!bu
 function setActiveBuildCategory(cat){activeBuildCategory=cat;buildPickerOpen=false;toggleBuildMenu(false);render();}
 function jumpBuildSection(cat){setActiveBuildCategory(cat);}
 function toggleBuildNav(){buildNavVisible=!buildNavVisible;render();}
-function toggleBuildPicker(force){buildPickerOpen=typeof force==="boolean"?force:!buildPickerOpen;render();}
+function toggleBuildPicker(force){buildPickerOpen=typeof force==="boolean"?force:!buildPickerOpen;document.body.classList.toggle("build-picker-open",buildPickerOpen);render();}
 function toggleBuildPickerColumn(){buildPickerVisible=!buildPickerVisible;render();}
 function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
 function setProductFilter(key,val){ productFilters[key]=val; render(); }
