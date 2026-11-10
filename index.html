@@ -1313,7 +1313,7 @@ function compatibilityReview(part,cpu,need,chosen=currentChosenParts()){
   }
   return {fits:fails.length===0, fails, warnings};
 }
-function fitsCPU(part,cpu,need){ return compatibilityReview(part,cpu,need).fits; }
+function fitsCPU(part,cpu,need,chosen){ return compatibilityReview(part,cpu,need,chosen).fits; }
 /* Sums the CPU's own TDP plus the power-draw field on every other selected
    part (graphics card mainly) to get the watts the build actually needs —
    then only power supplies rated at or above that number are shown as fits. */
@@ -2007,12 +2007,12 @@ function build(){
     const guide=guideInfo(cat);
     const guideNote=`<div class="guide-step-note"><strong>${esc(guide.title)}</strong><p>${esc(guide.why)}</p><small>💡 ${esc(guide.tip)}</small></div>`;
     if(pk){
-      body = guideNote + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need));
+      body = guideNote + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need,selectedParts),selectedParts,need);
     } else {
-      const good = sortParts(all.filter(p=>fitsCPU(p,cpu,need))), bad = sortParts(all.filter(p=>!fitsCPU(p,cpu,need)));
+      const good = sortParts(all.filter(p=>fitsCPU(p,cpu,need,selectedParts))), bad = sortParts(all.filter(p=>!fitsCPU(p,cpu,need,selectedParts)));
       body = `${guideNote}${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
-      ${good.map(p=>pickRow(p,cat,true)).join("") || `<p class="muted">Nothing in this category fits that CPU yet.</p>`}
-      ${bad.length?`<details style="margin-top:10px"><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${bad.length} that may not fit</summary><div style="margin-top:10px">${bad.map(p=>pickRow(p,cat,false)).join("")}</div></details>`:""}`;
+      ${good.map(p=>pickRow(p,cat,true,selectedParts,need)).join("") || `<p class="muted">Nothing in this category fits that CPU yet.</p>`}
+      ${bad.length?`<details style="margin-top:10px"><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${bad.length} that may not fit</summary><div style="margin-top:10px">${bad.map(p=>pickRow(p,cat,false,selectedParts,need)).join("")}</div></details>`:""}`;
     }
     return `<div class="step" id="sec_${cat.replace(/\W+/g,"_")}"><details ${secOpen(cat)} ontoggle="sectionOpen['${cat}']=this.open">
       ${head(idx+2, cat, pk?total:all.length)}
@@ -2098,7 +2098,7 @@ function build(){
           ${head(1,"CPU",cpu?partsAll().filter(p=>p.category==="CPU").length:cpus.length)}
           <div class="guide-step-note"><strong>${esc(guideInfo("CPU").title)}</strong><p>${esc(guideInfo("CPU").why)}</p><small>💡 ${esc(guideInfo("CPU").tip)}</small></div>
           ${cpu?pickNote:""}
-          ${cpusShown.length?cpusShown.map(p=>pickRow(p,"CPU",true)).join(""):(filterActive?`<p class="muted">No CPUs match those filters.</p>`:`<p class="muted">No CPUs listed yet.</p>`)}
+          ${cpusShown.length?cpusShown.map(p=>pickRow(p,"CPU",true,selectedParts,need)).join(""):(filterActive?`<p class="muted">No CPUs match those filters.</p>`:`<p class="muted">No CPUs listed yet.</p>`)}
           ${isOwner?`<button class="btn sm ghost" onclick="editPart(null,'CPU')">Add CPU</button>`:""}
         </details></div>
         ${sections}
@@ -2130,13 +2130,14 @@ ${powerLine}
     </div>`}
   </div>`;
 }
-function pickRow(p,cat,ok){
+function pickRow(p,cat,ok,chosenParts,buildNeed){
   const sel = buildSel[cat]===p.id;
   const spentElsewhere = Object.entries(buildSel).filter(([c])=>c!==cat).reduce((sum,[,id])=>{const chosen=partsAll().find(x=>x.id===id);return sum+(+chosen?.price||0);},0);
   const budgetRoom = buildBudget>0 ? buildBudget-spentElsewhere : null;
   const withinBudget = budgetRoom===null || (+p.price||0)<=budgetRoom;
   const spec = [p.cpuType,p.socket,p.memType,p.watts?p.watts+"W output":"",p.tdp?p.tdp+"W TDP":"",p.power?p.power+"W draw":"",p.lengthMm?p.lengthMm+"mm long":"",p.formFactor||""].filter(Boolean).join(" · ");
-  const review = compatibilityReview(p,buildSel["CPU"]?partsAll().find(x=>x.id===buildSel["CPU"]):null,currentBuildNeed().need);
+  const reviewCPU=chosenParts?chosenParts.find(x=>x.category==="CPU"):(buildSel["CPU"]?partsAll().find(x=>x.id===buildSel["CPU"]):null);
+  const review = compatibilityReview(p,reviewCPU,buildNeed??currentBuildNeed().need,chosenParts||currentChosenParts());
   const label = !ok ? "doesn't fit" : review.warnings.length ? "check fit" : "fits";
   const tip = [...review.fails,...review.warnings].join("; ");
   return `<div class="pick ${sel?'sel':''}">
