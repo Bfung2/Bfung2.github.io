@@ -2097,7 +2097,7 @@ function build(){
 
   const pickedCount = chosen.length;
   const progress = slots.length ? Math.round(pickedCount/slots.length*100) : 0;
-  const jumpLinks = slots.map((cat,i)=>`<button type="button" class="build-jump ${pickedIn(cat)?"done":""}" onclick="jumpBuildSection('${cat}')"><span>${pickedIn(cat)?"✓":String(i+1).padStart(2,"0")}</span>${esc(cat==="CPU"?"Processor":cat)}</button>`).join("");
+  const jumpLinks = slots.map((cat,i)=>`<button type="button" class="build-jump ${pickedIn(cat)?"done":""} ${activeBuildCategory===cat?"active":""}" onclick="jumpBuildSection('${cat}')"><span>${pickedIn(cat)?"✓":String(i+1).padStart(2,"0")}</span>${esc(cat==="CPU"?"Processor":cat)}</button>`).join("");
   return `<div class="wrap build-page">
     <section class="build-intro">
       <div class="build-intro-copy"><span class="build-eyebrow">APEX CUSTOM CONFIGURATOR</span><h2>Build a PC that’s <em>yours.</em></h2><p>Start with your processor, then choose compatible parts. Your build stays saved on this device while you explore.</p><div class="build-quickfacts"><span>✦ Compatibility guidance</span><span>✦ Live price total</span><span>✦ Saved as you go</span></div></div>
