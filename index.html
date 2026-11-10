@@ -654,6 +654,21 @@ footer.site a{color:var(--gold)}
 .guided-coach{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:14px 0 18px;padding:17px 19px;border:1px solid rgba(201,162,39,.38);background:linear-gradient(115deg,rgba(201,162,39,.09),var(--panel) 68%);border-radius:14px}.guided-coach-copy{display:grid;gap:4px;min-width:0}.guided-coach-copy>strong{font-size:.98rem}.guided-coach-copy p{font-size:.8rem;color:var(--ink-2);margin:0;max-width:650px}.guided-coach>.btn{flex:none}.guide-step-note{margin:13px 0 15px;padding:12px 14px;border-left:3px solid var(--gold);border-radius:0 9px 9px 0;background:rgba(201,162,39,.065)}.guide-step-note strong{font-size:.87rem}.guide-step-note p{margin:4px 0 6px;font-size:.8rem;color:var(--ink-2);line-height:1.5}.guide-step-note small{display:block;font-size:.75rem;color:var(--ink-2);line-height:1.45}
 @media(max-width:650px){.guided-coach{align-items:stretch;flex-direction:column}.guided-coach>.btn{width:100%}}
 @media(prefers-reduced-motion:reduce){.guided-coach,.guide-step-note{scroll-behavior:auto}}
+/* ---------- global search, filter island + responsive guardrails ---------- */
+.site-search{position:relative;display:flex;align-items:center;flex:1 1 250px;max-width:430px;min-width:190px;height:42px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.24);border-radius:11px;transition:border-color .2s,background .2s,box-shadow .2s}
+.site-search:focus-within{background:rgba(255,255,255,.15);border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.16)}.site-search-icon{font-size:1.45rem;line-height:1;color:#e4c45d;padding:0 0 3px 13px}
+.site-search input{min-width:0;width:100%;height:100%;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;color:#fff!important;padding:8px 10px;font-size:.87rem}.site-search input::placeholder{color:#c1d0c7}.site-search kbd{flex:none;margin-right:9px;padding:3px 6px;border:1px solid rgba(255,255,255,.22);border-radius:4px;color:#d4dfd8;font-size:.59rem;letter-spacing:.08em}
+.global-search-results{position:absolute;z-index:120;left:0;right:0;top:calc(100% + 9px);max-height:min(72vh,560px);overflow-y:auto;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.24);padding:8px}.global-search-results[hidden]{display:none}
+.global-search-label{padding:8px 10px 6px;color:var(--ink-2);font-size:.62rem;font-weight:800;letter-spacing:.14em}.global-search-result{display:flex;align-items:center;gap:11px;width:100%;padding:9px;border:0;border-radius:8px;background:transparent;color:var(--ink);text-align:left;cursor:pointer}.global-search-result:hover{background:var(--paper)}
+.global-result-thumb{width:42px;height:42px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:7px;background:var(--paper);overflow:hidden;color:var(--gold-2);font-size:1.1rem}.global-result-thumb img{width:100%;height:100%;object-fit:contain}.global-result-copy{display:grid;gap:2px;min-width:0}.global-result-copy strong{font-size:.82rem;line-height:1.3;overflow:hidden;text-overflow:ellipsis}.global-result-copy small{font-size:.7rem;color:var(--ink-2)}.global-result-arrow{margin-left:auto;color:var(--gold-2)}
+.global-search-all{width:100%;margin-top:5px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--board);font-size:.78rem;font-weight:700;cursor:pointer}.global-search-empty{padding:18px 12px;color:var(--ink-2);font-size:.82rem}
+.shop-sidebar{max-height:calc(100vh - 32px);overflow-y:auto;overscroll-behavior:contain}.shop-filter-panel{position:relative;margin:0 9px 10px!important;padding:14px!important;border-radius:10px!important;box-shadow:none!important}.shop-filter-panel:before{display:none}.shop-filter-panel .fields2{grid-template-columns:1fr;gap:0}.shop-filter-panel .field{margin-bottom:11px}.shop-filter-panel .field label{font-size:.68rem}.shop-filter-panel input,.shop-filter-panel select{min-height:39px;font-size:.82rem}.shop-filter-toggle{display:none}.shop-filter-backdrop{display:none}.shop-filter-drawer-head{display:none}
+@media(max-width:900px){.shop-sidebar{max-height:none;overflow:visible}.shop-filter-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;padding:7px 11px;border:1px solid rgba(255,255,255,.3);border-radius:8px;background:rgba(255,255,255,.1);color:#fff;font-size:.77rem;font-weight:700;cursor:pointer}.shop-filter-toggle span{color:var(--gold)}
+.shop-filter-panel{position:fixed!important;z-index:151;top:0;right:0;bottom:0;width:min(88vw,390px);max-height:100dvh;overflow-y:auto;margin:0!important;padding:22px!important;border:0!important;border-left:1px solid var(--line)!important;border-radius:16px 0 0 16px!important;background:var(--panel)!important;box-shadow:-18px 0 55px rgba(0,0,0,.25)!important;transform:translateX(110%);visibility:hidden;transition:transform .28s cubic-bezier(.2,.75,.25,1),visibility .28s}.shop-filter-panel.open{transform:translateX(0);visibility:visible}.shop-filter-drawer-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 18px;font:800 1rem Archivo,sans-serif;color:var(--ink)}.shop-filter-drawer-head button{width:34px;height:34px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font-size:1.3rem;cursor:pointer}.shop-filter-panel .fields2{grid-template-columns:1fr 1fr;gap:0 12px}.shop-filter-panel .field{margin-bottom:14px}.shop-filter-panel .field:nth-child(1),.shop-filter-panel .field:nth-child(2){grid-column:1/-1}
+.shop-filter-backdrop.open{display:block;position:fixed;inset:0;z-index:150;background:rgba(4,18,13,.58);backdrop-filter:blur(3px)}body.filters-open{overflow:hidden}}
+@media(max-width:760px){.bar{gap:9px;padding:10px 14px}.brand{font-size:1.02rem;margin-right:auto}.site-search{order:5;flex:1 1 100%;max-width:none;width:100%;height:44px}nav.main{order:6;display:flex;flex-wrap:nowrap;width:100%;margin:0;gap:3px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:2px 0 5px}nav.main::-webkit-scrollbar{display:none}nav.main a{white-space:nowrap;flex:none;padding:7px 10px;font-size:.83rem}.cartbtn{padding:7px 10px;font-size:.8rem}.global-search-results{position:fixed;left:12px;right:12px;top:142px;max-height:58vh;width:auto}}
+@media(max-width:560px){html,body{width:100%;max-width:100%;overflow-x:clip}body{font-size:15px}main{padding:30px 0 52px;overflow-x:clip}.wrap{padding-left:14px;padding-right:14px}.home-hero-inner{overflow:hidden}.home-hero-visual{right:0;width:145px;height:180px;transform:scale(.62);transform-origin:top right;opacity:.2}.home-hero h1{font-size:clamp(2.25rem,11vw,3.2rem);overflow-wrap:anywhere}.home-trust-row{max-width:100%}.home-stats>div{min-width:0}.home-stats span{overflow-wrap:anywhere}.products-hero-inner{overflow:hidden}.products-hero-copy{min-width:0}.products-hero h1{font-size:clamp(1.9rem,9vw,2.65rem);overflow-wrap:anywhere}.products-hero-meta{gap:8px;flex-wrap:wrap}.products-heading,.home-section-head{min-width:0}.products-page .shelf-row{margin-right:-14px;padding-right:14px}.products-page .shelf-row>.product-card{flex-basis:min(78vw,225px)}.home-marquee{max-width:100vw}.home-marquee-track{max-width:none}.home-marquee .product-card{flex-basis:210px;width:210px}.home-build-strip{min-width:0}.home-build-strip h2{font-size:1.35rem;overflow-wrap:anywhere}.home-build-strip .btn{white-space:normal;width:100%}.shop-toolbar{min-width:0}.shop-toolbar>div{flex-wrap:wrap}.fields2,.split,.shop-layout{min-width:0}.products-page .product-card .btn{white-space:normal}.adminstrip .wrap{padding-left:14px;padding-right:14px}}
+@media(max-width:380px){.bar{padding-left:11px;padding-right:11px}.brand{font-size:.94rem}.cartbtn{padding:6px 8px}.home-hero h1{font-size:2.15rem}.products-page .shelf-row>.product-card{flex-basis:205px}.shop-filter-panel .fields2{grid-template-columns:1fr}.shop-filter-panel .field:nth-child(1),.shop-filter-panel .field:nth-child(2){grid-column:auto}}
 </style>
 </head>
 <body>
@@ -661,6 +676,7 @@ footer.site a{color:var(--gold)}
 <header class="site">
   <div class="bar">
     <a class="brand" href="#/" id="brandName"><span class="pad"></span><span>Apex Computers</span></a>
+    <div class="site-search" role="search"><span class="site-search-icon" aria-hidden="true">⌕</span><input id="globalSearch" type="search" autocomplete="off" placeholder="Search products, parts, services…" aria-label="Search the entire Apex Computers website" oninput="globalSearchInput(this.value)" onkeydown="globalSearchKeydown(event)"><kbd>ENTER</kbd><div class="global-search-results" id="globalSearchResults" hidden></div></div>
     <nav class="main" id="nav"></nav>
     <button class="cartbtn" onclick="go('/login')" id="accBtn">Sign in</button>
     <button class="cartbtn" onclick="go('/cart')" id="cartBtn">Cart (0)</button>
@@ -1309,6 +1325,25 @@ function cartTotals(){
   return {sub, tax, shipping, total: sub+tax+shipping};
 }
 
+/* ---------- global storefront search ---------- */
+function searchableProductText(p){return Object.entries(p||{}).filter(([,v])=>["string","number","boolean"].includes(typeof v)).map(([k,v])=>k+" "+v).join(" ").toLowerCase();}
+function globalSearchInput(value){
+ const box=document.getElementById("globalSearchResults");if(!box)return;
+ const q=String(value||"").trim().toLowerCase();if(!q){box.hidden=true;box.innerHTML="";return;}
+ const products=catalogAll().filter(p=>searchableProductText(p).includes(q)).slice(0,7);
+ const pageTerms={"/":["home","apex computers"],"/products":["products","shop","parts","components","computer parts"],"/build":["build a pc","custom pc","pc builder","computer build","compatibility"],"/tech":["tech support","repair","fix","installation","install","troubleshooting","home tech service"],"/about":["about us"],"/contact":["contact us","email","phone"]};
+ const pages=PAGES.filter(([path,label])=>(label+" "+path+" "+(pageTerms[path]||[]).join(" ")).toLowerCase().includes(q)).slice(0,3);
+ const productRows=products.map(p=>`<button class="global-search-result" type="button" data-id="${esc(p.id)}" onclick="globalSearchPickProduct(this.dataset.id)"><span class="global-result-thumb">${p.image?`<img src="${esc(p.image)}" alt="">`:"▣"}</span><span class="global-result-copy"><strong>${esc(p.name)}</strong><small>${esc(displayCat(p)||"Product")} · ${money(p.price)}</small></span><span class="global-result-arrow">↗</span></button>`).join("");
+ const pageRows=pages.map(([path,label])=>`<button class="global-search-result global-page-result" type="button" data-path="${esc(path)}" onclick="globalSearchPickPage(this.dataset.path)"><span class="global-result-thumb">⌁</span><span class="global-result-copy"><strong>${esc(label)}</strong><small>Website page</small></span><span class="global-result-arrow">↗</span></button>`).join("");
+ box.innerHTML=(productRows||pageRows)?`<div class="global-search-label">MATCHING RESULTS</div>${productRows}${pageRows}<button class="global-search-all" type="button" onclick="submitGlobalSearch()">See all results for “${esc(value)}” ↗</button>`:`<div class="global-search-empty">No matches for “${esc(value)}”. Try a product name or category.</div>`;box.hidden=false;
+}
+function globalSearchPickProduct(id){hideGlobalSearch();productDetail(id);}
+function globalSearchPickPage(path){hideGlobalSearch();go(path);}
+function hideGlobalSearch(){const box=document.getElementById("globalSearchResults");if(box)box.hidden=true;}
+function submitGlobalSearch(){const input=document.getElementById("globalSearch"),q=String(input?.value||"").trim();if(!q)return;productFilters={category:"",cpuType:"",q,min:"",max:""};shopFiltersOpen=false;hideGlobalSearch();go("/products");render();}
+function globalSearchKeydown(event){if(event.key==="Enter"){event.preventDefault();submitGlobalSearch();}if(event.key==="Escape")hideGlobalSearch();}
+document.addEventListener("click",event=>{if(!event.target.closest(".site-search"))hideGlobalSearch();});
+
 /* ---------- render ---------- */
 function render(){
   document.querySelector("#brandName span:last-child").textContent = S.settings.shopName || "Apex Computers";
@@ -1500,6 +1535,8 @@ function home(){
 }
 
 let productFilters = {category:"", cpuType:"", q:"", min:"", max:""};
+let shopFiltersOpen=false;
+function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
 function setProductFilter(key,val){ productFilters[key]=val; render(); }
 function clearProductFilters(){ productFilters = {category:"", cpuType:"", q:"", min:"", max:""}; render(); }
 
@@ -1661,7 +1698,7 @@ function products(){
     if(f.min && (+p.price||0) < +f.min) return false;
     if(f.max && (+p.price||0) > +f.max) return false;
     if(f.q){
-      const hay = (p.name+" "+(p.desc||"")+" "+(p.longDesc||"")+" "+(p.processor||"")+" "+(p.cpuType||"")+" "+(p.brand||"")).toLowerCase();
+      const hay = searchableProductText(p);
       if(!hay.includes(f.q.toLowerCase())) return false;
     }
     return true;
@@ -1674,7 +1711,8 @@ function products(){
   if(uncat.length) groups.push(["Other", uncat]);
   let idx = 0;
   const shelves = (featured.length ? shelf("Featured", featured, idx++, true) : "") + groups.map(([c,l])=>shelf(c,l,idx++,false)).join("");
-  const filterBar = items.length ? `<div class="panel products-filters">
+  const filterBar = items.length ? `<div class="panel products-filters shop-filter-panel ${shopFiltersOpen?"open":""}" id="shopFilterPanel">
+    <div class="shop-filter-drawer-head"><strong>Filter products</strong><button type="button" onclick="toggleShopFilters(false)" aria-label="Close filters">×</button></div>
     <div class="fields2" style="align-items:flex-end">
       <div class="field"><label>Category</label><select onchange="setProductFilter('category',this.value)">
         <option value="">All categories</option>${allCats.map(c=>`<option value="${esc(c)}" ${f.category===c?"selected":""}>${esc(c)}</option>`).join("")}
@@ -1690,13 +1728,14 @@ function products(){
   </div>` : "";
   const navItem=(label,count,target,icon,active=false)=>`<button class="shop-side-link ${active?"active":""}" onclick="jumpProductSection('${target}')"><span class="shop-side-icon">${icon}</span><span>${esc(label)}</span><small>${count}</small></button>`;
   const sideMenu=`<aside class="shop-sidebar" aria-label="Product categories">
-    <div class="shop-sidebar-head"><span class="shop-side-eyebrow">QUICK NAVIGATION</span><strong>Shop by category</strong><span class="shop-sidebar-hint">Jump straight to what you're looking for</span></div>
+    <div class="shop-sidebar-head"><span class="shop-side-eyebrow">QUICK NAVIGATION</span><strong>Shop by category</strong><span class="shop-sidebar-hint">Jump straight to what you need</span><button class="shop-filter-toggle" onclick="toggleShopFilters()" aria-controls="shopFilterPanel" aria-expanded="${shopFiltersOpen}">☷ Filters <span>${active?"•":""}</span></button></div>
     <nav class="shop-side-nav">
       ${navItem("All products",shown.length,"shopCatalogTop","⌂",true)}
       ${featured.length?navItem("Featured",featured.length,"shop_shelf_Featured","✦"):""}
       ${allCats.map((c,i)=>navItem(c,shown.filter(p=>displayCat(p)===c).length,"shop_shelf_"+String(c).replace(/[^a-z0-9]/gi,"_"),(["▣","◈","▤","◉","▱","ϟ","▦","❄","＋"][i%9]))).join("")}
     </nav>
     <div class="shop-sidebar-promo"><span>✦ APEX TIP</span><p>Not sure what fits? Try the PC builder to check component compatibility.</p><a href="#/build">Build a PC ↗</a></div>
+    ${filterBar}
   </aside>`;
   return `<div class="products-page">
     <section class="products-hero">
@@ -1717,9 +1756,9 @@ function products(){
       </div>
       <div class="shop-layout">
         ${sideMenu}
+        <div class="shop-filter-backdrop ${shopFiltersOpen?"open":""}" onclick="toggleShopFilters(false)" aria-hidden="true"></div>
         <div class="shop-main" id="shopCatalogTop">
           <div class="shop-toolbar"><div><span class="shop-toolbar-dot"></span><strong>${shown.length} products</strong><span class="muted">ready to explore</span></div><span class="shop-toolbar-note">Scroll a row or jump categories from the side menu</span></div>
-          ${filterBar}
           ${!items.length?`<div class="empty"><strong>Nothing listed yet</strong>${isOwner?"Use “Add a product” to put your first item up.":"Check back soon, or ask us what's on the bench."}</div>`
             : shown.length?shelves
             :`<div class="empty"><strong>Nothing matches those filters</strong><button class="btn sm ghost" style="margin-top:12px" onclick="clearProductFilters()">Clear filters</button></div>`}
