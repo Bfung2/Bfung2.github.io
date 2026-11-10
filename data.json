@@ -3650,8 +3650,8 @@
       "name": "CORSAIR RM1000e (2025) 1000W",
       "category": "Power supply",
       "brand": "CORSAIR",
-      "price": 119.99,
-      "neweggPrice": 104.99,
+      "price": 166.99,
+      "neweggPrice": 151.99,
       "sourceUrl": "https://www.newegg.com/corsair-rmx-series-atx-3-1-compatible-1000-w-cybenetics-gold-power-supply-black-rm1000e/p/N82E16817139337?Item=N82E16817139337&SoldByNewegg=1",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-139-337-05.png",
       "desc": "1000W • Cybenetics Gold • Fully Modular • ATX • ATX 3.1\nGPU power: 8-pin, 12V-2x6",
@@ -3666,7 +3666,7 @@
       "gpuPowerConnectors": "8-pin, 12V-2x6",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09",
+      "verifiedDate": "2026-11-10",
       "warranty": ""
     },
     {
@@ -3890,8 +3890,8 @@
       "name": "Thermaltake Toughpower GF3 1200W",
       "category": "Power supply",
       "brand": "Thermaltake",
-      "price": 207.99,
-      "neweggPrice": 192.99,
+      "price": 206.99,
+      "neweggPrice": 191.99,
       "sourceUrl": "https://www.newegg.com/thermaltake-toughpower-gf3-series-atx-12v-v3-0-eps-v2-93-1200-w-80-plus-gold-certified-power-supply-ps-tpd-1200fnfagu-4/p/N82E16817153436",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-153-436-15.png",
       "desc": "1200W • 80 PLUS Gold • Fully Modular • ATX • ATX 3.1\nGPU power: 8-pin, 12V-2x6",
@@ -3906,7 +3906,7 @@
       "gpuPowerConnectors": "8-pin, 12V-2x6",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09",
+      "verifiedDate": "2026-11-10",
       "warranty": ""
     },
     {
@@ -4178,8 +4178,8 @@
       "name": "Thermaltake Toughpower GX2 600W",
       "category": "Power supply",
       "brand": "Thermaltake",
-      "price": 83.99,
-      "neweggPrice": 68.99,
+      "price": 84.99,
+      "neweggPrice": 69.99,
       "sourceUrl": "https://www.newegg.com/thermaltake-toughpower-gx2-gold-intel-atx-12v-v2-3-eps-12v-600-w-80-plus-gold-certified-power-supply-ps-tpd-0600nnfagu-2/p/N82E16817153415?Item=N82E16817153415&SoldByNewegg=1",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-153-415-V10.jpg",
       "desc": "600W • 80 PLUS Gold • Non-Modular • ATX • ATX12V 2.4\nGPU power: 8-pin",
@@ -4194,7 +4194,7 @@
       "gpuPowerConnectors": "8-pin",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09",
+      "verifiedDate": "2026-11-10",
       "warranty": "5 years"
     },
     {
@@ -4766,8 +4766,8 @@
       "id": "psu850cm",
       "name": "Cooler Master V850 SFX Gold 850W",
       "brand": "Cooler Master",
-      "price": 180.99,
-      "neweggPrice": 165.99,
+      "price": 181.99,
+      "neweggPrice": 166.99,
       "sourceUrl": "https://www.newegg.com/cooler-master-atx3-0-sfx-12v-ver-3-42-850-w-80-plus-gold-certified-90-typical-load-power-supply-black-mpy-8501-sfhagv-3u1/p/N82E16817171238?Item=N82E16817171238&SoldByNewegg=1",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-171-238-29.png",
       "watts": "850",
@@ -4784,7 +4784,7 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psu850as",
@@ -4957,8 +4957,8 @@
       "id": "psucor850shift",
       "name": "CORSAIR RM850x Shift 850W",
       "brand": "Corsair",
-      "price": 154.99,
-      "neweggPrice": 139.99,
+      "price": 150.56,
+      "neweggPrice": 135.56,
       "sourceUrl": "https://www.newegg.com/corsair-rm850x-shift-atx-atx-3-0-compatible-850-w-80-plus-gold-certified-power-supply-black/p/N82E16817139351?Item=N82E16817139351&SoldByNewegg=1",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-139-351-01.jpg",
       "watts": "850",
@@ -4975,7 +4975,7 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psucor1000shift",
@@ -5361,8 +5361,8 @@
       "id": "psumsgamdias1000",
       "name": "Gamdias HELIOS P2-1000G 1000W",
       "brand": "Gamdias",
-      "price": 174.99,
-      "neweggPrice": 159.99,
+      "price": 89.99,
+      "neweggPrice": 74.99,
       "sourceUrl": "https://www.newegg.com/gamdias-technology-atx-3-1-compatible-1000-w-80-plus-gold-certified-power-supply-black-helios-p2-1000g/p/N82E16817311015",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-311-015-01.jpg",
       "watts": "1000",
@@ -5378,14 +5378,14 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psucorsairhx1000i",
       "name": "CORSAIR HX1000i 1000W (2023)",
       "brand": "Corsair",
-      "price": 254.99,
-      "neweggPrice": 239.99,
+      "price": 246.99,
+      "neweggPrice": 231.99,
       "sourceUrl": "https://www.newegg.com/corsair-hxi-series-atx-3-0-compatible-1000-w-80-plus-platinum-certified-power-supply-hx1000i-2023/p/N82E16817139313",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-139-313-01.png",
       "watts": "1000",
@@ -5402,7 +5402,7 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psuttgt850",
@@ -5731,8 +5731,8 @@
       "tdp": "",
       "power": "",
       "seller": "Newegg",
-      "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "stockStatus": "Backordered",
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psunzxtc850core",
@@ -6112,8 +6112,8 @@
       "id": "psusamag750",
       "name": "SAMA G750 750W",
       "brand": "SAMA",
-      "price": 88.99,
-      "neweggPrice": 73.99,
+      "price": 90.99,
+      "neweggPrice": 75.99,
       "sourceUrl": "https://www.newegg.com/sama-g-series-atx-3-1-compatible-750-w-80-plus-gold-certified-power-supplies-g750w-black/p/1HU-02S6-00074",
       "image": "https://c1.neweggimages.com/productimage/nb640/1HU-02S6-00074-24.png",
       "watts": "750",
@@ -6130,14 +6130,14 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psusamag850",
       "name": "SAMA G850 850W",
       "brand": "SAMA",
-      "price": 91.99,
-      "neweggPrice": 76.99,
+      "price": 92.99,
+      "neweggPrice": 77.99,
       "sourceUrl": "https://www.newegg.com/sama-g-series-atx-3-1-compatible-850-w-80-plus-gold-certified-power-supplies-g850w-black/p/1HU-02S6-00071",
       "image": "https://c1.neweggimages.com/productimage/nb640/1HU-02S6-00071-24.png",
       "watts": "850",
@@ -6154,7 +6154,7 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psuseasonicsakura1000",
@@ -6537,8 +6537,8 @@
       "id": "psuttgf3850",
       "name": "Thermaltake Toughpower GF3 850W",
       "brand": "Thermaltake",
-      "price": 136.99,
-      "neweggPrice": 121.99,
+      "price": 119.99,
+      "neweggPrice": 104.99,
       "sourceUrl": "https://www.newegg.com/thermaltake-toughpower-gf3-series-atx-12v-v3-0-eps-v2-93-850-w-80-plus-gold-certified-power-supply-ps-tpd-0850fnfagu-4/p/N82E16817153438",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-153-438-13.png",
       "watts": "850",
@@ -6555,7 +6555,7 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psusilverstone300sfx",
@@ -6793,8 +6793,8 @@
       "id": "psuttgf31000",
       "name": "Thermaltake Toughpower GF3 1000W",
       "brand": "Thermaltake",
-      "price": 177.99,
-      "neweggPrice": 162.99,
+      "price": 108.99,
+      "neweggPrice": 93.99,
       "sourceUrl": "https://www.newegg.com/thermaltake-toughpower-gf3-series-atx-atx-3-0-compatible-1000-w-80-plus-gold-certified-power-supply-ps-tpd-1000fnfagu-4/p/N82E16817153437",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-153-437-15.png",
       "watts": "1000",
@@ -6811,7 +6811,7 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psusamap1000",
@@ -6865,8 +6865,8 @@
       "id": "psuasrockprom750g",
       "name": "ASRock PRO-M750G 750W",
       "brand": "ASRock",
-      "price": 113.99,
-      "neweggPrice": 98.99,
+      "price": 114.99,
+      "neweggPrice": 99.99,
       "sourceUrl": "https://www.newegg.com/asrock-atx-3-1-750-w-80-plus-gold-certified-power-supplies-pro-m750g/p/N82E16817955035",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-955-035-18.png",
       "watts": "750",
@@ -6883,7 +6883,7 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psunzxt850black",
@@ -6912,8 +6912,8 @@
       "id": "psuttgfa31200",
       "name": "Thermaltake Toughpower GF A3 1200W",
       "brand": "Thermaltake",
-      "price": 211.99,
-      "neweggPrice": 196.99,
+      "price": 134.99,
+      "neweggPrice": 119.99,
       "sourceUrl": "https://www.newegg.com/thermaltake-toughpower-gf-a3-series-atx-atx-3-0-compatible-1200-w-80-plus-gold-certified-power-supply-black-ps-tpd-1200fnfagu-l/p/N82E16817153447",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-153-447-07.jpg",
       "watts": "1200",
@@ -6930,14 +6930,14 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psuseasonicgx750",
       "name": "SeaSonic CORE GX-750 ATX 3 750W",
       "brand": "SeaSonic",
-      "price": 125.99,
-      "neweggPrice": 110.99,
+      "price": 126.99,
+      "neweggPrice": 111.99,
       "sourceUrl": "https://www.newegg.com/seasonic-usa-core-atx-3-atx-3-1-750-w-80-plus-gold-certified-power-supplies-black-gx-750/p/N82E16817151281",
       "image": "https://c1.neweggimages.com/productimage/nb640/17-151-281-01.jpg",
       "watts": "750",
@@ -6953,7 +6953,7 @@
       "power": "",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09"
+      "verifiedDate": "2026-11-10"
     },
     {
       "id": "psusilverstonesx750p",
