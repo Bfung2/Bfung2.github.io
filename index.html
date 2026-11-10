@@ -1668,6 +1668,7 @@ let buildNavVisible=true;
 let buildPickerVisible=true;
 let activeBuildCategory='CPU';
 let buildStorageType='';
+let buildCpuVendor='';
 let buildCategoryPages={};
 const BUILD_PAGE_SIZE=25;
 function setBuildPage(cat,page){buildCategoryPages[cat]=Math.max(1,Number(page)||1);render();}
@@ -1676,6 +1677,8 @@ function toggleBuildMenu(force){buildMenuOpen=typeof force==="boolean"?force:!bu
 function setActiveBuildCategory(cat){activeBuildCategory=cat;buildPickerOpen=false;toggleBuildMenu(false);render();}
 function setBuildStorageType(type){buildStorageType=type;buildCategoryPages.Storage=1;render();}
 function resetBuildStorageType(){buildStorageType='';delete buildSel.Storage;buildCategoryPages.Storage=1;saveBuild();render();}
+function setBuildCpuVendor(vendor){buildCpuVendor=vendor;const chosen=partsAll().find(p=>p.id===buildSel.CPU);if(chosen&&String(chosen.brand||'').toUpperCase()!==vendor)delete buildSel.CPU;buildCategoryPages.CPU=1;saveBuild();render();}
+function resetBuildCpuVendor(){buildCpuVendor='';buildCategoryPages.CPU=1;render();}
 function jumpBuildSection(cat){setActiveBuildCategory(cat);}
 function toggleBuildNav(){buildNavVisible=!buildNavVisible;render();}
 function toggleBuildPicker(force){buildPickerOpen=typeof force==="boolean"?force:!buildPickerOpen;document.body.classList.toggle("build-picker-open",buildPickerOpen);render();}
@@ -2106,7 +2109,8 @@ function build(){
     <div class="field" style="margin-bottom:0"><label>Search</label><input id="part_f_q" placeholder="Name, description, brand…" value="${esc(f.q)}" oninput="setPartFilter('q',this.value)"></div>
     ${filterActive?`<button class="btn sm ghost" style="margin-top:10px" onclick="clearPartFilters()">Clear filters</button>`:""}
   </div>` : "";
-  const cpus = sortParts(partsAll().filter(p=>p.category==="CPU").filter(matchesPartFilter)
+  const allCpus = partsAll().filter(p=>p.category==="CPU");
+  const cpus = sortParts(allCpus.filter(p=>!buildCpuVendor||String(p.brand||"").toUpperCase()===buildCpuVendor).filter(matchesPartFilter)
     .filter(p=>!f.socket || p.socket===f.socket).filter(p=>!f.cpuType || p.cpuType===f.cpuType));
   const cpu = buildSel["CPU"] ? partsAll().find(p=>p.id===buildSel["CPU"]) : null;
   const cpuPage = buildPageSlice("CPU",cpus);
@@ -2243,8 +2247,10 @@ function build(){
           ${head(1,"CPU",cpu?partsAll().filter(p=>p.category==="CPU").length:cpus.length)}
           <div class="guide-step-note"><strong>${esc(guideInfo("CPU").title)}</strong><p>${esc(guideInfo("CPU").why)}</p><small>💡 ${esc(guideInfo("CPU").tip)}</small></div>
           ${cpu?pickNote:""}
-          ${cpusShown.length?cpusShown.map(p=>pickRow(p,"CPU",true,selectedParts,need)).join(""):(filterActive?`<p class="muted">No CPUs match those filters.</p>`:`<p class="muted">No CPUs listed yet.</p>`)}
-          ${!cpu?cpuPage.markup:""}
+          ${!cpu&&!buildCpuVendor?`<section class="storage-choice build-storage-choice build-cpu-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE YOUR PROCESSOR</span><h2>Processor</h2><p>Choose AMD or Intel to browse compatible CPUs.</p></div><div class="storage-choice-grid"><button type="button" class="storage-choice-card" onclick="setBuildCpuVendor('AMD')"><span class="storage-choice-icon">◈</span><strong>AMD</strong><small>Ryzen processors</small><span class="storage-choice-count">${allCpus.filter(p=>String(p.brand||"").toUpperCase()==="AMD").length} options</span></button><button type="button" class="storage-choice-card" onclick="setBuildCpuVendor('INTEL')"><span class="storage-choice-icon">▦</span><strong>Intel</strong><small>Core processors</small><span class="storage-choice-count">${allCpus.filter(p=>String(p.brand||"").toUpperCase()==="INTEL").length} options</span></button></div></section>`:""}
+          ${cpu?`<button type="button" class="btn sm ghost" onclick="resetBuildCpuVendor()" style="margin:0 0 12px">Change CPU brand</button>`:""}
+          ${cpu||buildCpuVendor?(cpusShown.length?cpusShown.map(p=>pickRow(p,"CPU",true,selectedParts,need)).join(""):(filterActive?`<p class="muted">No CPUs match those filters.</p>`:`<p class="muted">No CPUs listed yet.</p>`)):""}
+          ${!cpu&&buildCpuVendor?`<button type="button" class="btn sm ghost" onclick="resetBuildCpuVendor()">← Change brand</button>${cpuPage.markup}`:""}
           ${isOwner?`<button class="btn sm ghost" onclick="editPart(null,'CPU')">Add CPU</button>`:""}
         </details></div>
         ${sections}
