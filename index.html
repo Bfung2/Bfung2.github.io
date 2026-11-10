@@ -2002,7 +2002,9 @@ function build(){
       <small class="muted">${count} option${count===1?"":"s"}</small>${pk?`<span class="fit">✓ ${esc(pk.name)}</span>`:""}</summary>`;
   };
   const pickNote = `<p class="muted" style="font-size:.86rem">This is your pick — the other options are tucked away. Press Remove to see them again.</p>`;
-  const sections = CATS.filter(c=>c!=="CPU").map((cat,idx)=>{
+  const slots = CATS.filter(c=>partsAll().some(p=>p.category===c));
+  if(!slots.includes(activeBuildCategory)) activeBuildCategory=slots.find(c=>!buildSel[c])||slots[0]||"CPU";
+  const sections = CATS.filter(c=>c===activeBuildCategory && c!=="CPU").map((cat,idx)=>{
     const all = partsAll().filter(p=>p.category===cat).filter(matchesPartFilter);
     const pk = pickedIn(cat);
     if(!all.length && !pk) return "";
@@ -2018,7 +2020,7 @@ function build(){
       ${good.map(p=>pickRow(p,cat,true,selectedParts,need)).join("") || `<p class="muted">Nothing in this category fits that CPU yet.</p>`}
       ${bad.length?`<details style="margin-top:10px"><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${bad.length} that may not fit</summary><div style="margin-top:10px">${bad.map(p=>pickRow(p,cat,false,selectedParts,need)).join("")}</div></details>`:""}`;
     }
-    return `<div class="step" id="sec_${cat.replace(/\W+/g,"_")}"><details ${secOpen(cat)} ontoggle="sectionOpen['${cat}']=this.open">
+    return `<div class="step build-category-step" id="sec_${cat.replace(/\W+/g,"_")}"><details ${secOpen(cat)} ontoggle="sectionOpen['${cat}']=this.open">
       ${head(idx+2, cat, pk?total:all.length)}
       ${body}
       ${isOwner?`<button class="btn sm ghost" onclick="editPart(null,'${cat}')">Add ${esc(cat.toLowerCase())}</button>`:""}
@@ -2026,7 +2028,6 @@ function build(){
   }).join("");
 
   // ----- the build list (right-hand side): one tile per slot, in build order -----
-  const slots = CATS.filter(c=>partsAll().some(p=>p.category===c));
   const tile = cat => {
     const p = pickedIn(cat), label = cat==="CPU" ? "Processor" : cat;
     if(!p) return `<div class="btile empty" onclick="focusSection('${cat}')" title="Pick ${esc(label)}"><div class="cat">${esc(label)}</div><div class="pic">+ Pick</div></div>`;
@@ -2099,7 +2100,7 @@ function build(){
       <div class="build-content">
         <div class="split">
           <div class="steps">
-        <div class="step" id="sec_CPU"><details ${secOpen("CPU")} ontoggle="sectionOpen['CPU']=this.open">
+        <div class="step build-category-step" id="sec_CPU"><details ${secOpen("CPU")} ontoggle="sectionOpen['CPU']=this.open">
           ${head(1,"CPU",cpu?partsAll().filter(p=>p.category==="CPU").length:cpus.length)}
           <div class="guide-step-note"><strong>${esc(guideInfo("CPU").title)}</strong><p>${esc(guideInfo("CPU").why)}</p><small>💡 ${esc(guideInfo("CPU").tip)}</small></div>
           ${cpu?pickNote:""}
