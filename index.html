@@ -1326,10 +1326,11 @@ function cartTotals(){
 }
 
 /* ---------- global storefront search ---------- */
+function searchableProductText(p){return Object.entries(p||{}).filter(([,v])=>["string","number","boolean"].includes(typeof v)).map(([k,v])=>k+" "+v).join(" ").toLowerCase();}
 function globalSearchInput(value){
  const box=document.getElementById("globalSearchResults");if(!box)return;
  const q=String(value||"").trim().toLowerCase();if(!q){box.hidden=true;box.innerHTML="";return;}
- const products=catalogAll().filter(p=>[p.name,p.category,p.brand,p.desc,p.longDesc,p.processor,p.cpuType,p.socket,p.memoryType,p.wattage,p.efficiency].filter(Boolean).join(" ").toLowerCase().includes(q)).slice(0,7);
+ const products=catalogAll().filter(p=>searchableProductText(p).includes(q)).slice(0,7);
  const pageTerms={"/":["home","apex computers"],"/products":["products","shop","parts","components","computer parts"],"/build":["build a pc","custom pc","pc builder","computer build","compatibility"],"/tech":["tech support","repair","fix","installation","install","troubleshooting","home tech service"],"/about":["about us"],"/contact":["contact us","email","phone"]};
  const pages=PAGES.filter(([path,label])=>(label+" "+path+" "+(pageTerms[path]||[]).join(" ")).toLowerCase().includes(q)).slice(0,3);
  const productRows=products.map(p=>`<button class="global-search-result" type="button" data-id="${esc(p.id)}" onclick="globalSearchPickProduct(this.dataset.id)"><span class="global-result-thumb">${p.image?`<img src="${esc(p.image)}" alt="">`:"▣"}</span><span class="global-result-copy"><strong>${esc(p.name)}</strong><small>${esc(displayCat(p)||"Product")} · ${money(p.price)}</small></span><span class="global-result-arrow">↗</span></button>`).join("");
@@ -1697,7 +1698,7 @@ function products(){
     if(f.min && (+p.price||0) < +f.min) return false;
     if(f.max && (+p.price||0) > +f.max) return false;
     if(f.q){
-      const hay = (p.name+" "+(p.desc||"")+" "+(p.longDesc||"")+" "+(p.processor||"")+" "+(p.cpuType||"")+" "+(p.brand||"")).toLowerCase();
+      const hay = searchableProductText(p);
       if(!hay.includes(f.q.toLowerCase())) return false;
     }
     return true;
