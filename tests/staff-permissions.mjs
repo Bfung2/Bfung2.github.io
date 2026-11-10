@@ -91,5 +91,18 @@ await as(owner,'apexcomputers039@gmail.com');await admin('employee_access',{user
 await sql('reset role');await query('update public.employee_profiles set active=false where user_id=$1',[tech]);
 await as(tech,'tech@test.invalid');await deny('select public.apex_staff_context()');await deny('select public.apex_staff_get_notes()');await deny("select public.apex_staff_schedule('2026-11-09','2026-11-16')");
 await sql('reset role');await query("select set_config('request.uid','',false),set_config('request.jwt','{}',false)");await sql('set role anon');await deny('select public.apex_staff_context()');await deny('select * from public.staff_notes');
+// Sales attribution is owner-approved, separate from work assignments, and survives job deletion.
+await sql('reset role');
+await sql(await fs.readFile(new URL('../supabase/migrations/202611100002_sales_attribution.sql',import.meta.url),'utf8'));
+await sql(await fs.readFile(new URL('../supabase/migrations/202611100002_sales_attribution.sql',import.meta.url),'utf8'));
+await as(owner,'apexcomputers039@gmail.com');
+await value("select public.apex_credit_sale('order','job1',$1)",[market]);
+await as(market,'market@test.invalid');
+assert.equal((await value('select public.apex_sales_credits()')).length,1);
+await deny('select public.apex_sales_credits($1)',[tech]);
+await deny("select public.apex_credit_sale('order','job1',$1)",[market]);
+await as(customer,'customer@test.invalid');await deny('select public.apex_sales_credits()');await deny('select * from public.staff_sales_credits');
+await as(owner,'apexcomputers039@gmail.com');await sql('reset role');await query("delete from public.apex_orders where id='job1'");await as(owner,'apexcomputers039@gmail.com');
+assert.equal((await value('select public.apex_sales_credits($1)',[market])).length,1);
 console.log('PASS: migration rerun, customer isolation, owner-only roles, overrides, multiple roles, schedules, overlaps, stale writes, per-note ACLs, job permissions, reports, role removal, disabled staff and anonymous access.');
 await db.close();

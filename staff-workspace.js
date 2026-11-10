@@ -11,7 +11,7 @@ let staffEpoch=0,staffReadEpoch=0, staffSchedule={key:'',loading:false,error:'',
 let staffReport={key:'',loading:false,error:'',data:null},staffWeek=staffWeekStart(new Date()),staffScheduleEmployee='';
 function staffWeekStart(date){const d=new Date(date);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d;}
 function staffCan(key){return isOwner || !!(isEmployee&&staffState.permissions[key]);}
-function staffReset(){if(typeof editDlg!=="undefined"&&editDlg){editDlg.close();editDlg.remove();editDlg=null;}staffWeek=staffWeekStart(new Date());staffScheduleEmployee="";staffEpoch++;staffReadEpoch++;staffState={loaded:false,loading:false,error:'',roles:[],employees:[],permissions:{}};staffSchedule={key:'',loading:false,error:'',items:[]};staffNotes={key:null,loading:false,error:'',items:[]};staffReport={key:'',loading:false,error:'',data:null};employeeProfiles=[];employeeAudit=[];performanceData=[];employeesLoaded=false;employeeAuditLoaded=false;performanceLoaded=false;}
+function staffReset(){staffSales={loaded:false,loading:false,error:"",items:[]};if(typeof editDlg!=="undefined"&&editDlg){editDlg.close();editDlg.remove();editDlg=null;}staffWeek=staffWeekStart(new Date());staffScheduleEmployee="";staffEpoch++;staffReadEpoch++;staffState={loaded:false,loading:false,error:'',roles:[],employees:[],permissions:{}};staffSchedule={key:'',loading:false,error:'',items:[]};staffNotes={key:null,loading:false,error:'',items:[]};staffReport={key:'',loading:false,error:'',data:null};employeeProfiles=[];employeeAudit=[];performanceData=[];employeesLoaded=false;employeeAuditLoaded=false;performanceLoaded=false;}
 async function staffRPC(name,args={}){const {data,error}=await supabaseClient.rpc(name,args);if(error)throw new Error(error.message||'Staff request failed.');return data;}
 async function staffLoadContext(force=false){
   if(!(isOwner||isEmployee)||staffState.loading||(!force&&staffState.loaded))return;
@@ -25,13 +25,13 @@ async function staffLoadContext(force=false){
   finally{if(epoch===staffEpoch){staffState.loading=false;render();}}
 }
 function staffNav(){if(!(isOwner||isEmployee))return '';return `<nav class="staff-nav" aria-label="Staff workspace">${[
-  ['/employee','My work',isEmployee],['/employees','Employees',isOwner],['/roles','Roles & permissions',isOwner],
+  ['/sales-credits','Sales contributions',true],['/employee','My work',isEmployee],['/employees','Employees',isOwner],['/roles','Roles & permissions',isOwner],
   ['/schedule','Schedule',staffCan('view_schedule')],['/employee-reports','Reports',staffCan('view_reports')],['/staff-notes','Internal notes',staffCan('view_notes')]
 ].filter(x=>x[2]).map(([url,label])=>`<a class="btn sm ${route()===url?'gold':'ghost'}" href="#${url}">${label}</a>`).join('')}</nav>`;}
 function staffNotice(){return staffState.error?`<div class="notice" role="alert"><strong>Staff workspace setup is required.</strong><p>${esc(staffState.error)}</p><p>The owner needs to apply the staff workspace database migration in Supabase. Existing job tools remain available.</p><button class="btn sm ghost" onclick="staffLoadContext(true)">Retry connection</button></div>`:'';}
 function staffShell(title,description,body){return `<div class="wrap staff-workspace"><div class="pagehead"><div><span class="shop-section-kicker">APEX · STAFF ONLY</span><h2>${esc(title)}</h2><p>${esc(description)}</p></div><button class="btn ghost" onclick="staffRefresh()">Refresh</button></div>${staffNav()}${staffNotice()}${staffState.loading?'<p role="status">Loading staff workspace…</p>':''}${body}</div>`;}
 function staffGate(key){if(!(isOwner||isEmployee))return '<div class="wrap"><div class="empty"><h2>Staff sign-in required</h2><p>This area is available only to active Apex staff.</p><a class="btn gold" href="#/employee-login">Employee sign-in</a> <a class="btn ghost" href="#/staff">Owner sign-in</a></div></div>';if(!staffState.loaded&&!staffState.loading)staffLoadContext();if(!staffState.loaded||staffState.error)return staffShell('Staff workspace','Private team tools.','');if(key&&!staffCan(key))return staffShell('Access unavailable','Ask the owner if your role needs this permission.','');return null;}
-async function staffRefresh(){staffSchedule.key='';staffNotes.key=null;staffReport.key='';await staffLoadContext(true);}
+async function staffRefresh(){staffSales.loaded=false;staffSchedule.key='';staffNotes.key=null;staffReport.key='';await staffLoadContext(true);}
 function staffEmployeeName(id){return staffState.employees.find(p=>p.user_id===id)?.display_name||'Former employee';}
 function staffRoleNames(ids){return (ids||[]).map(id=>staffState.roles.find(r=>r.id===id)?.name||'Removed role').join(', ')||'No roles';}
 function staffOwnerOnly(){return !isOwner?staffGate('owner_only')||staffShell('Owner access required','Only the owner can manage roles and employee access.',''):staffGate();}
@@ -123,14 +123,14 @@ function staffReportsPage(){
 }
 function staffReportPage(){
   const denied=staffGate('view_reports');if(denied)return denied;const id=staffQuery().get('employee');if(!staffState.employees.some(p=>p.user_id===id))return staffShell('Employee report','Choose an employee from Manage employees.','');
-  staffLoadReport(id);const d=staffReport.key===id?staffReport.data:null;const p=staffState.employees.find(p=>p.user_id===id);
+  staffLoadReport(id);if(isOwner)staffLoadSales();const d=staffReport.key===id?staffReport.data:null;const p=staffState.employees.find(p=>p.user_id===id);
   const metric=(label,value)=>`<div class="panel"><small class="muted">${label}</small><strong class="staff-metric">${esc(value)}</strong></div>`;
   return staffShell(p.display_name+' · Report','Recorded work, account changes, scheduling and notes activity.',`
     <div class="row" style="margin-bottom:20px">${isOwner?`<button class="btn gold" onclick="editEmployee('${id}')">Edit roles / permissions</button>`:''}${staffCan('view_notes')?`<button class="btn ghost" onclick="staffOpenNotes('employee','${id}')">Employee notes</button>`:''}</div>
     ${isOwner?`<p><strong>Roles:</strong> ${esc(staffRoleNames(p.role_ids))}</p>`:''}
     ${staffReport.error?`<div class="notice" role="alert">${esc(staffReport.error)}</div>`:''}${staffReport.loading?'<p role="status">Loading report…</p>':''}
     ${d?`<div class="staff-metrics">${metric('Currently assigned jobs',d.assigned_jobs)}${metric('Jobs completed by employee',d.completed_by_employee)}${metric('Actions in last 30 days',d.activity_30d)}${metric('Last activity',d.last_activity?new Date(d.last_activity).toLocaleString():'No activity yet')}</div>
-    <h3>Activity history</h3><p class="muted">“By employee” shows their actions. “About employee” shows changes someone else made. Older work may predate activity tracking.</p>
+    ${isOwner?'<h3>Sales contributed ('+staffSales.items.filter(c=>c.employee_id===id).length+')</h3>'+staffSalesList(staffSales.items.filter(c=>c.employee_id===id)):''}<h3>Activity history</h3><p class="muted">“By employee” shows their actions. “About employee” shows changes someone else made. Older work may predate activity tracking.</p>
     <div class="staff-timeline">${(d.events||[]).map(e=>`<article class="panel"><div class="row"><span class="staff-pill">${e.actor_user_id===id?'By employee':'About employee'}</span><small class="muted">${new Date(e.created_at).toLocaleString()}</small></div><h4>${esc(e.event_type.replaceAll('_',' '))}</h4><p>${esc(e.actor_name)}${e.job_kind?' · '+esc(e.job_kind)+' '+esc(e.job_id||''):''}</p><details><summary>Event details</summary><pre>${esc(JSON.stringify(e.details||{},null,2))}</pre></details></article>`).join('')||'<div class="empty">No recorded activity for this employee.</div>'}</div>
     ${(d.events||[]).length&&d.events.length%50===0?`<button class="btn ghost" ${staffReport.loading?'disabled':''} onclick="staffLoadReport('${id}',true)">Load older activity</button>`:''}`:''}`);
 }
@@ -169,3 +169,22 @@ async function staffDeleteNote(id,revision,button){if(!confirm('Delete this inte
 window.addEventListener('hashchange',()=>{if((isEmployee||isOwner)&&['/employee','/employees','/roles','/schedule','/staff-notes','/employee-report','/employee-reports'].includes(route()))staffLoadContext(true);});
 
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&(isOwner||isEmployee))staffLoadContext(true);});
+
+/* Sales origin is separate from the employee assigned to fulfill a job. Owner-approved credit only. */
+let staffSales={loaded:false,loading:false,error:'',items:[]};
+async function staffLoadSales(){
+ if(staffSales.loaded||staffSales.loading||!(isOwner||isEmployee))return;
+ const epoch=staffEpoch;staffSales.loading=true;
+ try{const items=await staffRPC('apex_sales_credits');if(epoch!==staffEpoch)return;staffSales.items=items||[];staffSales.error='';}
+ catch(e){if(epoch===staffEpoch)staffSales.error=e.message;}
+ finally{if(epoch===staffEpoch){staffSales.loaded=true;staffSales.loading=false;render();}}
+}
+function staffSalesList(items){return items.length?`<div class="staff-timeline">${items.map(c=>`<article class="panel"><strong>${esc(c.customer_name||'Customer')}</strong><p>${esc(c.reference)} · ${c.job_kind==='request'?'Tech request lead':'Order contribution'}</p>${isOwner?`<p>Credited to ${esc(c.employee_name)}</p>`:''}<small class="muted">${new Date(c.credited_at).toLocaleString()} · ${esc(c.job_id)}</small></article>`).join('')}</div>`:'<div class="empty">No sales contributions credited yet.</div>';}
+function staffSalesPage(){const denied=staffGate();if(denied)return denied;staffLoadSales();return staffShell(isOwner?'Sales contributions':'My sales contributions','Owner-recorded sales and tech leads you helped bring in. Credit does not mean the customer has paid.',`${staffSales.loading?'<p>Loading sales credits…</p>':''}${staffSales.error?`<div class="notice">${esc(staffSales.error)} Apply the sales attribution migration to enable this feature.</div>`:''}${staffSalesList(staffSales.items)}`);}
+function staffCreditSale(kind,id){
+ if(!isOwner)return;
+ const credit=staffSales.items.find(c=>c.job_kind===kind&&c.job_id===id);
+ openDlg(`<div class="dlg"><h3>Who brought in this sale?</h3><p>This credit is separate from the employee assigned to do the work. Tech requests count as leads, not confirmed payments.</p><label class="field">Contributing employee<select id="staffSaleEmployee"><option value="">No employee credit</option>${staffState.employees.filter(p=>p.active).map(p=>`<option value="${p.user_id}" ${credit?.employee_id===p.user_id?'selected':''}>${esc(p.display_name)}</option>`).join('')}</select></label><div class="row"><button class="btn gold" data-kind="${esc(kind)}" data-job="${esc(id)}" onclick="staffSaveSaleCredit(this)">Save sales credit</button><button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`);
+}
+async function staffSaveSaleCredit(button){staffBusy(button,true);try{await staffRPC('apex_credit_sale',{p_kind:button.dataset.kind,p_job:button.dataset.job,p_employee:document.getElementById('staffSaleEmployee').value||null});editDlg.close();staffSales.loaded=false;await staffLoadSales();toast('Sales contribution recorded.');}catch(e){staffError(e);}finally{staffBusy(button,false);}}
+function staffSaleButton(kind,id){const c=staffSales.items.find(c=>c.job_kind===kind&&c.job_id===id);return `<button class="btn sm ghost" data-kind="${esc(kind)}" data-job="${esc(id)}" onclick="staffCreditSale(this.dataset.kind,this.dataset.job)">${c?'Sale: '+esc(c.employee_name):'Credit sale / lead'}</button>`;}
