@@ -1,5 +1,7 @@
 # Apex Computers employee system setup
 
+For the roles, scheduling, per-employee reports, and private notes update, follow [Staff workspace setup](STAFF_WORKSPACE_SETUP.md). Apply the existing migrations in order before that update.
+
 The website code and Supabase Edge Function are in this repository. **The employee system will not be active until you run the SQL and deploy the function in your Supabase project.**
 
 ## 1. Run the database setup
@@ -32,10 +34,10 @@ Keep the function's JWT verification enabled. It verifies that the caller is sig
 1. Open the live Apex Computers website.
 2. Choose **Owner sign-in** and sign in with the existing owner Supabase account.
 3. Open **Manage employees**.
-4. Enter the employee's display name, username, and a temporary password of at least 10 characters.
-5. Give the employee the username and password privately.
+4. Enter the employee's display name and optional contact email. A unique six-digit sign-in code is generated automatically.
+5. Give the employee the generated sign-in code privately.
 
-Employee usernames are converted internally to synthetic Supabase Auth email addresses. Employees still sign in using only the username and password. Passwords are managed by Supabase Auth and are not stored in the site's data file.
+The generated code is used with a synthetic Supabase Auth email internally. Employees sign in using their six-digit code. Authentication is handled by Supabase Auth; codes are never written to the public catalog.
 
 ## 4. Employee workflow
 
@@ -49,4 +51,4 @@ Employee usernames are converted internally to synthetic Supabase Auth email add
 
 - New service requests are now submitted to Supabase so they are available across devices. Existing requests saved in `data.json` can be imported from the owner dashboard using the **Import older local requests into shared inbox** button in Orders & requests. Importing is safe to repeat because existing request IDs are skipped.
 - Existing orders remain in `apex_orders`; the SQL adds the assignment column without deleting order data.
-- The Edge Function creates accounts and disables/enables them. Employee password resets are not yet included in this first version; disabling and re-enabling an account is supported.
+- The Edge Function creates accounts and disables/enables them. The owner can reset an employee’s sign-in code, update contact details, disable or re-enable an account, or delete the account.
