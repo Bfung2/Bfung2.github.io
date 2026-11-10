@@ -1842,7 +1842,7 @@ function products(){
     <div class="field" style="margin-bottom:0"><label>Search</label><input id="prod_f_q" placeholder="Name, description, processor…" value="${esc(f.q)}" oninput="setProductFilter('q',this.value)"></div>
     ${active?`<button class="btn sm ghost" style="margin-top:10px" onclick="clearProductFilters()">Clear filters</button>`:""}
   </div>` : "";
-  const navItem=(label,count,target,icon,active=false)=>`<button class="shop-side-link ${active?"active":""}" onclick="jumpProductSection('${target}')"><span class="shop-side-icon">${icon}</span><span>${esc(label)}</span><small>${count}</small></button>`;
+  const navItem=(label,count,target,icon,active=false)=>`<button class="shop-side-link ${active?"active":""}" onclick="${label==="Storage"?"setProductFilter('category','Storage')":"jumpProductSection('"+target+"')"}"><span class="shop-side-icon">${icon}</span><span>${esc(label)}</span><small>${count}</small></button>`;
   const sideMenu=`<aside class="shop-sidebar" aria-label="Product categories">
     <div class="shop-sidebar-head"><span class="shop-side-eyebrow">QUICK NAVIGATION</span><strong>Shop by category</strong><span class="shop-sidebar-hint">Jump straight to what you need</span><button class="shop-filter-toggle" onclick="toggleShopFilters()" aria-controls="shopFilterPanel" aria-expanded="${shopFiltersOpen}">☷ Filters <span>${active?"•":""}</span></button></div>
     <nav class="shop-side-nav">
