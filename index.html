@@ -1554,8 +1554,16 @@ function home(){
 let productFilters = {category:"", cpuType:"", q:"", min:"", max:""};
 let shopFiltersOpen=false;
 let buildMenuOpen=false;
+let buildPickerOpen=false;
+let buildNavVisible=true;
+let buildPickerVisible=true;
+let activeBuildCategory='CPU';
 function toggleBuildMenu(force){buildMenuOpen=typeof force==="boolean"?force:!buildMenuOpen;const panel=document.getElementById("buildSidebar"),backdrop=document.getElementById("buildMenuBackdrop"),button=document.getElementById("buildMenuToggle");if(panel)panel.classList.toggle("open",buildMenuOpen);if(backdrop)backdrop.classList.toggle("open",buildMenuOpen);if(button)button.setAttribute("aria-expanded",String(buildMenuOpen));document.body.classList.toggle("build-menu-open",buildMenuOpen);}
-function jumpBuildSection(cat){toggleBuildMenu(false);const el=document.getElementById("sec_"+cat.replace(/\W+/g,"_"));if(el)el.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches||window.matchMedia("(pointer: coarse)").matches?"auto":"smooth",block:"start"});}
+function setActiveBuildCategory(cat){activeBuildCategory=cat;toggleBuildMenu(false);toggleBuildPicker(false);render();}
+function jumpBuildSection(cat){setActiveBuildCategory(cat);}
+function toggleBuildNav(){buildNavVisible=!buildNavVisible;render();}
+function toggleBuildPicker(force){buildPickerOpen=typeof force==="boolean"?force:!buildPickerOpen;render();}
+function toggleBuildPickerColumn(){buildPickerVisible=!buildPickerVisible;render();}
 function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
 function setProductFilter(key,val){ productFilters[key]=val; render(); }
 function clearProductFilters(){ productFilters = {category:"", cpuType:"", q:"", min:"", max:""}; render(); }
@@ -1866,11 +1874,7 @@ function clearBuildCompare(){compareBuildIds=[];persistSavedBuilds();render();}
 
 function removePick(cat){ delete buildSel[cat]; saveBuild(); render(); }
 function clearBuild(){ if(!confirm("Clear your whole build list?")) return; buildSel={}; wantAssembly=false; saveBuild(); render(); }
-function focusSection(cat){
-  sectionOpen[cat]=true; render();
-  const el = document.getElementById("sec_"+cat.replace(/\W+/g,"_"));
-  if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
-}
+function focusSection(cat){setActiveBuildCategory(cat);}
 const BUILD_GUIDE = {
   CPU:{title:"1. Start with your processor",why:"The CPU is the brain of your computer. It affects performance and determines which motherboard socket and memory platform you need.",tip:"Choose the CPU first. The builder uses its socket and memory requirements to narrow down compatible parts."},
   Motherboard:{title:"2. Choose a motherboard",why:"The motherboard connects every component. Its socket must match your CPU, and its form factor must fit your case.",tip:"Check the CPU socket, memory generation (DDR4 or DDR5), and board size before choosing."},
