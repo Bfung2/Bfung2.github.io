@@ -2085,8 +2085,9 @@ function build(){
     ${savedBuildManager}
     ${!partsAll().length?`<div class="empty"><strong>No parts uploaded yet</strong>${isOwner?"Add a CPU first, then boards, memory and the rest. Fill in socket and memory type so the matching works.":"Parts are being added. Check back shortly."}</div>`: `
     <div class="build-workspace">
+      <button class="build-menu-toggle" id="buildMenuToggle" type="button" onclick="toggleBuildMenu()" aria-controls="buildSidebar" aria-expanded="false">☷ Parts &amp; filters</button>
       <aside class="build-sidebar" id="buildSidebar" aria-label="Build navigation and filters">
-        <div class="build-sidebar-head"><div><span class="build-eyebrow">BUILD CONTROLS</span><strong>Parts &amp; filters</strong><small>Jump to a component or narrow your options</small></div><button class="build-menu-toggle" id="buildMenuToggle" type="button" onclick="toggleBuildMenu()" aria-controls="buildSidebar" aria-expanded="false">☷ Menu &amp; filters</button><button class="build-menu-close" type="button" onclick="toggleBuildMenu(false)" aria-label="Close build menu">×</button></div>
+        <div class="build-sidebar-head"><div><span class="build-eyebrow">BUILD CONTROLS</span><strong>Parts &amp; filters</strong><small>Jump to a component or narrow your options</small></div><button class="build-menu-close" type="button" onclick="toggleBuildMenu(false)" aria-label="Close build menu">×</button></div>
         <nav class="build-nav" aria-label="Build categories">${jumpLinks}</nav>
         ${filterBar}
       </aside>
