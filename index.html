@@ -1667,12 +1667,15 @@ let buildPickerOpen=false;
 let buildNavVisible=true;
 let buildPickerVisible=true;
 let activeBuildCategory='CPU';
+let buildStorageType='';
 let buildCategoryPages={};
 const BUILD_PAGE_SIZE=25;
 function setBuildPage(cat,page){buildCategoryPages[cat]=Math.max(1,Number(page)||1);render();}
 function buildPageSlice(cat,list){const pages=Math.max(1,Math.ceil(list.length/BUILD_PAGE_SIZE));const page=Math.min(pages,Math.max(1,Number(buildCategoryPages[cat])||1));buildCategoryPages[cat]=page;const start=(page-1)*BUILD_PAGE_SIZE;const buttons=Array.from({length:pages},(_,i)=>'<button type="button" class="build-page-button '+(page===i+1?'active':'')+'" '+(page===i+1?'aria-current="page"':'')+' onclick="setBuildPage(\''+cat+'\','+(i+1)+')">'+(i+1)+'</button>').join('');return {items:list.slice(start,start+BUILD_PAGE_SIZE),page:page,pages:pages,total:list.length,markup:pages>1?'<nav class="build-pagination" aria-label="'+esc(cat)+' pages"><span class="build-pagination-count">Showing '+(start+1)+'–'+Math.min(start+BUILD_PAGE_SIZE,list.length)+' of '+list.length+'</span><div class="build-pagination-buttons">'+buttons+'</div></nav>':''};}
 function toggleBuildMenu(force){buildMenuOpen=typeof force==="boolean"?force:!buildMenuOpen;const panel=document.getElementById("buildSidebar"),backdrop=document.getElementById("buildMenuBackdrop"),button=document.getElementById("buildMenuToggle");if(panel)panel.classList.toggle("open",buildMenuOpen);if(backdrop)backdrop.classList.toggle("open",buildMenuOpen);if(button)button.setAttribute("aria-expanded",String(buildMenuOpen));document.body.classList.toggle("build-menu-open",buildMenuOpen);}
 function setActiveBuildCategory(cat){activeBuildCategory=cat;buildPickerOpen=false;toggleBuildMenu(false);render();}
+function setBuildStorageType(type){buildStorageType=type;buildCategoryPages.Storage=1;render();}
+function resetBuildStorageType(){buildStorageType='';delete buildSel.Storage;buildCategoryPages.Storage=1;saveBuild();render();}
 function jumpBuildSection(cat){setActiveBuildCategory(cat);}
 function toggleBuildNav(){buildNavVisible=!buildNavVisible;render();}
 function toggleBuildPicker(force){buildPickerOpen=typeof force==="boolean"?force:!buildPickerOpen;document.body.classList.toggle("build-picker-open",buildPickerOpen);render();}
@@ -2134,7 +2137,7 @@ function build(){
   const slots = CATS.filter(c=>partsAll().some(p=>p.category===c));
   if(!slots.includes(activeBuildCategory)) activeBuildCategory=slots.find(c=>!buildSel[c])||slots[0]||"CPU";
   const sections = CATS.filter(c=>c===activeBuildCategory && c!=="CPU").map((cat,idx)=>{
-    const all = partsAll().filter(p=>p.category===cat).filter(matchesPartFilter);
+    const all = partsAll().filter(p=>p.category===cat).filter(p=>cat!=="Storage"||!buildStorageType||String(p.driveType||"").toUpperCase().includes(buildStorageType)).filter(matchesPartFilter);
     const pk = pickedIn(cat);
     if(!all.length && !pk) return `<div class="step"><h3>${esc(cat)}</h3><p class="muted">No ${esc(cat.toLowerCase())} options match your current filters.</p><button class="btn sm ghost" onclick="clearPartFilters()">Clear filters</button></div>`;
     const total = partsAll().filter(p=>p.category===cat).length;
@@ -2142,12 +2145,17 @@ function build(){
     const guide=guideInfo(cat);
     const guideNote=`<div class="guide-step-note"><strong>${esc(guide.title)}</strong><p>${esc(guide.why)}</p><small>💡 ${esc(guide.tip)}</small></div>`;
     if(pk){
-      body = guideNote + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need,selectedParts),selectedParts,need);
+      body = guideNote + (cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()">Change storage type</button>`:"") + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need,selectedParts),selectedParts,need);
+    } else if(cat==="Storage"&&!buildStorageType){
+      const storageItems=partsAll().filter(p=>p.category==="Storage");
+      const hddCount=storageItems.filter(p=>String(p.driveType||"").toUpperCase()==="HDD").length;
+      const ssdCount=storageItems.filter(p=>String(p.driveType||"").toUpperCase().includes("SSD")).length;
+      body=`${guideNote}<section class="storage-choice build-storage-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE YOUR DRIVE</span><h2>Storage</h2><p>Choose HDD or SSD to see compatible options.</p></div><div class="storage-choice-grid"><button type="button" class="storage-choice-card" onclick="setBuildStorageType('HDD')"><span class="storage-choice-icon">▤</span><strong>HDD</strong><small>Hard Disk Drives</small><span class="storage-choice-count">${hddCount} options</span></button><button type="button" class="storage-choice-card" onclick="setBuildStorageType('SSD')"><span class="storage-choice-icon">▦</span><strong>SSD</strong><small>Solid State Drives</small><span class="storage-choice-count">${ssdCount} options</span></button></div></section>`;
     } else {
       const good = sortParts(all.filter(p=>fitsCPU(p,cpu,need,selectedParts))), bad = sortParts(all.filter(p=>!fitsCPU(p,cpu,need,selectedParts)));
       const categoryPage=buildPageSlice(cat,[...good.map(p=>({part:p,ok:true})),...bad.map(p=>({part:p,ok:false}))]);
       const pageGood=categoryPage.items.filter(x=>x.ok).map(x=>x.part), pageBad=categoryPage.items.filter(x=>!x.ok).map(x=>x.part);
-      body = `${guideNote}${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
+      body = `${guideNote}${cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()" style="margin:0 0 12px">← Change storage type (${buildStorageType})</button>`:""}${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
       ${pageGood.map(p=>pickRow(p,cat,true,selectedParts,need)).join("") || (!pageBad.length?`<p class="muted">Nothing in this category fits that CPU yet.</p>`:"")}
       ${pageBad.length?`<details style="margin-top:10px" open><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${pageBad.length} of ${bad.length} that may not fit (page ${categoryPage.page})</summary><div style="margin-top:10px">${pageBad.map(p=>pickRow(p,cat,false,selectedParts,need)).join("")}</div></details>`:""}
       ${categoryPage.markup}`;
