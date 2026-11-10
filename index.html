@@ -1279,6 +1279,45 @@ function listSpec(value){
 function currentChosenParts(){
   return CATS.map(cat=>buildSel[cat] ? partsAll().find(p=>p.id===buildSel[cat]) : null).filter(Boolean);
 }
+/* Normalize board sizes so ATX boards never slip into mATX-only cases.
+   Prefer explicit catalog fields, then infer from the manufacturer's product text. */
+function normalizeBoardSize(value){
+  const s=String(value||"").toLowerCase().replace(/[_\s]+/g," ").trim();
+  if(/e\s*[- ]?atx|extended atx/.test(s)) return "e-atx";
+  if(/micro\s*[- ]?atx|\bmatx\b/.test(s)) return "micro-atx";
+  if(/mini\s*[- ]?itx|\bitx\b/.test(s)) return "mini-itx";
+  if(/\batx\b/.test(s)) return "atx";
+  return "";
+}
+function inferBoardSize(board){
+  return normalizeBoardSize(board?.formFactor) ||
+    normalizeBoardSize([board?.name,board?.desc,board?.longDesc].filter(Boolean).join(" "));
+}
+function supportedCaseBoardSizes(pcCase){
+  const explicit=listSpec(pcCase?.caseFormFactors).map(normalizeBoardSize).filter(Boolean);
+  if(explicit.length) return [...new Set(explicit)];
+  const text=[pcCase?.name,pcCase?.desc,pcCase?.longDesc].filter(Boolean).join(" ");
+  const inferred=normalizeBoardSize(text);
+  if(inferred==="micro-atx") return ["micro-atx","mini-itx"];
+  if(inferred==="mini-itx") return ["mini-itx"];
+  if(inferred==="atx") return ["atx","micro-atx","mini-itx"];
+  if(inferred==="e-atx") return ["e-atx","atx","micro-atx","mini-itx"];
+  return [];
+}
+function gpuLengthMm(gpu){
+  const direct=+(gpu?.lengthMm||0);
+  if(direct>0) return direct;
+  const text=[gpu?.desc,gpu?.longDesc].filter(Boolean).join(" ");
+  const m=text.match(/(?:card|graphics card|gpu)?\s*length\s*[:：-]?\s*(\d{2,3}(?:\.\d+)?)\s*mm|\b(\d{2,3}(?:\.\d+)?)\s*mm\s*(?:long|length)\b/i);
+  return m?+(m[1]||m[2]):0;
+}
+function caseGpuClearanceMm(pcCase){
+  const direct=+(pcCase?.maxGpuLengthMm||0);
+  if(direct>0) return direct;
+  const text=[pcCase?.desc,pcCase?.longDesc].filter(Boolean).join(" ");
+  const m=text.match(/(?:graphics card|gpu|video card)(?:s)?[^.]{0,45}?up to\s*(\d{2,3}(?:\.\d+)?)\s*mm|up to\s*(\d{2,3}(?:\.\d+)?)\s*mm[^.]{0,30}?(?:graphics card|gpu)/i);
+  return m?+(m[1]||m[2]):0;
+}
 /* Missing measurements are a "check fit" warning, never a false promise. */
 function compatibilityReview(part,cpu,need,chosen=currentChosenParts()){
   const fails=[], warnings=[];
@@ -1307,12 +1346,13 @@ function compatibilityReview(part,cpu,need,chosen=currentChosenParts()){
     else if(!sockets.length) warnings.push("Confirm cooler socket support");
   }
   if(board && pcCase){
-    const supported=listSpec(pcCase.caseFormFactors);
-    if(board.formFactor && supported.length && !supported.includes(String(board.formFactor).toLowerCase())) fails.push("Motherboard form factor is not supported by the case");
-    else if(!board.formFactor || !supported.length) warnings.push("Confirm motherboard and case form-factor compatibility");
+    const boardSize=inferBoardSize(board);
+    const supported=supportedCaseBoardSizes(pcCase);
+    if(boardSize && supported.length && !supported.includes(boardSize)) fails.push("Motherboard form factor ("+boardSize+") is not supported by this case");
+    else if(!boardSize || !supported.length) warnings.push("Confirm motherboard and case form-factor compatibility");
   }
   if(gpu && pcCase){
-    const length=+(gpu.lengthMm||0), clearance=+(pcCase.maxGpuLengthMm||0);
+    const length=gpuLengthMm(gpu), clearance=caseGpuClearanceMm(pcCase);
     if(length && clearance && length>clearance) fails.push("Graphics card is longer than the case clearance");
     else if(!length || !clearance) warnings.push("Confirm graphics-card length against case clearance");
   }
