@@ -1616,7 +1616,7 @@ function home(){
   </div>`;
 }
 
-let productFilters = {category:"", cpuType:"", q:"", min:"", max:""};
+let productFilters = {category:"", storageType:"", cpuType:"", q:"", min:"", max:""};
 let shopFiltersOpen=false;
 let buildMenuOpen=false;
 let buildPickerOpen=false;
@@ -1634,8 +1634,8 @@ function toggleBuildNav(){buildNavVisible=!buildNavVisible;render();}
 function toggleBuildPicker(force){buildPickerOpen=typeof force==="boolean"?force:!buildPickerOpen;document.body.classList.toggle("build-picker-open",buildPickerOpen);render();}
 function toggleBuildPickerColumn(){buildPickerVisible=!buildPickerVisible;render();}
 function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
-function setProductFilter(key,val){ productFilters[key]=val; render(); }
-function clearProductFilters(){ productFilters = {category:"", cpuType:"", q:"", min:"", max:""}; render(); }
+function setProductFilter(key,val){ productFilters[key]=val; if(key==="category") productFilters.storageType=""; render(); }
+function clearProductFilters(){ productFilters = {category:"", storageType:"", cpuType:"", q:"", min:"", max:""}; render(); }
 
 /* ---- Products and Build-a-PC parts share one catalog ----
    A part added on Build a PC also shows on the Products page under its category.
@@ -1791,6 +1791,11 @@ function products(){
   const cpuTypesUsed = [...new Set(items.map(p=>p.cpuType).filter(Boolean))];
   const shown = items.filter(p=>{
     if(f.category && displayCat(p)!==f.category) return false;
+    if(f.category==="Storage" && f.storageType){
+      const drive=String(p.driveType||"").toUpperCase();
+      if(f.storageType==="HDD" && drive!=="HDD") return false;
+      if(f.storageType==="SSD" && !drive.includes("SSD")) return false;
+    }
     if(f.cpuType && p.cpuType!==f.cpuType) return false;
     if(f.min && (+p.price||0) < +f.min) return false;
     if(f.max && (+p.price||0) > +f.max) return false;
@@ -1800,7 +1805,7 @@ function products(){
     }
     return true;
   });
-  const active = f.category||f.cpuType||f.q||f.min||f.max;
+  const active = f.category||f.storageType||f.cpuType||f.q||f.min||f.max;
   const featured = shown.filter(p=>p.featured);
   const rest = shown.filter(p=>!p.featured);
   const groups = allCats.map(c=>[c, rest.filter(p=>displayCat(p)===c)]).filter(([,l])=>l.length);
@@ -1814,6 +1819,9 @@ function products(){
       <div class="field"><label>Category</label><select onchange="setProductFilter('category',this.value)">
         <option value="">All categories</option>${allCats.map(c=>`<option value="${esc(c)}" ${f.category===c?"selected":""}>${esc(c)}</option>`).join("")}
       </select></div>
+      ${f.category==="Storage"?`<div class="field"><label>Drive type</label><select onchange="setProductFilter('storageType',this.value)">
+        <option value="">All storage drives</option><option value="HDD" ${f.storageType==="HDD"?"selected":""}>HDD (Hard Drives)</option><option value="SSD" ${f.storageType==="SSD"?"selected":""}>SSD (Solid State Drives)</option>
+      </select></div>`:""}
       ${cpuTypesUsed.length?`<div class="field"><label>CPU type</label><select onchange="setProductFilter('cpuType',this.value)">
         <option value="">Any CPU type</option>${cpuTypesUsed.map(c=>`<option value="${esc(c)}" ${f.cpuType===c?"selected":""}>${esc(c)}</option>`).join("")}
       </select></div>`:"<div></div>"}
