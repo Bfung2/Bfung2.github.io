@@ -1396,12 +1396,15 @@ function compatibilityReview(part,cpu,need,chosen=currentChosenParts()){
     if(length && clearance && length>clearance) fails.push("Graphics card is longer than the case clearance");
     else if(!length || !clearance) warnings.push("Confirm graphics-card length against case clearance");
   }
-  if(cooler && pcCase){
+  if(cooler && pcCase && cooler.coolingType==="Liquid"){
+    warnings.push("Confirm case support for a "+cooler.radiatorSizeMm+"mm radiator and fan assembly clearance");
+  }
+  if(cooler && pcCase && cooler.coolingType!=="Liquid"){
     const height=+(cooler.heightMm||0), clearance=+(pcCase.maxCoolerHeightMm||0);
     if(height && clearance && height>clearance) fails.push("CPU cooler is taller than the case clearance");
     else if(!height || !clearance) warnings.push("Confirm CPU-cooler height against case clearance");
   }
-  if(ram && cooler){
+  if(ram && cooler && cooler.coolingType!=="Liquid"){
     const height=+(ram.heightMm||0), clearance=+(cooler.maxRamHeightMm||0);
     if(height && clearance && height>clearance) fails.push("RAM is taller than the cooler's available memory clearance");
     else if(!height || !clearance) warnings.push("Confirm RAM height and CPU-cooler memory clearance");
@@ -1660,7 +1663,7 @@ function home(){
   </div>`;
 }
 
-let productFilters = {category:"", storageType:"", cpuType:"", q:"", min:"", max:""};
+let productFilters = {category:"", storageType:"", coolerType:"", cpuType:"", q:"", min:"", max:""};
 let shopFiltersOpen=false;
 let buildMenuOpen=false;
 let buildPickerOpen=false;
@@ -1668,6 +1671,10 @@ let buildNavVisible=true;
 let buildPickerVisible=true;
 let activeBuildCategory='CPU';
 let buildStorageType='';
+let buildCoolerType='';
+function setBuildCoolerType(type){buildCoolerType=type;buildCategoryPages['CPU cooler']=1;render();}
+function resetBuildCoolerType(){buildCoolerType='';delete buildSel['CPU cooler'];buildCategoryPages['CPU cooler']=1;saveBuild();render();}
+function coolerChoice(items,builder=false){return `<section class="storage-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE YOUR COOLING</span><h2>CPU Coolers</h2><p>Choose watercooling or a fan CPU cooler.</p></div><div class="storage-choice-grid">${[['Liquid','Watercooling','All-in-one liquid CPU coolers','◉'],['Air','Fan','Air CPU coolers with heatsinks','✺']].map(([type,label,detail,icon])=>`<button type="button" class="storage-choice-card" onclick="${builder?`setBuildCoolerType('${type}')`:`setProductFilter('coolerType','${type}')`}"><span class="storage-choice-icon">${icon}</span><strong>${label}</strong><small>${detail}</small><span class="storage-choice-count">${items.filter(p=>p.category==='CPU cooler'&&p.coolingType===type).length} options</span></button>`).join('')}</div></section>`;}
 let buildCpuVendor='';
 let buildBoardSize='';
 let buildGpuVendor='';
@@ -1698,8 +1705,8 @@ function toggleBuildPickerColumn(){buildPickerVisible=!buildPickerVisible;render
 let shopFilterResizeBound=false;
 function setupShopFilterLayer(){if(!shopFilterResizeBound){window.addEventListener("resize",()=>{if(route()==="/products")setupShopFilterLayer();},{passive:true});shopFilterResizeBound=true;}const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),sidebar=document.querySelector(".shop-sidebar"),mobile=window.matchMedia("(max-width: 900px)").matches;if(panel&&mobile&&panel.parentElement!==document.body)document.body.appendChild(panel);else if(panel&&!mobile&&panel.parentElement===document.body&&sidebar)sidebar.appendChild(panel);if(backdrop&&backdrop.parentElement!==document.body)document.body.appendChild(backdrop);if(panel)panel.classList.toggle("open",shopFiltersOpen&&mobile);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen&&mobile);document.body.classList.toggle("filters-open",shopFiltersOpen&&mobile);}
 function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
-function setProductFilter(key,val){ productFilters[key]=val; if(key==="category") productFilters.storageType=""; render(); }
-function clearProductFilters(){ productFilters = {category:"", storageType:"", cpuType:"", q:"", min:"", max:""}; render(); }
+function setProductFilter(key,val){ productFilters[key]=val; if(key==="category"){ productFilters.storageType=""; productFilters.coolerType=""; } render(); }
+function clearProductFilters(){ productFilters = {category:"", storageType:"", coolerType:"", cpuType:"", q:"", min:"", max:""}; render(); }
 
 /* ---- Products and Build-a-PC parts share one catalog ----
    A part added on Build a PC also shows on the Products page under its category.
@@ -1855,6 +1862,7 @@ function products(){
   const cpuTypesUsed = [...new Set(items.map(p=>p.cpuType).filter(Boolean))];
   const shown = items.filter(p=>{
     if(f.category && displayCat(p)!==f.category) return false;
+    if(f.category==="CPU cooler" && f.coolerType && p.coolingType!==f.coolerType) return false;
     if(f.category==="Storage" && f.storageType){
       const drive=String(p.driveType||"").toUpperCase();
       if(f.storageType==="HDD" && drive!=="HDD") return false;
@@ -1926,7 +1934,7 @@ function products(){
         <div class="shop-filter-backdrop ${shopFiltersOpen?"open":""}" onclick="toggleShopFilters(false)" aria-hidden="true"></div>
         <div class="shop-main" id="shopCatalogTop">
           <div class="shop-toolbar"><div><span class="shop-toolbar-dot"></span><strong>${shown.length} products</strong><span class="muted">ready to explore</span></div><span class="shop-toolbar-note">Scroll a row or jump categories from the side menu</span></div>
-          ${f.category==="Storage"&&!f.storageType?`<section class="storage-choice">
+          ${f.category==="CPU cooler"&&!f.coolerType?coolerChoice(shown):f.category==="Storage"&&!f.storageType?`<section class="storage-choice">
             <div class="storage-choice-heading"><span class="shop-section-kicker">APEX STORAGE</span><h2>Storage</h2><p>Choose the type of storage you want to browse.</p></div>
             <div class="storage-choice-grid">
               <button type="button" class="storage-choice-card" onclick="setProductFilter(&quot;storageType&quot;,&quot;HDD&quot;)"><span class="storage-choice-icon">▤</span><strong>HDD</strong><small>Hard Disk Drives</small><span class="storage-choice-count">${items.filter(p=>p.category==="Storage"&&String(p.driveType||"").toUpperCase()==="HDD").length} products</span></button>
@@ -1934,7 +1942,7 @@ function products(){
             </div>
           </section>`
             :!items.length?`<div class="empty"><strong>Nothing listed yet</strong>${isOwner?"Use “Add a product” to put your first item up.":"Check back soon, or ask us for help."}</div>`
-            : shown.length?shelves
+            : shown.length?(f.category==="CPU cooler"?`<button type="button" class="btn sm ghost" onclick="setProductFilter('coolerType','')">← Change cooling type</button>`:"")+shelves
             :`<div class="empty"><strong>Nothing matches those filters</strong><button class="btn sm ghost" style="margin-top:12px" onclick="clearProductFilters()">Clear filters</button></div>`}
         </div>
       </div>
@@ -2155,6 +2163,7 @@ function build(){
   const sections = CATS.filter(c=>c===activeBuildCategory && c!=="CPU").map((cat,idx)=>{
     const caseRequirement=cat==="Case"?buildCaseRequirement():null;
     const all = partsAll().filter(p=>p.category===cat)
+      .filter(p=>cat!=="CPU cooler"||!buildCoolerType||p.coolingType===buildCoolerType)
       .filter(p=>cat!=="Storage"||!buildStorageType||String(p.driveType||"").toUpperCase().includes(buildStorageType))
       .filter(p=>cat!=="Motherboard"||!buildBoardSize||inferBoardSize(p)===(buildBoardSize==="ATX"?"atx":"micro-atx"))
       .filter(p=>cat!=="Graphics card"||!buildGpuVendor||gpuVendorOf(p)===buildGpuVendor)
@@ -2162,13 +2171,13 @@ function build(){
       .filter(matchesPartFilter)
       .filter(p=>cat!=="Motherboard"||!cpu||fitsCPU(p,cpu,need,selectedParts));
     const pk = pickedIn(cat);
-    if(!all.length && !pk && !(cat==="Storage"&&buildStorageType) && !(cat==="Motherboard"&&!buildBoardSize) && !(cat==="Graphics card"&&!buildGpuVendor) && !(cat==="Case"&&(!buildCaseSize||caseRequirement?.forced))) return `<div class="step"><h3>${esc(cat)}</h3><p class="muted">No ${esc(cat.toLowerCase())} options match your current filters.</p><button class="btn sm ghost" onclick="clearPartFilters()">Clear filters</button></div>`;
+    if(!all.length && !pk && cat!=="CPU cooler" && !(cat==="Storage"&&buildStorageType) && !(cat==="Motherboard"&&!buildBoardSize) && !(cat==="Graphics card"&&!buildGpuVendor) && !(cat==="Case"&&(!buildCaseSize||caseRequirement?.forced))) return `<div class="step"><h3>${esc(cat)}</h3><p class="muted">No ${esc(cat.toLowerCase())} options match your current filters.</p><button class="btn sm ghost" onclick="clearPartFilters()">Clear filters</button></div>`;
     const total = partsAll().filter(p=>p.category===cat).length;
     let body;
     const guide=guideInfo(cat);
     const guideNote=`<div class="guide-step-note"><strong>${esc(guide.title)}</strong><p>${esc(guide.why)}</p><small>💡 ${esc(guide.tip)}</small></div>`;
     if(pk){
-      body = guideNote + (cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()">Change storage type</button>`:cat==="Motherboard"?`<button type="button" class="btn sm ghost" onclick="resetBuildBoardSize()">Change board size</button>`:cat==="Graphics card"?`<button type="button" class="btn sm ghost" onclick="resetBuildGpuVendor()">Change GPU brand</button>`:cat==="Case"&&!caseRequirement?.forced?`<button type="button" class="btn sm ghost" onclick="resetBuildCaseSize()">Change case size</button>`:"") + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need,selectedParts),selectedParts,need);
+      body = guideNote + (cat==="CPU cooler"?`<button type="button" class="btn sm ghost" onclick="resetBuildCoolerType()">← Change cooling type</button>`:cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()">Change storage type</button>`:cat==="Motherboard"?`<button type="button" class="btn sm ghost" onclick="resetBuildBoardSize()">Change board size</button>`:cat==="Graphics card"?`<button type="button" class="btn sm ghost" onclick="resetBuildGpuVendor()">Change GPU brand</button>`:cat==="Case"&&!caseRequirement?.forced?`<button type="button" class="btn sm ghost" onclick="resetBuildCaseSize()">Change case size</button>`:"") + pickNote + pickRow(pk,cat,fitsCPU(pk,cpu,need,selectedParts),selectedParts,need);
     } else if(cat==="Motherboard"&&!buildBoardSize){
       const boards=partsAll().filter(p=>p.category==="Motherboard");
       const atx=boards.filter(p=>inferBoardSize(p)==="atx"&&(!cpu||fitsCPU(p,cpu,need,selectedParts))).length;
@@ -2183,6 +2192,8 @@ function build(){
       const matx=cases.filter(p=>{const sizes=supportedCaseBoardSizes(p);return sizes.includes("micro-atx")&&!sizes.includes("atx");}).length;
       const atx=cases.filter(p=>supportedCaseBoardSizes(p).includes("atx")).length;
       body=`${guideNote}<section class="storage-choice build-storage-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE CASE SIZE</span><h2>PC Case</h2><p>Choose a compact mATX case or a full-size ATX case.</p></div><div class="storage-choice-grid"><button type="button" class="storage-choice-card" onclick="setBuildCaseSize('MATX')"><span class="storage-choice-icon">▤</span><strong>mATX</strong><small>Compact Micro-ATX cases</small><span class="storage-choice-count">${matx} options</span></button><button type="button" class="storage-choice-card" onclick="setBuildCaseSize('ATX')"><span class="storage-choice-icon">▦</span><strong>ATX</strong><small>Full-size ATX cases</small><span class="storage-choice-count">${atx} options</span></button></div></section>`;
+    } else if(cat==="CPU cooler"&&!buildCoolerType){
+      body=guideNote+coolerChoice(all,true);
     } else if(cat==="Storage"&&!buildStorageType){
       const storageItems=partsAll().filter(p=>p.category==="Storage");
       const hddCount=storageItems.filter(p=>String(p.driveType||"").toUpperCase()==="HDD").length;
@@ -2192,7 +2203,7 @@ function build(){
       const good = sortParts(all.filter(p=>fitsCPU(p,cpu,need,selectedParts))), bad = sortParts(all.filter(p=>!fitsCPU(p,cpu,need,selectedParts)));
       const categoryPage=buildPageSlice(cat,[...good.map(p=>({part:p,ok:true})),...bad.map(p=>({part:p,ok:false}))]);
       const pageGood=categoryPage.items.filter(x=>x.ok).map(x=>x.part), pageBad=categoryPage.items.filter(x=>!x.ok).map(x=>x.part);
-      body = `${guideNote}${cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()" style="margin:0 0 12px">← Change storage type (${buildStorageType})</button>`:cat==="Motherboard"?`<button type="button" class="btn sm ghost" onclick="resetBuildBoardSize()" style="margin:0 0 12px">← Change motherboard size</button>`:cat==="Graphics card"?`<button type="button" class="btn sm ghost" onclick="resetBuildGpuVendor()" style="margin:0 0 12px">← Change GPU brand</button>`:cat==="Case"&&!caseRequirement?.forced?`<button type="button" class="btn sm ghost" onclick="resetBuildCaseSize()" style="margin:0 0 12px">← Change case size</button>`:""}${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
+      body = `${guideNote}${cat==="CPU cooler"?`<button type="button" class="btn sm ghost" onclick="resetBuildCoolerType()">← Change cooling type</button>`:cat==="Storage"?`<button type="button" class="btn sm ghost" onclick="resetBuildStorageType()" style="margin:0 0 12px">← Change storage type (${buildStorageType})</button>`:cat==="Motherboard"?`<button type="button" class="btn sm ghost" onclick="resetBuildBoardSize()" style="margin:0 0 12px">← Change motherboard size</button>`:cat==="Graphics card"?`<button type="button" class="btn sm ghost" onclick="resetBuildGpuVendor()" style="margin:0 0 12px">← Change GPU brand</button>`:cat==="Case"&&!caseRequirement?.forced?`<button type="button" class="btn sm ghost" onclick="resetBuildCaseSize()" style="margin:0 0 12px">← Change case size</button>`:""}${cpu?`<p class="muted" style="font-size:.86rem">Recommended for your ${esc(cpu.name)}${cat==="Power supply"?` — look for ${recommendedNeed}W or more (${psuSafetyMargin}% headroom)`:""}${(cat==="Motherboard"||cat==="CPU cooler")&&cpu.socket?` — socket ${esc(cpu.socket)}`:""}${cat==="Memory"&&cpu.memType?` — ${esc(cpu.memType)}`:""}</p>`:""}
       ${pageGood.map(p=>pickRow(p,cat,true,selectedParts,need)).join("") || (!pageBad.length?`<p class="muted">Nothing in this category fits that CPU yet.</p>`:"")}
       ${pageBad.length?`<details style="margin-top:10px" open><summary class="muted" style="cursor:pointer;font-size:.88rem">Show ${pageBad.length} of ${bad.length} that may not fit (page ${categoryPage.page})</summary><div style="margin-top:10px">${pageBad.map(p=>pickRow(p,cat,false,selectedParts,need)).join("")}</div></details>`:""}
       ${categoryPage.markup}`;
