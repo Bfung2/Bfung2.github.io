@@ -724,6 +724,32 @@ footer.site a{color:var(--gold)}
 .storage-choice-card small{font-size:.95rem;color:var(--muted)}
 .storage-choice-count{margin-top:7px;font-size:.82rem;color:var(--gold);font-weight:700}
 @media(max-width:560px){.storage-choice-grid{grid-template-columns:1fr}.storage-choice-card{min-height:160px}}
+
+/* Mobile build-page layout correction: keep the component steps in a real full-width column. */
+@media(max-width:900px){
+  .build-page,.build-page .build-workspace,.build-page .build-content,
+  .build-page .build-content>.split,.build-page .build-content .steps,
+  .build-page .build-content .step{box-sizing:border-box;width:100%;max-width:100%;min-width:0}
+  .build-page .build-workspace{display:block!important;grid-template-columns:minmax(0,1fr)!important;overflow:visible}
+  .build-page .build-workspace-toolbar{position:relative!important;top:auto!important;z-index:2!important;display:flex!important;width:100%;max-width:100%;align-items:stretch;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .build-page .build-toolbar-left,.build-page .build-toolbar-right{display:flex;flex:1 1 100%;width:100%;min-width:0;gap:8px}
+  .build-page .build-toolbar-left>*,.build-page .build-toolbar-right>*{position:static!important;flex:1 1 0;min-width:0;max-width:100%;white-space:normal;line-height:1.25}
+  .build-page .build-content{display:block!important;grid-column:auto!important;grid-row:auto!important}
+  .build-page .build-content>.split{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:14px;width:100%;min-width:0}
+  .build-page .build-content .steps{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-column:1!important;width:100%!important;min-width:0!important}
+  .build-page .build-content .step{display:block;width:100%!important;min-width:0!important;overflow-wrap:anywhere}
+  .build-page .build-content .step details,.build-page .build-content .step summary,
+  .build-page .guide-step-note,.build-page .build-content .pick{max-width:100%;min-width:0}
+  .build-page .build-content .pick{width:100%;box-sizing:border-box}
+  .build-page .build-summary-panel{grid-column:1!important;grid-row:auto!important}
+}
+@media(max-width:520px){
+  .build-page{padding-left:12px!important;padding-right:12px!important}
+  .build-page .build-content .step{padding:15px!important}
+  .build-page .build-toolbar-left>*,.build-page .build-toolbar-right>*{font-size:.78rem!important;padding:10px 8px!important}
+  .build-page .build-quickfacts{flex-wrap:wrap}
+  .build-page .saved-builds,.build-page .build-progress,.build-page .guided-coach,.build-page .budget-planner{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+}
 </style>
 </head>
 <body>
