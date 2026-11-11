@@ -18,3 +18,6 @@ const message=messageModule.paidOrderMessage({id:'order',ref:'AC-TEST',sales_emp
 for(const text of ['John','APX-SALES','100 Example Street','Test CPU','Test GPU','Assembly: $25.00','PAID TOTAL: $525.00','CAPTURE-TEST'])assert.ok(message.body.includes(text),text);
 assert.ok(!message.body.includes('654321'));
 console.log('PASS: product/build cart handoff, customer checkout transition, paid-only success state, full paid email details, and no login-code disclosure.');
+
+const testMessage=messageModule.paidOrderMessage({is_test:true,ref:'TEST-123',customer_name:'Test',customer_email:'test@example.invalid',shipping_address:'Test address',items:[build],total:0});
+assert.ok(testMessage.subject.startsWith('TEST — NO PAYMENT TAKEN'));assert.ok(testMessage.body.includes('TEST TOTAL (NOT CHARGED): $0.00'));assert.ok(testMessage.body.includes('NONE — SIMULATED CHECKOUT'));assert.ok(!testMessage.body.includes('PAYMENT VERIFIED'));

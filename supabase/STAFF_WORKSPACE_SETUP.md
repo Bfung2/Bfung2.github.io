@@ -148,3 +148,19 @@ node tests/paid-notifications.mjs
 ```
 
 These exercise cart/build reconstruction, stale/unavailable parts, paid-only tracking, build email formatting, login-code exclusion, mocked notification authorization, fixed server-selected recipients and failed-delivery handling. The database suite additionally checks paid queue creation, claim leases, recipient isolation, retries and preservation after job deletion. Browser visual QA, real Gmail delivery and live PayPal capture remain deployment checks.
+
+## Owner-only test checkout code (with TEST emails)
+
+1. Run `migrations/202611100006_owner_test_checkout.sql` after the previous migrations.
+2. Deploy the updated `paid-order-notify` (including its `message.ts` helper) and `paypal-checkout` functions, retaining existing Gmail/PayPal secrets and configuration.
+3. Merge the owner test checkout PR.
+4. Sign in as owner, open **Staff workspace → Promo codes → Owner test checkout code**, and enable the code. The initial code is **APX-TEST** and it starts disabled. You can change the code or disable it at any time. It is separate from normal discounts; delegated promo managers cannot view, edit or use it.
+5. While signed in as owner, open a Market employee's customer link, review the cart, enter the test code in the checkout promo field, and press Apply. Fill in name/email/address and other customer fields, then press **Complete owner test (no payment)**. No PayPal SDK, card details or payment authorization is required for this simulated submission.
+
+The database validates the owner session and current enabled code again at submission. It requires an employee handoff link; it is not an anonymous free-order coupon. The code is reserved from ordinary discount-code management. Disabling it blocks future submissions, including a checkout where the code was applied earlier.
+
+The order is recorded as `is_test=true`, `status=test_completed`, and `$0` charged, with a TEST reference and the original employee identity. It does not receive sales credit, cannot use real PayPal processing, and is excluded from the employee job/claim/status RPCs. The owner inbox labels it **TEST — NO PAYMENT TAKEN** and the Market tracking page shows **TEST SUCCESSFUL — NO PAYMENT TAKEN**, separately from paid sales.
+
+Both owner and eligible employee notifications are queued and sent through the existing notification worker, using the same contact email, receipt permission, Gmail configuration and retry controls as ordinary notifications. Their subjects and bodies explicitly state **TEST — NO PAYMENT TAKEN**; no payment capture is claimed. Existing receipt-permission denies or missing employee email still prevent employee delivery. Enabling or disabling the code does not unsend already queued notifications from a completed test.
+
+Test items retain their display prices/parts for email verification, but test order billing totals are zero and no payment is captured. These are simulated item snapshots, not server-verified commercial quotes. No live test emails or real transactions were sent during development.

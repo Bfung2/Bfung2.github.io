@@ -150,11 +150,12 @@ Deno.serve(async (req) => {
 
     const { data: order, error: orderError } = await admin
       .from("apex_orders")
-      .select("id, ref, items, total, status")
+      .select("id, ref, items, total, status, is_test")
       .eq("id", orderId)
       .maybeSingle();
     if (orderError || !order) return json({ error: "Order not found." }, 404);
 
+    if (order.is_test) return json({ error: "Test orders cannot use real payment processing." }, 409);
     const token = await paypalToken(base, clientId, secret);
 
     if (action === "create") {
