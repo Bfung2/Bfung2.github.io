@@ -2357,6 +2357,13 @@ function pickPart(cat,id){
 function addBuildToCart(){
   const chosen = CATS.map(cat=>buildSel[cat]).map(id=>partsAll().find(p=>p.id===id)).filter(Boolean);
   if(!chosen.length) return;
+  const cpu=chosen.find(p=>p.category==="CPU")||null;
+  const need=requiredWatts(cpu,chosen.filter(p=>p.category!=="CPU"&&p.category!=="Power supply"));
+  const incompatible=chosen.map(part=>({part,review:compatibilityReview(part,cpu,need,chosen)})).find(x=>!x.review.fits);
+  if(incompatible){
+    toast("Fix build compatibility before adding to cart: "+incompatible.review.fails[0]);
+    return;
+  }
   const price = chosen.reduce((n,p)=>n+(+p.price||0),0) + (wantAssembly?(+S.settings.buildFee||0):0);
   if(!addToCart({id:uid(),kind:"build",qty:1,name:"Custom PC build"+(wantAssembly?" (assembled by us)":" (parts only)"),price,
     parts:chosen.map(p=>({id:p.id,name:p.name,category:p.category,price:+p.price||0})), assembly:wantAssembly, fee:wantAssembly?(+S.settings.buildFee||0):0})) return;
@@ -2508,6 +2515,11 @@ async function submitOrder(e){
   const addr=currentCheckoutAddress();
   if(!looksLikeAddress(addr)){addrWarn.hidden=false;c_street.focus();return false;}
   if(!myCart.length){toast("Your cart is empty.");return false;}
+  const unavailableItems=apexUnavailableCartItems();
+  if(unavailableItems.length){
+    toast("Remove unavailable items before checkout: "+unavailableItems.map(item=>item.name).join(", "));
+    return false;
+  }
   if(checkoutPromo.isTest)return ownerSubmitTestCheckout(e);
   if(typeof paypal === "undefined" || !paypal.Buttons){toast("PayPal could not load. Refresh the page and try again.");return false;}
   const t=cartTotals();
