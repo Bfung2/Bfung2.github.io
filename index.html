@@ -1337,18 +1337,24 @@ function compatibilityReview(part,cpu,need,chosen=currentChosenParts()){
   const cooler=part.category==="CPU cooler"?part:get("CPU cooler");
   const psu=part.category==="Power supply"?part:get("Power supply");
   const pcCase=part.category==="Case"?part:get("Case");
-  if(part.category==="Power supply"){
-    const watts=+part.watts||0;
+  if(psu){
+    const watts=+psu.watts||0;
     const target=recommendedPSUWatts(need);
     if(!watts || watts<target) fails.push(`PSU output is below the ${target} W recommendation (including ${psuSafetyMargin}% headroom)`);
   }
-  if(cpu && part.category==="Motherboard"){
-    if(part.socket && cpu.socket && part.socket!==cpu.socket) fails.push("Motherboard socket does not match the CPU");
-    else if(!part.socket || !cpu.socket) warnings.push("Confirm the CPU and motherboard socket match");
-    if(part.memType && cpu.memType && part.memType!==cpu.memType) fails.push("Motherboard memory type does not match the CPU");
-    else if(!part.memType || !cpu.memType) warnings.push("Confirm supported memory generation");
+  // Validate the complete selected platform, not only the candidate category.
+  // Otherwise selecting a CPU after a board, or a board after RAM, can bypass checks.
+  if(cpu && board){
+    if(board.socket && cpu.socket && board.socket!==cpu.socket) fails.push("Motherboard socket does not match the CPU");
+    else if(!board.socket || !cpu.socket) warnings.push("Confirm the CPU and motherboard socket match");
+    if(board.memType && cpu.memType && board.memType!==cpu.memType) fails.push("Motherboard memory type does not match the CPU");
+    else if(!board.memType || !cpu.memType) warnings.push("Confirm supported memory generation");
   }
-  if(cpu && part.category==="Memory" && part.memType && cpu.memType && part.memType!==cpu.memType) fails.push("Memory generation does not match the CPU platform");
+  if(ram && board){
+    if(ram.memType && board.memType && ram.memType!==board.memType) fails.push("Memory generation does not match the motherboard");
+    else if(!ram.memType || !board.memType) warnings.push("Confirm motherboard and RAM memory generation");
+  }
+  if(cpu && ram && cpu.memType && ram.memType && cpu.memType!==ram.memType) fails.push("Memory generation does not match the CPU platform");
   if(cpu && part.category==="CPU cooler"){
     const sockets=listSpec(part.supportedSockets||part.socket);
     if(sockets.length && cpu.socket && !sockets.includes(cpu.socket.toLowerCase())) fails.push("Cooler does not list support for this CPU socket");
