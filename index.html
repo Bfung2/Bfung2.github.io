@@ -1405,9 +1405,27 @@ function recommendedPSUWatts(baseWatts){
 
 /* ---------- cart ---------- */
 function cartCount(){ return myCart.reduce((n,i)=>n+(i.qty||1),0); }
+function apexPurchasable(rec){
+  if(!rec || rec.active===false) return false;
+  const status=String(rec.stockStatus||"").trim().toLowerCase();
+  return !/(out\\s*of\\s*stock|back\\s*order|sold\\s*out|unavailable|discontinued)/i.test(status);
+}
+function apexUnavailableCartItems(){
+  return myCart.filter(item=>{
+    const ids=item.kind==="build" ? (item.parts||[]).map(p=>p.id) : [item.id];
+    return ids.some(id=>{
+      const rec=[...S.parts,...S.products].find(p=>p.id===id);
+      return rec && !apexPurchasable(rec);
+    });
+  });
+}
 function addToCart(item){
-  if(item && item.id && S.products.some(p=>p.id===item.id && p.active===false)){toast("This product is temporarily unavailable.");return;}
-  myCart.push(item); saveCart(); render(); toast("Added to cart.");
+  if(item && item.id){
+    const ids=item.kind==="build" ? (item.parts||[]).map(p=>p.id) : [item.id];
+    const unavailable=ids.map(id=>[...S.parts,...S.products].find(p=>p.id===id)).find(rec=>rec && !apexPurchasable(rec));
+    if(unavailable){toast(unavailable.name+" is currently unavailable.");return false;}
+  }
+  myCart.push(item); saveCart(); render(); toast("Added to cart.");return true;
 }
 function removeCart(i){ myCart.splice(i,1); saveCart(); render(); }
 function cartTotals(){
@@ -2322,6 +2340,8 @@ function pickRow(p,cat,ok,chosenParts,buildNeed){
     </div></div>`;
 }
 function pickPart(cat,id){
+  const candidate=partsAll().find(p=>p.id===id);
+  if(candidate && !apexPurchasable(candidate)){toast(candidate.name+" is currently unavailable.");return;}
   const had = buildSel[cat]===id;
   if(had) delete buildSel[cat]; else buildSel[cat]=id;
   if(!had&&(cat==="Motherboard"||cat==="Graphics card")&&buildSel.Case){
@@ -2338,8 +2358,8 @@ function addBuildToCart(){
   const chosen = CATS.map(cat=>buildSel[cat]).map(id=>partsAll().find(p=>p.id===id)).filter(Boolean);
   if(!chosen.length) return;
   const price = chosen.reduce((n,p)=>n+(+p.price||0),0) + (wantAssembly?(+S.settings.buildFee||0):0);
-  addToCart({id:uid(),kind:"build",qty:1,name:"Custom PC build"+(wantAssembly?" (assembled by us)":" (parts only)"),price,
-    parts:chosen.map(p=>({id:p.id,name:p.name,category:p.category,price:+p.price||0})), assembly:wantAssembly, fee:wantAssembly?(+S.settings.buildFee||0):0});
+  if(!addToCart({id:uid(),kind:"build",qty:1,name:"Custom PC build"+(wantAssembly?" (assembled by us)":" (parts only)"),price,
+    parts:chosen.map(p=>({id:p.id,name:p.name,category:p.category,price:+p.price||0})), assembly:wantAssembly, fee:wantAssembly?(+S.settings.buildFee||0):0})) return;
   buildSel={}; wantAssembly=false; saveBuild();
 }
 
