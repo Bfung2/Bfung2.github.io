@@ -242,12 +242,18 @@ Deno.serve(async (req) => {
       }
 
       const { error: updateError } = await admin.from("apex_orders")
-        .update({ status: "paid" }).eq("id", order.id);
+        .update({ status: "paid", paypal_capture_id: capture.id }).eq("id", order.id);
       if (updateError) {
         console.error("Could not update paid order:", updateError);
         return json({ error: "Payment succeeded, but the order status needs manual review." }, 500);
       }
-      return json({ success: true, captureId: capture.id, status: "paid" });
+      // Delivery failures never turn a verified payment into a failed checkout.
+      let notificationsPending = true;
+      try {
+        const {data:notification,error:notificationError}=await admin.functions.invoke("paid-order-notify",{body:{orderId:order.id}});
+        notificationsPending=!!notificationError || !notification?.success;
+      } catch { notificationsPending=true; }
+      return json({ success: true, captureId: capture.id, status: "paid", notificationsPending });
     }
     return json({ error: "Unknown payment action." }, 400);
   } catch (error) {
