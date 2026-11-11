@@ -1414,21 +1414,21 @@ function cartCount(){ return myCart.reduce((n,i)=>n+(i.qty||1),0); }
 function apexPurchasable(rec){
   if(!rec || rec.active===false) return false;
   const status=String(rec.stockStatus||"").trim().toLowerCase();
-  return !/(out\s*of\s*stock|back\s*order|sold\s*out|unavailable|discontinued)/i.test(status);
+  return !/(out\s*of\s*stock|back\s*order|sold\s*out|unavailable|discontinued|price\\s*verification\\s*required)/i.test(status);
 }
 function apexUnavailableCartItems(){
   return myCart.filter(item=>{
     const ids=item.kind==="build" ? (item.parts||[]).map(p=>p.id) : [item.id];
     return ids.some(id=>{
-      const rec=[...S.parts,...S.products].find(p=>p.id===id);
-      return rec && !apexPurchasable(rec);
+      const matches=[...S.parts,...S.products].filter(p=>p.id===id);
+      return matches.some(rec=>!apexPurchasable(rec));
     });
   });
 }
 function addToCart(item){
   if(item && item.id){
     const ids=item.kind==="build" ? (item.parts||[]).map(p=>p.id) : [item.id];
-    const unavailable=ids.map(id=>[...S.parts,...S.products].find(p=>p.id===id)).find(rec=>rec && !apexPurchasable(rec));
+    const unavailable=ids.flatMap(id=>[...S.parts,...S.products].filter(p=>p.id===id)).find(rec=>!apexPurchasable(rec));
     if(unavailable){toast(unavailable.name+" is currently unavailable.");return false;}
   }
   myCart.push(item); saveCart(); render(); toast("Added to cart.");return true;
@@ -1709,8 +1709,8 @@ function clearProductFilters(){ productFilters = {category:"", storageType:"", c
 const isPartCat = c => CATS.includes(c) && c!=="Other";
 const nameKey = p => String(p.category||"")+"|"+String(p.name||"").trim().toLowerCase();
 function dupeOfPart(p){ return isPartCat(p.category) && S.parts.some(x=>nameKey(x)===nameKey(p)); }
-function partsAll(){ return [...S.parts, ...S.products.filter(p=>isPartCat(p.category) && !dupeOfPart(p))]; }
-function catalogAll(){ return [...S.products.filter(p=>p.active!==false && !dupeOfPart(p)), ...S.parts]; }
+function partsAll(){ return [...S.parts.filter(apexPurchasable), ...S.products.filter(p=>isPartCat(p.category) && !dupeOfPart(p) && apexPurchasable(p))]; }
+function catalogAll(){ return [...S.products.filter(p=>!dupeOfPart(p) && apexPurchasable(p)), ...S.parts.filter(apexPurchasable)]; }
 function displayCat(p){ return (S.parts.includes(p) && p.category==="Other") ? "Other parts" : (p.category||""); }
 function findRec(id){
   let rec = S.products.find(x=>x.id===id); if(rec) return {rec, arr:S.products, kind:"product"};
