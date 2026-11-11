@@ -91,3 +91,17 @@ The customer reviews the selection and enters their own name, email (any valid p
 Submitting a valid link atomically consumes it, labels the order/request **Employee-assisted**, and creates employee contribution credit. Direct submissions are labeled **Online / direct**. Customers can explicitly continue without credit. Source labels describe the submission route; manual attribution can still be corrected through existing owner controls.
 
 **Employees → Contact details** lets only the owner view/edit employee name, email, phone and address. Private phone/address fields are in a separate restricted table, never the staff directory, public catalog or audit payload. Auth login codes are unchanged.
+
+## Checkout promo codes
+
+Activation order matters:
+
+1. Run `migrations/202611100004_promo_codes.sql` in Supabase SQL Editor after the prior staff migrations.
+2. Deploy the updated payment function with `supabase functions deploy paypal-checkout --project-ref arvdrrrbobjpmmygojfm`. Keep its current PayPal secrets, environment and existing JWT configuration. No secrets need to change.
+3. Merge the promo-code PR. Test a low-value checkout before announcing a promotion. No live transaction was performed during development.
+
+The owner opens **Staff workspace → Promo codes** to create/edit a code, disable it or delete it. Codes are case-insensitive and support percent or fixed dollar discounts, minimum subtotals and optional expiry. Only the owner has access initially. Grant **Create, edit and remove promo codes** through a role or an employee Allow override to delegate management; Deny takes precedence. Role names do not automatically grant promo control.
+
+Checkout customers enter a code and press Apply. The preview is an estimate; the payment server re-prices the catalog items and validates the code before calculating a discounted subtotal, tax and total. Discounts exclude shipping, cannot exceed the subtotal and must leave a positive payable total. One code is supported per order. A verified order price is frozen for PayPal retries, so subsequent code edits, deletion or expiry do not change that order’s approved amount. No usage limits or commission rules are implied.
+
+Codes and management actions stay in Supabase. Anonymous customers can validate a known code for a preview but cannot list/manage codes or write verified discounts. The payment pricing RPC is executable only by the service-role payment server. If the old payment function is still deployed, a checkout with a promo refuses to proceed rather than silently charging the undiscounted amount.

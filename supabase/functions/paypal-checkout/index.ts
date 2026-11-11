@@ -162,18 +162,12 @@ Deno.serve(async (req) => {
       const catalog = await loadPublicCatalog();
       const pricing = calculateOrder(order.items, catalog);
 
-      // Persist the verified snapshot using the service role before creating PayPal's order.
-      const { error: pricingError } = await admin.from("apex_orders").update({
-        items: pricing.items,
-        subtotal: pricing.subtotal,
-        shipping: pricing.shipping,
-        tax: pricing.tax,
-        total: pricing.total,
-      }).eq("id", order.id);
-      if (pricingError) {
-        console.error("Could not save verified order pricing:", pricingError);
-        return json({ error: "The order could not be securely priced. Please try again." }, 500);
-      }
+      const { data: locked, error: pricingError } = await admin.rpc("apex_lock_checkout_price", {
+        p_order: order.id, p_items: pricing.items, p_subtotal: pricing.subtotal,
+        p_shipping: pricing.shipping, p_tax_rate: Number(catalog.settings?.taxRate ?? 0),
+      });
+      if (pricingError || !locked) return json({ error: pricingError?.message || "Could not verify checkout pricing." }, 400);
+      Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total) });
 
       const response = await fetch(base + "/v2/checkout/orders", {
         method: "POST",
@@ -202,7 +196,7 @@ Deno.serve(async (req) => {
         console.error("PayPal create order error:", data);
         return json({ error: "PayPal could not start this payment." }, 502);
       }
-      return json({ id: data.id });
+      return json({ id: data.id, pricing: { ...locked, total: pricing.total } });
     }
 
     if (action === "capture") {
