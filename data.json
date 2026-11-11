@@ -1218,7 +1218,10 @@
       "tdp": "220",
       "watts": "650",
       "power": 220,
-      "sourceUrl": "https://www.newegg.com/asus-radeon-rx-9070-gre-12gb-graphics-card/p/N82E16814126841"
+      "sourceUrl": "https://www.newegg.com/asus-radeon-rx-9070-gre-12gb-graphics-card/p/N82E16814126841",
+      "stockStatus": "Price Verification Required",
+      "active": false,
+      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation."
     },
     {
       "id": "gpurx9070gigagaming3x",
@@ -1269,7 +1272,10 @@
       "tdp": "180",
       "watts": "600",
       "power": "180",
-      "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992"
+      "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992",
+      "stockStatus": "Price Verification Required",
+      "active": false,
+      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation."
     },
     {
       "id": "gpu5060tiventus3x16",
@@ -1320,7 +1326,10 @@
       "tdp": "170",
       "watts": "550",
       "power": 170,
-      "sourceUrl": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013"
+      "sourceUrl": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013",
+      "stockStatus": "Price Verification Required",
+      "active": false,
+      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation."
     },
     {
       "id": "gpu3050msiventus2x6",
@@ -1354,7 +1363,10 @@
       "tdp": "250",
       "watts": "750",
       "power": 250,
-      "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777"
+      "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777",
+      "stockStatus": "Price Verification Required",
+      "active": false,
+      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation."
     },
     {
       "id": "gpu5070tigigawindforce3x",
@@ -8033,7 +8045,10 @@
       "memType": "GDDR7",
       "tdp": "180",
       "watts": "600",
-      "power": "180"
+      "power": "180",
+      "stockStatus": "Price Verification Required",
+      "active": false,
+      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation."
     },
     {
       "id": "gpu5060tiventus3x16",
@@ -8065,7 +8080,10 @@
       "memType": "GDDR7",
       "tdp": "250",
       "watts": "750",
-      "power": "250"
+      "power": "250",
+      "stockStatus": "Price Verification Required",
+      "active": false,
+      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation."
     },
     {
       "id": "gpu9060xtgigagaming3x",
@@ -8097,7 +8115,10 @@
       "memType": "GDDR6",
       "tdp": "170",
       "watts": "550",
-      "power": 170
+      "power": 170,
+      "stockStatus": "Price Verification Required",
+      "active": false,
+      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation."
     },
     {
       "id": "gpu5060gigablp3x",
@@ -8145,7 +8166,10 @@
       "memType": "GDDR6",
       "tdp": "220",
       "watts": "650",
-      "power": 220
+      "power": 220,
+      "stockStatus": "Price Verification Required",
+      "active": false,
+      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation."
     },
     {
       "id": "gpurx9070gresapphirepulse2x",
