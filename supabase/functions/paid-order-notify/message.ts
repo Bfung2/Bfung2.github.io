@@ -22,3 +22,9 @@ export function utf8Base64(value: string) {
   let binary = ''; for (const byte of new TextEncoder().encode(value)) binary += String.fromCharCode(byte);
   return btoa(binary);
 }
+
+export function notificationOwnerEmail(settings: any): string {
+  const email = String(settings?.ownerEmail || '').trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || /[<>,;]/.test(email) || email.length > 254) throw new Error('Set a valid owner notification email in Site settings');
+  return email;
+}

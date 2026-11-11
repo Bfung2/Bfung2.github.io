@@ -164,3 +164,22 @@ The order is recorded as `is_test=true`, `status=test_completed`, and `$0` charg
 Both owner and eligible employee notifications are queued and sent through the existing notification worker, using the same contact email, receipt permission, Gmail configuration and retry controls as ordinary notifications. Their subjects and bodies explicitly state **TEST — NO PAYMENT TAKEN**; no payment capture is claimed. Existing receipt-permission denies or missing employee email still prevent employee delivery. Enabling or disabling the code does not unsend already queued notifications from a completed test.
 
 Test items retain their display prices/parts for email verification, but test order billing totals are zero and no payment is captured. These are simulated item snapshots, not server-verified commercial quotes. No live test emails or real transactions were sent during development.
+
+## Site email settings persistence fix
+
+Merge the settings-email fix and redeploy `paid-order-notify`. No SQL migration, new secrets or Google reauthorization are required.
+
+Site settings now preserve the public settings form's unsaved fields across background/auth refresh renders. Saving waits for GitHub's confirmed write result. A missing/expired/insufficient write token displays a save failure while retaining the draft, rather than reporting success and losing the change. GitHub write access is still required on the owner's device; this update does not publish repository credentials or bypass that requirement. Discard unsaved changes restores the last known persisted values. The remaining catalog/category save paths retain their existing behavior.
+
+The **Email orders and requests to** field controls public contact information and the owner recipient for automatic order notifications. It does not change the owner's Supabase sign-in account or the Gmail OAuth sending mailbox. The notification worker reads the saved public `data.json` from the fixed Apex repository, validates the address, and records it on the claimed owner-notification attempt before sending. Employee recipients continue to come from their owner-maintained employee profiles. Already sent messages are not resent or redirected. If public settings cannot be fetched or the recipient is invalid, notifications remain queued with an explicit configuration error rather than falling back silently to the old address. Repository/CDN propagation can introduce a short delay before a freshly saved address is visible to the worker.
+
+After deployment, re-enter the desired email in Site settings and wait for **Settings saved to GitHub**. Then use the existing notification retry control if there are pending messages. Existing Gmail secrets and `From` identity remain unchanged; replies use the saved shop notification email.
+
+Additional tests:
+
+```sh
+node tests/settings-save.mjs
+node tests/paid-notifications.mjs
+```
+
+These cover acknowledgement-only success, draft preservation, missing-token/write failures, rollback of failed settings changes, edits made during an in-flight save, local-only persistence, and configured owner-recipient selection. No real notification email is sent by the tests.
