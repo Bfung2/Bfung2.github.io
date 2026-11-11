@@ -1,0 +1,37 @@
+name: Apex catalog integrity audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - data.json
+      - scripts/audit_catalog.py
+      - .github/workflows/catalog-audit.yml
+  pull_request:
+    paths:
+      - data.json
+      - scripts/audit_catalog.py
+      - .github/workflows/catalog-audit.yml
+  schedule:
+    - cron: '15 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate full-catalog integrity report
+        run: python3 scripts/audit_catalog.py --output catalog-audit-report.json
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: apex-catalog-audit
+          path: catalog-audit-report.json
+          retention-days: 30
