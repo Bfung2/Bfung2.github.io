@@ -1408,7 +1408,7 @@ function cartCount(){ return myCart.reduce((n,i)=>n+(i.qty||1),0); }
 function apexPurchasable(rec){
   if(!rec || rec.active===false) return false;
   const status=String(rec.stockStatus||"").trim().toLowerCase();
-  return !/(out\\s*of\\s*stock|back\\s*order|sold\\s*out|unavailable|discontinued)/i.test(status);
+  return !/(out\s*of\s*stock|back\s*order|sold\s*out|unavailable|discontinued)/i.test(status);
 }
 function apexUnavailableCartItems(){
   return myCart.filter(item=>{
