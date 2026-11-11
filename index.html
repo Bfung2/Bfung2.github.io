@@ -1775,7 +1775,7 @@ function productDetail(id){
     rows:[["Category",p.category],["Processor",[p.cpuType,p.processor].filter(Boolean).join(" · ")],["Brand",p.brand]],
     summary:p.desc, full:p.longDesc,
     actions:`<button class="btn gold" onclick="addToCart(${cartPayload(p)});editDlg.close()">Add to cart</button>`
-      +(staffCan("view_notes")?`<button class="btn ghost" data-note-id="${esc(p.id)}" onclick="staffOpenNotes('product',this.dataset.noteId)">Staff notes</button>`:"")
+      +(staffProductNoteAccess()?`<button class="btn ghost" data-note-id="${esc(p.id)}" onclick="staffOpenProductNotes(this.dataset.noteId)">Staff notes</button>`:"")
       +(isOwner?`<button class="btn ghost" onclick="editProduct('${p.id}')">Edit</button>`:"")
   });
 }
