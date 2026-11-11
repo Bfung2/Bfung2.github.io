@@ -1,6 +1,6 @@
 /* Private staff workspace. Data stays in Supabase, never in the public catalog or localStorage. */
 const STAFF_PERMISSIONS = [
-  ['orders','View orders'],['requests','View service requests'],['customer_details','View customer contact details'],
+  ['prepare_sales','Prepare customer sales links'],['orders','View orders'],['requests','View service requests'],['customer_details','View customer contact details'],
   ['claim_jobs','Claim unassigned jobs'],['update_status','Update assigned job status'],
   ['view_schedule','View staff schedule'],['edit_schedule','Add, edit and remove shifts'],
   ['view_reports','View individual employee reports'],['view_notes','View permitted internal notes'],
@@ -11,7 +11,7 @@ let staffEpoch=0,staffReadEpoch=0, staffSchedule={key:'',loading:false,error:'',
 let staffReport={key:'',loading:false,error:'',data:null},staffWeek=staffWeekStart(new Date()),staffScheduleEmployee='';
 function staffWeekStart(date){const d=new Date(date);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d;}
 function staffCan(key){return isOwner || !!(isEmployee&&staffState.permissions[key]);}
-function staffReset(){staffSales={loaded:false,loading:false,error:"",items:[]};if(typeof editDlg!=="undefined"&&editDlg){editDlg.close();editDlg.remove();editDlg=null;}staffWeek=staffWeekStart(new Date());staffScheduleEmployee="";staffEpoch++;staffReadEpoch++;staffState={loaded:false,loading:false,error:'',roles:[],employees:[],permissions:{}};staffSchedule={key:'',loading:false,error:'',items:[]};staffNotes={key:null,loading:false,error:'',items:[]};staffReport={key:'',loading:false,error:'',data:null};employeeProfiles=[];employeeAudit=[];performanceData=[];employeesLoaded=false;employeeAuditLoaded=false;performanceLoaded=false;}
+function staffReset(){if(typeof marketDrafts!=="undefined")marketDrafts={loaded:false,loading:false,error:"",items:[]};staffSales={loaded:false,loading:false,error:"",items:[]};if(typeof editDlg!=="undefined"&&editDlg){editDlg.close();editDlg.remove();editDlg=null;}staffWeek=staffWeekStart(new Date());staffScheduleEmployee="";staffEpoch++;staffReadEpoch++;staffState={loaded:false,loading:false,error:'',roles:[],employees:[],permissions:{}};staffSchedule={key:'',loading:false,error:'',items:[]};staffNotes={key:null,loading:false,error:'',items:[]};staffReport={key:'',loading:false,error:'',data:null};employeeProfiles=[];employeeAudit=[];performanceData=[];employeesLoaded=false;employeeAuditLoaded=false;performanceLoaded=false;}
 async function staffRPC(name,args={}){const {data,error}=await supabaseClient.rpc(name,args);if(error)throw new Error(error.message||'Staff request failed.');return data;}
 async function staffLoadContext(force=false){
   if(!(isOwner||isEmployee)||staffState.loading||(!force&&staffState.loaded))return;
@@ -25,7 +25,7 @@ async function staffLoadContext(force=false){
   finally{if(epoch===staffEpoch){staffState.loading=false;render();}}
 }
 function staffNav(){if(!(isOwner||isEmployee))return '';return `<nav class="staff-nav" aria-label="Staff workspace">${[
-  ['/sales-credits','Sales contributions',true],['/employee','My work',isEmployee],['/employees','Employees',isOwner],['/roles','Roles & permissions',isOwner],
+  ['/market-sales','Prepare sale',staffCan('prepare_sales')],['/sales-credits','Sales contributions',true],['/employee','My work',isEmployee],['/employees','Employees',isOwner],['/roles','Roles & permissions',isOwner],
   ['/schedule','Schedule',staffCan('view_schedule')],['/employee-reports','Reports',staffCan('view_reports')],['/staff-notes','Internal notes',staffCan('view_notes')]
 ].filter(x=>x[2]).map(([url,label])=>`<a class="btn sm ${route()===url?'gold':'ghost'}" href="#${url}">${label}</a>`).join('')}</nav>`;}
 function staffNotice(){return staffState.error?`<div class="notice" role="alert"><strong>Staff workspace setup is required.</strong><p>${esc(staffState.error)}</p><p>The owner needs to apply the staff workspace database migration in Supabase. Existing job tools remain available.</p><button class="btn sm ghost" onclick="staffLoadContext(true)">Retry connection</button></div>`:'';}
@@ -49,7 +49,7 @@ function staffEmployeesPage(){
       <div class="staff-form-grid"><div class="field"><label for="newEmployeeName">Name</label><input id="newEmployeeName" required maxlength="100"></div><div class="field"><label for="newEmployeeEmail">Contact email</label><input id="newEmployeeEmail" type="email" maxlength="254"></div></div>
       <p class="muted">A six-digit sign-in code is generated automatically. Assign roles and overrides after creating the account.</p><button class="btn gold">Create employee</button></form>
     <section class="staff-cards" aria-label="Employee accounts">${list.map(p=>`<article class="panel staff-person"><div class="staff-person-head"><div><button class="staff-name" onclick="staffOpenReport('${p.user_id}')">${esc(p.display_name)}</button><p class="muted">${esc(p.email||'No contact email')}</p></div><span class="staff-pill">${p.active?'Active':'Disabled'}</span></div><p>${esc(staffRoleNames(p.role_ids))}${!p.access_configured?' · Legacy permissions':''}</p>
-      <div class="row"><button class="btn sm gold" onclick="staffOpenReport('${p.user_id}')">View report</button><button class="btn sm ghost" onclick="editEmployee('${p.user_id}')">Roles / permissions</button><button class="btn sm ghost" onclick="staffOpenNotes('employee','${p.user_id}')">Notes</button></div>
+      <div class="row"><button class="btn sm ghost" onclick="staffEditContact('${p.user_id}')">Contact details</button><button class="btn sm gold" onclick="staffOpenReport('${p.user_id}')">View report</button><button class="btn sm ghost" onclick="editEmployee('${p.user_id}')">Roles / permissions</button><button class="btn sm ghost" onclick="staffOpenNotes('employee','${p.user_id}')">Notes</button></div>
       <details class="staff-account-tools"><summary>Account controls</summary><div class="row"><button class="btn sm ghost" onclick="staffResetCode('${p.user_id}')">Reset code</button><button class="btn sm ghost" onclick="staffToggleEmployee('${p.user_id}',${!p.active})">${p.active?'Disable':'Enable'}</button><button class="btn sm danger" onclick="staffDeleteEmployee('${p.user_id}')">Delete account</button></div></details></article>`).join('')||'<div class="empty">No employees yet.</div>'}</section>`);
 }
 async function staffResetCode(id){await resetEmployeePasscode(id,staffEmployeeName(id));}
