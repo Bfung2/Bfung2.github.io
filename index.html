@@ -1443,9 +1443,10 @@ function cartTotals(){
 }
 
 /* ---------- global storefront search ---------- */
-function searchableProductText(p){return [p.name,p.category,p.brand,p.desc,p.longDesc,p.cpuType,...(Array.isArray(p.keywords)?p.keywords:[])].filter(Boolean).join(" ").toLowerCase();}
+function normalizeSearchText(value){return String(value||"").toLowerCase().replace(/([a-z])(\d)/g,"$1 $2").replace(/(\d)([a-z])/g,"$1 $2").replace(/[^a-z0-9]+/g," ").trim();}
+function searchableProductText(p){return normalizeSearchText([p.name,p.category,p.brand,p.desc,p.longDesc,p.cpuType,...(Array.isArray(p.keywords)?p.keywords:[])].filter(Boolean).join(" "));}
 function matchesProductSearch(p,query){
- const terms=String(query||"").toLowerCase().trim().split(/\s+/).filter(Boolean);
+ const terms=normalizeSearchText(query).split(/\s+/).filter(Boolean);
  const hay=searchableProductText(p);
  return terms.every(term=>hay.includes(term));
 }
