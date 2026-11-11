@@ -1246,7 +1246,7 @@ async function loadCloudOrders(){
   try{
     const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,is_test:!!row.is_test,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
     cloudOrdersLoaded=true;
     await loadOwnerWorkData();
   }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
@@ -2443,7 +2443,7 @@ function checkout(){
       ${me?"":`<div class="notice" style="margin-bottom:14px">Have an account? <a href="#/login">Sign in</a> and these fields fill themselves in.</div>`}
       <div class="field"><label for="cnote">Anything else we should know</label><textarea id="cnote" style="min-height:60px"></textarea></div>
       <div class="notice">Your payment is processed by PayPal. Apex Computers does not receive or store your card details.</div>
-      <button class="btn gold" type="submit">Continue to PayPal</button>
+      <button class="btn gold" type="submit">${checkoutPromo.isTest?"Complete owner test (no payment)":"Continue to PayPal"}</button>
       <div id="paypalPayment" hidden style="margin-top:18px"><p id="paypalStatus" class="muted">Your order is saved. Complete payment below.</p><div id="paypalButtons"></div></div>
     </form>
     <div class="summary panel">
@@ -2454,6 +2454,7 @@ function checkout(){
     </div></div></div>`;
 }
 function orderText(o){
+  if(o.is_test)return "TEST — NO PAYMENT TAKEN\n"+o.ref+"\n"+o.name+"\n"+o.email+"\n"+o.address+"\n\n"+o.items.map(i=>i.name+(i.parts?"\n"+i.parts.map(p=>p.category+": "+p.name).join("\n"):"")).join("\n")+"\n\nSimulated checkout. Not a paid sale.";
   return `New order request ${o.ref}\n${new Date(o.at).toLocaleString()}\n\n`+
   `CUSTOMER\nName: ${o.name}\nEmail: ${o.email}\nPhone: ${o.phone}\nAddress: ${o.address}\n\n`+
   `ITEMS & SERVICES\n`+o.items.map(i=>`- ${i.name} — ${money(i.price)}`+(i.parts?`\n`+i.parts.map(p=>`    · ${p.category}: ${p.name} (${money(p.price)})`).join("\n")+(i.assembly?`\n    · Assembly service: ${money(i.fee)}`:""):"")).join("\n")+
@@ -2483,6 +2484,7 @@ async function submitOrder(e){
   const addr=currentCheckoutAddress();
   if(!looksLikeAddress(addr)){addrWarn.hidden=false;c_street.focus();return false;}
   if(!myCart.length){toast("Your cart is empty.");return false;}
+  if(checkoutPromo.isTest)return ownerSubmitTestCheckout(e);
   if(typeof paypal === "undefined" || !paypal.Buttons){toast("PayPal could not load. Refresh the page and try again.");return false;}
   const t=cartTotals();
   const o={id:uid()+"-"+Date.now().toString(36),ref:"AC-"+Date.now().toString(36).toUpperCase(),at:new Date().toISOString(),
@@ -2541,7 +2543,7 @@ function done(){
   if(!lastOrder) return `<div class="wrap"><div class="empty"><strong>Nothing to show</strong></div></div>`;
   const o = lastOrder;
   return `<div class="wrap"><div class="pagehead"><div><h2>Order ${esc(o.ref)} submitted</h2>
-  <p>${o.notificationsPending?"Your PayPal payment was verified and your order is confirmed. Email notifications are pending; Apex can retry delivery.":"Your PayPal payment was verified and your order is confirmed. Order email notifications have been processed."}</p></div></div>
+  <p>${o.is_test?("TEST SUCCESSFUL — NO PAYMENT TAKEN. "+(o.notificationsPending?"Test emails are pending delivery.":"Test email notifications have been processed.")):o.notificationsPending?"Your PayPal payment was verified and your order is confirmed. Email notifications are pending; Apex can retry delivery.":"Your PayPal payment was verified and your order is confirmed. Order email notifications have been processed."}</p></div></div>
   <div class="panel"><pre style="white-space:pre-wrap;font-size:.88rem;margin:0">${esc(orderText(o))}</pre></div>
   <div class="row" style="margin-top:16px">
     <button class="btn" onclick="mailOwner('Order request ${esc(o.ref)}', orderText(lastOrder))">Re-open the email</button>
@@ -2750,7 +2752,7 @@ function inbox(){
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
     <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td>
-    <td><small>${statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted · "+esc(o.sales_employee_name||"")+" · "+esc(o.sales_employee_code||""):"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">${o.status==="paid"?`<button class="btn sm ghost" data-order="${esc(o.id)}" onclick="marketRetryNotification(this.dataset.order,this)">Retry paid-order emails</button>`:""}
+    <td><small>${o.is_test?"TEST — NO PAYMENT TAKEN":statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted · "+esc(o.sales_employee_name||"")+" · "+esc(o.sales_employee_code||""):"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?(o.is_test?"<small>Test record — no fulfillment or sales credit</small>":assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id)):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">${(o.status==="paid"||o.is_test)?`<button class="btn sm ghost" data-order="${esc(o.id)}" onclick="marketRetryNotification(this.dataset.order,this)">Retry paid-order emails</button>`:""}
     <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;shipped&quot;)">Shipped</button>
@@ -3109,6 +3111,7 @@ function toast(msg){
 <script src="staff-workspace.js"></script>
 <script src="market-sales.js"></script>
 <script src="promo-codes.js"></script>
+<script src="owner-test-checkout.js"></script>
 <script>
 initializeSupabaseAuth();
 startCloudSync();
