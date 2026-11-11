@@ -79,3 +79,15 @@ After the staff workspace migration, run `migrations/202611100002_sales_attribut
 In **Orders & requests**, the owner uses **Credit sale / lead** to select the employee who brought in that customer. This is independent of the employee assigned to perform the work. One primary contributor is recorded per order/request; only the owner can assign, change or remove that credit.
 
 Employees, including Market staff, can open **Sales contributions** to see their own credited customer names and order/request references. Other customer contact information is not returned. They cannot claim credit or inspect another employee’s contributions. The owner sees all contributions and an employee’s credits in their individual report. Tech requests are labeled as leads, not paid sales; no commission or paid-revenue calculation is implied. Credits retain a snapshot after a job is removed with Done.
+
+## Market customer handoff and employee contact details
+
+Run `migrations/202611100003_market_customer_handoff.sql` after the sales attribution migration, then merge the Market handoff PR. No Edge Function redeployment is required.
+
+Manager and Market starter roles receive **Prepare customer sales links**. The owner can grant or deny that permission through existing roles/individual overrides. Staff open **Prepare sale**, choose products/quantities or describe a tech service, and create a customer link. The owner can prepare a link credited to a selected employee. Drafts contain selections only: no customer identity or payment data. The link is a private bearer link; share it directly with the intended customer. It expires in seven days, can be submitted once, and stops working if the employee is disabled.
+
+The customer reviews the selection and enters their own name, email (any valid provider), shipping/contact details and payment authorization in the existing checkout. Current catalog prices are used; the existing PayPal Edge Function revalidates prices server-side before taking payment. Staff do not take a card number or authorize payment through this tab. A service draft becomes a quote/service request and does not automatically charge the customer. Staff can track whether their links are waiting, submitted, or expired. A submitted but unpaid order remains subject to the existing PayPal checkout/retry behavior; creating a draft is never a paid sale.
+
+Submitting a valid link atomically consumes it, labels the order/request **Employee-assisted**, and creates employee contribution credit. Direct submissions are labeled **Online / direct**. Customers can explicitly continue without credit. Source labels describe the submission route; manual attribution can still be corrected through existing owner controls.
+
+**Employees → Contact details** lets only the owner view/edit employee name, email, phone and address. Private phone/address fields are in a separate restricted table, never the staff directory, public catalog or audit payload. Auth login codes are unchanged.

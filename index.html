@@ -1246,7 +1246,7 @@ async function loadCloudOrders(){
   try{
     const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,assigned_to:row.assigned_to||null}));
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
     cloudOrdersLoaded=true;
     await loadOwnerWorkData();
   }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
@@ -1462,7 +1462,7 @@ function render(){
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
-    "/employees":employeesPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
+    "/employees":employeesPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
   const keep = (ae && ae.id && app.contains(ae)) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
   const rows = {};
@@ -2344,7 +2344,7 @@ function tech(){
   return `<div class="wrap">
     <div class="pagehead"><div><h2>Request a tech</h2><p>Repairs, help planning a build, or just a question — reach out about anything and we'll get back to you.</p></div></div>
     <div class="split">
-      <form class="panel" onsubmit="submitRequest(event)">
+      <form class="panel" onsubmit="submitRequest(event)">${salesHandoffNotice("request")}
         <div class="field"><label for="rr">What's this about</label><select id="rr">${CONTACT_REASONS.map(x=>`<option>${x}</option>`).join("")}</select></div>
         <div class="fields2">
           <div class="field"><label for="rn">Your name</label><input id="rn" required></div>
@@ -2366,8 +2366,8 @@ function tech(){
 async function submitRequest(e){
   e.preventDefault();const r={id:uid()+"-"+Date.now().toString(36),at:new Date().toISOString(),reason:rr.value,name:rn.value,email:re.value,phone:rp.value,when:rw.value,address:ra.value,device:rd.value,issue:ri.value};
   const btn=e.submitter;if(btn){btn.disabled=true;btn.textContent="Submitting…";}
-  try{const {error}=await supabaseClient.from("apex_service_requests").insert([{id:r.id,created_at:r.at,customer_name:r.name,customer_email:r.email,customer_phone:r.phone,customer_address:r.address,availability:r.when,reason:r.reason,device:r.device,details:r.issue,status:"requested"}]);if(error)throw error;
-    const body=`New request — ${r.reason}\n\nName: ${r.name}\nEmail: ${r.email}\nPhone: ${r.phone}\nAddress: ${r.address}\nAvailability: ${r.when}\nRe: ${r.device}\n\nDetails:\n${r.issue}\n`;mailOwner(`${r.reason} — ${r.name}`,body);e.target.reset();toast("Request submitted successfully.");
+  try{const {error}=await supabaseClient.from("apex_service_requests").insert([{id:r.id,created_at:r.at,customer_name:r.name,customer_email:r.email,customer_phone:r.phone,customer_address:r.address,availability:r.when,reason:r.reason,device:r.device,details:r.issue,status:"requested",...(customerHandoff?.kind==="request"?{handoff_token:customerHandoff.token}:{})}]);if(error)throw error;
+    const body=`New request — ${r.reason}\n\nName: ${r.name}\nEmail: ${r.email}\nPhone: ${r.phone}\nAddress: ${r.address}\nAvailability: ${r.when}\nRe: ${r.device}\n\nDetails:\n${r.issue}\n`;mailOwner(`${r.reason} — ${r.name}`,body);e.target.reset();if(customerHandoff?.kind==="request")salesForgetHandoff();toast("Request submitted successfully.");
   }catch(err){console.error(err);toast("Request could not be submitted. Please try again.");}
   finally{if(btn){btn.disabled=false;btn.textContent="Send";}}
 }
@@ -2426,7 +2426,7 @@ function checkout(){
   if(!myCart.length){ return `<div class="wrap"><div class="empty"><strong>Your cart is empty</strong></div></div>`; }
   return `<div class="wrap"><div class="pagehead"><div><h2>Checkout</h2><p>Submit your details, then securely pay with PayPal. Your order is confirmed after PayPal verifies the payment.</p></div></div>
   <div class="split">
-    <form class="panel" onsubmit="return submitOrder(event)">
+    <form class="panel" onsubmit="return submitOrder(event)">${salesHandoffNotice("order")}
       <div class="fields2">
         <div class="field"><label for="cn">Full name</label><input id="cn" required value="${esc(me?me.name:"")}"></div>
         <div class="field"><label for="ce">Email</label><input id="ce" type="email" required value="${esc(me?me.email:"")}"></div>
@@ -2491,8 +2491,9 @@ async function submitOrder(e){
   const btn=e.submitter||form.querySelector('button[type="submit"]');
   if(btn){btn.disabled=true;btn.textContent="Saving order…";}
   try{
-    const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status}]);
+    const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status,...(customerHandoff?.kind==="order"?{handoff_token:customerHandoff.token}:{})}]);
     if(error) throw error;
+    if(customerHandoff?.kind==="order")salesForgetHandoff();
     lastOrder=o;
     form.querySelectorAll("input,textarea,button[type=submit]").forEach(el=>el.disabled=true);
     const payment=document.getElementById("paypalPayment");
@@ -2745,7 +2746,7 @@ function inbox(){
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
     <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}</td>
-    <td><small>${statusLabel[o.status]||o.status}</small><br>${cloudOrders.some(x=>x.id===o.id)?assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">
+    <td><small>${statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted":"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">
     <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;shipped&quot;)">Shipped</button>
@@ -2759,7 +2760,7 @@ function inbox(){
   <h3 style="margin-top:32px">Service requests (${cloudRequests.length})</h3>
   ${(S.requests||[]).length?'<button class="btn sm ghost" style="margin-bottom:12px" onclick="migrateLegacyRequests()">Import '+S.requests.length+' older local request(s) into shared inbox</button>':""}
   ${cloudRequests.length?`<div class="scroll"><table><tr><th>When</th><th>Reason</th><th>Customer</th><th>Device</th><th>Details</th><th>Assigned to</th><th></th></tr>
-  ${cloudRequests.map(r=>`<tr><td>${new Date(r.created_at).toLocaleDateString()}</td><td><small>${esc(r.reason)}</small></td><td>${esc(r.customer_name)}<br><small class="muted">${esc(r.customer_email)}<br>${esc(r.customer_phone)}<br>${esc(r.customer_address)}</small></td><td>${esc(r.device)}</td><td><small>${esc(r.details)}<br>Availability: ${esc(r.availability)}</small></td><td>${assignmentSelect("request",r.id,r.assigned_to)}${staffSaleButton("request",r.id)}</td><td><button class="btn sm danger" onclick="deleteWorkItem('request',&quot;${esc(r.id)}&quot;)">Done</button></td></tr>`).join("")}</table></div>`:`<div class="empty">No service requests yet.</div>`}
+  ${cloudRequests.map(r=>`<tr><td>${new Date(r.created_at).toLocaleDateString()}</td><td><small>${esc(r.reason)}</small></td><td>${esc(r.customer_name)}<br><small class="muted">${esc(r.customer_email)}<br>${esc(r.customer_phone)}<br>${esc(r.customer_address)}</small></td><td>${esc(r.device)}</td><td><small>${esc(r.details)}<br>Availability: ${esc(r.availability)}</small></td><td><small>${r.sales_origin==="employee"?"Employee-assisted":"Online / direct"}</small>${assignmentSelect("request",r.id,r.assigned_to)}${staffSaleButton("request",r.id)}</td><td><button class="btn sm danger" onclick="deleteWorkItem('request',&quot;${esc(r.id)}&quot;)">Done</button></td></tr>`).join("")}</table></div>`:`<div class="empty">No service requests yet.</div>`}
   <p class="muted" style="margin-top:16px">Older requests saved only on this browser: ${(S.requests||[]).length}. New requests are stored in Supabase.</p></div>`;
 }
 async function deleteWorkItem(kind,id){
@@ -3102,6 +3103,7 @@ function toast(msg){
 }
 </script>
 <script src="staff-workspace.js"></script>
+<script src="market-sales.js"></script>
 <script>
 initializeSupabaseAuth();
 startCloudSync();
