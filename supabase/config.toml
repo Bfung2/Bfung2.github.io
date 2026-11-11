@@ -8,3 +8,6 @@ verify_jwt = true
 
 [functions.paypal-checkout]
 verify_jwt = false
+
+[functions.paid-order-notify]
+verify_jwt = true

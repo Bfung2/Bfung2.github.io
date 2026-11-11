@@ -1246,7 +1246,7 @@ async function loadCloudOrders(){
   try{
     const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
     cloudOrdersLoaded=true;
     await loadOwnerWorkData();
   }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
@@ -1439,7 +1439,7 @@ function render(){
   document.querySelector("#brandName span:last-child").textContent = S.settings.shopName || "Apex Computers";
   document.title = (S.settings.shopName||"Apex Computers") + " — Custom PCs, Parts & Tech Service";
   nav.innerHTML = [...PAGES,...((isOwner||isEmployee)?[[isOwner?"/employees":"/employee","Staff workspace"]]:[])].map(([p,t])=>`<a href="#${p}" class="${route()===p?'on':''}">${t}</a>`).join("");
-  cartBtn.textContent = `Cart (${cartCount()})`;
+  cartBtn.textContent = `${staffCan("prepare_sales")&&marketCartMode?"Customer cart":"Cart"} (${cartCount()})`;
   accBtn.textContent = me ? (me.name ? me.name.split(" ")[0] : "Account") : "Sign in";
   accBtn.onclick = () => go(me ? '/account' : '/login');
   adminStrip.hidden = !isOwner;
@@ -2391,9 +2391,9 @@ function contact(){
 
 function cart(){
   const t = cartTotals();
-  if(!myCart.length) return `<div class="wrap"><div class="pagehead"><h2>Cart</h2></div>
+  if(!myCart.length) return `<div class="wrap"><div class="pagehead"><h2>Cart</h2></div>${marketCartControls()}
     <div class="empty"><strong>Your cart is empty</strong><a class="btn" style="margin-top:12px" href="#/build">Start a build</a></div></div>`;
-  return `<div class="wrap"><div class="pagehead"><h2>Cart</h2></div>
+  return `<div class="wrap"><div class="pagehead"><h2>Cart</h2></div>${marketCartControls()}
   <div class="split">
     <div class="panel">${myCart.map((i,ix)=>`
       <div class="lineitem"><span><strong>${esc(i.name)}</strong>
@@ -2518,7 +2518,7 @@ async function submitOrder(e){
         if(!result||!result.success) throw new Error(result?.error||"PayPal could not verify the payment.");
         o.status="paid";
         myCart=[];checkoutPromo={code:"",discount:0,subtotal:null};saveCart();
-        mailOwner("PAID order "+o.ref+" — "+o.name,orderText(o));
+        o.notificationsPending=!!result.notificationsPending;
         go("/done");
       },
       onCancel:function(){
@@ -2541,7 +2541,7 @@ function done(){
   if(!lastOrder) return `<div class="wrap"><div class="empty"><strong>Nothing to show</strong></div></div>`;
   const o = lastOrder;
   return `<div class="wrap"><div class="pagehead"><div><h2>Order ${esc(o.ref)} submitted</h2>
-  <p>Your PayPal payment was verified and your order is confirmed. An email draft with the order details should have opened in your mail app.</p></div></div>
+  <p>${o.notificationsPending?"Your PayPal payment was verified and your order is confirmed. Email notifications are pending; Apex can retry delivery.":"Your PayPal payment was verified and your order is confirmed. Order email notifications have been processed."}</p></div></div>
   <div class="panel"><pre style="white-space:pre-wrap;font-size:.88rem;margin:0">${esc(orderText(o))}</pre></div>
   <div class="row" style="margin-top:16px">
     <button class="btn" onclick="mailOwner('Order request ${esc(o.ref)}', orderText(lastOrder))">Re-open the email</button>
@@ -2750,7 +2750,7 @@ function inbox(){
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
     <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td>
-    <td><small>${statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted":"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">
+    <td><small>${statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted · "+esc(o.sales_employee_name||"")+" · "+esc(o.sales_employee_code||""):"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">${o.status==="paid"?`<button class="btn sm ghost" data-order="${esc(o.id)}" onclick="marketRetryNotification(this.dataset.order,this)">Retry paid-order emails</button>`:""}
     <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;shipped&quot;)">Shipped</button>

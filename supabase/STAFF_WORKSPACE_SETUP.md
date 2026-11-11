@@ -105,3 +105,46 @@ The owner opens **Staff workspace → Promo codes** to create/edit a code, disab
 Checkout customers enter a code and press Apply. The preview is an estimate; the payment server re-prices the catalog items and validates the code before calculating a discounted subtotal, tax and total. Discounts exclude shipping, cannot exceed the subtotal and must leave a positive payable total. One code is supported per order. A verified order price is frozen for PayPal retries, so subsequent code edits, deletion or expiry do not change that order’s approved amount. No usage limits or commission rules are implied.
 
 Codes and management actions stay in Supabase. Anonymous customers can validate a known code for a preview but cannot list/manage codes or write verified discounts. The payment pricing RPC is executable only by the service-role payment server. If the old payment function is still deployed, a checkout with a promo refuses to proceed rather than silently charging the undiscounted amount.
+
+## Normal cart sales, builds, paid tracking and email notifications
+
+Activate in this order:
+
+1. Run `migrations/202611100005_cart_sales_notifications.sql` after the previous staff, attribution, handoff and promo migrations.
+2. Confirm Gmail OAuth is configured in project Secrets: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`. These are the same variables used by this repository's `send-gmail` function. If the live project currently uses a different SMTP implementation, these OAuth settings still need to be configured for this new sender. Never paste secrets into GitHub, the storefront or chat.
+3. Deploy both functions, retaining the existing PayPal credentials and environment:
+
+   ```sh
+   supabase functions deploy paid-order-notify --project-ref arvdrrrbobjpmmygojfm
+   supabase functions deploy paypal-checkout --project-ref arvdrrrbobjpmmygojfm
+   ```
+
+   The new notification function keeps JWT verification enabled as declared in `config.toml`. The payment function retains its current configuration. No PayPal merchant account or payment destination is changed.
+4. Merge the cart-sales PR. Set each sales employee's real contact email through **Employees → Contact details**. Then verify the live customer/payment/email workflow before relying on notifications. No live payment or real email was sent during development.
+
+### Staff workflow
+
+**Prepare sale → Start / continue cart sale** opens the ordinary Products page. Staff use its existing search and filters, add products/parts normally, or add a custom PC from **Build a PC**. Open **Customer cart → Create customer checkout link** to send that exact selection to the customer. The quick product selector remains available and now also has a search field. Service descriptions continue to use the quote-request workflow; they are not automatically paid services unless represented as priced catalog products.
+
+The customer sees a cart review with product names, quantities and a full build parts list, then enters their own name, email, phone, address and PayPal/card authorization in checkout. All product/build prices are resolved from the current catalog and revalidated by the existing payment server. Customer-link and checkout notices explain that paid order/contact/shipping details are shared with Apex and the preparing employee for fulfillment.
+
+A separate random **APX sales reference code** is recorded with the employee's name on the order. This is never the employee's six-digit login code. The owner inbox shows the employee name/reference beside the order, customer details, items and payment status. Payment still goes through the existing Apex PayPal account.
+
+### Tracking and notifications
+
+Prepared sales distinguish **Waiting for customer**, **Customer submitted — awaiting payment**, **Service request submitted (not paid)** and **Paid / successful**. Tracking refreshes every 30 seconds while the Prepare sale page is visible; use Refresh for an immediate update. Only PayPal-verified paid orders expose paid order/contact details to the contributing employee. The owner sees all drafts; employees see their own. A separate **View own paid-sale customer details and receive receipts** permission is enabled for Market/Manager roles by default. Deny it for an employee or role to withhold customer contact/shipping details from their paid-sales page and stop further queued employee receipts. Custom sales roles need this permission for those details/receipts; it never grants access to another employee’s customers.
+
+After the payment capture is verified, the payment function records its PayPal capture ID and marks the order paid. A database trigger snapshots the paid order and queues separate owner/employee emails. The notification worker sends to `apexcomputers039@gmail.com` and the employee contact email maintained by the owner. Browsers cannot supply recipients, subjects or bodies. Messages contain the customer name, email, phone, shipping address, order items, complete build parts/assembly information, totals/discount, PayPal capture reference, employee name and APX sales reference. No card information or employee login codes are included.
+
+Notifications are asynchronous to the payment outcome in the sense that delivery failure never reverses or fails a captured payment. The current capture request waits for a bounded worker attempt, then returns payment success even if delivery needs retry. Queue state is visible in the staff tracking page. Missing employee email, Gmail authorization or delivery errors require correction and an owner retry via **Retry paid-order emails** in the inbox or paid sales tracking entry. Already sent notifications are not resent on ordinary retries. In-progress sends have a five-minute lease; an interrupted attempt becomes retryable after that lease. A crash after Gmail accepts a message but before the sent marker is saved can cause a duplicate on retry, so delivery is at-least-once, not exactly-once. No background scheduled retry service is installed by this update.
+
+Paid snapshots and tracking survive removing the job with Done. The queue contains private customer information and is inaccessible directly to anonymous customers and employee browser sessions. Disabled/deleted employees are not sent further queued customer notifications. New automatic notifications apply to future paid updates after installation; old historical paid orders are not emailed in bulk.
+
+### Additional tests
+
+```sh
+node tests/cart-sales.mjs
+node tests/paid-notifications.mjs
+```
+
+These exercise cart/build reconstruction, stale/unavailable parts, paid-only tracking, build email formatting, login-code exclusion, mocked notification authorization, fixed server-selected recipients and failed-delivery handling. The database suite additionally checks paid queue creation, claim leases, recipient isolation, retries and preservation after job deletion. Browser visual QA, real Gmail delivery and live PayPal capture remain deployment checks.
