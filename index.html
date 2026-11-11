@@ -1445,7 +1445,7 @@ function cartTotals(){
 /* ---------- global storefront search ---------- */
 function searchableProductText(p){return [p.name,p.category,p.brand,p.desc,p.longDesc,p.cpuType,...(Array.isArray(p.keywords)?p.keywords:[])].filter(Boolean).join(" ").toLowerCase();}
 function matchesProductSearch(p,query){
- const terms=String(query||"").toLowerCase().trim().split(/\\s+/).filter(Boolean);
+ const terms=String(query||"").toLowerCase().trim().split(/\s+/).filter(Boolean);
  const hay=searchableProductText(p);
  return terms.every(term=>hay.includes(term));
 }
