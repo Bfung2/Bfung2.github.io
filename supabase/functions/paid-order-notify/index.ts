@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { paidOrderMessage, utf8Base64 } from './message.ts';
+import { paidOrderMessage, utf8Base64, notificationOwnerEmail } from './message.ts';
 const cors = {'Access-Control-Allow-Origin':'https://bfung2.github.io','Access-Control-Allow-Headers':'authorization, x-client-info, apikey, content-type','Access-Control-Allow-Methods':'POST, OPTIONS'};
 const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{...cors,'Content-Type':'application/json'}});
 Deno.serve(async(req)=>{
@@ -16,6 +16,12 @@ Deno.serve(async(req)=>{
   }
   const input=await req.json(),orderId=String(input.orderId||'');
   if(!orderId||orderId.length>160)return json({error:'Order ID required'},400);
+  let ownerRecipient: string;
+  try {
+    const response=await fetch('https://raw.githubusercontent.com/Bfung2/Bfung2.github.io/main/data.json?_='+Date.now(),{cache:'no-store',signal:AbortSignal.timeout(10000)});
+    if(!response.ok)throw new Error('Site settings unavailable');
+    const site=await response.json();ownerRecipient=notificationOwnerEmail(site.settings);
+  } catch {return json({error:'Could not load a valid owner notification email from saved Site settings; notifications remain queued'},503);}
   const clientId=Deno.env.get('GOOGLE_CLIENT_ID'),clientSecret=Deno.env.get('GOOGLE_CLIENT_SECRET'),refreshToken=Deno.env.get('GOOGLE_REFRESH_TOKEN');
   if(!clientId||!clientSecret||!refreshToken)return json({error:'Gmail OAuth secrets are missing; paid notifications remain queued'},503);
   const tokenResponse=await fetch('https://oauth2.googleapis.com/token',{method:'POST',signal:AbortSignal.timeout(20000),headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:clientId,client_secret:clientSecret,refresh_token:refreshToken,grant_type:'refresh_token'})});
@@ -27,9 +33,14 @@ Deno.serve(async(req)=>{
   for(const job of jobs||[]){
    let failure:string|null=null;
    try{
+    if(job.recipient_kind==='owner'){
+      job.recipient=ownerRecipient;
+      const {error:recipientError}=await admin.from('apex_paid_notifications').update({recipient:ownerRecipient}).eq('id',job.id).eq('lease_token',job.lease_token).eq('state','sending');
+      if(recipientError)throw new Error('Could not save the configured owner email for this notification');
+    }
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(job.recipient)||/[<>,;]/.test(job.recipient)||job.recipient.length>254)throw new Error('Set a valid employee contact email, then retry');
     const message=paidOrderMessage(job.payload);
-    const mime=['To: '+job.recipient,'From: Apex Computers <apexcomputers039@gmail.com>','Subject: =?UTF-8?B?'+utf8Base64(message.subject)+'?=','Message-ID: <apex-paid-'+job.id+'@apexcomputers.internal>','MIME-Version: 1.0','Content-Type: text/plain; charset="UTF-8"','Content-Transfer-Encoding: base64','',utf8Base64(message.body).replace(/.{1,76}/g,'$&\r\n')].join('\r\n');
+    const mime=['To: '+job.recipient,'From: Apex Computers <apexcomputers039@gmail.com>','Reply-To: '+ownerRecipient,'Subject: =?UTF-8?B?'+utf8Base64(message.subject)+'?=','Message-ID: <apex-paid-'+job.id+'@apexcomputers.internal>','MIME-Version: 1.0','Content-Type: text/plain; charset="UTF-8"','Content-Transfer-Encoding: base64','',utf8Base64(message.body).replace(/.{1,76}/g,'$&\r\n')].join('\r\n');
     const response=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{method:'POST',signal:AbortSignal.timeout(20000),headers:{Authorization:'Bearer '+tokenData.access_token,'Content-Type':'application/json'},body:JSON.stringify({raw:utf8Base64(mime).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'')})});
     if(!response.ok)throw new Error('Gmail delivery failed; retry from the owner dashboard');
    }catch(e){failure=e instanceof Error?e.message:'Notification failed';}

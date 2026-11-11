@@ -926,7 +926,7 @@ async function startCloudSync(){
   // Poll for changes made from other devices — GitHub has no live push,
   // so this is how another device's edits show up here without a manual reload.
   setInterval(async ()=>{
-    if(!ghConfigured) return;
+    if(!ghConfigured || settingsSaving || (route()==="/manage" && settingsDirty)) return;
     // Don't redraw the page out from under someone actively typing — that was
     // wiping out unsaved text in forms (settings, checkout, part editor, etc.)
     // every time this ran. Just wait for the next tick once they're done.
@@ -990,8 +990,9 @@ function pushToGithub(){
     if(!token){
       cloudError = "No GitHub write token saved on this device — add one in Site settings to save changes.";
       cloudConnected = false; toast(cloudError); render();
-      return;
+      return false;
     }
+    let confirmed=false;
     const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_DATA_PATH}`;
     try{
       let saved = false;
@@ -1027,6 +1028,7 @@ function pushToGithub(){
           throw new Error(explainGhError(res.status, result.message));
         }
       }
+      confirmed=saved;
       if(!saved) throw new Error("GitHub changed the data file during both save attempts. Wait a moment and try again.");
     }catch(err){
       console.error(err);
@@ -1035,6 +1037,7 @@ function pushToGithub(){
       toast("Couldn't save to GitHub — "+cloudError);
     }
     render();
+    return confirmed;
   });
   return githubSaveQueue;
 }
@@ -1471,6 +1474,7 @@ function render(){
   document.querySelector(".shop-filter-backdrop")?.remove();
   if(r!=="/products"){shopFiltersOpen=false;document.body.classList.remove("filters-open");}
   app.innerHTML = (views[r]||home)();
+  if(r==="/manage")restoreSettingsDraft();
   if(r==="/products") setupShopFilterLayer();
   if(r==="/") setupHomeMotion();
   if(r==="/products") setupProductsMotion();
@@ -2623,11 +2627,11 @@ function manage(){
       <tr><th>Last write result</th><td>${cloudError?esc(cloudError):(cloudConnected?"OK":"—")}</td></tr>
     </table>
   </div>
-  <form class="panel" onsubmit="saveSettings(event)">
+  <form id="siteSettingsForm" class="panel" oninput="trackSettingsDraft(this)" onsubmit="saveSettings(event);return false">${settingsSaveError?`<div class="notice" role="alert">${esc(settingsSaveError)}</div>`:""}
     <div class="fields2">
       <div class="field"><label for="s_shop">Shop name</label><input id="s_shop" value="${esc(s.shopName)}"></div>
       <div class="field"><label for="s_tag">Tagline</label><input id="s_tag" value="${esc(s.tagline)}"></div>
-      <div class="field"><label for="s_mail">Email orders and requests to</label><input id="s_mail" type="email" value="${esc(s.ownerEmail)}"></div>
+      <div class="field"><label for="s_mail">Email orders and requests to</label><input id="s_mail" type="email" required value="${esc(s.ownerEmail)}"><small class="muted">Public contact and order-notification recipient. Your owner sign-in and Gmail sending account stay unchanged.</small></div>
       <div class="field"><label for="s_phone">Phone</label><input id="s_phone" value="${esc(s.phone)}"></div>
       <div class="field"><label for="s_fee">Assembly fee ($)</label><input id="s_fee" type="number" step="1" value="${+s.buildFee||0}"></div>
       <div class="field"><label for="s_ship">Shipping fee ($ per order)</label><input id="s_ship" type="number" step="0.01" value="${+s.shippingFee||0}"></div>
@@ -2639,7 +2643,7 @@ function manage(){
     <div class="field"><label for="s_zelle">Zelle — phone or email you're registered with</label><input id="s_zelle" value="${esc(s.zelleInfo)}" placeholder="you@example.com or 555-123-4567"></div>
     <div class="field"><label for="s_paypal">PayPal.me link</label><input id="s_paypal" value="${esc(s.paypalLink)}" placeholder="https://paypal.me/yourname"></div>
     <div class="field"><label for="s_apay">Apple Pay — how you accept it</label><input id="s_apay" value="${esc(s.applePayInfo)}" placeholder="Send via Messages to 555-123-4567"></div>
-    <button class="btn gold" type="submit">Save settings</button>
+    <button class="btn gold" type="submit" ${settingsSaving?"disabled":""}>${settingsSaving?"Saving to GitHub…":"Save settings"}</button><button class="btn ghost" type="button" onclick="discardSettingsDraft()">Discard unsaved changes</button>
   </form>
 
   <div class="panel" style="margin-top:20px"><h3>Categories &amp; types</h3>
@@ -2709,13 +2713,30 @@ function listMove(key,i,dir){
   if(j<0 || j>=list.length) return;
   [list[i],list[j]] = [list[j],list[i]]; save(); render();
 }
-function saveSettings(e){
-  e.preventDefault();
-  Object.assign(S.settings,{shopName:s_shop.value,tagline:s_tag.value,ownerEmail:s_mail.value,phone:s_phone.value,
-    buildFee:+s_fee.value||0,shippingFee:+s_ship.value||0,taxRate:+s_tax.value||0,address:s_addr.value,
-    zelleInfo:s_zelle.value,paypalLink:s_paypal.value,applePayInfo:s_apay.value});
-  save(); render(); toast("Settings saved.");
+let settingsDirty=false,settingsSaving=false,settingsSaveError="",settingsDraft=null,settingsDraftVersion=0;
+function trackSettingsDraft(form){settingsDraft=Object.fromEntries([...form.elements].filter(el=>el.id&&el.id.startsWith("s_")).map(el=>[el.id,el.value]));settingsDirty=true;settingsDraftVersion++;}
+function restoreSettingsDraft(){if(!settingsDraft)return;for(const [id,value] of Object.entries(settingsDraft)){const el=document.getElementById(id);if(el)el.value=value;}}
+function discardSettingsDraft(){settingsDirty=false;settingsDraft=null;settingsSaveError="";render();}
+async function saveSettings(e){
+  e.preventDefault();if(!isOwner||settingsSaving)return false;
+  const form=e.target;trackSettingsDraft(form);const version=settingsDraftVersion;
+  const value=id=>form.elements.namedItem(id).value;
+  const email=value("s_mail").trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){settingsSaveError="Enter a valid notification email.";render();return false;}
+  if(ghConfigured&&!ghToken()){settingsSaveError="No GitHub write token is saved on this device. Add one under GitHub write access, then retry. Your edits are still here.";render();return false;}
+  const patch={shopName:value("s_shop"),tagline:value("s_tag"),ownerEmail:email,phone:value("s_phone"),buildFee:+value("s_fee")||0,shippingFee:+value("s_ship")||0,taxRate:+value("s_tax")||0,address:value("s_addr"),zelleInfo:value("s_zelle"),paypalLink:value("s_paypal"),applePayInfo:value("s_apay")};
+  const previous=Object.fromEntries(Object.keys(patch).map(key=>[key,S.settings[key]]));
+  settingsSaving=true;settingsSaveError="";clearTimeout(saveTimer);Object.assign(S.settings,patch);render();
+  try{
+    if(ghConfigured){if(!await pushToGithub())throw Error(cloudError||"GitHub did not confirm the save.");}
+    else localStorage.setItem(KEY,JSON.stringify(S));
+    if(settingsDraftVersion===version){settingsDirty=false;settingsDraft=null;}
+    toast(ghConfigured?"Settings saved to GitHub." : "Settings saved on this device.");
+  }catch(err){Object.assign(S.settings,previous);settingsDirty=true;settingsSaveError="Settings were not saved: "+(err.message||String(err))+" Your edits are preserved; fix the connection and retry.";toast("Settings were not saved.");}
+  finally{settingsSaving=false;render();}
+  return false;
 }
+
 function inventory(){
   if(!isOwner) return staff();
   const groups = CATS.map(cat => ({cat, items: partsAll().filter(p=>p.category===cat)}));
