@@ -1246,7 +1246,7 @@ async function loadCloudOrders(){
   try{
     const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
     cloudOrdersLoaded=true;
     await loadOwnerWorkData();
   }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
@@ -1462,7 +1462,7 @@ function render(){
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
-    "/employees":employeesPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
+    "/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
   const keep = (ae && ae.id && app.contains(ae)) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
   const rows = {};
@@ -2426,7 +2426,7 @@ function checkout(){
   if(!myCart.length){ return `<div class="wrap"><div class="empty"><strong>Your cart is empty</strong></div></div>`; }
   return `<div class="wrap"><div class="pagehead"><div><h2>Checkout</h2><p>Submit your details, then securely pay with PayPal. Your order is confirmed after PayPal verifies the payment.</p></div></div>
   <div class="split">
-    <form class="panel" onsubmit="return submitOrder(event)">${salesHandoffNotice("order")}
+    <form class="panel" onsubmit="return submitOrder(event)">${salesHandoffNotice("order")}${promoCheckoutField()}
       <div class="fields2">
         <div class="field"><label for="cn">Full name</label><input id="cn" required value="${esc(me?me.name:"")}"></div>
         <div class="field"><label for="ce">Email</label><input id="ce" type="email" required value="${esc(me?me.email:"")}"></div>
@@ -2450,7 +2450,7 @@ function checkout(){
       ${myCart.map(i=>`<div class="lineitem"><span>${esc(i.name)}</span><span>${money(i.price)}</span></div>`).join("")}
       ${t.shipping?`<div class="lineitem"><span>Shipping</span><span>${money(t.shipping)}</span></div>`:""}
       ${t.tax?`<div class="lineitem"><span>Tax</span><span>${money(t.tax)}</span></div>`:""}
-      <div class="total"><span>Total</span><span>${money(t.total)}</span></div>
+      ${promoSummary(t)}<div class="total"><span>${checkoutPromo.code?"Total before promo":"Total"}</span><span>${money(t.total)}</span></div>
     </div></div></div>`;
 }
 function orderText(o){
@@ -2460,6 +2460,7 @@ function orderText(o){
   `\n\nSubtotal: ${money(o.sub!=null?o.sub:o.total)}`+
   (o.shipping?`\nShipping: ${money(o.shipping)}`:"")+
   (o.tax?`\nTax: ${money(o.tax)}`:"")+
+  (o.discount?`\nPromo discount: -${money(o.discount)}`:"")+
   `\nTOTAL DUE: ${money(o.total)}\n\nCustomer notes: ${o.notes||"—"}\n\n`+
   `Payment: PayPal payment completed and verified.`;
 }
@@ -2491,7 +2492,8 @@ async function submitOrder(e){
   const btn=e.submitter||form.querySelector('button[type="submit"]');
   if(btn){btn.disabled=true;btn.textContent="Saving order…";}
   try{
-    const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status,...(customerHandoff?.kind==="order"?{handoff_token:customerHandoff.token}:{})}]);
+    await promoValidateCheckout();
+    const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status,...(checkoutPromo.code?{promo_code:checkoutPromo.code}:{}),...(customerHandoff?.kind==="order"?{handoff_token:customerHandoff.token}:{})}]);
     if(error) throw error;
     if(customerHandoff?.kind==="order")salesForgetHandoff();
     lastOrder=o;
@@ -2505,6 +2507,8 @@ async function submitOrder(e){
         const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"create",orderId:o.id}});
         if(error) throw new Error(error.message||"Could not start PayPal checkout.");
         if(!data||!data.id) throw new Error(data?.error||"PayPal did not return an order ID.");
+        if(checkoutPromo.code&&!data.pricing)throw new Error("Promo checkout is not activated yet. Contact Apex before paying.");
+        if(data.pricing){o.sub=Number(data.pricing.subtotal);o.shipping=Number(data.pricing.shipping);o.tax=Number(data.pricing.tax);o.total=Number(data.pricing.total);o.discount=Number(data.pricing.discount);document.getElementById("paypalStatus").textContent="Verified payment total: "+money(o.total)+(o.discount?" (discount "+money(o.discount)+")":"");}
         return data.id;
       },
       onApprove:async function(data){
@@ -2513,7 +2517,7 @@ async function submitOrder(e){
         if(error) throw new Error(error.message||"Payment verification failed.");
         if(!result||!result.success) throw new Error(result?.error||"PayPal could not verify the payment.");
         o.status="paid";
-        myCart=[];saveCart();
+        myCart=[];checkoutPromo={code:"",discount:0,subtotal:null};saveCart();
         mailOwner("PAID order "+o.ref+" — "+o.name,orderText(o));
         go("/done");
       },
@@ -2592,7 +2596,7 @@ function account(){
     <h3>Your orders</h3>
     ${mine.length?`<div class="scroll"><table><tr><th>Ref</th><th>Date</th><th>Items</th><th>Total</th></tr>
       ${mine.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
-      <td><small>${o.items.map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}</td></tr>`).join("")}
+      <td><small>${o.items.map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td></tr>`).join("")}
     </table></div>`:`<div class="empty">No orders on this device yet.</div>`}
   </div>`;
 }
@@ -2745,7 +2749,7 @@ function inbox(){
   const assignmentSelect=(kind,id,assigned)=>'<select style="min-width:130px" onchange="assignJob(\''+kind+'\',\''+id+'\',this.value)"><option value="">Unassigned</option>'+employeeProfiles.filter(p=>p.active).map(p=>'<option value="'+p.user_id+'" '+(assigned===p.user_id?"selected":"")+'>'+esc(p.display_name)+'</option>').join("")+'</select>';
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
-    <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}</td>
+    <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td>
     <td><small>${statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted":"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">
     <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
@@ -3104,6 +3108,7 @@ function toast(msg){
 </script>
 <script src="staff-workspace.js"></script>
 <script src="market-sales.js"></script>
+<script src="promo-codes.js"></script>
 <script>
 initializeSupabaseAuth();
 startCloudSync();

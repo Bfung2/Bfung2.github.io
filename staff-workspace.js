@@ -1,6 +1,6 @@
 /* Private staff workspace. Data stays in Supabase, never in the public catalog or localStorage. */
 const STAFF_PERMISSIONS = [
-  ['prepare_sales','Prepare customer sales links'],['orders','View orders'],['requests','View service requests'],['customer_details','View customer contact details'],
+  ['manage_promos','Create, edit and remove promo codes'],['prepare_sales','Prepare customer sales links'],['orders','View orders'],['requests','View service requests'],['customer_details','View customer contact details'],
   ['claim_jobs','Claim unassigned jobs'],['update_status','Update assigned job status'],
   ['view_schedule','View staff schedule'],['edit_schedule','Add, edit and remove shifts'],
   ['view_reports','View individual employee reports'],['view_notes','View permitted internal notes'],
@@ -11,7 +11,7 @@ let staffEpoch=0,staffReadEpoch=0, staffSchedule={key:'',loading:false,error:'',
 let staffReport={key:'',loading:false,error:'',data:null},staffWeek=staffWeekStart(new Date()),staffScheduleEmployee='';
 function staffWeekStart(date){const d=new Date(date);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d;}
 function staffCan(key){return isOwner || !!(isEmployee&&staffState.permissions[key]);}
-function staffReset(){if(typeof marketDrafts!=="undefined")marketDrafts={loaded:false,loading:false,error:"",items:[]};staffSales={loaded:false,loading:false,error:"",items:[]};if(typeof editDlg!=="undefined"&&editDlg){editDlg.close();editDlg.remove();editDlg=null;}staffWeek=staffWeekStart(new Date());staffScheduleEmployee="";staffEpoch++;staffReadEpoch++;staffState={loaded:false,loading:false,error:'',roles:[],employees:[],permissions:{}};staffSchedule={key:'',loading:false,error:'',items:[]};staffNotes={key:null,loading:false,error:'',items:[]};staffReport={key:'',loading:false,error:'',data:null};employeeProfiles=[];employeeAudit=[];performanceData=[];employeesLoaded=false;employeeAuditLoaded=false;performanceLoaded=false;}
+function staffReset(){if(typeof promoAdmin!=="undefined")promoAdmin={loaded:false,loading:false,error:"",items:[]};if(typeof marketDrafts!=="undefined")marketDrafts={loaded:false,loading:false,error:"",items:[]};staffSales={loaded:false,loading:false,error:"",items:[]};if(typeof editDlg!=="undefined"&&editDlg){editDlg.close();editDlg.remove();editDlg=null;}staffWeek=staffWeekStart(new Date());staffScheduleEmployee="";staffEpoch++;staffReadEpoch++;staffState={loaded:false,loading:false,error:'',roles:[],employees:[],permissions:{}};staffSchedule={key:'',loading:false,error:'',items:[]};staffNotes={key:null,loading:false,error:'',items:[]};staffReport={key:'',loading:false,error:'',data:null};employeeProfiles=[];employeeAudit=[];performanceData=[];employeesLoaded=false;employeeAuditLoaded=false;performanceLoaded=false;}
 async function staffRPC(name,args={}){const {data,error}=await supabaseClient.rpc(name,args);if(error)throw new Error(error.message||'Staff request failed.');return data;}
 async function staffLoadContext(force=false){
   if(!(isOwner||isEmployee)||staffState.loading||(!force&&staffState.loaded))return;
@@ -25,13 +25,13 @@ async function staffLoadContext(force=false){
   finally{if(epoch===staffEpoch){staffState.loading=false;render();}}
 }
 function staffNav(){if(!(isOwner||isEmployee))return '';return `<nav class="staff-nav" aria-label="Staff workspace">${[
-  ['/market-sales','Prepare sale',staffCan('prepare_sales')],['/sales-credits','Sales contributions',true],['/employee','My work',isEmployee],['/employees','Employees',isOwner],['/roles','Roles & permissions',isOwner],
+  ['/promo-codes','Promo codes',staffCan('manage_promos')],['/market-sales','Prepare sale',staffCan('prepare_sales')],['/sales-credits','Sales contributions',true],['/employee','My work',isEmployee],['/employees','Employees',isOwner],['/roles','Roles & permissions',isOwner],
   ['/schedule','Schedule',staffCan('view_schedule')],['/employee-reports','Reports',staffCan('view_reports')],['/staff-notes','Internal notes',staffCan('view_notes')]
 ].filter(x=>x[2]).map(([url,label])=>`<a class="btn sm ${route()===url?'gold':'ghost'}" href="#${url}">${label}</a>`).join('')}</nav>`;}
 function staffNotice(){return staffState.error?`<div class="notice" role="alert"><strong>Staff workspace setup is required.</strong><p>${esc(staffState.error)}</p><p>The owner needs to apply the staff workspace database migration in Supabase. Existing job tools remain available.</p><button class="btn sm ghost" onclick="staffLoadContext(true)">Retry connection</button></div>`:'';}
 function staffShell(title,description,body){return `<div class="wrap staff-workspace"><div class="pagehead"><div><span class="shop-section-kicker">APEX · STAFF ONLY</span><h2>${esc(title)}</h2><p>${esc(description)}</p></div><button class="btn ghost" onclick="staffRefresh()">Refresh</button></div>${staffNav()}${staffNotice()}${staffState.loading?'<p role="status">Loading staff workspace…</p>':''}${body}</div>`;}
 function staffGate(key){if(!(isOwner||isEmployee))return '<div class="wrap"><div class="empty"><h2>Staff sign-in required</h2><p>This area is available only to active Apex staff.</p><a class="btn gold" href="#/employee-login">Employee sign-in</a> <a class="btn ghost" href="#/staff">Owner sign-in</a></div></div>';if(!staffState.loaded&&!staffState.loading)staffLoadContext();if(!staffState.loaded||staffState.error)return staffShell('Staff workspace','Private team tools.','');if(key&&!staffCan(key))return staffShell('Access unavailable','Ask the owner if your role needs this permission.','');return null;}
-async function staffRefresh(){staffSales.loaded=false;staffSchedule.key='';staffNotes.key=null;staffReport.key='';await staffLoadContext(true);}
+async function staffRefresh(){if(typeof promoAdmin!=="undefined")promoAdmin.loaded=false;staffSales.loaded=false;staffSchedule.key='';staffNotes.key=null;staffReport.key='';await staffLoadContext(true);}
 function staffEmployeeName(id){return staffState.employees.find(p=>p.user_id===id)?.display_name||'Former employee';}
 function staffRoleNames(ids){return (ids||[]).map(id=>staffState.roles.find(r=>r.id===id)?.name||'Removed role').join(', ')||'No roles';}
 function staffOwnerOnly(){return !isOwner?staffGate('owner_only')||staffShell('Owner access required','Only the owner can manage roles and employee access.',''):staffGate();}
