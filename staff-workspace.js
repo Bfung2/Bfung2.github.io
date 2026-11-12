@@ -26,7 +26,7 @@ async function staffLoadContext(force=false){
   finally{if(epoch===staffEpoch){staffState.loading=false;render();}}
 }
 function staffNav(){if(!(isOwner||isEmployee))return '';return `<nav class="staff-nav" aria-label="Staff workspace">${[
-  ['/staff-dashboard','Overview',isOwner],['/promo-codes','Promo codes',staffCan('manage_promos')],['/market-sales','Prepare sale',staffCan('prepare_sales')],['/sales-credits','Sales contributions',true],['/employee','My work',isEmployee],['/employees','Employees',isOwner],['/roles','Roles & permissions',isOwner],
+  ['/staff-dashboard','Overview',isOwner],['/catalog-health','Catalog health',isOwner],['/promo-codes','Promo codes',staffCan('manage_promos')],['/market-sales','Prepare sale',staffCan('prepare_sales')],['/sales-credits','Sales contributions',true],['/employee','My work',isEmployee],['/employees','Employees',isOwner],['/roles','Roles & permissions',isOwner],
   ['/schedule','Schedule',staffCan('view_schedule')],['/employee-reports','Reports',staffCan('view_reports')],['/staff-notes','Internal notes',(staffCan('view_notes')||staffProductNoteAccess())]
 ].filter(x=>x[2]).map(([url,label])=>`<a class="btn sm ${route()===url?'gold':'ghost'}" href="#${url}">${label}</a>`).join('')}</nav>`;}
 function staffNotice(){return staffState.error?`<div class="notice" role="alert"><strong>Staff workspace setup is required.</strong><p>${esc(staffState.error)}</p><p>The owner needs to apply the staff workspace database migration in Supabase. Existing job tools remain available.</p><button class="btn sm ghost" onclick="staffLoadContext(true)">Retry connection</button></div>`:'';}
