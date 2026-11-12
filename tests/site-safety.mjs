@@ -18,7 +18,7 @@ for(const [,attrs,source] of scripts){
   new vm.Script(source,{filename:"index.html inline script "+(++checked)});
  }
 }
-for(const file of ["customer-accounts.js","customer-experience.js","order-tracking.js","staff-workspace.js","market-sales.js","apex-policies.js"]){
+for(const file of ["customer-accounts.js","customer-experience.js","order-tracking.js","staff-workspace.js","staff-sales-ledger.js","market-sales.js","apex-policies.js"]){
  new vm.Script(await fs.readFile(path.join(root,file),"utf8"),{filename:file});
 }
 for(const key of ["orders","requests","accounts","customer_profiles","apex_orders","apex_service_requests","customer_order_links"]){

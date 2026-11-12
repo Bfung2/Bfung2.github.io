@@ -29,6 +29,7 @@ jobs:
           node --check customer-accounts.js
           node --check customer-experience.js
           node --check staff-workspace.js
+          node --check staff-sales-ledger.js
           node --check order-tracking.js
           node --check market-sales.js
           node --check promo-codes.js
@@ -44,6 +45,8 @@ jobs:
         run: node tests/phase5-security.mjs
       - name: Customer account Phase 6 experience regression
         run: node tests/phase6-customer.mjs
+      - name: Employee sales Phase 7 reconciliation regression
+        run: node tests/phase7-sales-ledger.mjs
       - name: Catalog edit synchronization regression
         run: node tests/catalog-edit-sync.mjs
       - name: Optional newer component regressions
