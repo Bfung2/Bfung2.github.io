@@ -2187,7 +2187,12 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "lengthMm": 240,
+      "recommendedPsuWatts": 450,
+      "requiredPowerConnectors": "1x 8-pin",
+      "specSourceUrl": "https://www.microcenter.com/product/696462/sapphire-technology-amd-radeon",
+      "specVerifiedDate": "2026-11-11"
     },
     {
       "id": "gpu5070tigigagaming3x",
@@ -9904,7 +9909,12 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "lengthMm": 298,
+      "recommendedPsuWatts": 800,
+      "requiredPowerConnectors": "2x 8-pin",
+      "specSourceUrl": "https://www.asrock.com/Graphics-Card/AMD/Radeon%20RX%209070%20XT%20Steel%20Legend%2016GB/",
+      "specVerifiedDate": "2026-11-11"
     },
     {
       "id": "gpurx9070xtsapphirepulse3x",
@@ -9927,7 +9937,12 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "lengthMm": 320,
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "2x 8-pin",
+      "specSourceUrl": "https://www.newegg.com/sapphire-tech-pulse-11348-03-20g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814202450",
+      "specVerifiedDate": "2026-11-11"
     },
     {
       "id": "gpurx9060xtsapphirepulse2x16",
@@ -9950,7 +9965,12 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "lengthMm": 240,
+      "recommendedPsuWatts": 450,
+      "requiredPowerConnectors": "1x 8-pin",
+      "specSourceUrl": "https://www.microcenter.com/product/696462/sapphire-technology-amd-radeon",
+      "specVerifiedDate": "2026-11-11"
     },
     {
       "id": "gpurtx5060gigabytewindforce2x",
@@ -9981,7 +10001,12 @@
         "nvidia rtx 5060",
         "nvidia gpu rtx 5060",
         "geforce rtx 5060"
-      ]
+      ],
+      "lengthMm": 199,
+      "recommendedPsuWatts": 550,
+      "requiredPowerConnectors": "1x 8-pin",
+      "specSourceUrl": "https://www.gigabyte.com/ge/Graphics-Card/GV-N5060WF2OC-8GD/sp",
+      "specVerifiedDate": "2026-11-11"
     },
     {
       "id": "gpurtx5060zotacamp2x",
@@ -9995,7 +10020,7 @@
       "image": "https://c1.neweggimages.com/productimage/nb640/14-500-658-01.jpg",
       "sourceUrl": "https://www.newegg.com/zotac-rtx-5060-amp-geforce-rtx-5060-8gb-graphics-card-double-fans/p/N82E16814500658?Item=N82E16814500658",
       "memType": "GDDR7",
-      "power": 145,
+      "power": 155,
       "series": "RTX 50",
       "cores": 3840,
       "boostClockGHz": 2.55,
@@ -10012,7 +10037,12 @@
         "nvidia rtx 5060",
         "nvidia gpu rtx 5060",
         "geforce rtx 5060"
-      ]
+      ],
+      "lengthMm": 220.5,
+      "recommendedPsuWatts": 600,
+      "requiredPowerConnectors": "1x 8-pin",
+      "specSourceUrl": "https://www.zotacstore.com/us/graphics-cards/geforce-rtx-5060-amp",
+      "specVerifiedDate": "2026-11-11"
     },
     {
       "id": "gpurtx5060tigigabyteeaglemax3x8",
@@ -10074,7 +10104,12 @@
         "nvidia rtx 5060",
         "nvidia gpu rtx 5060",
         "geforce rtx 5060"
-      ]
+      ],
+      "lengthMm": 302,
+      "recommendedPsuWatts": 550,
+      "requiredPowerConnectors": "1x 16-pin",
+      "specSourceUrl": "https://www.asus.com/us/motherboards-components/graphics-cards/tuf-gaming/tuf-rtx5060ti-o8g-gaming/techspec/",
+      "specVerifiedDate": "2026-11-11"
     },
     {
       "id": "gpu5070tigigagaming3x",
