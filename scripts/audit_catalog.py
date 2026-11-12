@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Non-destructive Apex catalog integrity audit. Does not claim live Newegg verification."""
-import argparse, collections, datetime, json, pathlib, sys
+import argparse, collections, csv, datetime, json, pathlib, sys
 
 def audit(path):
     data=json.loads(path.read_text(encoding="utf-8"))
@@ -40,12 +40,50 @@ def audit(path):
             "scope":"Static data.json only. NOT live Newegg seller, inventory, price, or image verification.",
             "total_entries":len(records),"section_counts":{k:len(data.get(k,[])) for k in ("products","parts")},
             "issue_counts":counts,"issues":issues}
+def review_queue(data_path, report, output):
+    """One row per SKU, prioritizing active listings needing documentary evidence.
+    Missing metadata is a review task, never proof that an item is incompatible.
+    """
+    data=json.loads(data_path.read_text(encoding="utf-8"))
+    grouped=collections.defaultdict(list)
+    for section in ("products","parts"):
+        for p in data.get(section,[]): grouped[str(p.get("id",""))].append((section,p))
+    issues=collections.defaultdict(set)
+    for issue in report["issues"]: issues[str(issue["id"])].add(issue["issue"])
+    required={"Graphics card":["lengthMm","requiredPowerConnectors","recommendedPsuWatts"],
+              "Case":["caseFormFactors","maxGpuLengthMm","maxCoolerHeightMm","supportedPSUFormFactors"],
+              "Motherboard":["socket","memType","formFactor"],
+              "Memory":["memType","heightMm"],"Power supply":["watts","formFactor","gpuPowerConnectors"],
+              "CPU":["socket","tdp"]}
+    rows=[]
+    for sku,records in grouped.items():
+        p=records[0][1];active=any(x.get("active",True) is not False for _,x in records)
+        missing=set()
+        for _,x in records:
+            for field in required.get(x.get("category"),[]):
+                if x.get(field) in (None,""): missing.add(field)
+            if x.get("category")=="CPU cooler":
+                if not x.get("supportedSockets") and not x.get("socket"): missing.add("supportedSockets")
+                # Liquid and air coolers need different clearance evidence; do not guess the type.
+                if not x.get("heightMm") and not x.get("radiatorSizeMm"): missing.add("air height or liquid radiator dimensions/type")
+        found=issues[sku]-{"duplicate_id"}
+        if not found and not missing: continue
+        rows.append({"priority":1 if active and found else 2 if active else 3,"active":active,"id":sku,"name":p.get("name",""),"category":p.get("category",""),"sections":";".join(x for x,_ in records),"catalog_review":";".join(sorted(found)),"fit_review":";".join(sorted(missing)),"source_url":p.get("sourceUrl","")})
+    rows.sort(key=lambda x:(x["priority"],x["category"],x["name"]))
+    with output.open("w",newline="",encoding="utf-8") as f:
+        writer=csv.DictWriter(f,fieldnames=["priority","active","id","name","category","sections","catalog_review","fit_review","source_url"])
+        writer.writeheader();writer.writerows(rows)
+    return {"review_skus":len(rows),"active_review_skus":sum(r["active"] for r in rows),"queue":str(output)}
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--data",default="data.json")
     ap.add_argument("--output",default="catalog-audit-report.json")
+    ap.add_argument("--review-queue",help="Optional CSV of grouped SKU catalog/fit review tasks")
     args=ap.parse_args()
     result=audit(pathlib.Path(args.data))
     pathlib.Path(args.output).write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({"entries":result["total_entries"],"issues":result["issue_counts"],"report":args.output},indent=2))
+    summary={"entries":result["total_entries"],"issues":result["issue_counts"],"report":args.output}
+    if args.review_queue: summary.update(review_queue(pathlib.Path(args.data),result,pathlib.Path(args.review_queue)))
+    print(json.dumps(summary,indent=2))
 if __name__=="__main__":main()

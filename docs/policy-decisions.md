@@ -14,4 +14,4 @@ These decisions need the owner's approval before customer-facing policies can be
 | Build turnaround | When estimates start, normal range, and how delays are communicated |
 | Cancellation | When an order can be cancelled and what happens once parts/work are underway |
 
-Customer account authentication and cross-device order history also remain a separate implementation task. The existing contact profile is not authentication. Private order links remain the working access mechanism until secure customer sign-in is configured and tested.
+A reviewable policy wording draft is in `docs/customer-policy-draft.md`. Secure customer account code is prepared; public signup still requires the email setup and activation checks in `docs/customer-account-setup.md`. Private receipt links remain available.

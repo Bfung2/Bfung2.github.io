@@ -828,7 +828,8 @@ const GITHUB_DATA_PATH = "data.json";
 const SUPABASE_URL = "https://arvdrrrbobjpmmygojfm.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFydmRycnJib2JqcG1teWdvamZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzMDE4NjksImV4cCI6MjEwODg3Nzg2OX0.4w4-iVY4BCULkhE7i4Qi4l7YRiEQNcMlhIfnPlyY8_E";
 const OWNER_EMAIL = "apexcomputers039@gmail.com";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const customerAuthCallback = new URLSearchParams(location.search).has("customer_auth");
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {auth:{detectSessionInUrl:!customerAuthCallback}});
 let cloudOrders = [], cloudOrdersLoaded = false, cloudOrdersLoading = false, cloudOrdersError = "";
 const ghConfigured = GITHUB_OWNER !== "YOUR_GITHUB_USERNAME" && GITHUB_REPO !== "YOUR_REPO_NAME";
 function ghToken(){ try{ return localStorage.getItem("apex.ghtoken")||""; }catch(e){ return ""; } }
@@ -1051,7 +1052,7 @@ let cloudRequests = [], cloudRequestsLoaded = false, employeeProfiles = [], empl
 let performanceData = [], performanceLoaded = false, performanceLoading = false, performanceError = "";
 let employeeJobsLoading = false, employeeJobsLoaded = false, employeeJobs = {orders:[],requests:[]};
 let me = null;
-try{ me = JSON.parse(localStorage.getItem("apex.customer")||"null"); }catch(e){}
+// Customer details are loaded only from a verified account; legacy browser profiles are not sessions.
 async function applyAuthSession(session){
   const user=session&&session.user;
   staffReset();
@@ -1260,18 +1261,6 @@ function combineAddress(a){
   const line2 = [a.city, a.state].filter(Boolean).join(", ");
   return [a.street, [line2, a.zip].filter(Boolean).join(" ")].filter(Boolean).join(", ");
 }
-function customerLogin(e){
-  e.preventDefault();
-  const rec = {name:ac_name.value.trim(), email:ac_email.value.trim().toLowerCase(),
-    phone:ac_phone.value.trim(), address:{street:ac_street.value.trim(),city:ac_city.value.trim(),state:ac_state.value.trim(),zip:ac_zip.value.trim()}};
-  if(!rec.email){ toast("An email is needed."); return; }
-  me = rec;
-  try{ localStorage.setItem("apex.customer", JSON.stringify(me)); }catch(err){}
-  go(myCart.length ? '/checkout' : '/account'); toast("Welcome, "+(me.name||me.email)+".");
-}
-function customerLogout(){ me=null; try{ localStorage.removeItem("apex.customer"); }catch(e){} go('/'); toast("Signed out."); }
-function myOrders(){ return me ? S.orders.filter(o=>(o.email||"").toLowerCase()===me.email) : []; }
-
 /* ---------- router ---------- */
 const PAGES = [["/","Home"],["/products","Products"],["/build","Build a PC"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"],["/track-order","Track order"]];
 function go(p){ location.hash = "#"+p; }
@@ -1641,10 +1630,18 @@ function clearProductFilters(){ shopShelfPages={};productFilters = {category:"",
 /* ---- Products and Build-a-PC parts share one catalog ----
    A part added on Build a PC also shows on the Products page under its category.
    A product added on the Products page with a PC-part category (CPU, Motherboard,
-   Memory…) also shows on Build a PC. Nothing is copied, so edits stay in sync. */
+   Memory…) also shows on Build a PC. Legacy same-ID copies are updated together. */
 const isPartCat = c => CATS.includes(c) && c!=="Other";
 const nameKey = p => String(p.category||"")+"|"+String(p.name||"").trim().toLowerCase();
-function dupeOfPart(p){ return isPartCat(p.category) && S.parts.some(x=>nameKey(x)===nameKey(p)); }
+function dupeOfPart(p){ return isPartCat(p.category) && S.parts.some(x=>x.id===p.id || nameKey(x)===nameKey(p)); }
+function upsertCatalogRecord(section,rec){
+  if(!["products","parts"].includes(section))throw new Error("Invalid catalog section");
+  const exists=S[section].some(x=>x.id===rec.id);
+  for(const key of ["products","parts"]){
+    S[key]=S[key].map(x=>x.id===rec.id?{...x,...rec}:x);
+  }
+  if(!exists)S[section].push(rec);
+}
 function partsAll(){ return [...S.parts.filter(apexPurchasable), ...S.products.filter(p=>isPartCat(p.category) && !dupeOfPart(p) && apexPurchasable(p))]; }
 function catalogAll(){ return [...S.products.filter(p=>!dupeOfPart(p) && apexPurchasable(p)), ...S.parts.filter(apexPurchasable)]; }
 function displayCat(p){ return (S.parts.includes(p) && p.category==="Other") ? "Other parts" : (p.category||""); }
@@ -2467,6 +2464,7 @@ async function submitOrder(e){
     if(error) throw error;
     if(customerHandoff?.kind==="order")salesForgetHandoff();
     lastOrder=o;rememberOrderTracking(o);
+    customerLinkReceipt(o.trackingToken);
     form.querySelectorAll("input,textarea,button[type=submit]").forEach(el=>el.disabled=true);
     const payment=document.getElementById("paypalPayment");
     payment.hidden=false;
@@ -2533,43 +2531,8 @@ function mailOwner(subject, body){
 }
 
 /* ---------- owner screens ---------- */
-function login(){
-  if(me){ go('/account'); return ""; }
-  AFTER = ()=>{ const f=document.getElementById("ac_email"); f&&f.focus(); };
-  return `<div class="wrap" style="max-width:680px">
-    <div class="pagehead"><div><h2>Sign in</h2><p>Save your details so checkout and service requests fill themselves in next time.</p></div></div>
-    <form class="panel" onsubmit="customerLogin(event)">
-      <div class="field"><label for="ac_email">Email</label><input id="ac_email" type="email" required autocomplete="email"></div>
-      <div class="field"><label for="ac_name">Name</label><input id="ac_name" autocomplete="name"></div>
-      <div class="field"><label for="ac_phone">Phone</label><input id="ac_phone" autocomplete="tel"></div>
-      <div class="field"><label for="ac_street">Street address</label><input id="ac_street" autocomplete="address-line1"></div>
-      <div class="fields2">
-        <div class="field"><label for="ac_city">City</label><input id="ac_city" autocomplete="address-level2"></div>
-        <div class="field"><label for="ac_state">State</label><input id="ac_state" autocomplete="address-level1"></div>
-      </div>
-      <div class="field" style="max-width:160px"><label for="ac_zip">ZIP</label><input id="ac_zip" autocomplete="postal-code"></div>
-      <button class="btn gold" type="submit">Sign in</button>
-      <p class="muted" style="font-size:.84rem;margin:14px 0 0">First time here? Filling this in creates your account.</p>
-    </form>
-    <p style="margin-top:20px"><a href="#/staff">Staff and owner sign-in</a></p>
-  </div>`;
-}
-function account(){
-  if(!me){ go('/login'); return ""; }
-  const mine = myOrders();
-  return `<div class="wrap" style="max-width:820px">
-    <div class="pagehead"><div><h2>${esc(me.name||me.email)}</h2><p>${esc(me.email)}</p></div>
-    <button class="btn ghost" onclick="customerLogout()">Sign out</button></div>
-    <div class="panel" style="margin-bottom:22px"><h3>Your details</h3>
-      <p class="muted" style="font-size:.92rem">${esc(me.phone||"No phone saved")}<br>${esc(combineAddress(me.address))||"No address saved"}</p>
-      <button class="btn sm ghost" onclick="customerLogout()">Change details</button></div>
-    ${trackingSavedLinks()}<h3>Your orders</h3>
-    ${mine.length?`<div class="scroll"><table><tr><th>Ref</th><th>Date</th><th>Items</th><th>Total</th></tr>
-      ${mine.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
-      <td><small>${o.items.map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td></tr>`).join("")}
-    </table></div>`:`<div class="empty">No orders on this device yet.</div>`}
-  </div>`;
-}
+function login(){return customerLoginPage();}
+function account(){return customerAccountPage();}
 function staff(){
   if(isOwner){go("/manage");return "";}if(isEmployee){go("/employee");return "";}
   return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Owner login</h2><p>Sign in with the owner email and password.</p></div></div>
@@ -2961,7 +2924,7 @@ function saveProduct(id,exists){
     rec.power = (rec.category!=="CPU"&&rec.category!=="Power supply") ? p_power.value : "";
   }
   if(!rec.name){ toast("Give it a name first."); return; }
-  if(exists) S.products = S.products.map(x=>x.id===id?rec:x); else S.products.push(rec);
+  upsertCatalogRecord("products",rec);
   save(); editDlg.close(); render(); toast("Product saved.");
 }
 function delProduct(id){ if(confirm("Delete this product?")){ S.products=S.products.filter(x=>x.id!==id); Object.keys(buildSel).forEach(k=>{if(buildSel[k]===id)delete buildSel[k]}); saveBuild(); save(); render(); } }
@@ -3038,7 +3001,7 @@ function savePart(id,exists){
     requiredPowerConnectors:q_gpu_connectors.value.trim(),
     gpuPowerConnectors:q_psu_connectors.value.trim()};
   if(!rec.name){ toast("Give it a name first."); return; }
-  if(exists) S.parts = S.parts.map(x=>x.id===id?rec:x); else S.parts.push(rec);
+  upsertCatalogRecord("parts",rec);
   save(); editDlg.close(); render(); toast("Part saved.");
 }
 function delPart(id){ if(confirm("Delete this part?")){ S.parts=S.parts.filter(x=>x.id!==id); Object.keys(buildSel).forEach(k=>{if(buildSel[k]===id)delete buildSel[k]}); saveBuild(); save(); render(); } }
@@ -3097,10 +3060,12 @@ function toast(msg){
 <script src="staff-workspace.js"></script>
 <script src="market-sales.js"></script>
 <script src="order-tracking.js"></script>
+<script src="customer-accounts.js"></script>
 <script src="promo-codes.js"></script>
 <script src="owner-test-checkout.js"></script>
 <script>
 initializeSupabaseAuth();
+initializeCustomerAuth();
 startCloudSync();
 </script>
 </body>
