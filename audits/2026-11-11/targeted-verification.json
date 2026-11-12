@@ -1,0 +1,77 @@
+{
+  "date_local": "2026-11-11",
+  "scope": "Four flagged GPU listings and one manufacturer cooler specification. Not a full live catalog audit.",
+  "checks": [
+    {
+      "id": "gpurx9070greasusprime3x",
+      "seller": "Newegg",
+      "newegg_price": 779.99,
+      "apex_price": 794.99,
+      "availability_evidence": "Current Add to cart; fastest delivery Fri Nov 13, standard Mon Nov 16; pickup ready by 9 AM; sold and shipped by Newegg. Read in connected browser.",
+      "source": "https://www.newegg.com/asus-radeon-rx-9070-gre-12gb-graphics-card/p/N82E16814126841",
+      "specifications": {
+        "lengthMm": 304,
+        "requiredPowerConnectors": "2x8-pin",
+        "recommendedPsuWatts": 650,
+        "price": 794.99,
+        "neweggPrice": 779.99,
+        "seller": "Newegg",
+        "stockStatus": "In Stock",
+        "active": true,
+        "verifiedDate": "2026-11-11"
+      }
+    },
+    {
+      "id": "gpu3060msiventus2x",
+      "seller": "Newegg",
+      "newegg_price": 463.99,
+      "apex_price": 478.99,
+      "availability_evidence": "Current Add to cart; fastest delivery Fri Nov 13, standard Mon Nov 16; pickup ready by 9 AM; sold and shipped by Newegg. Read in connected browser.",
+      "source": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013",
+      "specifications": {
+        "lengthMm": 235,
+        "requiredPowerConnectors": "1x8-pin",
+        "recommendedPsuWatts": 550,
+        "power": 170,
+        "price": 478.99,
+        "neweggPrice": 463.99,
+        "seller": "Newegg",
+        "stockStatus": "In Stock",
+        "active": true,
+        "verifiedDate": "2026-11-11"
+      }
+    },
+    {
+      "id": "gpu5060tiventus2x16",
+      "seller_shown": "TELeasy",
+      "action": "Remains inactive; no direct Newegg offer verified. Fit/power specs only updated.",
+      "source": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992",
+      "specifications": {
+        "lengthMm": 227,
+        "requiredPowerConnectors": "8-pin",
+        "recommendedPsuWatts": 600,
+        "power": 180
+      }
+    },
+    {
+      "id": "gpu5070gigawindforce3x",
+      "seller_shown": "Lucky Store 4 You",
+      "action": "Remains inactive; no direct Newegg offer verified. Fit/connector specs only updated.",
+      "source": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777",
+      "specifications": {
+        "lengthMm": 282,
+        "requiredPowerConnectors": "1x16-pin",
+        "recommendedPsuWatts": 750
+      }
+    },
+    {
+      "id": "cooler13C-001F-00070",
+      "source": "https://www.bequiet.com/en/cpucooler/4466",
+      "action": "Manufacturer BK036 / Dark Rock Pro 5 overall height verified as 168 mm. No price/seller re-verification; Newegg page inaccessible in fetch tool.",
+      "specifications": {
+        "heightMm": 168,
+        "specSourceUrl": "https://www.bequiet.com/en/cpucooler/4466"
+      }
+    }
+  ]
+}
