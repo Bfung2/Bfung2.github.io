@@ -30,6 +30,7 @@ assert.equal(run('me'),null);
 assert.equal(run('customerState.user.id'),'recover');
 assert.ok(run('customerLoginPage()').includes('Reset your password'));
 client.rpc=originalRpc;
+run('customerState.recovery=false;customerState.user=null');
 for(const mode of ['signup','reset']){run(`customerSetMode('${mode}')`);await run("customerLogin({preventDefault(){},currentTarget:{elements:{email:{value:'test@invalid.test'},password:{value:'password'}}}})");}assert.equal(sendCount,0);
 assert.ok(run('customerLoginPage()').includes('New accounts and password reset are being set up'));
 authListener('PASSWORD_RECOVERY',null);assert.equal(run('customerState.recovery'),true);
