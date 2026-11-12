@@ -37,6 +37,8 @@ jobs:
           node --check build-compatibility.js
           node --check owner-test-checkout.js
           if test -f catalog-health.js; then node --check catalog-health.js; fi
+          node --check owner-operations.js
+          node --check scripts/ops-monitor.mjs
       - name: Check public-data privacy and storefront references
         run: node tests/site-safety.mjs
       - name: Customer account regression
@@ -61,6 +63,8 @@ jobs:
         run: node tests/build-compatibility.mjs
       - name: Phase 10 mobile storefront and checkout UX regression
         run: node tests/phase10-storefront.mjs
+      - name: Phase 11 owner operations and public monitor regression
+        run: node tests/phase11-operations.mjs
       - name: Create non-destructive static catalog report
         run: |
           python3 scripts/audit_catalog.py --data data.json \

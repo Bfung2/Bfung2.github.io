@@ -754,6 +754,7 @@ footer.site a{color:var(--gold)}
 }
 </style>
 <link rel="stylesheet" href="storefront-ux.css">
+<link rel="stylesheet" href="owner-operations.css">
 </head>
 <body>
 
@@ -775,6 +776,7 @@ footer.site a{color:var(--gold)}
     <button onclick="go('/employees')">Manage employees</button>
     <button onclick="go('/inventory')">Manage parts</button>
     <button onclick="go('/inbox')">Orders &amp; requests</button>
+    <button onclick="go('/operations')">Operations <span class="ops-owner-badge" id="opsAlertBadge" hidden></span></button>
     <button onclick="logout()">Sign out</button>
   </div>
 </div>
@@ -1469,9 +1471,9 @@ function render(){
   ].filter(Boolean).join(" &nbsp;·&nbsp; ");
 
   const r = route();
-  if(isEmployee && ["/manage","/employees","/inbox","/inventory","/performance","/policies-admin","/catalog-health"].includes(r)){go("/employee");return;}
+  if(isEmployee && ["/manage","/employees","/inbox","/inventory","/performance","/policies-admin","/catalog-health","/operations"].includes(r)){go("/employee");return;}
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
-    "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/catalog-health":()=>ownerCatalogHealth.page(),"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
+    "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/catalog-health":()=>ownerCatalogHealth.page(),"/operations":opsPage,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
     "/track-order":customerTrackingPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
@@ -1486,6 +1488,9 @@ function render(){
   if(r!=="/build"){buildMenuOpen=false;buildPickerOpen=false;document.body.classList.remove("build-menu-open","build-picker-open");}
   app.innerHTML = (views[r]||home)();
   if(r==="/manage")restoreSettingsDraft();
+  if(isOwner)opsRefreshIfStale();
+  else if(apexOpsState.data)apexOpsState.data=null;
+  opsUpdateBadge();
   if(r==="/products") setupShopFilterLayer();
   if(r==="/build") syncBuildDrawerAccessibility();
   if(r==="/") setupHomeMotion();
@@ -2731,7 +2736,7 @@ function staff(){
 function manage(){
   if(!isOwner) return staff();
   const s = S.settings;
-  return `<div class="wrap"><div class="pagehead"><div><h2>Site settings</h2><p>Everything here shows on the public site. No code editing needed.</p></div><a class="btn gold" href="#/employees">Manage employees</a><a class="btn ghost" href="#/policies-admin">Warranty / Returns editor</a><a class="btn ghost" href="#/catalog-health">Catalog health</a><a class="btn ghost" href="#/performance">Employee performance</a><a class="btn ghost" href="#/inbox">Orders &amp; requests</a></div>
+  return `<div class="wrap"><div class="pagehead"><div><h2>Site settings</h2><p>Everything here shows on the public site. No code editing needed.</p></div><a class="btn gold" href="#/employees">Manage employees</a><a class="btn ghost" href="#/policies-admin">Warranty / Returns editor</a><a class="btn ghost" href="#/catalog-health">Catalog health</a><a class="btn ghost" href="#/operations">Operations center</a><a class="btn ghost" href="#/performance">Employee performance</a><a class="btn ghost" href="#/inbox">Orders &amp; requests</a></div>
   <div class="notice" style="margin-bottom:22px">${ghConfigured?(cloudConnected?"Connected — reading and writing data.json in your GitHub repo, so every device stays in sync.":`Not connected${cloudError?": "+esc(cloudError):" yet"}. Check that data.json exists in the repo, and that GITHUB_OWNER/GITHUB_REPO/GITHUB_BRANCH in the file match it exactly.`):"No shared file configured — see the setup note at the top of the HTML file (look for GITHUB_OWNER). Until then, changes here only show on this device."}</div>
   <div class="panel" style="margin-bottom:22px"><h3>Connection check</h3>
     <table>
@@ -3256,6 +3261,7 @@ function toast(msg){
 <script src="owner-test-checkout.js"></script>
 <script src="apex-policies.js"></script>
 <script src="catalog-health.js"></script>
+<script src="owner-operations.js"></script>
 <script>
 initializeSupabaseAuth();
 initializeCustomerAuth();

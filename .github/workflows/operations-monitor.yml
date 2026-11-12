@@ -1,0 +1,120 @@
+name: Apex public operations monitor
+
+on:
+  schedule:
+    - cron: '40 4,16 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - data.json
+      - storefront-ux.css
+      - owner-operations.css
+      - owner-operations.js
+      - scripts/ops-monitor.mjs
+      - .github/workflows/operations-monitor.yml
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: apex-public-ops-monitor
+  cancel-in-progress: false
+
+jobs:
+  public-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check live public storefront and critical assets
+        id: storefront_health
+        run: node scripts/ops-monitor.mjs --output "$RUNNER_TEMP/apex-public-monitor.json"
+      - name: Record a public-catalog recovery snapshot
+        if: always()
+        run: |
+          cp data.json "$RUNNER_TEMP/apex-public-catalog-snapshot.json"
+          cd "$RUNNER_TEMP"
+          sha256sum apex-public-catalog-snapshot.json > apex-public-catalog-snapshot.sha256
+          printf 'Git commit: %s\nThis is public product data only; not a Supabase operational backup.\n' "$GITHUB_SHA" > apex-public-catalog-snapshot-notes.txt
+      - name: Summarize the public monitor
+        if: always()
+        run: |
+          {
+            echo '## Apex public storefront monitoring'
+            echo
+            echo 'Health and asset checks use public URLs only. Customer records and credentials are never fetched.'
+            echo
+            if test -f "$RUNNER_TEMP/apex-public-monitor.json"; then
+              echo '~~~json'
+              cat "$RUNNER_TEMP/apex-public-monitor.json"
+              echo '~~~'
+            else
+              echo 'No monitor report was produced. Inspect the workflow job logs.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apex-public-operations-monitor
+          path: ${{ runner.temp }}/apex-public-monitor.json
+          retention-days: 30
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apex-public-catalog-recovery
+          path: |
+            ${{ runner.temp }}/apex-public-catalog-snapshot.json
+            ${{ runner.temp }}/apex-public-catalog-snapshot.sha256
+            ${{ runner.temp }}/apex-public-catalog-snapshot-notes.txt
+          retention-days: 30
+      - name: Open or update one GitHub incident on failure
+        if: ${{ failure() && steps.storefront_health.outcome == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[Apex monitor] Public storefront health check failing';
+            const owner = context.repo.owner, repo = context.repo.repo;
+            const existing = (await github.paginate(github.rest.issues.listForRepo,{
+              owner,repo,state:'all',per_page:100
+            })).filter(issue=>!issue.pull_request&&issue.title===title)
+              .sort((a,b)=>b.number-a.number)[0];
+            const body = [
+              'The scheduled Apex public storefront monitor detected an unavailable page or critical asset.',
+              '',
+              'Check the latest public-only report and inspect deployment before reopening customer checkouts.',
+              '',
+              'Run: https://github.com/'+owner+'/'+repo+'/actions/runs/'+context.runId,
+              '',
+              'This alert contains no customer details or private credentials.',
+              'It does not indicate a verified Newegg price error, PayPal failure, or Supabase database outage.'
+            ].join('\n');
+            if(existing){
+              await github.rest.issues.update({owner,repo,issue_number:existing.number,state:'open',body});
+            }else{
+              await github.rest.issues.create({owner,repo,title,body});
+            }
+      - name: Close an existing incident after recovery
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[Apex monitor] Public storefront health check failing';
+            const owner = context.repo.owner, repo = context.repo.repo;
+            const issues = await github.paginate(github.rest.issues.listForRepo,{
+              owner,repo,state:'open',per_page:100
+            });
+            const issue = issues.find(item=>!item.pull_request&&item.title===title);
+            if(issue){
+              await github.rest.issues.createComment({
+                owner,repo,issue_number:issue.number,
+                body:'Public storefront checks recovered. Verified by run: https://github.com/'+owner+'/'+repo+'/actions/runs/'+context.runId
+              });
+              await github.rest.issues.update({owner,repo,issue_number:issue.number,state:'closed'});
+            }
