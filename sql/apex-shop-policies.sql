@@ -43,7 +43,15 @@ as $$
 declare p public.apex_shop_policies%rowtype;
 declare versions jsonb;
 begin
-  if auth.uid() is null or coalesce(auth.jwt()->'app_metadata'->>'role','') <> 'admin' then
+  if auth.uid() is null or not (
+    coalesce(auth.jwt()->'app_metadata'->>'role','') = 'admin'
+    or exists (
+      select 1 from auth.users u
+      where u.id = auth.uid()
+        and lower(u.email) = 'apexcomputers039@gmail.com'
+        and u.email_confirmed_at is not null
+    )
+  ) then
     raise exception 'Owner access required' using errcode='42501';
   end if;
   if p_kind not in ('warranty','returns') then raise exception 'Invalid policy type'; end if;

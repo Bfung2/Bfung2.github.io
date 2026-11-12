@@ -37,6 +37,8 @@ async function initializeCustomerAuth(){
   await customerApplySession(data.session);
   if(customerAuthCallback){
    if(!data.session)customerState.error='This confirmation or recovery link expired or was opened in a different browser. Request a new link and open it in the browser where you started.';
+   // Keep the recovery UI accessible even when fetching a customer profile fails.
+   if(customerAuthCallback && new URLSearchParams(location.search).get('customer_auth')==='recovery' && data.session)customerState.recovery=true;
    history.replaceState(null,'',location.pathname+'#/account');render();
   }
  }catch{customerState.ready=true;customerMessage('Unable to check your account session. Refresh and try again.',true);}
@@ -87,13 +89,20 @@ async function customerRefreshOrders(){
 }
 async function customerSavePassword(event){
  event.preventDefault();const form=event.currentTarget,password=form.elements.password.value;
+ if(password.length<12)return customerMessage('Choose a password with at least 12 characters.',true);
  if(password!==form.elements.confirm_password.value)return customerMessage('The passwords do not match.',true);
  const button=event.submitter;if(button)button.disabled=true;
- try{const {error}=await customerClient.auth.updateUser({password});if(error)throw error;customerState.recovery=false;customerMessage('Password updated.');}
+ try{const {error}=await customerClient.auth.updateUser({password});if(error)throw error;customerState.recovery=false;customerState.mode='signin';customerMessage('Password updated. You can now sign in with your new password.');}
  catch{customerMessage('Password could not be updated. Request a new recovery link and try again.',true);}finally{if(button)button.disabled=false;}
 }
 function customerNotices(){return `${customerState.error?`<p class="notice" role="alert">${esc(customerState.error)}</p>`:''}${customerState.message?`<p class="notice" role="status">${esc(customerState.message)}</p>`:''}`;}
+function customerRecoveryForm(){
+ return '<div class="wrap" style="max-width:560px"><div class="pagehead"><div><h2>Reset your password</h2><p>Choose a new password for your verified customer session.</p></div></div>'+customerNotices()+
+ '<form class="panel" onsubmit="customerSavePassword(event);return false"><div class="field"><label for="recoverPassword">New password (12 characters minimum)</label><input id="recoverPassword" name="password" type="password" minlength="12" required autocomplete="new-password"></div>'+
+ '<div class="field"><label for="recoverConfirm">Confirm password</label><input id="recoverConfirm" name="confirm_password" type="password" minlength="12" required autocomplete="new-password"></div><button class="btn gold" type="submit">Update password</button></form></div>';
+}
 function customerLoginPage(){
+ if(customerState.recovery&&customerState.user&&!me)return customerRecoveryForm();
  if(!customerState.ready)return '<div class="wrap"><p role="status">Checking your account…</p></div>';
  if(me){go('/account');return '';}
  const mode=customerState.mode,title={signin:'Customer sign in',signup:'Create an account',reset:'Reset password'}[mode];
