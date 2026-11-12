@@ -22,6 +22,7 @@ const checkoutContext=vm.createContext({
  checkoutPromo:{isTest:false,code:""},
  cartTotals:()=>({sub:950,shipping:20,tax:95,total:1065}),
  customerPreferredShippingAddress:()=>({street:"123 Example Road",city:"Testville",state:"CA",zip:"94500"}),
+ customerShippingAddressPicker:()=>"",
  looksLikeAddress:()=>true,
  salesHandoffNotice:()=>"",promoCheckoutField:()=>"",promoSummary:()=>"",
  esc:value=>String(value??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"),
