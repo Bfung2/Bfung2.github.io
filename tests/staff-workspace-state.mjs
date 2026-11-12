@@ -18,3 +18,8 @@ run("isOwner=false;isEmployee=false;staffReset()");assert.match(run("staffGate('
 run("isEmployee=true;staffState.loaded=true;staffState.permissions={view_schedule:true,edit_schedule:false}");assert.equal(run("staffCan('view_schedule')"),true);assert.equal(run("staffCan('edit_schedule')"),false);assert.equal(run('staffNav()').includes('Roles &amp; permissions'),false);assert.equal(run('staffNav()').includes('Roles & permissions'),false);
 run('staffReset()');assert.equal(run('staffNotes.items.length'),0);assert.equal(run('staffState.employees.length'),0);
 console.log('PASS: permission refresh discards stale private responses; customer/staff gates and session data reset.');
+run("isOwner=true;staffSales.items=[{employee_id:'e',job_kind:'order',job_id:'active-test',reference:'TEST',is_test:true,settlement_status:'pending',credited_at:new Date().toISOString()},{employee_id:'e',job_kind:'order',job_id:'paid-real',settlement_status:'paid'},{employee_id:'e',job_kind:'order',job_id:'paid-test',settlement_status:'paid',is_test:true},{employee_id:'e',job_kind:'order',job_id:'voided',settlement_status:'void'}]");
+assert.equal(run("staffEmployeePaidCount('e')"),'Paid contributions: 1 · Test paid: 1');
+const cards=run('staffSalesList(staffSales.items)');assert.ok(cards.includes('TEST'));assert.ok(cards.includes('Paid employee'));assert.ok(cards.includes('Delete / void'));assert.ok(!cards.includes('paid-real'));assert.ok(!cards.includes('voided'));
+run('isOwner=false');assert.ok(!run('staffSalesList(staffSales.items)').includes('Paid employee'));
+console.log('PASS: test cards share normal layout; settled cards hidden; paid real/test counts separate; payout/void controls owner-only.');
