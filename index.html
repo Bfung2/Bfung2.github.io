@@ -1219,7 +1219,7 @@ function employeeJobCard(kind,j){
   }else{
     actionMarkup=perms.claim_jobs?'<button class="btn gold" onclick="claimEmployeeJob(\''+kind+'\',\''+id+'\')">Claim this '+(order?"order":"request")+'</button>':'<p class="muted">Claiming jobs is disabled for this account.</p>';
   }
-  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div>${customerMarkup}<p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}${actionMarkup}</div>`;
+  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div>${customerMarkup}<p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}${actionMarkup}${order&&assigned&&perms.update_status?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="staffOpenOrderTracking(this.dataset.order)">Customer progress</button>`:""}</div>`;
 }
 function employeeDashboard(){
   if(!isEmployee||!employeeProfile)return employeeLogin();
@@ -1249,7 +1249,7 @@ async function loadCloudOrders(){
   try{
     const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,is_test:!!row.is_test,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,trackingToken:row.tracking_token||"",is_test:!!row.is_test,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
     cloudOrdersLoaded=true;
     await loadOwnerWorkData();
   }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
@@ -1273,7 +1273,7 @@ function customerLogout(){ me=null; try{ localStorage.removeItem("apex.customer"
 function myOrders(){ return me ? S.orders.filter(o=>(o.email||"").toLowerCase()===me.email) : []; }
 
 /* ---------- router ---------- */
-const PAGES = [["/","Home"],["/products","Products"],["/build","Build a PC"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"]];
+const PAGES = [["/","Home"],["/products","Products"],["/build","Build a PC"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"],["/track-order","Track order"]];
 function go(p){ location.hash = "#"+p; }
 function route(){ return (location.hash||"#/").slice(1).split("?")[0] || "/"; }
 addEventListener("hashchange", ()=>{ render(); scrollTo({top:0}); });
@@ -1494,7 +1494,7 @@ function render(){
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
-    "/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
+    "/track-order":customerTrackingPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
   const keep = (ae && ae.id && app.contains(ae)) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
   const rows = {};
@@ -2539,16 +2539,16 @@ async function submitOrder(e){
   const t=cartTotals();
   const o={id:uid()+"-"+Date.now().toString(36),ref:"AC-"+Date.now().toString(36).toUpperCase(),at:new Date().toISOString(),
     name:cn.value.trim(),email:ce.value.trim(),phone:cp.value.trim(),address:combineAddress(addr),notes:cnote.value.trim(),
-    items:structuredClone(myCart),sub:t.sub,shipping:t.shipping,tax:t.tax,total:t.total,status:"requested"};
+    items:structuredClone(myCart),sub:t.sub,shipping:t.shipping,tax:t.tax,total:t.total,status:"requested",trackingToken:newOrderTrackingToken()};
   const form=e.target;
   const btn=e.submitter||form.querySelector('button[type="submit"]');
   if(btn){btn.disabled=true;btn.textContent="Saving order…";}
   try{
     await promoValidateCheckout();
-    const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status,...(checkoutPromo.code?{promo_code:checkoutPromo.code}:{}),...(customerHandoff?.kind==="order"?{handoff_token:customerHandoff.token}:{})}]);
+    const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status,tracking_token:o.trackingToken,...(checkoutPromo.code?{promo_code:checkoutPromo.code}:{}),...(customerHandoff?.kind==="order"?{handoff_token:customerHandoff.token}:{})}]);
     if(error) throw error;
     if(customerHandoff?.kind==="order")salesForgetHandoff();
-    lastOrder=o;
+    lastOrder=o;rememberOrderTracking(o);
     form.querySelectorAll("input,textarea,button[type=submit]").forEach(el=>el.disabled=true);
     const payment=document.getElementById("paypalPayment");
     payment.hidden=false;
@@ -2594,7 +2594,7 @@ function done(){
   const o = lastOrder;
   return `<div class="wrap"><div class="pagehead"><div><h2>Order ${esc(o.ref)} submitted</h2>
   <p>${o.is_test?("TEST SUCCESSFUL — NO PAYMENT TAKEN. "+(o.notificationsPending?"Test emails are pending delivery.":"Test email notifications have been processed.")):o.notificationsPending?"Your PayPal payment was verified and your order is confirmed. Email notifications are pending; Apex can retry delivery.":"Your PayPal payment was verified and your order is confirmed. Order email notifications have been processed."}</p></div></div>
-  <div class="panel"><pre style="white-space:pre-wrap;font-size:.88rem;margin:0">${esc(orderText(o))}</pre></div>
+  ${trackingReceipt(o)}<div class="panel"><pre style="white-space:pre-wrap;font-size:.88rem;margin:0">${esc(orderText(o))}</pre></div>
   <div class="row" style="margin-top:16px">
     <button class="btn" onclick="mailOwner('Order request ${esc(o.ref)}', orderText(lastOrder))">Re-open the email</button>
     <a class="btn ghost" href="#/">Back to the shop</a>
@@ -2645,7 +2645,7 @@ function account(){
     <div class="panel" style="margin-bottom:22px"><h3>Your details</h3>
       <p class="muted" style="font-size:.92rem">${esc(me.phone||"No phone saved")}<br>${esc(combineAddress(me.address))||"No address saved"}</p>
       <button class="btn sm ghost" onclick="customerLogout()">Change details</button></div>
-    <h3>Your orders</h3>
+    ${trackingSavedLinks()}<h3>Your orders</h3>
     ${mine.length?`<div class="scroll"><table><tr><th>Ref</th><th>Date</th><th>Items</th><th>Total</th></tr>
       ${mine.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
       <td><small>${o.items.map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td></tr>`).join("")}
@@ -2819,7 +2819,7 @@ function inbox(){
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
     <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td>
-    <td><small>${o.is_test?"TEST — NO PAYMENT TAKEN":statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted · "+esc(o.sales_employee_name||"")+" · "+esc(o.sales_employee_code||""):"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?(o.is_test?"<small>Test record — no fulfillment or sales credit</small>":assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id)):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">${(o.status==="paid"||o.is_test)?`<button class="btn sm ghost" data-order="${esc(o.id)}" onclick="marketRetryNotification(this.dataset.order,this)">Retry paid-order emails</button>`:""}
+    <td><small>${o.is_test?"TEST — NO PAYMENT TAKEN":statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted · "+esc(o.sales_employee_name||"")+" · "+esc(o.sales_employee_code||""):"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?(o.is_test?"<small>Test record — no fulfillment or sales credit</small>":assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id)):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">${cloudOrders.some(x=>x.id===o.id)?`<button class="btn sm ghost" data-order="${esc(o.id)}" onclick="staffOpenOrderTracking(this.dataset.order)">Customer progress / tracking link</button>`:""}${(o.status==="paid"||o.is_test)?`<button class="btn sm ghost" data-order="${esc(o.id)}" onclick="marketRetryNotification(this.dataset.order,this)">Retry paid-order emails</button>`:""}
     <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;shipped&quot;)">Shipped</button>
@@ -2896,7 +2896,7 @@ async function sendStatusEmail(orderId, statusKey){
   const t=STATUS_TEXT[statusKey]; if(!t) return;
   if(!await updateOrderStatus(o,statusKey)) return;
   const body = `Hi ${o.name},\n\n${t.line}\n\nOrder ${o.ref}:\n`+o.items.map(i=>`- ${i.name}`).join("\n")+
-    `\n\nQuestions? Just reply to this email.\n\n${S.settings.shopName||"Apex Computers"}`;
+    `\n\n${o.trackingToken?"Track your order: "+orderTrackingURL(o.trackingToken)+"\n\n":""}Questions? Just reply to this email.\n\n${S.settings.shopName||"Apex Computers"}`;
   await mailCustomer(o.email, `${t.subj} — ${o.ref}`, body);
   render();
 }
@@ -3177,6 +3177,7 @@ function toast(msg){
 </script>
 <script src="staff-workspace.js"></script>
 <script src="market-sales.js"></script>
+<script src="order-tracking.js"></script>
 <script src="promo-codes.js"></script>
 <script src="owner-test-checkout.js"></script>
 <script>

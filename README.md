@@ -182,3 +182,13 @@ Apply `supabase/migrations/202611110004_commissions_dashboard.sql` after the con
 Staff workspace now opens the owner overview. Sales contributions has Outstanding, Employee payment history, and Voided views. Employee details show unpaid balances and paid counts. Customer links can be filtered by waiting, submitted/awaiting payment, paid, completed test and expired states; unused valid links retain their copy button. No reminders or customer messages are sent automatically.
 
 Additional checks: `node tests/market-link-filters.mjs` and `node tests/staff-workspace-state.mjs`, plus the full PGlite staff-permissions integration test.
+
+### Private customer order tracking
+
+Apply `supabase/migrations/202611110005_customer_tracking.sql` after the staff/checkout migrations. New checkouts generate a random 256-bit private link and retain only its reference/token in this browser. Confirmation and Track order pages expose the link; owner tests return one too. Existing orders receive private links the owner can copy from Orders & requests → Customer progress / tracking link.
+
+The public status RPC requires the complete random token and returns only the reference, item names/quantities, total, payment confirmation, customer-visible stage/message and recorded updates. It never uses an email address, order reference or the legacy local customer profile as authentication. Contact details, shipping addresses, internal notes, employee details and payment identifiers are excluded. Anyone given the link can view that limited status information, so it should be shared privately.
+
+Owners and assigned employees with orders/update-status permissions can update customer progress. Existing working/shipped/delivered status actions synchronize progress. Customer-facing fulfillment cannot start before payment confirmation (except clearly labeled owner tests). Deleting the source inbox order preserves the last limited tracking snapshot as archived; it does not fabricate delivery. No customer emails are sent automatically by this feature. Existing owner-triggered status emails include the tracking link.
+
+Checks: `node tests/order-tracking-state.mjs` and the full PGlite staff-permissions suite cover token access, response redaction, assignment/permission checks, stale edits, unpaid/test behavior, archived snapshots and existing workflows.
