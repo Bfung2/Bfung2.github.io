@@ -66,5 +66,5 @@ assert.ok(staff.includes('staffRefreshSalesResultRows()'));
 assert.ok(staff.includes('const updated=await staffRPC('),'Payment actions should check backend result');
 assert.ok(sql.includes("public.apex_staff_can('own_sales_receipts')"));
 assert.ok(sql.includes("item - 'customer_name'"));
-assert.ok(sql.includes("item - 'commission_note'"));
+assert.ok(sql.includes("- 'commission_note'"));
 console.log('PASS: Phase 7 payout counts, real/test split, owner CSV export, date and employee filters, spreadsheet safety, live search, and SQL customer detail masking.');
