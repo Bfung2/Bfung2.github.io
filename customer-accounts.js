@@ -10,19 +10,24 @@ async function customerApplySession(session){
  const epoch=++customerEpoch;me=null;customerState.user=null;customerState.orders=[];customerState.loading=!!session;
  try{
   if(session){
+   // Preserve recovery access if the private profile RPC is temporarily unavailable.
+   customerState.user=session.user;
    const profile=await customerRPC('apex_customer_profile');
    if(epoch!==customerEpoch)return;
-   me=profile;customerState.user=session.user;
+   me=profile;
    await customerLoadOrders(epoch);
   }
  }catch{if(epoch===customerEpoch)customerState.error='Your account could not be loaded. Confirm your email, then sign in again or retry.';}
  finally{if(epoch===customerEpoch){customerState.ready=true;customerState.loading=false;render();}}
 }
 async function customerLoadOrders(epoch=customerEpoch){
+ // A stale browser receipt must not make every other order disappear.
  for(const link of savedOrderTracking()){
   if(epoch!==customerEpoch)return;
-  await customerRPC('apex_customer_link_order',{p_token:link.token});
+  try{await customerRPC('apex_customer_link_order',{p_token:link.token});}
+  catch(err){console.warn('One saved order receipt could not be linked.');}
  }
+ if(epoch!==customerEpoch)return;
  const orders=await customerRPC('apex_customer_orders');
  if(epoch===customerEpoch)customerState.orders=orders;
 }
@@ -80,7 +85,11 @@ async function customerSaveProfile(event){
 }
 async function customerLinkReceipt(token){
  if(!customerState.user)return;
- try{await customerRPC('apex_customer_link_order',{p_token:token});}catch{toast('Your order is saved. Open your account later to link its receipt.');}
+ try{
+  const linked=await customerRPC('apex_customer_link_order',{p_token:token});
+  if(linked){await customerLoadOrders();}
+  else toast('The receipt email must match your verified account email to appear in order history.');
+ }catch{toast('Your order is saved. Open your account later to link its receipt.');}
 }
 async function customerRefreshOrders(){
  if(customerState.loading)return;customerState.loading=true;customerState.error='';const epoch=customerEpoch;render();
@@ -92,7 +101,7 @@ async function customerSavePassword(event){
  if(password.length<12)return customerMessage('Choose a password with at least 12 characters.',true);
  if(password!==form.elements.confirm_password.value)return customerMessage('The passwords do not match.',true);
  const button=event.submitter;if(button)button.disabled=true;
- try{const {error}=await customerClient.auth.updateUser({password});if(error)throw error;customerState.recovery=false;customerState.mode='signin';customerMessage('Password updated. You can now sign in with your new password.');}
+ try{const {error}=await customerClient.auth.updateUser({password});if(error)throw error;customerState.recovery=false;customerState.mode='signin';customerMessage('Password updated successfully.');}
  catch{customerMessage('Password could not be updated. Request a new recovery link and try again.',true);}finally{if(button)button.disabled=false;}
 }
 function customerNotices(){return `${customerState.error?`<p class="notice" role="alert">${esc(customerState.error)}</p>`:''}${customerState.message?`<p class="notice" role="status">${esc(customerState.message)}</p>`:''}`;}
