@@ -1,0 +1,144 @@
+{
+  "canBuy": true,
+  "condition": "",
+  "image": "https://c1.neweggimages.com/productimage/nb640/13-162-130-04.png",
+  "offerText": "$139.99\nPay with Newegg Store Credit Card. Learn how AND Save 4% off* purchase. See details\n\n0% APRor as low as $13/mo with Affirm. Prequalify Now\n\n💬 Chat With Technical Support\n\t",
+  "priceText": "$139.99",
+  "sellerText": "Sold by Newegg",
+  "specs": "Best Seller Ranking\t#38 in AMD Motherboards\nModel\nBrand\tASRock\nModel\tB650M PRO RS\nSupported CPU\nCPU Socket Type \tAM5\nCPU Type\tSupports AMD Socket AM5 Ryzen 7000 Series Processors\nChipsets\nChipset \tAMD B650\nMemory\nNumber of Memory Slots\t4x288pin (DDR5)\nMemory Standard\tDDR5 6000+ (OC)\nMaximum Memory Supported\t128GB\nChannel Supported \tDual Channel\nMemory Performance Profile\tIntel XMP 3.0 / AMD EXPO\nECC Supported\tNon-ECC\nBuffer Supported\tUn-buffered\nExpansion Slots\nPCI Express 4.0 x16\t1 x PCIe 4.0 x16 Slot (PCIE1), supports x16 mode*\nPCI Express 3.0 x16 \t1 x PCIe 3.0 x16 Slot (PCIE2), supports x4 mode*\nOther Slots\t* Supports NVMe SSD as boot disks\nStorage Devices\nSerial ATA (SATA) \t4 x SATA 6Gb/s\nM.2\t1 x Blazing M.2 Socket (M2_1, Key M), supports type 2260/2280 PCIe Gen5x4 (128 Gb/s) mode*\n1 x Hyper M.2 Socket (M2_2, Key M), supports type 2260/2280 PCIe Gen4x4 (64 Gb/s) mode*\n1 x M.2 Socket (M2_3, Key M), supports type 2260/2280 PCIe Gen4x2 (32 Gb/s) mode*\nSATA RAID\t0/1/10\nOnboard Audio\nAudio Channels \t7.1 Channels\nOnboard LAN\nLAN Chipset\tDragon RTL8125BG\nMax LAN Speed\t2.5Gbps\nRear Panel Ports\nBack I/O Ports\t2 x Antenna Mounting Points\n1 x HDMI Port\n1 x DisplayPort 1.4\n1 x USB 3.2 Gen2 Type-A Port (10 Gb/s)\n1 x USB 3.2 Gen2 Type-C Port (10 Gb/s)\n2 x USB 3.2 Gen1 Ports\n4 x USB 2.0 Ports\n1 x RJ-45 LAN Port\n1 x BIOS Flashback Button\nHD Audio Jacks: Line in / Front Speaker / Microphone\nInternal I/O Connectors\nOnboard USB\t2 x USB 2.0 Headers (Support 4 USB 2.0 ports)\n2 x USB 3.2 Gen1 Headers (Support 4 USB 3.2 Gen1 ports)\n1 x Front Panel Type C USB 3.2 Gen1 Header\nOther Connectors\t1 x SPI TPM Header\n1 x Power LED and Speaker Header\n1 x RGB LED Header*\n3 x Addressable LED Headers**\n1 x CPU Fan Connector (4-pin)***\n1 x CPU/Water Pump Fan Connector (4-pin) (Smart Fan Speed Control)****\n3 x Chassis/Water Pump Fan Connectors (4-pin) (Smart Fan Speed Control)*****\n1 x Front Panel Audio Connector\n1 x Thunderbolt AIC Connector (5-pin) (Supports ASRock Thunderbolt 4 AIC Card)\n\n*Supports in total up to 12V/3A, 36W LED Strip\n**Support in total up to 5V/3A, 15W LED Strip\n***CPU_FAN1 supports the fan power up to 1A (12W).\n****CPU_FAN2/WP supports the fan power up to 2A (24W).\n*****CHA_FAN1~3/WP support the fan power up to 2A (24W).\nCPU_FAN2/WP and CHA_FAN1~3/WP can auto detect if 3-pin or 4-pin fan is in use.\nPhysical Spec\nForm Factor\tMicro ATX\nDimensions (W x L)\t9.6\" x 9.6\"\nPower Pin\t1 x 24 pin ATX Power Connector\n1 x 8 pin 12V Power Connector (Hi-Density Power Connector)\nFeatures\nFeatures\tSuperb Productivity\n- PCIe Gen5 (M.2)\n- Dual Channel DDR5\nRock-Solid Durability\n- 8+2+1 Power Phase, 50A Dr.MOS\n- Pre-Installed I/O Shield\nUltrafast Connectivity\n- 2.5G LAN\nEZ Update\n- BIOS Flashback Button\n- ASRock Auto Driver Installer\nEZ Troubleshooter\n- ASRock Post Status Checker\nPackaging\nPackage Contents\t1 x User Manual\n2 x SATA Data Cables\n4 x Screws for M.2 Sockets\n1 x Standoff for M.2 Socket\nAdditional Information\nFirst Listed on Newegg\tMay 18, 2023",
+  "title": "ASRock B650M PRO RS AM5 AMD B650 Micro ATX Motherboard",
+  "url": "https://www.newegg.com/asrock-b650m-pro-rs-micro-atx-motherboard-amd-b650-am5/p/N82E16813162130",
+  "alternativeOffers": [],
+  "itemNumber": "Item#: N82E16813162130",
+  "specRows": [
+    [
+      "Best Seller Ranking",
+      "#38 in AMD Motherboards"
+    ],
+    [
+      "Brand",
+      "ASRock"
+    ],
+    [
+      "Model",
+      "B650M PRO RS"
+    ],
+    [
+      "CPU Socket Type ",
+      "AM5"
+    ],
+    [
+      "CPU Type",
+      "Supports AMD Socket AM5 Ryzen 7000 Series Processors"
+    ],
+    [
+      "Chipset ",
+      "AMD B650"
+    ],
+    [
+      "Number of Memory Slots",
+      "4x288pin (DDR5)"
+    ],
+    [
+      "Memory Standard",
+      "DDR5 6000+ (OC)"
+    ],
+    [
+      "Maximum Memory Supported",
+      "128GB"
+    ],
+    [
+      "Channel Supported ",
+      "Dual Channel"
+    ],
+    [
+      "Memory Performance Profile",
+      "Intel XMP 3.0 / AMD EXPO"
+    ],
+    [
+      "ECC Supported",
+      "Non-ECC"
+    ],
+    [
+      "Buffer Supported",
+      "Un-buffered"
+    ],
+    [
+      "PCI Express 4.0 x16",
+      "1 x PCIe 4.0 x16 Slot (PCIE1), supports x16 mode*"
+    ],
+    [
+      "PCI Express 3.0 x16 ",
+      "1 x PCIe 3.0 x16 Slot (PCIE2), supports x4 mode*"
+    ],
+    [
+      "Other Slots",
+      "* Supports NVMe SSD as boot disks"
+    ],
+    [
+      "Serial ATA (SATA) ",
+      "4 x SATA 6Gb/s"
+    ],
+    [
+      "M.2",
+      "1 x Blazing M.2 Socket (M2_1, Key M), supports type 2260/2280 PCIe Gen5x4 (128 Gb/s) mode*\n1 x Hyper M.2 Socket (M2_2, Key M), supports type 2260/2280 PCIe Gen4x4 (64 Gb/s) mode*\n1 x M.2 Socket (M2_3, Key M), supports type 2260/2280 PCIe Gen4x2 (32 Gb/s) mode*"
+    ],
+    [
+      "SATA RAID",
+      "0/1/10"
+    ],
+    [
+      "Audio Channels ",
+      "7.1 Channels"
+    ],
+    [
+      "LAN Chipset",
+      "Dragon RTL8125BG"
+    ],
+    [
+      "Max LAN Speed",
+      "2.5Gbps"
+    ],
+    [
+      "Back I/O Ports",
+      "2 x Antenna Mounting Points\n1 x HDMI Port\n1 x DisplayPort 1.4\n1 x USB 3.2 Gen2 Type-A Port (10 Gb/s)\n1 x USB 3.2 Gen2 Type-C Port (10 Gb/s)\n2 x USB 3.2 Gen1 Ports\n4 x USB 2.0 Ports\n1 x RJ-45 LAN Port\n1 x BIOS Flashback Button\nHD Audio Jacks: Line in / Front Speaker / Microphone"
+    ],
+    [
+      "Onboard USB",
+      "2 x USB 2.0 Headers (Support 4 USB 2.0 ports)\n2 x USB 3.2 Gen1 Headers (Support 4 USB 3.2 Gen1 ports)\n1 x Front Panel Type C USB 3.2 Gen1 Header"
+    ],
+    [
+      "Other Connectors",
+      "1 x SPI TPM Header\n1 x Power LED and Speaker Header\n1 x RGB LED Header*\n3 x Addressable LED Headers**\n1 x CPU Fan Connector (4-pin)***\n1 x CPU/Water Pump Fan Connector (4-pin) (Smart Fan Speed Control)****\n3 x Chassis/Water Pump Fan Connectors (4-pin) (Smart Fan Speed Control)*****\n1 x Front Panel Audio Connector\n1 x Thunderbolt AIC Connector (5-pin) (Supports ASRock Thunderbolt 4 AIC Card)\n\n*Supports in total up to 12V/3A, 36W LED Strip\n**Support in total up to 5V/3A, 15W LED Strip\n***CPU_FAN1 supports the fan power up to 1A (12W).\n****CPU_FAN2/WP supports the fan power up to 2A (24W).\n*****CHA_FAN1~3/WP support the fan power up to 2A (24W).\nCPU_FAN2/WP and CHA_FAN1~3/WP can auto detect if 3-pin or 4-pin fan is in use."
+    ],
+    [
+      "Form Factor",
+      "Micro ATX"
+    ],
+    [
+      "Dimensions (W x L)",
+      "9.6\" x 9.6\""
+    ],
+    [
+      "Power Pin",
+      "1 x 24 pin ATX Power Connector\n1 x 8 pin 12V Power Connector (Hi-Density Power Connector)"
+    ],
+    [
+      "Features",
+      "Superb Productivity\n- PCIe Gen5 (M.2)\n- Dual Channel DDR5\nRock-Solid Durability\n- 8+2+1 Power Phase, 50A Dr.MOS\n- Pre-Installed I/O Shield\nUltrafast Connectivity\n- 2.5G LAN\nEZ Update\n- BIOS Flashback Button\n- ASRock Auto Driver Installer\nEZ Troubleshooter\n- ASRock Post Status Checker"
+    ],
+    [
+      "Package Contents",
+      "1 x User Manual\n2 x SATA Data Cables\n4 x Screws for M.2 Sockets\n1 x Standoff for M.2 Socket"
+    ],
+    [
+      "First Listed on Newegg",
+      "May 18, 2023"
+    ]
+  ],
+  "catalogIds": [
+    "asrockea0"
+  ],
+  "checkedAt": "2026-11-12",
+  "method": "Current Chrome product DOM"
+}

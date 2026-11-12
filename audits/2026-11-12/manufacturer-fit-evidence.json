@@ -1,0 +1,61 @@
+{
+  "caseFractalNorthXLDark": {
+    "maxCoolerHeightMm": 185,
+    "supportedPSUFormFactors": "ATX",
+    "maxPsuLengthMm": 175,
+    "compatibilityNotes": "PSU limit assumes both HDD trays installed; one tray permits 290 mm. Front radiator reduces GPU clearance to 380 mm.",
+    "specSourceUrl": "https://www.fractal-design.com/app/uploads/2024/02/North-XL_Product-Sheet_EN.pdf"
+  },
+  "caseFractalNorthXLMesh": {
+    "maxCoolerHeightMm": 155,
+    "supportedPSUFormFactors": "ATX",
+    "maxPsuLengthMm": 175,
+    "compatibilityNotes": "155 mm cooler limit retains the side fan bracket; removing the bracket permits 185 mm. PSU limit assumes both HDD trays; one tray permits 290 mm. Front radiator reduces GPU clearance to 380 mm.",
+    "specSourceUrl": "https://www.fractal-design.com/app/uploads/2024/02/North-XL_Product-Sheet_EN.pdf"
+  },
+  "caseLianLiLancool217": {
+    "maxCoolerHeightMm": 180,
+    "supportedPSUFormFactors": "ATX",
+    "maxPsuLengthMm": 220,
+    "compatibilityNotes": "PSU length limit is for standard orientation with one HDD cage; rotated orientation requires a PSU under 180 mm.",
+    "specSourceUrl": "https://lian-li.com/product/lancool-217/"
+  },
+  "caseAsusPrimeAP201Black": {
+    "supportedPSUFormFactors": "ATX",
+    "maxPsuLengthMm": 180,
+    "radiatorSupport": {
+      "top": [
+        120,
+        140,
+        240,
+        280,
+        360
+      ],
+      "rear": [
+        120
+      ]
+    },
+    "specSourceUrl": "https://www.asus.com/motherboards-components/cases/prime/asus-prime-ap201-microatx-case/techspec/",
+    "psuSpecSourceUrl": "https://www.asus.com/us/motherboards-components/cases/prime/asus-prime-ap201-microatx-case/"
+  },
+  "caseDiypcMatx06Wood": {
+    "maxCoolerHeightMm": 174,
+    "maxPsuLengthMm": 240,
+    "specSourceUrl": "https://www.mydiypcusa.com/product/diypc-diy-matx06-wood-black-usb3-0-type-c-micro-atx-tower-gaming-computer-case-w-tempered-glass-side-panel-and-walnut-wood-front-panel"
+  },
+  "caseDiypcVanguardF1": {
+    "maxCoolerHeightMm": 180,
+    "maxPsuLengthMm": 270,
+    "specSourceUrl": "https://www.mydiypcusa.com/product/computer-case/rgb-fan-cases/diypc-vanguard-f1-bk-black-dual-usb3-0-type-c-tempered-glass-atx-full-tower-gaming-case-w-4-argb-pwm-fans"
+  },
+  "caseNzxtH6FlowBlack": {
+    "maxPsuLengthMm": 200,
+    "compatibilityNotes": "Top radiator plus fan stack is limited to approximately 60 mm; check motherboard and RAM clearance.",
+    "specSourceUrl": "https://support.nzxt.com/hc/en-us/articles/40183529624347-H6-Flow-2023-Specs"
+  },
+  "caseNzxtH6FlowWhite": {
+    "maxPsuLengthMm": 200,
+    "compatibilityNotes": "Top radiator plus fan stack is limited to approximately 60 mm; check motherboard and RAM clearance.",
+    "specSourceUrl": "https://support.nzxt.com/hc/en-us/articles/40183529624347-H6-Flow-2023-Specs"
+  }
+}

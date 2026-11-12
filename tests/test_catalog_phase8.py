@@ -49,6 +49,14 @@ class Phase8AuditTests(unittest.TestCase):
             self.assertIn("ineligible_stock",by_id["bad"])
             self.assertIn("stale_verification",by_id["bad"])
 
+    def test_search_pages_are_not_exact_product_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            file=pathlib.Path(tmp)/"data.json"
+            file.write_text(json.dumps({"products":[{"id":"search","name":"Search result","price":115,"neweggPrice":100,"sourceUrl":"https://www.newegg.com/p/pl?d=cpu","stockStatus":"Not available"}],"parts":[]}),encoding="utf-8")
+            kinds={i["issue"] for i in audit_module.audit(file)["issues"]}
+            self.assertIn("invalid_source_url",kinds)
+            self.assertIn("ineligible_stock",kinds)
+
     def test_report_does_not_claim_live_prices(self):
         with tempfile.TemporaryDirectory() as tmp:
             file=pathlib.Path(tmp)/"data.json"

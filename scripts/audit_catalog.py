@@ -29,8 +29,8 @@ def audit(path):
         if not source: flag("missing_source_url",section,p,"Exact Newegg listing URL missing")
         else:
             url=urllib.parse.urlparse(str(source))
-            if url.scheme!="https" or (url.hostname or "").lower() not in ("newegg.com","www.newegg.com"):
-                flag("invalid_source_url",section,p,"Source URL is not an HTTPS listing on Newegg")
+            if url.scheme!="https" or (url.hostname or "").lower() not in ("newegg.com","www.newegg.com") or not re.search(r"/p/[^/]*\d[^/]*$",url.path):
+                flag("invalid_source_url",section,p,"Source URL is not an exact HTTPS product listing on Newegg")
         date=p.get("verifiedDate")
         if not date: flag("missing_verification_date",section,p,"No recorded verification date")
         else:
@@ -47,7 +47,7 @@ def audit(path):
             flag("ineligible_seller",section,p,"Stored seller is not Newegg; verify and unpublish if necessary")
         stock=str(p.get("stockStatus") or "").strip().lower()
         if not stock: flag("missing_stock_status",section,p,"Stock status not documented")
-        elif re.search(r"out\s*of\s*stock|back[\s-]*order(?:ed)?|sold\s*out|unavailable|discontinued|price\s*verification\s*required|pre[\s-]*order",stock):
+        elif re.search(r"out\s*of\s*stock|back[\s-]*order(?:ed)?|sold\s*out|unavailable|discontinued|price\s*verification\s*required|not\s*available|pre[\s-]*order",stock):
             flag("ineligible_stock",section,p,"Stored inventory status is not currently eligible for sale")
         if not p.get("image"): flag("missing_image",section,p,"Image URL missing")
     for id,rows in by_id.items():

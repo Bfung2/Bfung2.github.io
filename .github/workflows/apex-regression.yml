@@ -49,6 +49,8 @@ jobs:
         run: node tests/phase6-customer.mjs
       - name: Employee sales Phase 7 reconciliation regression
         run: node tests/phase7-sales-ledger.mjs
+      - name: Confirmed full-catalog evidence regression
+        run: node tests/full-catalog-audit.mjs
       - name: Checkout catalog validation regression
         run: node tests/checkout-catalog-validation.mjs
       - name: Catalog edit synchronization regression

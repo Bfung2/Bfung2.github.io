@@ -1,0 +1,19 @@
+{
+  "catalogEntries": 734,
+  "uniqueCatalogIds": 721,
+  "observedCatalogIds": 181,
+  "changedRecords": 203,
+  "changedUniqueIds": 192,
+  "priceCorrections": 23,
+  "pendingLiveIds": 540,
+  "pendingLinkDiscovery": 85,
+  "categoriesObserved": {
+    "CPU": 37,
+    "CPU cooler": 96,
+    "Mouse": 1,
+    "Power supply": 15,
+    "Graphics card": 23,
+    "Motherboard": 8,
+    "Case": 1
+  }
+}

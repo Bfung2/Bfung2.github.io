@@ -32,7 +32,7 @@ run('S.products[1].active=false');assert.equal(run('apexUnavailableCartItems().l
 const data=JSON.parse(await fs.readFile('data.json','utf8'));
 for(const id of ['gpu5060tiventus2x16','gpu5070gigawindforce3x']){
  const rows=[...data.products,...data.parts].filter(p=>p.id===id);
- assert.equal(new Set(rows.map(p=>p.price)).size,1);assert.ok(rows.every(p=>p.active===false));
- assert.ok(rows.every(p=>!p.longDesc.includes('Newegg price:')&&!p.longDesc.includes('Newegg direct price:')));
+ assert.equal(new Set(rows.map(p=>p.price)).size,1);
+ for(const p of rows){if(p.active===false)assert.ok(!p.longDesc.includes('Newegg price:')&&!p.longDesc.includes('Newegg direct price:'));else{assert.equal(p.seller,'Newegg');assert.equal(p.stockStatus,'In Stock');assert.equal(Math.round((p.price-p.neweggPrice)*100),1500);assert.ok(!p.longDesc.includes('unavailable for purchase'));}}
 }
-console.log('PASS: frontend and server reject unknown/unavailable/conflicting items, ignore forged prices, reprice builds and fees, and keep disabled GPU mirrors consistent.');
+console.log('PASS: frontend and server reject unknown/unavailable/conflicting items, ignore forged prices, reprice builds and fees, and keep GPU mirrors consistent.');
