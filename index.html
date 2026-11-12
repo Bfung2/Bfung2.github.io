@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0C3B2E">
 <title>Apex Computers — Custom PCs, Parts &amp; Tech Service</title>
 <link rel="stylesheet" href="staff-workspace.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -755,11 +756,12 @@ footer.site a{color:var(--gold)}
 </head>
 <body>
 
+<a class="skip-to-content" href="#app" onclick="document.getElementById('app').focus();return false">Skip to main content</a>
 <header class="site">
   <div class="bar">
     <a class="brand" href="#/" id="brandName"><span class="pad"></span><span>Apex Computers</span></a>
-    <div class="site-search" role="search"><span class="site-search-icon" aria-hidden="true">⌕</span><input id="globalSearch" type="search" autocomplete="off" placeholder="Search products, parts, services…" aria-label="Search the entire Apex Computers website" oninput="globalSearchInput(this.value)" onkeydown="globalSearchKeydown(event)"><kbd>ENTER</kbd><div class="global-search-results" id="globalSearchResults" hidden></div></div>
-    <nav class="main" id="nav"></nav>
+    <div class="site-search" role="search"><span class="site-search-icon" aria-hidden="true">⌕</span><input id="globalSearch" type="search" autocomplete="off" placeholder="Search products, parts, services…" aria-label="Search the entire Apex Computers website" aria-controls="globalSearchResults" aria-expanded="false" oninput="globalSearchInput(this.value)" onkeydown="globalSearchKeydown(event)"><kbd>ENTER</kbd><div class="global-search-results" id="globalSearchResults" role="region" aria-label="Search suggestions" hidden></div></div>
+    <nav class="main" id="nav" aria-label="Main navigation"></nav>
     <button class="cartbtn" onclick="go('/login')" id="accBtn">Sign in</button>
     <button class="cartbtn" onclick="go('/cart')" id="cartBtn">Cart (0)</button>
   </div>
@@ -776,7 +778,7 @@ footer.site a{color:var(--gold)}
   </div>
 </div>
 
-<main id="app"></main>
+<main id="app" tabindex="-1"></main>
 
 <footer class="site">
   <div class="wrap">
@@ -1399,26 +1401,54 @@ function matchesProductSearch(p,query){
 }
 function globalSearchInput(value){
  const box=document.getElementById("globalSearchResults");if(!box)return;
- const q=String(value||"").trim().toLowerCase();if(!q){box.hidden=true;box.innerHTML="";return;}
+ const q=String(value||"").trim().toLowerCase();if(!q){hideGlobalSearch();box.innerHTML="";return;}
  const products=catalogAll().filter(p=>matchesProductSearch(p,q)).slice(0,7);
  const pageTerms={"/":["home","apex computers"],"/products":["products","shop","parts","components","computer parts"],"/build":["build a pc","custom pc","pc builder","computer build","compatibility"],"/tech":["tech support","repair","fix","installation","install","troubleshooting","home tech service"],"/about":["about us"],"/contact":["contact us","email","phone"]};
  const pages=PAGES.filter(([path,label])=>(label+" "+path+" "+(pageTerms[path]||[]).join(" ")).toLowerCase().includes(q)).slice(0,3);
  const productRows=products.map(p=>`<button class="global-search-result" type="button" data-id="${esc(p.id)}" onclick="globalSearchPickProduct(this.dataset.id)"><span class="global-result-thumb">${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="">`:"▣"}</span><span class="global-result-copy"><strong>${esc(p.name)}</strong><small>${esc(displayCat(p)||"Product")} · ${money(p.price)}</small></span><span class="global-result-arrow">↗</span></button>`).join("");
  const pageRows=pages.map(([path,label])=>`<button class="global-search-result global-page-result" type="button" data-path="${esc(path)}" onclick="globalSearchPickPage(this.dataset.path)"><span class="global-result-thumb">⌁</span><span class="global-result-copy"><strong>${esc(label)}</strong><small>Website page</small></span><span class="global-result-arrow">↗</span></button>`).join("");
- box.innerHTML=(productRows||pageRows)?`<div class="global-search-label">MATCHING RESULTS</div>${productRows}${pageRows}<button class="global-search-all" type="button" onclick="submitGlobalSearch()">See all results for “${esc(value)}” ↗</button>`:`<div class="global-search-empty">No matches for “${esc(value)}”. Try a product name or category.</div>`;box.hidden=false;
+ box.innerHTML=(productRows||pageRows)?`<div class="global-search-label">MATCHING RESULTS</div>${productRows}${pageRows}<button class="global-search-all" type="button" onclick="submitGlobalSearch()">See all results for “${esc(value)}” ↗</button>`:`<div class="global-search-empty">No matches for “${esc(value)}”. Try a product name or category.</div>`;box.hidden=false;document.getElementById("globalSearch")?.setAttribute("aria-expanded","true");
 }
 function globalSearchPickProduct(id){hideGlobalSearch();productDetail(id);}
 function globalSearchPickPage(path){hideGlobalSearch();go(path);}
-function hideGlobalSearch(){const box=document.getElementById("globalSearchResults");if(box)box.hidden=true;}
-function submitGlobalSearch(){shopShelfPages={};const input=document.getElementById("globalSearch"),q=String(input?.value||"").trim();if(!q)return;productFilters={category:"",cpuType:"",q,min:"",max:""};shopFiltersOpen=false;hideGlobalSearch();go("/products");render();}
-function globalSearchKeydown(event){if(event.key==="Enter"){event.preventDefault();submitGlobalSearch();}if(event.key==="Escape")hideGlobalSearch();}
+function hideGlobalSearch(){
+ const box=document.getElementById("globalSearchResults");
+ if(box)box.hidden=true;
+ document.getElementById("globalSearch")?.setAttribute("aria-expanded","false");
+}
+function submitGlobalSearch(){shopShelfPages={};const input=document.getElementById("globalSearch"),q=String(input?.value||"").trim();if(!q)return;productFilters={category:"",storageType:"",coolerType:"",cpuType:"",q,min:"",max:""};shopFiltersOpen=false;hideGlobalSearch();go("/products");render();}
+function globalSearchKeydown(event){
+ if(event.key==="Enter"){event.preventDefault();submitGlobalSearch();}
+ else if(event.key==="Escape"){hideGlobalSearch();}
+ else if(event.key==="ArrowDown"){
+  const first=document.querySelector("#globalSearchResults:not([hidden]) button");
+  if(first){event.preventDefault();first.focus();}
+ }
+}
 document.addEventListener("click",event=>{if(!event.target.closest(".site-search"))hideGlobalSearch();});
+document.addEventListener("keydown",event=>{
+ if(!event.target.closest?.("#globalSearchResults"))return;
+ if(event.key==="Escape"){hideGlobalSearch();document.getElementById("globalSearch")?.focus();event.preventDefault();return;}
+ if(event.key!=="ArrowDown"&&event.key!=="ArrowUp")return;
+ const buttons=[...document.querySelectorAll("#globalSearchResults:not([hidden]) button")];
+ const current=buttons.indexOf(document.activeElement);
+ const next=event.key==="ArrowDown"?Math.min(current+1,buttons.length-1):current-1;
+ event.preventDefault();
+ if(next<0)document.getElementById("globalSearch")?.focus();
+ else buttons[next]?.focus();
+});
 
 /* ---------- render ---------- */
 function render(){
   document.querySelector("#brandName span:last-child").textContent = S.settings.shopName || "Apex Computers";
   document.title = (S.settings.shopName||"Apex Computers") + " — Custom PCs, Parts & Tech Service";
-  nav.innerHTML = [...PAGES,...((isOwner||isEmployee)?[[isOwner?"/staff-dashboard":"/employee","Staff workspace"]]:[])].map(([p,t])=>`<a href="#${p}" class="${route()===p?'on':''}">${t}</a>`).join("");
+  const previousNavPage=nav.querySelector("a.on")?.getAttribute("href"),previousNavOffset=nav.scrollLeft;
+  nav.innerHTML = [...PAGES,...((isOwner||isEmployee)?[[isOwner?"/staff-dashboard":"/employee","Staff workspace"]]:[])].map(([p,t])=>`<a href="#${p}" class="${route()===p?'on':''}"${route()===p?' aria-current="page"':''}>${t}</a>`).join("");
+  nav.scrollLeft=previousNavOffset;
+  if(previousNavPage!=="#"+route()&&window.matchMedia("(max-width: 760px)").matches){
+    const current=nav.querySelector("a.on");
+    if(current)nav.scrollLeft=Math.max(0,current.offsetLeft-nav.offsetLeft-12);
+  }
   cartBtn.textContent = `${staffCan("prepare_sales")&&marketCartMode?"Customer cart":"Cart"} (${cartCount()})`;
   accBtn.textContent = me ? (me.name ? me.name.split(" ")[0] : "Account") : "Sign in";
   accBtn.onclick = () => go(me ? '/account' : '/login');
@@ -1444,15 +1474,19 @@ function render(){
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
     "/track-order":customerTrackingPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
-  const keep = (ae && ae.id && app.contains(ae)) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
+  const keep = (ae && ae.id && (app.contains(ae)||document.getElementById("shopFilterPanel")?.contains(ae))) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
   const rows = {};
   document.querySelectorAll(".shelf-row").forEach(el=>{ if(el.id) rows[el.id] = el.scrollLeft; });
   document.getElementById("shopFilterPanel")?.remove();
   document.querySelector(".shop-filter-backdrop")?.remove();
   if(r!=="/products"){shopFiltersOpen=false;document.body.classList.remove("filters-open");}
+  if(r!=="/"&&homeMotionCleanup){homeMotionCleanup();homeMotionCleanup=null;}
+  if(r!=="/products"&&productsMotionCleanup){productsMotionCleanup();productsMotionCleanup=null;}
+  if(r!=="/build"){buildMenuOpen=false;buildPickerOpen=false;document.body.classList.remove("build-menu-open","build-picker-open");}
   app.innerHTML = (views[r]||home)();
   if(r==="/manage")restoreSettingsDraft();
   if(r==="/products") setupShopFilterLayer();
+  if(r==="/build") syncBuildDrawerAccessibility();
   if(r==="/") setupHomeMotion();
   if(r==="/products") setupProductsMotion();
   Object.keys(rows).forEach(id=>{ const el = document.getElementById(id); if(el) el.scrollLeft = rows[id]; });
@@ -1666,8 +1700,21 @@ function toggleBuildPickerColumn(){buildPickerVisible=!buildPickerVisible;render
 let shopFilterResizeBound=false;
 function setupShopFilterLayer(){if(!shopFilterResizeBound){window.addEventListener("resize",()=>{if(route()==="/products")setupShopFilterLayer();},{passive:true});shopFilterResizeBound=true;}const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),sidebar=document.querySelector(".shop-sidebar"),mobile=window.matchMedia("(max-width: 900px)").matches;if(panel&&mobile&&panel.parentElement!==document.body)document.body.appendChild(panel);else if(panel&&!mobile&&panel.parentElement===document.body&&sidebar)sidebar.appendChild(panel);if(backdrop&&backdrop.parentElement!==document.body)document.body.appendChild(backdrop);if(panel)panel.classList.toggle("open",shopFiltersOpen&&mobile);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen&&mobile);document.body.classList.toggle("filters-open",shopFiltersOpen&&mobile);}
 function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
-function setProductFilter(key,val){ shopShelfPages={};productFilters[key]=val; if(key==="category"){ productFilters.storageType=""; productFilters.coolerType=""; } render(); }
-function clearProductFilters(){ shopShelfPages={};productFilters = {category:"", storageType:"", coolerType:"", cpuType:"", q:"", min:"", max:""}; render(); }
+let storefrontFilterTimer=null;
+function queueStorefrontFilter(kind,key,value){
+ if(kind!=="products"&&kind!=="build")return;
+ if(kind==="products"){productFilters[key]=value;shopShelfPages={};}
+ else{partFilters[key]=value;buildCategoryPages={};}
+ clearTimeout(storefrontFilterTimer);
+ storefrontFilterTimer=setTimeout(()=>{
+  storefrontFilterTimer=null;
+  if(route()!==(kind==="products"?"/products":"/build"))return;
+  render();
+  if(kind==="build"&&buildMenuOpen)toggleBuildMenu(true);
+ },180);
+}
+function setProductFilter(key,val){clearTimeout(storefrontFilterTimer); shopShelfPages={};productFilters[key]=val; if(key==="category"){ productFilters.storageType=""; productFilters.coolerType=""; } render(); }
+function clearProductFilters(){ clearTimeout(storefrontFilterTimer);shopShelfPages={};productFilters = {category:"", storageType:"", coolerType:"", cpuType:"", q:"", min:"", max:""}; render(); }
 
 /* ---- Products and Build-a-PC parts share one catalog ----
    A part added on Build a PC also shows on the Products page under its category.
@@ -1849,7 +1896,6 @@ function products(){
     if(f.min && (+p.price||0) < +f.min) return false;
     if(f.max && (+p.price||0) > +f.max) return false;
     if(f.q){
-      const hay = searchableProductText(p);
       if(!matchesProductSearch(p,f.q)) return false;
     }
     return true;
@@ -1872,10 +1918,10 @@ function products(){
       ${cpuTypesUsed.length?`<div class="field"><label>CPU type</label><select onchange="setProductFilter('cpuType',this.value)">
         <option value="">Any CPU type</option>${cpuTypesUsed.map(c=>`<option value="${esc(c)}" ${f.cpuType===c?"selected":""}>${esc(c)}</option>`).join("")}
       </select></div>`:"<div></div>"}
-      <div class="field"><label>Min price</label><input id="prod_f_min" type="number" value="${esc(f.min)}" oninput="setProductFilter('min',this.value)"></div>
-      <div class="field"><label>Max price</label><input id="prod_f_max" type="number" value="${esc(f.max)}" oninput="setProductFilter('max',this.value)"></div>
+      <div class="field"><label>Min price</label><input id="prod_f_min" type="number" value="${esc(f.min)}" oninput="queueStorefrontFilter('products','min',this.value)"></div>
+      <div class="field"><label>Max price</label><input id="prod_f_max" type="number" value="${esc(f.max)}" oninput="queueStorefrontFilter('products','max',this.value)"></div>
     </div>
-    <div class="field" style="margin-bottom:0"><label>Search</label><input id="prod_f_q" placeholder="Name, description, processor…" value="${esc(f.q)}" oninput="setProductFilter('q',this.value)"></div>
+    <div class="field" style="margin-bottom:0"><label>Search</label><input id="prod_f_q" placeholder="Name, description, processor…" value="${esc(f.q)}" oninput="queueStorefrontFilter('products','q',this.value)"></div>
     ${active?`<button class="btn sm ghost" style="margin-top:10px" onclick="clearProductFilters()">Clear filters</button>`:""}
   </div>` : "";
   const navItem=(label,count,target,icon,active=false)=>`<button class="shop-side-link ${active?"active":""}" onclick="${label==="Storage"?"setProductFilter('category','Storage')":"jumpProductSection('"+target+"')"}"><span class="shop-side-icon">${icon}</span><span>${esc(label)}</span><small>${count}</small></button>`;
@@ -2028,8 +2074,8 @@ function nextGuidedCategory(){
 let partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""};
 let sectionOpen = {};
 function secOpen(k){ return sectionOpen[k]!==false ? "open" : ""; }
-function setPartFilter(key,val){ partFilters[key]=val; buildCategoryPages={}; render(); if(buildMenuOpen)toggleBuildMenu(true); }
-function clearPartFilters(){ partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""}; buildCategoryPages={}; render(); if(buildMenuOpen)toggleBuildMenu(true); }
+function setPartFilter(key,val){ clearTimeout(storefrontFilterTimer);partFilters[key]=val; buildCategoryPages={}; render(); if(buildMenuOpen)toggleBuildMenu(true); }
+function clearPartFilters(){ clearTimeout(storefrontFilterTimer);partFilters = {brand:"", socket:"", cpuType:"", sort:"", q:"", min:"", max:"", psuWatts:"", psuEfficiency:"", psuModular:"", psuFormFactor:""}; buildCategoryPages={}; render(); if(buildMenuOpen)toggleBuildMenu(true); }
 function matchesPartFilter(p){
   const f = partFilters;
   if(f.min && (+p.price||0) < +f.min) return false;
@@ -2081,8 +2127,8 @@ function build(){
         <option value="high" ${f.sort==="high"?"selected":""}>Price: high to low</option>
         <option value="name" ${f.sort==="name"?"selected":""}>Name A–Z</option>
       </select></div>
-      <div class="field"><label>Min price</label><input id="part_f_min" type="number" value="${esc(f.min)}" oninput="setPartFilter('min',this.value)"></div>
-      <div class="field"><label>Max price</label><input id="part_f_max" type="number" value="${esc(f.max)}" oninput="setPartFilter('max',this.value)"></div>
+      <div class="field"><label>Min price</label><input id="part_f_min" type="number" value="${esc(f.min)}" oninput="queueStorefrontFilter('build','min',this.value)"></div>
+      <div class="field"><label>Max price</label><input id="part_f_max" type="number" value="${esc(f.max)}" oninput="queueStorefrontFilter('build','max',this.value)"></div>
     </div>
     <div class="fields2" style="margin-top:12px;align-items:flex-end">
       <div class="field"><label>PSU wattage</label><select onchange="setPartFilter('psuWatts',this.value)">
@@ -2102,7 +2148,7 @@ function build(){
         ${["ATX","SFX","SFX-L"].map(ff=>`<option value="${ff}" ${f.psuFormFactor===ff?"selected":""}>${ff}</option>`).join("")}
       </select></div>
     </div>
-    <div class="field" style="margin-bottom:0"><label>Search</label><input id="part_f_q" placeholder="Name, description, brand…" value="${esc(f.q)}" oninput="setPartFilter('q',this.value)"></div>
+    <div class="field" style="margin-bottom:0"><label>Search</label><input id="part_f_q" placeholder="Name, description, brand…" value="${esc(f.q)}" oninput="queueStorefrontFilter('build','q',this.value)"></div>
     ${filterActive?`<button class="btn sm ghost" style="margin-top:10px" onclick="clearPartFilters()">Clear filters</button>`:""}
   </div>` : "";
   const allCpus = partsAll().filter(p=>p.category==="CPU");
@@ -2435,34 +2481,36 @@ function checkout(){
   const a = customerPreferredShippingAddress();
   if(!myCart.length){ return `<div class="wrap"><div class="empty"><strong>Your cart is empty</strong></div></div>`; }
   return `<div class="wrap"><div class="pagehead"><div><h2>Checkout</h2><p>Submit your details, then securely pay with PayPal. Your order is confirmed after PayPal verifies the payment.</p></div></div>
-  <div class="split">
-    <form class="panel" onsubmit="return submitOrder(event)">${salesHandoffNotice("order")}${promoCheckoutField()}
+  <div class="split checkout-layout">
+    <form class="panel checkout-customer-form" onsubmit="return submitOrder(event)">${salesHandoffNotice("order")}${promoCheckoutField()}
       <div class="fields2">
-        <div class="field"><label for="cn">Full name</label><input id="cn" required value="${esc(me?me.name:"")}"></div>
-        <div class="field"><label for="ce">Email</label><input id="ce" type="email" required value="${esc(me?me.email:"")}"></div>
-        <div class="field"><label for="cp">Phone</label><input id="cp" value="${esc(me?me.phone:"")}"></div>
+        <div class="field"><label for="cn">Full name</label><input id="cn" autocomplete="name" maxlength="120" required value="${esc(me?me.name:"")}"></div>
+        <div class="field"><label for="ce">Email</label><input id="ce" type="email" autocomplete="email" maxlength="254" required value="${esc(me?me.email:"")}"></div>
+        <div class="field"><label for="cp">Phone</label><input id="cp" type="tel" autocomplete="tel" maxlength="30" value="${esc(me?me.phone:"")}"></div>
         <div></div>
       </div>
       ${customerShippingAddressPicker()}
-      <div class="field"><label for="c_street">Street address</label><input id="c_street" required oninput="checkAddress()" value="${esc(a.street)}"></div>
+      <div class="field"><label for="c_street">Street address</label><input id="c_street" autocomplete="street-address" maxlength="200" aria-describedby="addrWarn" required oninput="checkAddress()" value="${esc(a.street)}"></div>
       <div class="fields2">
-        <div class="field"><label for="c_city">City</label><input id="c_city" required oninput="checkAddress()" value="${esc(a.city)}"></div>
-        <div class="field"><label for="c_state">State</label><input id="c_state" required oninput="checkAddress()" value="${esc(a.state)}"></div>
+        <div class="field"><label for="c_city">City</label><input id="c_city" autocomplete="address-level2" maxlength="100" aria-describedby="addrWarn" required oninput="checkAddress()" value="${esc(a.city)}"></div>
+        <div class="field"><label for="c_state">State</label><input id="c_state" autocomplete="address-level1" maxlength="100" aria-describedby="addrWarn" required oninput="checkAddress()" value="${esc(a.state)}"></div>
       </div>
-      <div class="field" style="max-width:160px"><label for="c_zip">ZIP</label><input id="c_zip" required oninput="checkAddress()" value="${esc(a.zip)}"></div>
-      <p id="addrWarn" ${looksLikeAddress(a)?"hidden":""} class="muted" style="font-size:.82rem;color:var(--alert);margin:6px 0 14px">This doesn't look complete yet — a street number, city, state and 5-digit ZIP are needed so the invoice reaches the right place.</p>
+      <div class="field" style="max-width:160px"><label for="c_zip">ZIP</label><input id="c_zip" autocomplete="postal-code" inputmode="numeric" maxlength="10" aria-describedby="addrWarn" required oninput="checkAddress()" value="${esc(a.zip)}"></div>
+      <p id="addrWarn" role="status" aria-live="polite" ${looksLikeAddress(a)?"hidden":""} class="muted" style="font-size:.82rem;color:var(--alert);margin:6px 0 14px">This doesn't look complete yet — a street number, city, state and 5-digit ZIP are needed so the invoice reaches the right place.</p>
       ${me?"":`<div class="notice" style="margin-bottom:14px">Have an account? <a href="#/login">Sign in</a> and these fields fill themselves in.</div>`}
       <div class="field"><label for="cnote">Anything else we should know</label><textarea id="cnote" style="min-height:60px"></textarea></div>
       <div class="notice">Your payment is processed by PayPal. Apex Computers does not receive or store your card details.</div>
       <button class="btn gold" type="submit">${checkoutPromo.isTest?"Complete owner test (no payment)":"Continue to PayPal"}</button>
       <div id="paypalPayment" hidden style="margin-top:18px"><p id="paypalStatus" class="muted">Your order is saved. Complete payment below.</p><div id="paypalButtons"></div></div>
     </form>
-    <div class="summary panel">
-      ${myCart.map(i=>`<div class="lineitem"><span>${esc(i.name)}</span><span>${money(i.price)}</span></div>`).join("")}
+    <aside class="summary panel checkout-order-summary" aria-label="Order summary">
+      <h3>Order summary</h3>
+      <div class="checkout-lineitems">${myCart.map(i=>`<div class="lineitem checkout-lineitem"><span>${esc(i.name)}${(+i.qty||1)>1?` <small>× ${esc(i.qty)}</small>`:""}</span><strong>${money((+i.price||0)*(i.qty||1))}</strong></div>`).join("")}</div>
+      <div class="lineitem"><span>Items subtotal</span><strong>${money(t.sub)}</strong></div>
       ${t.shipping?`<div class="lineitem"><span>Shipping</span><span>${money(t.shipping)}</span></div>`:""}
       ${t.tax?`<div class="lineitem"><span>Tax</span><span>${money(t.tax)}</span></div>`:""}
       ${promoSummary(t)}<div class="total"><span>${checkoutPromo.code?"Total before promo":"Total"}</span><span>${money(t.total)}</span></div>
-    </div></div></div>`;
+    </aside></div></div>`;
 }
 function orderText(o){
   if(o.is_test)return "TEST — NO PAYMENT TAKEN\n"+o.ref+"\n"+o.name+"\n"+o.email+"\n"+o.address+"\n\n"+o.items.map(i=>i.name+(i.parts?"\n"+i.parts.map(p=>p.category+": "+p.name).join("\n"):"")).join("\n")+"\n\nSimulated checkout. Not a paid sale.";
@@ -3103,7 +3151,7 @@ function importData(input){
 let toastT = null;
 function toast(msg){
   document.querySelectorAll(".toast").forEach(t=>t.remove());
-  const d = document.createElement("div"); d.className="toast"; d.textContent=msg;
+  const d = document.createElement("div"); d.className="toast"; d.setAttribute("role","status");d.setAttribute("aria-live","polite");d.textContent=msg;
   document.body.appendChild(d); clearTimeout(toastT); toastT = setTimeout(()=>d.remove(),3200);
 }
 </script>
