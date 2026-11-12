@@ -4,7 +4,7 @@ import vm from 'node:vm';
 const code=await fs.readFile(new URL('../staff-workspace.js',import.meta.url),'utf8');
 let pendingNoteResolve;
 const context=vm.createContext({S:{products:[],parts:[]},isOwner:true,isEmployee:false,employeeProfile:null,employeeProfiles:[],employeeAudit:[],performanceData:[],employeesLoaded:false,employeeAuditLoaded:false,performanceLoaded:false,employeeJobs:{},employeeJobsLoaded:false,
-  Date,URLSearchParams,Intl,console,window:{addEventListener(){}},document:{addEventListener(){},hidden:false},location:{hash:'#/staff-notes'},route:()=>'/staff-notes',render:()=>{},esc:s=>String(s??''),supabaseClient:{rpc:async name=>name==='apex_staff_get_notes'?new Promise(resolve=>{pendingNoteResolve=resolve;}):{data:{roles:[],employees:[],permissions:{}}}},
+  money:n=>'$'+Number(n).toFixed(2),Date,URLSearchParams,Intl,console,window:{addEventListener(){}},document:{addEventListener(){},hidden:false},location:{hash:'#/staff-notes'},route:()=>'/staff-notes',render:()=>{},esc:s=>String(s??''),supabaseClient:{rpc:async name=>name==='apex_staff_get_notes'?new Promise(resolve=>{pendingNoteResolve=resolve;}):{data:{roles:[],employees:[],permissions:{}}}},
 });
 vm.runInContext(code,context);
 const run=source=>vm.runInContext(source,context);
@@ -23,3 +23,8 @@ assert.equal(run("staffEmployeePaidCount('e')"),'Paid contributions: 1 · Test p
 const cards=run('staffSalesList(staffSales.items)');assert.ok(cards.includes('TEST'));assert.ok(cards.includes('Paid employee'));assert.ok(cards.includes('Delete / void'));assert.ok(!cards.includes('paid-real'));assert.ok(!cards.includes('voided'));
 run('isOwner=false');assert.ok(!run('staffSalesList(staffSales.items)').includes('Paid employee'));
 console.log('PASS: test cards share normal layout; settled cards hidden; paid real/test counts separate; payout/void controls owner-only.');
+run("staffSales.items=[{employee_id:'e',job_kind:'order',job_id:'open',commission_cents:1250,settlement_status:'pending'},{employee_id:'e',job_kind:'order',job_id:'unknown',settlement_status:'pending'},{employee_id:'e',job_kind:'order',job_id:'paid',commission_cents:750,commission_note:'Cash reference',settled_at:new Date().toISOString(),settlement_status:'paid'},{employee_id:'e',job_kind:'order',job_id:'legacy',settled_at:new Date().toISOString(),settlement_status:'paid'},{employee_id:'e',job_kind:'order',job_id:'test',commission_cents:99999,is_test:true,settlement_status:'pending'}]");
+const summary=run('staffCommissionSummary(staffSales.items)');assert.ok(summary.includes('$12.50'));assert.ok(summary.includes('$7.50'));assert.ok(summary.includes('1 contribution(s) need an amount'));assert.ok(summary.includes('1 earlier payment(s) have no recorded amount'));assert.ok(!summary.includes('999.99'));
+run("staffSalesView='paid'");const history=run('staffSalesList(staffSales.items)');assert.ok(history.includes('Cash reference'));assert.ok(history.includes('Employee paid'));assert.ok(!history.includes('Set commission'));assert.ok(!history.includes('Delete / void'));
+run('staffReset()');assert.equal(run('staffSalesView'),'pending');
+console.log('PASS: commission balances exclude tests, unknown historic amounts labeled, history retains references and removes mutation controls.');

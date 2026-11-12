@@ -1470,7 +1470,7 @@ document.addEventListener("click",event=>{if(!event.target.closest(".site-search
 function render(){
   document.querySelector("#brandName span:last-child").textContent = S.settings.shopName || "Apex Computers";
   document.title = (S.settings.shopName||"Apex Computers") + " — Custom PCs, Parts & Tech Service";
-  nav.innerHTML = [...PAGES,...((isOwner||isEmployee)?[[isOwner?"/employees":"/employee","Staff workspace"]]:[])].map(([p,t])=>`<a href="#${p}" class="${route()===p?'on':''}">${t}</a>`).join("");
+  nav.innerHTML = [...PAGES,...((isOwner||isEmployee)?[[isOwner?"/staff-dashboard":"/employee","Staff workspace"]]:[])].map(([p,t])=>`<a href="#${p}" class="${route()===p?'on':''}">${t}</a>`).join("");
   cartBtn.textContent = `${staffCan("prepare_sales")&&marketCartMode?"Customer cart":"Cart"} (${cartCount()})`;
   accBtn.textContent = me ? (me.name ? me.name.split(" ")[0] : "Account") : "Sign in";
   accBtn.onclick = () => go(me ? '/account' : '/login');
@@ -1494,7 +1494,7 @@ function render(){
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
-    "/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
+    "/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
   const keep = (ae && ae.id && app.contains(ae)) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
   const rows = {};
