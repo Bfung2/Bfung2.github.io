@@ -80,4 +80,26 @@ assert.ok(review(changed).warnings.some(s=>s.includes("GPU manufacturer's 1000 W
 changed=mutate('gpu',{recommendedPsuWatts:750});
 assert.ok(!review(changed).warnings.some(s=>s.includes("GPU manufacturer's 750 W system recommendation")));
 
+// Catalog measurements below were verified against exact manufacturer model pages.
+const verifiedSpecs={
+ gpurtx5060gigabytewindforce2x:{length:199,psu:550,connectors:'1x 8-pin'},
+ gpurtx5060zotacamp2x:{length:220.5,psu:600,connectors:'1x 8-pin',power:155},
+ gpurtx5060tiasustuf3x8:{length:302,psu:550,connectors:'1x 16-pin'},
+ gpu9070xtasrocksteellegend3x:{length:298,psu:800,connectors:'2x 8-pin'},
+ gpurx9070xtsapphirepulse3x:{length:320,psu:750,connectors:'2x 8-pin'},
+ gpurx9060xtsapphirepulse2x16:{length:240,psu:450,connectors:'1x 8-pin'}
+};
+for(const [id,expected] of Object.entries(verifiedSpecs)){
+ const records=catalog.filter(p=>p.id===id);
+ assert.ok(records.length,'Missing source-verified GPU '+id);
+ for(const p of records){
+  assert.equal(p.lengthMm,expected.length,id+' GPU length');
+  assert.equal(p.recommendedPsuWatts,expected.psu,id+' manufacturer PSU recommendation');
+  assert.equal(p.requiredPowerConnectors,expected.connectors,id+' required power connectors');
+  assert.ok(/^https:\/\//.test(p.specSourceUrl||''),id+' manufacturer spec evidence');
+  assert.match(p.specVerifiedDate,/^\d{4}-\d\d-\d\d$/,id+' spec verification date');
+  if(expected.power)assert.equal(Number(p.power),expected.power,id+' listed power draw');
+ }
+}
+
 console.log('PASS: sockets/BIOS, memory generations, physical clearance, radiator sizes/stack, connector counts, PSU minimum vs headroom, candidate replacement, missing specs, partial/assembled builds, mandatory review acknowledgment and stale-price revalidation.');
