@@ -1,0 +1,59 @@
+name: Apex storefront regression checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apex-regression-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Static quality and customer-safe tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Parse module JavaScript
+        run: |
+          node --check customer-accounts.js
+          node --check staff-workspace.js
+          node --check order-tracking.js
+          node --check market-sales.js
+          node --check promo-codes.js
+          node --check apex-policies.js
+          node --check build-compatibility.js
+          node --check owner-test-checkout.js
+          if test -f catalog-health.js; then node --check catalog-health.js; fi
+      - name: Check public-data privacy and storefront references
+        run: node tests/site-safety.mjs
+      - name: Customer account regression
+        run: node tests/customer-accounts.mjs
+      - name: Catalog edit synchronization regression
+        run: node tests/catalog-edit-sync.mjs
+      - name: Optional newer component regressions
+        run: |
+          if test -f tests/catalog-health.mjs; then node tests/catalog-health.mjs; fi
+          if test -f tests/staff-sales-view.mjs; then node tests/staff-sales-view.mjs; fi
+      - name: Create non-destructive static catalog report
+        run: |
+          python3 scripts/audit_catalog.py --data data.json \
+            --output "$RUNNER_TEMP/catalog-audit-report.json" \
+            --review-queue "$RUNNER_TEMP/catalog-review-queue.csv"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: static-catalog-review-queue
+          path: |
+            ${{ runner.temp }}/catalog-audit-report.json
+            ${{ runner.temp }}/catalog-review-queue.csv
+          retention-days: 14
