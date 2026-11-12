@@ -31,8 +31,14 @@ assert.equal(run('customerState.user.id'),'recover');
 assert.ok(run('customerLoginPage()').includes('Reset your password'));
 client.rpc=originalRpc;
 run('customerState.recovery=false;customerState.user=null');
-for(const mode of ['signup','reset']){run(`customerSetMode('${mode}')`);await run("customerLogin({preventDefault(){},currentTarget:{elements:{email:{value:'test@invalid.test'},password:{value:'password'}}}})");}assert.equal(sendCount,0);
-assert.ok(run('customerLoginPage()').includes('New accounts and password reset are being set up'));
+for(const mode of ['signup','reset']){
+ run(`customerSetMode('${mode}')`);
+ await run("customerLogin({preventDefault(){},currentTarget:{elements:{email:{value:'test@invalid.test'},password:{value:'test-password-123'}}}})");
+}
+assert.equal(sendCount,2,"Signup and reset must call the email provider when activation is enabled");
+assert.ok(!run('customerLoginPage()').includes('New accounts and password reset are being set up'));
+assert.equal(run("customerRedirect('confirm')"),"https://bfung2.github.io/?customer_auth=confirm");
+assert.equal(run("customerRedirect('recovery')"),"https://bfung2.github.io/?customer_auth=recovery");
 authListener('PASSWORD_RECOVERY',null);assert.equal(run('customerState.recovery'),true);
 const index=await fs.readFile(new URL('../index.html',import.meta.url),'utf8');assert.ok(index.includes('detectSessionInUrl:!customerAuthCallback'));assert.ok(!index.includes('JSON.parse(localStorage.getItem("apex.customer")'));assert.ok(index.includes('customerLinkReceipt(o.trackingToken)'));
-console.log('PASS: resilient receipt linking, recovery without profile, separate staff/customer sessions, PKCE callback isolation, verified-profile display, escaped test history, pending-response logout isolation, rollout email gate and recovery event.');
+console.log('PASS: resilient receipt linking, recovery without profile, separate staff/customer sessions, PKCE callback isolation, verified-profile display, escaped test history, pending-response logout isolation, active signup/recovery mocks and recovery event.');

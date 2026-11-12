@@ -1,6 +1,6 @@
-/* Customer sessions have separate storage from staff sessions. Email delivery must be
-   configured and tested before turning on account creation / password recovery. */
-const CUSTOMER_EMAIL_READY=false;
+/* Customer sessions have separate storage from staff sessions. This release activates
+   email signup and recovery only after SMTP and the allowed callback URLs are verified. */
+const CUSTOMER_EMAIL_READY=true;
 const customerClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:'apex.customer.auth',flowType:'pkce',detectSessionInUrl:customerAuthCallback}});
 let customerState={ready:false,loading:false,user:null,orders:[],error:'',message:'',mode:'signin',recovery:false},customerEpoch=0;
 function customerRedirect(kind){return location.origin+location.pathname+'?customer_auth='+kind;}
