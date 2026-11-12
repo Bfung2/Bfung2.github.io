@@ -1327,75 +1327,6 @@ function caseGpuClearanceMm(pcCase){
   const m=text.match(/(?:graphics card|gpu|video card)(?:s)?[^.]{0,45}?up to\s*(\d{2,3}(?:\.\d+)?)\s*mm|up to\s*(\d{2,3}(?:\.\d+)?)\s*mm[^.]{0,30}?(?:graphics card|gpu)/i);
   return m?+(m[1]||m[2]):0;
 }
-/* Missing measurements are a "check fit" warning, never a false promise. */
-function compatibilityReview(part,cpu,need,chosen=currentChosenParts()){
-  const fails=[], warnings=[];
-  const get=cat=>chosen.find(p=>p.category===cat);
-  const board=part.category==="Motherboard"?part:get("Motherboard");
-  const gpu=part.category==="Graphics card"?part:get("Graphics card");
-  const ram=part.category==="Memory"?part:get("Memory");
-  const cooler=part.category==="CPU cooler"?part:get("CPU cooler");
-  const psu=part.category==="Power supply"?part:get("Power supply");
-  const pcCase=part.category==="Case"?part:get("Case");
-  if(psu){
-    const watts=+psu.watts||0;
-    const target=recommendedPSUWatts(need);
-    if(!watts || watts<target) fails.push(`PSU output is below the ${target} W recommendation (including ${psuSafetyMargin}% headroom)`);
-  }
-  // Validate the complete selected platform, not only the candidate category.
-  // Otherwise selecting a CPU after a board, or a board after RAM, can bypass checks.
-  if(cpu && board){
-    if(board.socket && cpu.socket && board.socket!==cpu.socket) fails.push("Motherboard socket does not match the CPU");
-    else if(!board.socket || !cpu.socket) warnings.push("Confirm the CPU and motherboard socket match");
-    if(board.memType && cpu.memType && board.memType!==cpu.memType) fails.push("Motherboard memory type does not match the CPU");
-    else if(!board.memType || !cpu.memType) warnings.push("Confirm supported memory generation");
-  }
-  if(ram && board){
-    if(ram.memType && board.memType && ram.memType!==board.memType) fails.push("Memory generation does not match the motherboard");
-    else if(!ram.memType || !board.memType) warnings.push("Confirm motherboard and RAM memory generation");
-  }
-  if(cpu && ram && cpu.memType && ram.memType && cpu.memType!==ram.memType) fails.push("Memory generation does not match the CPU platform");
-  if(cpu && part.category==="CPU cooler"){
-    const sockets=listSpec(part.supportedSockets||part.socket);
-    if(sockets.length && cpu.socket && !sockets.includes(cpu.socket.toLowerCase())) fails.push("Cooler does not list support for this CPU socket");
-    else if(!sockets.length) warnings.push("Confirm cooler socket support");
-  }
-  if(board && pcCase){
-    const boardSize=inferBoardSize(board);
-    const supported=supportedCaseBoardSizes(pcCase);
-    if(boardSize && supported.length && !supported.includes(boardSize)) fails.push("Motherboard form factor ("+boardSize+") is not supported by this case");
-    else if(!boardSize || !supported.length) warnings.push("Confirm motherboard and case form-factor compatibility");
-  }
-  if(gpu && pcCase){
-    const length=gpuLengthMm(gpu), clearance=caseGpuClearanceMm(pcCase);
-    if(length && clearance && length>clearance) fails.push("Graphics card is longer than the case clearance");
-    else if(!length || !clearance) warnings.push("Confirm graphics-card length against case clearance");
-  }
-  if(cooler && pcCase && cooler.coolingType==="Liquid"){
-    warnings.push("Confirm case support for a "+cooler.radiatorSizeMm+"mm radiator and fan assembly clearance");
-  }
-  if(cooler && pcCase && cooler.coolingType!=="Liquid"){
-    const height=+(cooler.heightMm||0), clearance=+(pcCase.maxCoolerHeightMm||0);
-    if(height && clearance && height>clearance) fails.push("CPU cooler is taller than the case clearance");
-    else if(!height || !clearance) warnings.push("Confirm CPU-cooler height against case clearance");
-  }
-  if(ram && cooler && cooler.coolingType!=="Liquid"){
-    const height=+(ram.heightMm||0), clearance=+(cooler.maxRamHeightMm||0);
-    if(height && clearance && height>clearance) fails.push("RAM is taller than the cooler's available memory clearance");
-    else if(!height || !clearance) warnings.push("Confirm RAM height and CPU-cooler memory clearance");
-  }
-  if(psu && pcCase){
-    const supported=listSpec(pcCase.supportedPSUFormFactors);
-    if(psu.formFactor && supported.length && !supported.includes(String(psu.formFactor).toLowerCase())) fails.push("PSU form factor is not supported by the case");
-    else if(!psu.formFactor || !supported.length) warnings.push("Confirm PSU and case form-factor compatibility");
-  }
-  if(gpu && psu){
-    const required=listSpec(gpu.requiredPowerConnectors), available=listSpec(psu.gpuPowerConnectors);
-    if(required.length && available.length && required.some(x=>!available.includes(x))) fails.push("PSU does not list all required GPU power connectors");
-    else if(required.length && !available.length) warnings.push("Confirm the PSU has the GPU's required power connectors");
-  }
-  return {fits:fails.length===0, fails, warnings};
-}
 function fitsCPU(part,cpu,need,chosen){ return compatibilityReview(part,cpu,need,chosen).fits; }
 /* Sums the CPU's own TDP plus the power-draw field on every other selected
    part (graphics card mainly) to get the watts the build actually needs —
@@ -2146,11 +2077,11 @@ function build(){
   const recommendedNeed = recommendedPSUWatts(need);
   const pickedIn = cat => buildSel[cat] ? partsAll().find(p=>p.id===buildSel[cat]) : null;
   const selectedParts = CATS.map(pickedIn).filter(Boolean);
-  const fitReviews = selectedParts.map(part=>({part,review:compatibilityReview(part,cpu,need,selectedParts)}));
-  const fitFailures = [...new Set(fitReviews.flatMap(({part,review})=>review.fails.map(message=>part.name+": "+message)))];
-  const fitWarnings = [...new Set(fitReviews.flatMap(({part,review})=>review.warnings.map(message=>part.name+": "+message)))];
+  const buildAnalysis = buildReviewState().report;
+  const fitFailures = buildAnalysis.fails;
+  const fitWarnings = buildAnalysis.warnings;
   const fitAlerts = [...fitFailures,...fitWarnings];
-  const compatibilityState = fitFailures.length ? {label:"Compatibility issue",tone:"bad",icon:"!"} : fitWarnings.length ? {label:"Review fit details",tone:"warn",icon:"!"} : selectedParts.length ? {label:"No conflicts found",tone:"good",icon:"✓"} : {label:"Build not started",tone:"neutral",icon:"·"};
+  const compatibilityState = fitFailures.length ? {label:"Compatibility issue",tone:"bad",icon:"!"} : fitWarnings.length ? {label:"Compatibility unverified",tone:"warn",icon:"!"} : selectedParts.length ? {label:"No conflicts found",tone:"good",icon:"✓"} : {label:"Build not started",tone:"neutral",icon:"·"};
   const summaryRows = selectedParts.map(part=>{
     const label=part.category==="CPU"?"Processor":part.category;
     const detail=[part.socket,part.memType,part.formFactor,part.tdp?part.tdp+"W TDP":part.watts?part.watts+"W PSU":part.power?part.power+"W draw":""].filter(Boolean).join(" · ");
@@ -2244,7 +2175,7 @@ function build(){
           <span class="muted" style="font-size:.82rem">Estimated draw <strong>${need} W</strong></span>
           <span style="font-size:.82rem">Recommended PSU <strong>${recommendedNeed} W or higher</strong></span>
         </div>
-        <p class="muted" style="font-size:.8rem;margin:7px 0 0">${psu?((+psu.watts||0)>=recommendedNeed?`✓ Your ${psu.watts} W PSU meets this recommendation.`:`<span class="nofit">Your ${psu.watts||"unknown"} W PSU is below the ${recommendedNeed} W recommendation.</span>`):`Choose a PSU with at least ${recommendedNeed} W output. The recommendation includes ${psuSafetyMargin}% headroom.`}</p>
+        <p class="muted" style="font-size:.8rem;margin:7px 0 0">${psu?((+psu.watts||0)>=recommendedNeed?`✓ Your ${psu.watts} W PSU meets this recommendation.`:`<span class="nofit">Your ${psu.watts||"unknown"} W PSU is below the ${recommendedNeed} W recommendation.</span>`):`Minimum catalog estimate: ${need} W. Recommended output: ${recommendedNeed} W with ${psuSafetyMargin}% headroom.`}</p>
       </div>` : "";
 
   const chosen = CATS.map(pickedIn).filter(Boolean);
@@ -2323,8 +2254,8 @@ ${powerLine}
         <div class="lineitem"><span>Parts (${chosen.length})</span><span>${money(partsTotal)}</span></div>
         ${fee?`<div class="lineitem"><span>Assembly</span><span>${money(fee)}</span></div>`:""}
         <div class="total"><span>Total</span><span>${money(partsTotal+fee)}</span></div>
-        <button class="btn gold" style="width:100%;margin-top:14px" ${chosen.length?"":"disabled"} onclick="addBuildToCart()">Add build to cart</button>
-        ${chosen.length?`<button class="btn ghost" style="width:100%;margin-top:8px" onclick="clearBuild()">Clear list</button>`:""}
+        <button class="btn gold" style="width:100%;margin-top:14px" ${Object.keys(buildSel).length?"":"disabled"} onclick="addBuildToCart()">Review build before cart</button>
+        ${Object.keys(buildSel).length?`<button class="btn ghost" style="width:100%;margin-top:8px" onclick="clearBuild()">Clear list</button>`:""}
         </div>
       </div>
     </div>`}
@@ -2338,12 +2269,12 @@ function pickRow(p,cat,ok,chosenParts,buildNeed){
   const spec = [p.cpuType,p.socket,p.memType,p.watts?p.watts+"W output":"",p.tdp?p.tdp+"W TDP":"",p.power?p.power+"W draw":"",p.lengthMm?p.lengthMm+"mm long":"",p.formFactor||""].filter(Boolean).join(" · ");
   const reviewCPU=chosenParts?chosenParts.find(x=>x.category==="CPU"):(buildSel["CPU"]?partsAll().find(x=>x.id===buildSel["CPU"]):null);
   const review = compatibilityReview(p,reviewCPU,buildNeed??currentBuildNeed().need,chosenParts||currentChosenParts());
-  const label = !ok ? "doesn't fit" : review.warnings.length ? "check fit" : "fits";
+  const label = !review.fits ? "doesn't fit" : review.warnings.length ? "Compatibility unverified" : "Listed checks pass";
   const tip = [...review.fails,...review.warnings].join("; ");
   return `<div class="pick ${sel?'sel':''}">
     <div class="row" style="flex:1;min-width:0;cursor:pointer" title="Tap for full details" onclick="partDetail('${p.id}')">
       ${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:4px;flex:none">`:""}
-      <div><strong>${esc(p.name)}</strong> <span class="${ok&&!review.warnings.length?'fit':'nofit'}" title="${esc(tip)}">${label}</span> <span class="muted" style="font-size:.74rem;text-decoration:underline">details ›</span>
+      <div><strong>${esc(p.name)}</strong> <span class="${review.fits&&!review.warnings.length?'fit':'nofit'}" title="${esc(tip)}">${label}</span> <span class="muted" style="font-size:.74rem;text-decoration:underline">details ›</span>
         ${tip?`<small class="nofit">${esc(tip)}</small>`:""}
         <small>${esc(p.desc||"")}${spec?` — ${esc(spec)}`:""}</small></div>
     </div>
@@ -2367,21 +2298,6 @@ function pickPart(cat,id){
   }
   saveBuild(); render();
   if(route()!=="/build") toast(had ? "Removed from your build list." : "Added to your build list — see it on Build a PC.");
-}
-function addBuildToCart(){
-  const chosen = CATS.map(cat=>buildSel[cat]).map(id=>partsAll().find(p=>p.id===id)).filter(Boolean);
-  if(!chosen.length) return;
-  const cpu=chosen.find(p=>p.category==="CPU")||null;
-  const need=requiredWatts(cpu,chosen.filter(p=>p.category!=="CPU"&&p.category!=="Power supply"));
-  const incompatible=chosen.map(part=>({part,review:compatibilityReview(part,cpu,need,chosen)})).find(x=>!x.review.fits);
-  if(incompatible){
-    toast("Fix build compatibility before adding to cart: "+incompatible.review.fails[0]);
-    return;
-  }
-  const price = chosen.reduce((n,p)=>n+(+p.price||0),0) + (wantAssembly?(+S.settings.buildFee||0):0);
-  if(!addToCart({id:uid(),kind:"build",qty:1,name:"Custom PC build"+(wantAssembly?" (assembled by us)":" (parts only)"),price,
-    parts:chosen.map(p=>({id:p.id,name:p.name,category:p.category,price:+p.price||0})), assembly:wantAssembly, fee:wantAssembly?(+S.settings.buildFee||0):0})) return;
-  buildSel={}; wantAssembly=false; saveBuild();
 }
 
 const CONTACT_REASONS = ["Repair or tech support","Help building a PC","Question about an order","Something else"];
@@ -3024,7 +2940,7 @@ function recHeightForCategory(category,ramId,otherId){
   return el?el.value:"";
 }
 function saveProduct(id,exists){
-  const rec = {id,name:p_name.value.trim(),category:readSelectWithAdd("p_cat","productCategories"),cpuType:readSelectWithAdd("p_cpu","cpuTypes"),
+  const rec = {...(exists?S.products.find(x=>x.id===id)||{}:{}),id,name:p_name.value.trim(),category:readSelectWithAdd("p_cat","productCategories"),cpuType:readSelectWithAdd("p_cpu","cpuTypes"),
     processor:p_proc.value.trim(),brand:p_brand.value.trim(),price:+p_price.value||0,desc:p_desc.value.trim(),longDesc:p_long.value.trim(),
     featured:p_feat.checked,image:p_img.value.trim(),
     formFactor:(p_cat.value==="Power supply"?document.getElementById("p_psu_form_factor")?.value:document.getElementById("p_form_factor")?.value||"")?.trim()||"",
@@ -3103,7 +3019,7 @@ function editPart(id,presetCat){
   toggleSpecs();
 }
 function savePart(id,exists){
-  const rec = {id,name:q_name.value.trim(),category:q_cat.value,brand:q_brand.value.trim(),price:+q_price.value||0,desc:q_desc.value.trim(),longDesc:q_long.value.trim(),
+  const rec = {...(exists?S.parts.find(x=>x.id===id)||{}:{}),id,name:q_name.value.trim(),category:q_cat.value,brand:q_brand.value.trim(),price:+q_price.value||0,desc:q_desc.value.trim(),longDesc:q_long.value.trim(),
     image:q_img.value.trim(),socket:readSelectWithAdd("q_sock","sockets"),
     cpuType:(q_cat.value==="CPU"?readSelectWithAdd("q_cpu","cpuTypes"):""),
     memType:q_mem.value,
@@ -3175,6 +3091,7 @@ function toast(msg){
   document.body.appendChild(d); clearTimeout(toastT); toastT = setTimeout(()=>d.remove(),3200);
 }
 </script>
+<script src="build-compatibility.js"></script>
 <script src="staff-workspace.js"></script>
 <script src="market-sales.js"></script>
 <script src="order-tracking.js"></script>

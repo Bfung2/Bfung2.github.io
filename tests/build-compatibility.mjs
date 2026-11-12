@@ -1,0 +1,45 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import vm from 'node:vm';
+const html=await fs.readFile(new URL('../index.html',import.meta.url),'utf8'),code=await fs.readFile(new URL('../build-compatibility.js',import.meta.url),'utf8');
+let markup='',lastToast='',closed=0,added=[];const inputs={buildReviewAcknowledge:{checked:false}};
+const ctx=vm.createContext({console,Number,Math,Set,Map,JSON,Array,S:{settings:{buildFee:75,taxRate:10,shippingFee:20}},DEFAULTS:{settings:{}},buildSel:{},wantAssembly:false,psuSafetyMargin:20,myCart:[],catalog:[],partsAll:()=>ctx.catalog,apexPurchasable:()=>true,document:{getElementById:id=>inputs[id]},openDlg:s=>{markup=s;},editDlg:{close:()=>closed++},esc:s=>String(s??'').replaceAll('<','&lt;').replaceAll('>','&gt;'),money:n=>'$'+Number(n).toFixed(2),toast:s=>lastToast=s,uid:()=> 'build-id',saveBuild(){},render(){},cartTotals:()=>({sub:ctx.myCart.reduce((n,p)=>n+p.price*(p.qty||1),0)}),addToCart:item=>{added.push(item);ctx.myCart.push(item);return true;}});
+vm.runInContext(html.slice(html.indexOf('const CATS ='),html.indexOf('/* ---------- cart ---------- */')),ctx);vm.runInContext(code,ctx);const run=s=>vm.runInContext(s,ctx);
+const base=[{id:'cpu',category:'CPU',name:'Processor',socket:'AM5',memType:'DDR5',supportedMemoryTypes:['DDR5'],tdp:65,price:200},{id:'board',category:'Motherboard',name:'Board',socket:'AM5',memType:'DDR5',formFactor:'mATX',supportedCpuIds:['cpu'],biosSupportVerified:true,power:40,requiredCpuPowerConnectors:'1x EPS 8-pin',price:150},{id:'ram',category:'Memory',name:'RAM',memType:'DDR5',heightMm:40,power:10,price:100},{id:'gpu',category:'Graphics card',name:'GPU',lengthMm:300,power:200,requiredPowerConnectors:'2x8-pin',price:300},{id:'case',category:'Case',name:'Case',caseFormFactors:'ATX, mATX',maxGpuLengthMm:350,maxCoolerHeightMm:160,supportedPSUFormFactors:'ATX',price:100},{id:'cooler',category:'CPU cooler',name:'Air cooler',coolingType:'Air',supportedSockets:['AM5'],heightMm:150,maxRamHeightMm:45,price:40},{id:'psu',category:'Power supply',name:'PSU',watts:850,formFactor:'ATX',gpuPowerConnectors:'2x 8-pin',cpuPowerConnectors:'1x 4+4-pin',price:100},{id:'disk',category:'Storage',name:'SSD',power:5,price:80}];
+const review=parts=>{ctx.sample=parts;return run('analyzeBuildCompatibility(sample)');},mutate=(id,fields)=>base.map(p=>p.id===id?{...p,...fields}:{...p});
+assert.equal(review(base).fails.length,0);assert.equal(review(base).draw,320);assert.ok(review(base).warnings.some(s=>s.includes('storage interface')));
+assert.ok(review(mutate('board',{socket:'LGA1700'})).fails.some(s=>s.includes('socket')));
+assert.ok(review(mutate('ram',{memType:'DDR4'})).fails.some(s=>s.includes('RAM generation')));
+assert.ok(review(mutate('gpu',{lengthMm:351})).fails.some(s=>s.includes('exceeds')));assert.ok(!review(mutate('gpu',{lengthMm:350})).fails.some(s=>s.includes('GPU length')));
+assert.ok(review(mutate('cooler',{heightMm:161})).fails.some(s=>s.includes('taller')));
+assert.ok(review(mutate('psu',{watts:300})).fails.some(s=>s.includes('below estimated draw')));assert.equal(review(mutate('psu',{watts:320})).fails.length,0);assert.ok(review(mutate('psu',{watts:320})).warnings.some(s=>s.includes('headroom')));
+assert.ok(review(mutate('psu',{gpuPowerConnectors:'1x8-pin'})).fails.some(s=>s.includes('enough matching')));assert.ok(review(mutate('psu',{gpuPowerConnectors:'8-pin'})).warnings.some(s=>s.includes('quantity')));
+assert.ok(review(mutate('cooler',{supportedSockets:['AM4']})).fails.some(s=>s.includes('CPU socket')));
+let changed=mutate('gpu',{lengthMm:undefined});assert.ok(review(changed).warnings.some(s=>s.includes('GPU length')));assert.ok(!review(changed).fails.some(s=>s.includes('GPU length')));
+changed=mutate('cooler',{coolingType:'Liquid',radiatorSizeMm:280,radiatorThicknessMm:27,fanThicknessMm:25});changed=changed.map(p=>p.id==='case'?{...p,supportedRadiatorSizesMm:[240,360],maxRadiatorThicknessMm:60}:p);assert.ok(review(changed).fails.some(s=>s.includes('280 mm radiator')));
+changed=changed.map(p=>p.id==='case'?{...p,supportedRadiatorSizesMm:[280],maxRadiatorThicknessMm:50}:p);assert.ok(review(changed).fails.some(s=>s.includes('Radiator + fans')));
+changed=base.map(p=>p.id==='cpu'?{...p,supportedMemoryTypes:undefined,memType:'DDR4 / DDR5'}:p);assert.ok(!review(changed).fails.some(s=>s.includes('memory')));
+changed=base.map(p=>p.id==='cpu'?{...p,supportedMemoryTypes:undefined,memType:'DDR4'}:p);assert.ok(!review(changed).fails.some(s=>s.includes('CPU memory')));assert.ok(review(changed).warnings.some(s=>s.includes('CPU memory-generation')));
+// Replacing a selected part uses the candidate rather than retaining the old incompatible record.
+ctx.catalog=base;ctx.sample=base;ctx.candidate={...base.find(p=>p.id==='ram'),memType:'DDR5'};ctx.bad=mutate('ram',{memType:'DDR4'});assert.equal(run('compatibilityReview(candidate,sample[0],0,bad).fits'),true);
+ctx.catalog=base;ctx.buildSel=Object.fromEntries(base.map(p=>[p.category,p.id]));run('addBuildToCart()');assert.ok(markup.includes('Review your build'));assert.ok(markup.includes('Build subtotal'));assert.ok(markup.includes('Estimated cart total after adding'));assert.equal(added.length,0);
+run('confirmReviewedBuild()');assert.equal(added.length,0);assert.ok(lastToast.includes('acknowledge'));
+inputs.buildReviewAcknowledge.checked=true;ctx.catalog=mutate('ram',{price:120});run('confirmReviewedBuild()');assert.equal(added.length,0);assert.ok(lastToast.includes('changed'));run('confirmReviewedBuild()');assert.equal(added.length,1);assert.equal(added[0].price,1090);assert.equal(added[0].assembly,false);assert.equal(closed,1);
+// Hard conflicts block final confirmation even if the acknowledgment is checked.
+ctx.catalog=mutate('ram',{memType:'DDR4'});ctx.buildSel=Object.fromEntries(base.map(p=>[p.category,p.id]));run('addBuildToCart();confirmReviewedBuild()');assert.equal(added.length,1);assert.ok(markup.includes('disabled'));
+// Loose partial selections can be reviewed; assembled incomplete systems cannot.
+ctx.catalog=base;ctx.buildSel={CPU:'cpu'};ctx.wantAssembly=true;assert.ok(run('buildReviewState().report.fails').some(s=>s.includes('Assembly requires')));ctx.wantAssembly=false;assert.equal(run('buildReviewState().report.fails.length'),0);assert.ok(run('buildReviewState().report.warnings').some(s=>s.includes('Partial build')));
+ctx.buildSel={CPU:'missing'};assert.ok(run('buildReviewState().report.fails').some(s=>s.includes('unavailable')));
+// A flexible PCIe 6+2 connector may supply one 6-pin OR 8-pin plug, never both at once.
+changed=mutate('gpu',{requiredPowerConnectors:'1x8-pin, 1x6-pin'}).map(p=>p.id==='psu'?{...p,gpuPowerConnectors:'1x6+2-pin'}:p);assert.ok(review(changed).fails.some(s=>s.includes('enough matching')));
+changed=changed.map(p=>p.id==='psu'?{...p,gpuPowerConnectors:'2x6+2-pin'}:p);assert.ok(!review(changed).fails.some(s=>s.includes('enough matching')));
+changed=mutate('gpu',{requiredPowerConnectors:[]}).map(p=>p.id==='psu'?{...p,gpuPowerConnectors:undefined}:p);assert.ok(!review(changed).issues.some(s=>s.key==='gpu-connectors'));
+// Existing real catalog data must yield explicit unknowns rather than fabricated measurements.
+const data=JSON.parse(await fs.readFile(new URL('../data.json',import.meta.url),'utf8'));const catalog=[...data.products,...data.parts];const air=catalog.find(p=>p.category==='CPU cooler'&&p.coolingType==='Air');assert.ok(air);changed=base.map(p=>p.id==='cooler'?{...air,id:'cooler'}:p);assert.ok(review(changed).warnings.some(s=>s.includes('CPU-cooler height')));
+ctx.catalog=base;ctx.buildSel=Object.fromEntries(base.map(p=>[p.category,p.id]));ctx.wantAssembly=true;ctx.myCart=[{price:10,qty:2}];run('addBuildToCart()');assert.ok(markup.includes('$1145.00'));assert.ok(markup.includes('$1301.50'));
+// Editing a catalog part must retain compatibility metadata that the general form does not expose.
+const savePartCode=html.slice(html.indexOf('function savePart('),html.indexOf('function delPart('));
+for(const field of new Set(savePartCode.match(/q_[a-z_]+(?=\.value)/g)))ctx[field]={value:''};
+ctx.q_name.value='Renamed cooler';ctx.q_cat.value='CPU cooler';ctx.q_price.value='45';ctx.q_supported_sockets.value='AM5';ctx.S.parts=[{id:'edited',category:'CPU cooler',name:'Old',price:40,coolingType:'Liquid',radiatorSizeMm:280,sourceUrl:'https://example.invalid/source',keywords:['cooler']}];ctx.readSelectWithAdd=id=>ctx[id]?.value||'';ctx.save=()=>{};
+vm.runInContext(savePartCode,ctx);run("savePart('edited',true)");assert.equal(ctx.S.parts[0].name,'Renamed cooler');assert.equal(ctx.S.parts[0].radiatorSizeMm,280);assert.equal(ctx.S.parts[0].coolingType,'Liquid');assert.equal(ctx.S.parts[0].sourceUrl,'https://example.invalid/source');
+console.log('PASS: sockets/BIOS, memory generations, physical clearance, radiator sizes/stack, connector counts, PSU minimum vs headroom, candidate replacement, missing specs, partial/assembled builds, mandatory review acknowledgment and stale-price revalidation.');

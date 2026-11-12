@@ -192,3 +192,13 @@ The public status RPC requires the complete random token and returns only the re
 Owners and assigned employees with orders/update-status permissions can update customer progress. Existing working/shipped/delivered status actions synchronize progress. Customer-facing fulfillment cannot start before payment confirmation (except clearly labeled owner tests). Deleting the source inbox order preserves the last limited tracking snapshot as archived; it does not fabricate delivery. No customer emails are sent automatically by this feature. Existing owner-triggered status emails include the tracking link.
 
 Checks: `node tests/order-tracking-state.mjs` and the full PGlite staff-permissions suite cover token access, response redaction, assignment/permission checks, stale edits, unpaid/test behavior, archived snapshots and existing workflows.
+
+### Build compatibility and final review
+
+`build-compatibility.js` contains the active static storefront checks. Socket and DDR-generation conflicts, explicit case clearances, listed radiator sizes/thickness, PSU minimum draw and known connector quantities are checked against catalog fields. Unknown measurements, CPU-model/BIOS support, cable counts/standards and storage interface/lanes remain visibly unverified. A matching socket alone is not a CPU-support guarantee. Optional PSU safety headroom is a recommendation; output below the catalog draw is a blocking conflict.
+
+Review build before cart opens a final component/price list, known conflicts, unverified warnings, power estimate, assembly fee, and an estimated combined cart total including configured shipping/tax. Known conflicts block confirmation; unknowns and partial loose-part selections require acknowledgment. Assembled selections must include the essential components and selected or verified included cooling. Review is repeated if selection, metadata, prices, assembly, margin or cart contents change. Existing product metadata is preserved when editing the product so specifications and source details are not lost.
+
+The checks are catalog-based guidance, not manufacturer validation or a full system peak-power calculation. No unsupported measurements have been filled in, and no products/prices were changed. Current shipping/tax and promo discounts are finalized during checkout. No database or Edge Function deployment is required for this change.
+
+Run `node tests/build-compatibility.mjs` for socket/memory/clearance/radiator/connector/power cases, candidate replacement, missing data, partial assembly requirements, review acknowledgments and stale-price/cart-total validation.
