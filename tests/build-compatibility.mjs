@@ -43,4 +43,27 @@ const savePartCode=html.slice(html.indexOf('function savePart('),html.indexOf('f
 for(const field of new Set(savePartCode.match(/q_[a-z_]+(?=\.value)/g)))ctx[field]={value:''};
 ctx.q_name.value='Renamed cooler';ctx.q_cat.value='CPU cooler';ctx.q_price.value='45';ctx.q_supported_sockets.value='AM5';ctx.S.parts=[{id:'edited',category:'CPU cooler',name:'Old',price:40,coolingType:'Liquid',radiatorSizeMm:280,sourceUrl:'https://example.invalid/source',keywords:['cooler']}];ctx.readSelectWithAdd=id=>ctx[id]?.value||'';ctx.save=()=>{};
 vm.runInContext(savePartCode,ctx);run("savePart('edited',true)");assert.equal(ctx.S.parts[0].name,'Renamed cooler');assert.equal(ctx.S.parts[0].radiatorSizeMm,280);assert.equal(ctx.S.parts[0].coolingType,'Liquid');assert.equal(ctx.S.parts[0].sourceUrl,'https://example.invalid/source');
+// Phase 9: case class must not be forced by aggregate clearance of unrelated mATX cases.
+const phase9Micro={...base.find(p=>p.id==='case'),id:'micro-case',name:'Micro case',caseFormFactors:'Micro ATX, Mini-ITX',maxGpuLengthMm:440};
+const phase9Tiny={...phase9Micro,id:'tiny-case',name:'Tiny case',maxGpuLengthMm:250};
+const phase9Gpu={...base.find(p=>p.id==='gpu'),lengthMm:420};
+const phase9Board={...base.find(p=>p.id==='board'),formFactor:'mATX'};
+ctx.catalog=base.filter(p=>!['case','gpu','board'].includes(p.id)).concat([phase9Micro,phase9Tiny,phase9Gpu,phase9Board]);
+ctx.buildSel={Motherboard:'board','Graphics card':'gpu'};
+assert.equal(run('buildCaseRequirement().forced'),false,'A long GPU must be checked against each case, not force ATX by aggregate clearance');
+assert.equal(run('buildCaseRequirement().microCompatible'),1,'Only one small case has sufficient documented clearance');
+run("pickPart('Case','tiny-case')");
+assert.equal(ctx.buildSel.Case,undefined,'Do not select a confirmed case/GPU conflict');
+assert.ok(lastToast.includes('does not fit'));
+run("pickPart('Case','micro-case')");
+assert.equal(ctx.buildSel.Case,'micro-case','A Micro-ATX case with actual clearance must remain selectable');
+ctx.catalog=ctx.catalog.map(p=>p.id==='board'?{...p,formFactor:'ATX'}:p);
+assert.equal(run('buildCaseRequirement().forced'),true,'An ATX motherboard must require ATX-compatible cases');
+ctx.sample=ctx.catalog.filter(p=>['board','gpu','micro-case'].includes(p.id));
+assert.equal(run('analyzeBuildCompatibility(sample).fails.some(x=>x.includes("Motherboard form factor"))'),true);
+changed=mutate('gpu',{recommendedPsuWatts:1000});
+assert.ok(review(changed).warnings.some(s=>s.includes("GPU manufacturer's 1000 W system recommendation")));
+changed=mutate('gpu',{recommendedPsuWatts:750});
+assert.ok(!review(changed).warnings.some(s=>s.includes("GPU manufacturer's 750 W system recommendation")));
+
 console.log('PASS: sockets/BIOS, memory generations, physical clearance, radiator sizes/stack, connector counts, PSU minimum vs headroom, candidate replacement, missing specs, partial/assembled builds, mandatory review acknowledgment and stale-price revalidation.');
