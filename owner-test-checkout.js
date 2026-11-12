@@ -9,7 +9,7 @@ async function ownerSubmitTestCheckout(e){
  staffBusy(button,true);
  try{const address=combineAddress(currentCheckoutAddress());const data=await staffRPC('apex_owner_test_checkout',{p_code:checkoutPromo.code,p_order:{name:document.getElementById('cn').value.trim(),email:document.getElementById('ce').value.trim(),phone:document.getElementById('cp').value.trim(),address,items:myCart,handoff_token:customerHandoff.token}});
   lastOrder={...data,is_test:true,name:document.getElementById('cn').value.trim(),email:document.getElementById('ce').value.trim(),phone:document.getElementById('cp').value.trim(),address,items:structuredClone(myCart),total:0,sub:0,shipping:0,tax:0,notes:'OWNER TEST — NO PAYMENT TAKEN',at:new Date().toISOString()};
-  salesForgetHandoff();myCart=[];checkoutPromo={code:'',discount:0,subtotal:null};saveCart();
+  rememberOrderTracking(lastOrder);salesForgetHandoff();myCart=[];checkoutPromo={code:'',discount:0,subtotal:null};saveCart();
   try{const {data:delivery,error}=await supabaseClient.functions.invoke('paid-order-notify',{body:{orderId:data.id}});lastOrder.notificationsPending=!!error||!delivery?.success;}catch{lastOrder.notificationsPending=true;}
   marketDrafts.loaded=false;go('/done');
  }catch(e){staffError(e);}finally{staffBusy(button,false);}return false;
