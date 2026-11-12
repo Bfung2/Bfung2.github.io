@@ -1790,6 +1790,19 @@ document.addEventListener("keydown",event=>{
  }
 });
 
+let storefrontFilterTimer=null;
+function queueStorefrontFilter(kind,key,value){
+ if(kind!=="products"&&kind!=="build")return;
+ if(kind==="products"){productFilters[key]=value;shopShelfPages={};}
+ else{partFilters[key]=value;buildCategoryPages={};}
+ clearTimeout(storefrontFilterTimer);
+ storefrontFilterTimer=setTimeout(()=>{
+  storefrontFilterTimer=null;
+  if(route()!==(kind==="products"?"/products":"/build"))return;
+  render();
+  if(kind==="build"&&buildMenuOpen)toggleBuildMenu(true);
+ },180);
+}
 function setProductFilter(key,val){clearTimeout(storefrontFilterTimer); shopShelfPages={};productFilters[key]=val; if(key==="category"){ productFilters.storageType=""; productFilters.coolerType=""; } render(); }
 function clearProductFilters(){ clearTimeout(storefrontFilterTimer);shopShelfPages={};productFilters = {category:"", storageType:"", coolerType:"", cpuType:"", q:"", min:"", max:""}; render(); }
 
