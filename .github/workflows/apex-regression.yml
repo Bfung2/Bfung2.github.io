@@ -27,6 +27,7 @@ jobs:
       - name: Parse module JavaScript
         run: |
           node --check customer-accounts.js
+          node --check customer-experience.js
           node --check staff-workspace.js
           node --check order-tracking.js
           node --check market-sales.js
@@ -41,6 +42,8 @@ jobs:
         run: node tests/customer-accounts.mjs
       - name: Phase 5 customer security regression
         run: node tests/phase5-security.mjs
+      - name: Customer account Phase 6 experience regression
+        run: node tests/phase6-customer.mjs
       - name: Catalog edit synchronization regression
         run: node tests/catalog-edit-sync.mjs
       - name: Optional newer component regressions
