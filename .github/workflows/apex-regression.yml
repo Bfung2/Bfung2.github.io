@@ -39,6 +39,8 @@ jobs:
         run: node tests/site-safety.mjs
       - name: Customer account regression
         run: node tests/customer-accounts.mjs
+      - name: Phase 5 customer security regression
+        run: node tests/phase5-security.mjs
       - name: Catalog edit synchronization regression
         run: node tests/catalog-edit-sync.mjs
       - name: Optional newer component regressions
