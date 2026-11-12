@@ -75,7 +75,7 @@ jobs:
             ${{ runner.temp }}/apex-public-catalog-snapshot-notes.txt
           retention-days: 30
       - name: Open or update one GitHub incident on failure
-        if: failure()
+        if: ${{ failure() && steps.storefront_health.outcome == 'failure' }}
         uses: actions/github-script@v7
         with:
           script: |
