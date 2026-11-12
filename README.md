@@ -174,3 +174,11 @@ In Employees → Roles / permissions, set **View product notes** and **Edit prod
 Notes include an Apex product link, plus the Newegg source when the catalog records one. Missing Newegg URLs are explicitly labeled and never guessed. Existing private text is preserved. Notes and employee permission overrides are never stored in public `data.json`.
 
 Validation: `PGLITE_MODULE=/path/to/@electric-sql/pglite/dist/index.js node tests/staff-permissions.mjs` and `node tests/staff-workspace-state.mjs`.
+
+### Employee commissions and owner overview
+
+Apply `supabase/migrations/202611110004_commissions_dashboard.sql` after the contribution settlement migration. Owner-set commissions use integer USD cents, require revision checks on edits, and preserve the amount and optional payment reference in settlement history. `Paid employee` records a payment already made; it does not transfer money. Old paid contributions without an amount stay labeled unknown. Test commissions are excluded from real balances.
+
+Staff workspace now opens the owner overview. Sales contributions has Outstanding, Employee payment history, and Voided views. Employee details show unpaid balances and paid counts. Customer links can be filtered by waiting, submitted/awaiting payment, paid, completed test and expired states; unused valid links retain their copy button. No reminders or customer messages are sent automatically.
+
+Additional checks: `node tests/market-link-filters.mjs` and `node tests/staff-workspace-state.mjs`, plus the full PGlite staff-permissions integration test.
