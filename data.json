@@ -1648,9 +1648,9 @@
       "watts": "",
       "power": 180,
       "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992",
-      "stockStatus": "Price Verification Required",
+      "stockStatus": "Unavailable - only third-party seller offer verified",
       "active": false,
-      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
+      "priceReviewReason": "Exact Newegg listing reviewed 2026-11-11: sold by TELeasy, not Newegg. Re-enable only after verifying an in-stock Newegg-direct offer and resetting price to its current Newegg price + $15.",
       "keywords": [
         "graphics card",
         "msi",
@@ -1669,7 +1669,9 @@
       "requiredPowerConnectors": "8-pin",
       "recommendedPsuWatts": 600,
       "specVerifiedDate": "2026-11-11",
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992"
+      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992",
+      "seller": "TELeasy",
+      "verifiedDate": "2026-11-11"
     },
     {
       "id": "gpu5060tiventus3x16",
@@ -1816,9 +1818,9 @@
       "watts": "",
       "power": 250,
       "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777",
-      "stockStatus": "Price Verification Required",
+      "stockStatus": "Unavailable - only third-party seller offer verified",
       "active": false,
-      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
+      "priceReviewReason": "Exact Newegg listing reviewed 2026-11-11: sold by Lucky Store 4 You, not Newegg. Re-enable only after verifying an in-stock Newegg-direct offer and resetting price to its current Newegg price + $15.",
       "keywords": [
         "graphics card",
         "gigabyte",
@@ -1837,7 +1839,9 @@
       "requiredPowerConnectors": "1x16-pin",
       "recommendedPsuWatts": 750,
       "specVerifiedDate": "2026-11-11",
-      "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777"
+      "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777",
+      "seller": "Lucky Store 4 You",
+      "verifiedDate": "2026-11-11"
     },
     {
       "id": "gpu5070tigigawindforce3x",
@@ -9570,9 +9574,9 @@
       "tdp": "",
       "watts": "",
       "power": 180,
-      "stockStatus": "Price Verification Required",
+      "stockStatus": "Unavailable - only third-party seller offer verified",
       "active": false,
-      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
+      "priceReviewReason": "Exact Newegg listing reviewed 2026-11-11: sold by TELeasy, not Newegg. Re-enable only after verifying an in-stock Newegg-direct offer and resetting price to its current Newegg price + $15.",
       "keywords": [
         "graphics card",
         "msi",
@@ -9592,7 +9596,9 @@
       "recommendedPsuWatts": 600,
       "specVerifiedDate": "2026-11-11",
       "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992",
-      "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992"
+      "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992",
+      "seller": "TELeasy",
+      "verifiedDate": "2026-11-11"
     },
     {
       "id": "gpu5060tiventus3x16",
@@ -9639,9 +9645,9 @@
       "tdp": "",
       "watts": "",
       "power": "250",
-      "stockStatus": "Price Verification Required",
+      "stockStatus": "Unavailable - only third-party seller offer verified",
       "active": false,
-      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
+      "priceReviewReason": "Exact Newegg listing reviewed 2026-11-11: sold by Lucky Store 4 You, not Newegg. Re-enable only after verifying an in-stock Newegg-direct offer and resetting price to its current Newegg price + $15.",
       "keywords": [
         "graphics card",
         "gigabyte",
@@ -9661,7 +9667,9 @@
       "recommendedPsuWatts": 750,
       "specVerifiedDate": "2026-11-11",
       "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777",
-      "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777"
+      "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777",
+      "seller": "Lucky Store 4 You",
+      "verifiedDate": "2026-11-11"
     },
     {
       "id": "gpu9060xtgigagaming3x",

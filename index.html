@@ -1333,8 +1333,13 @@ function recommendedPSUWatts(baseWatts){
 function cartCount(){ return myCart.reduce((n,i)=>n+(i.qty||1),0); }
 function apexPurchasable(rec){
   if(!rec || rec.active===false) return false;
+  // A missing seller/stock claim remains a catalog review task, not fabricated proof.
+  // Explicit known ineligibility must never reach the cart or PC picker.
+  const seller=String(rec.seller||"").trim().toLowerCase();
+  if(seller && seller!=="newegg" && seller!=="newegg.com")return false;
   const status=String(rec.stockStatus||"").trim().toLowerCase();
-  return !/(out\s*of\s*stock|back\s*order|sold\s*out|unavailable|discontinued|price\\s*verification\\s*required)/i.test(status);
+  if(/out\s*of\s*stock|back[\s-]*order(?:ed)?|sold\s*out|unavailable|discontinued|price\s*verification\s*required|not\s*available|pre[\s-]*order/.test(status))return false;
+  return true;
 }
 function apexUnavailableCartItems(){
   return myCart.filter(item=>{
@@ -1363,11 +1368,34 @@ function cartTotals(){
 }
 
 /* ---------- global storefront search ---------- */
-function searchableProductText(p){return [p.name,p.category,p.brand,p.desc,p.longDesc,p.cpuType,...(Array.isArray(p.keywords)?p.keywords:[])].filter(Boolean).join(" ").toLowerCase();}
+/* Customer category synonyms are generated from structured catalog metadata, not guessed product specs. */
+function catalogSearchAliases(p){
+  const cat=String(p?.category||"").toLowerCase(),type=String(p?.driveType||"").toLowerCase();
+  const synonyms={
+    "cpu":"cpu processor processors central processing unit",
+    "graphics card":"gpu gpus graphics card graphics cards video card video cards graphics processor",
+    "motherboard":"motherboard mainboard mobo system board",
+    "memory":"ram memory ddr desktop memory",
+    "power supply":"psu power supply power supplies power supply unit",
+    "case":"pc case computer case chassis tower",
+    "storage":"storage drive hard drive solid state disk",
+    "cpu cooler":"cpu cooler processor cooler cpu cooling"
+  };
+  const extras=[synonyms[cat]||""];
+  if(cat==="graphics card") extras.push(gpuVendorOf(p));
+  if(cat==="storage")extras.push(type==="hdd"?"hdd hard disk hard drive":type.includes("ssd")?"ssd solid state drive solid state disk":"");
+  if(cat==="cpu cooler")extras.push(String(p.coolingType||"").toLowerCase()==="liquid"?"liquid cooler water cooling aio liquid cooling":String(p.coolingType||"").toLowerCase()==="air"?"air cooler fan cpu fan air cooling":"");
+  return extras.filter(Boolean).join(" ");
+}
+function searchableProductText(p){
+  return [p.name,p.category,p.brand,p.model,p.series,p.desc,p.longDesc,p.cpuType,
+    ...(Array.isArray(p.keywords)?p.keywords:[]),catalogSearchAliases(p)]
+    .filter(Boolean).join(" ").toLowerCase();
+}
 function matchesProductSearch(p,query){
- const terms=String(query||"").toLowerCase().trim().split(/\s+/).filter(Boolean);
- const hay=searchableProductText(p);
- return terms.every(term=>hay.includes(term));
+  const terms=String(query||"").toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const hay=searchableProductText(p);
+  return terms.every(term=>hay.includes(term));
 }
 function globalSearchInput(value){
  const box=document.getElementById("globalSearchResults");if(!box)return;
