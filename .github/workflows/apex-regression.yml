@@ -53,6 +53,10 @@ jobs:
         run: |
           if test -f tests/catalog-health.mjs; then node tests/catalog-health.mjs; fi
           if test -f tests/staff-sales-view.mjs; then node tests/staff-sales-view.mjs; fi
+      - name: Phase 8 catalog search and eligibility checks
+        run: node tests/phase8-catalog-search.mjs
+      - name: Phase 8 static catalog audit unit tests
+        run: python3 -m unittest discover -s tests -p 'test_catalog_phase8.py'
       - name: Create non-destructive static catalog report
         run: |
           python3 scripts/audit_catalog.py --data data.json \
