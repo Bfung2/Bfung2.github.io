@@ -1,5 +1,5 @@
-/* Customer sessions have separate storage from staff sessions. This release activates
-   email signup and recovery only after SMTP and the allowed callback URLs are verified. */
+/* Customer sessions use separate storage from staff sessions.
+   Signup and recovery email delivery uses the verified Supabase Auth Send Email Hook. */
 const CUSTOMER_EMAIL_READY=true;
 const customerClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:'apex.customer.auth',flowType:'pkce',detectSessionInUrl:customerAuthCallback}});
 let customerState={ready:false,loading:false,user:null,orders:[],error:'',message:'',mode:'signin',recovery:false,addresses:[],addressError:'',addressBusy:false,addressEditing:null,checkoutAddressId:null,orderSearch:'',orderFilter:'all'},customerEpoch=0;
