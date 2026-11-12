@@ -133,5 +133,8 @@ for(const element of ["href=\"storefront-ux.css\"","id=\"app\" tabindex=\"-1\"",
  "function syncBuildDrawerAccessibility()","function trapStorefrontPanelFocus("]){
  assert.ok(html.includes(element),"Missing UI accessibility feature "+element);
 }
+for(const [field,control] of [["prod_f_category","select"],["prod_f_cpuType","select"],["prod_f_q","input"],["part_f_brand","select"],["part_f_psuWatts","select"],["part_f_q","input"]]){
+ assert.ok(html.includes('for="'+field+'"')&&html.includes('<'+control+' id="'+field+'"'),"Missing labeled focusable filter "+field);
+}
 assert.ok(html.includes("homeMotionCleanup=null")&&html.includes("productsMotionCleanup=null"),"Detached animation cleanup required");
 console.log("PASS: Phase 10 checkout arithmetic, mobile filter focus/Escape behavior, search debouncing, nav accessibility, and responsive CSS.");
