@@ -1489,6 +1489,7 @@ function render(){
   app.innerHTML = (views[r]||home)();
   if(r==="/manage")restoreSettingsDraft();
   if(isOwner)opsRefreshIfStale();
+  else if(apexOpsState.data)apexOpsState.data=null;
   opsUpdateBadge();
   if(r==="/products") setupShopFilterLayer();
   if(r==="/build") syncBuildDrawerAccessibility();
