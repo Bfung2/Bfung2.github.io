@@ -1,13 +1,13 @@
-/* Customer sessions have separate storage from staff sessions. This release activates
-   email signup and recovery only after SMTP and the allowed callback URLs are verified. */
+/* Customer sessions use separate storage from staff sessions.
+   Signup and recovery email delivery uses the verified Supabase Auth Send Email Hook. */
 const CUSTOMER_EMAIL_READY=true;
 const customerClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:'apex.customer.auth',flowType:'pkce',detectSessionInUrl:customerAuthCallback}});
-let customerState={ready:false,loading:false,user:null,orders:[],error:'',message:'',mode:'signin',recovery:false},customerEpoch=0;
+let customerState={ready:false,loading:false,user:null,orders:[],error:'',message:'',mode:'signin',recovery:false,addresses:[],addressError:'',addressBusy:false,addressEditing:null,checkoutAddressId:null,orderSearch:'',orderFilter:'all'},customerEpoch=0;
 function customerRedirect(kind){return location.origin+location.pathname+'?customer_auth='+kind;}
 function customerMessage(text,error=false){customerState.error=error?text:'';customerState.message=error?'':text;render();}
 async function customerRPC(name,args={}){const {data,error}=await customerClient.rpc(name,args);if(error)throw error;return data;}
 async function customerApplySession(session){
- const epoch=++customerEpoch;me=null;customerState.user=null;customerState.orders=[];customerState.loading=!!session;
+ const epoch=++customerEpoch;me=null;customerState.user=null;customerState.orders=[];customerState.addresses=[];customerState.addressEditing=null;customerState.checkoutAddressId=null;customerState.loading=!!session;
  try{
   if(session){
    // Preserve recovery access if the private profile RPC is temporarily unavailable.
@@ -15,6 +15,7 @@ async function customerApplySession(session){
    const profile=await customerRPC('apex_customer_profile');
    if(epoch!==customerEpoch)return;
    me=profile;
+   await customerLoadAddressBook(epoch);
    await customerLoadOrders(epoch);
   }
  }catch{if(epoch===customerEpoch)customerState.error='Your account could not be loaded. Confirm your email, then sign in again or retry.';}
@@ -72,7 +73,7 @@ async function customerLogin(event){
 async function customerLogout(){
  try{const {error}=await customerClient.auth.signOut({scope:'local'});if(error)throw error;}
  catch{customerMessage('Sign-out could not finish. Please retry before leaving a shared device.',true);return;}
- ++customerEpoch;me=null;customerState.user=null;customerState.orders=[];customerState.recovery=false;customerState.error='';
+ ++customerEpoch;me=null;customerState.user=null;customerState.orders=[];customerState.addresses=[];customerState.addressEditing=null;customerState.checkoutAddressId=null;customerState.recovery=false;customerState.error='';
  try{localStorage.removeItem('apex.customer');}catch{}
  go('/login');render();
 }
@@ -121,5 +122,5 @@ function customerAccountPage(){
  if(!customerState.ready)return '<div class="wrap"><p role="status">Checking your account…</p></div>';
  if(!me){return customerLoginPage();}
  const address=me.address||{};
- return `<div class="wrap" style="max-width:900px"><div class="pagehead"><div><h2>Your account</h2><p>${esc(me.email)} · Verified email</p></div><button class="btn ghost" onclick="customerLogout()">Sign out</button></div>${customerNotices()}${customerState.recovery?'<form class="panel" onsubmit="customerSavePassword(event);return false"><h3>Choose a new password</h3><div class="field"><label for="newCustomerPassword">New password (at least 12 characters)</label><input id="newCustomerPassword" name="password" type="password" minlength="12" required autocomplete="new-password"></div><div class="field"><label for="confirmCustomerPassword">Confirm password</label><input id="confirmCustomerPassword" name="confirm_password" type="password" minlength="12" required autocomplete="new-password"></div><button class="btn gold">Update password</button></form>':''}<form class="panel" onsubmit="customerSaveProfile(event);return false"><h3>Your contact details</h3><p class="muted">Saved privately to your account for checkout. Changing these details does not change existing orders.</p>${[['name','Name',120,'name',me.name],['phone','Phone',40,'tel',me.phone],['street','Street address',200,'address-line1',address.street],['city','City',200,'address-level2',address.city],['state','State',200,'address-level1',address.state],['zip','ZIP / postal code',200,'postal-code',address.zip]].map(([key,label,max,auto,val])=>`<div class="field"><label for="profile_${key}">${label}</label><input id="profile_${key}" name="${key}" maxlength="${max}" autocomplete="${auto}" value="${esc(val||'')}"></div>`).join('')}<button class="btn gold">Save details</button></form><section class="panel" style="margin-top:22px"><h3>Your linked orders</h3><p class="muted">Your latest 100 linked orders are available across devices. Orders saved in this browser link only when their checkout email matches your verified email. Older archived orders may require help from Apex.</p><button class="btn ghost" onclick="customerRefreshOrders()" ${customerState.loading?'disabled':''}>${customerState.loading?'Loading…':'Refresh / link saved receipts'}</button>${customerState.orders.length?customerState.orders.map(o=>`<article style="margin-top:18px"><h4><a href="#/track-order?token=${esc(o.token)}">${esc(o.ref)}</a>${o.is_test?' · TEST':''}</h4><p>${esc(trackingStageLabel(o.stage))} · ${o.is_test?'Simulated payment':o.payment_confirmed?'Payment confirmed':'Awaiting payment'}${o.archived?' · Archived':''}</p><p>${money(o.total)} · ${(o.items||[]).map(i=>esc(i.name)+' × '+esc(i.qty)).join(', ')}</p></article>`).join(''):'<p>No orders linked yet. Guest checkout still works; keep your private receipt link.</p>'}</section><div style="margin-top:22px">${trackingSavedLinks()}</div></div>`;
+ return `<div class="wrap" style="max-width:900px"><div class="pagehead"><div><h2>Your account</h2><p>${esc(me.email)} · Verified email</p></div><button class="btn ghost" onclick="customerLogout()">Sign out</button></div>${customerNotices()}${customerState.recovery?'<form class="panel" onsubmit="customerSavePassword(event);return false"><h3>Choose a new password</h3><div class="field"><label for="newCustomerPassword">New password (at least 12 characters)</label><input id="newCustomerPassword" name="password" type="password" minlength="12" required autocomplete="new-password"></div><div class="field"><label for="confirmCustomerPassword">Confirm password</label><input id="confirmCustomerPassword" name="confirm_password" type="password" minlength="12" required autocomplete="new-password"></div><button class="btn gold">Update password</button></form>':''}<form class="panel" onsubmit="customerSaveProfile(event);return false"><h3>Your contact details</h3><p class="muted">Saved privately to your account for checkout. Changing these details does not change existing orders.</p>${[['name','Name',120,'name',me.name],['phone','Phone',40,'tel',me.phone],['street','Street address',200,'address-line1',address.street],['city','City',200,'address-level2',address.city],['state','State',200,'address-level1',address.state],['zip','ZIP / postal code',200,'postal-code',address.zip]].map(([key,label,max,auto,val])=>`<div class="field"><label for="profile_${key}">${label}</label><input id="profile_${key}" name="${key}" maxlength="${max}" autocomplete="${auto}" value="${esc(val||'')}"></div>`).join('')}<button class="btn gold">Save details</button></form>${customerAddressBookPanel()}${customerOrdersPanel()}<div style="margin-top:22px">${trackingSavedLinks()}</div></div>`;
 }

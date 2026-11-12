@@ -2301,18 +2301,20 @@ function pickPart(cat,id){
 
 const CONTACT_REASONS = ["Repair or tech support","Help building a PC","Question about an order","Something else"];
 function tech(){
+  const address=customerPreferredShippingAddress();
+  const addressLabel=[address.street,address.city,address.state,address.zip].filter(Boolean).join(", ");
   return `<div class="wrap">
     <div class="pagehead"><div><h2>Request a tech</h2><p>Repairs, help planning a build, or just a question — reach out about anything and we'll get back to you.</p></div></div>
     <div class="split">
       <form class="panel" onsubmit="submitRequest(event)">${salesHandoffNotice("request")}
         <div class="field"><label for="rr">What's this about</label><select id="rr">${CONTACT_REASONS.map(x=>`<option>${x}</option>`).join("")}</select></div>
         <div class="fields2">
-          <div class="field"><label for="rn">Your name</label><input id="rn" required></div>
-          <div class="field"><label for="re">Email</label><input id="re" type="email" required></div>
-          <div class="field"><label for="rp">Phone</label><input id="rp"></div>
+          <div class="field"><label for="rn">Your name</label><input id="rn" required value="${esc(me?me.name:"")}"></div>
+          <div class="field"><label for="re">Email</label><input id="re" type="email" required value="${esc(me?me.email:"")}"></div>
+          <div class="field"><label for="rp">Phone</label><input id="rp" value="${esc(me?me.phone:"")}"></div>
           <div class="field"><label for="rw">When works for you</label><input id="rw" placeholder="Weekday afternoons"></div>
         </div>
-        <div class="field"><label for="ra">Address or area (if it's a repair)</label><input id="ra"></div>
+        <div class="field"><label for="ra">Address or area (if it's a repair)</label><input id="ra" value="${esc(addressLabel)}"></div>
         <div class="field"><label for="rd">What are we looking at</label><input id="rd" placeholder="Desktop, laptop, a build idea, network, TV mount..."></div>
         <div class="field"><label for="ri">Details</label><textarea id="ri" required placeholder="Won't power on, want help picking parts for a budget build, question about a recent order..."></textarea></div>
         <button class="btn gold" type="submit">Send</button>
@@ -2382,7 +2384,7 @@ function checkAddress(){
 }
 function checkout(){
   const t = cartTotals();
-  const a = (me&&me.address)||{};
+  const a = customerPreferredShippingAddress();
   if(!myCart.length){ return `<div class="wrap"><div class="empty"><strong>Your cart is empty</strong></div></div>`; }
   return `<div class="wrap"><div class="pagehead"><div><h2>Checkout</h2><p>Submit your details, then securely pay with PayPal. Your order is confirmed after PayPal verifies the payment.</p></div></div>
   <div class="split">
@@ -2393,6 +2395,7 @@ function checkout(){
         <div class="field"><label for="cp">Phone</label><input id="cp" value="${esc(me?me.phone:"")}"></div>
         <div></div>
       </div>
+      ${customerShippingAddressPicker()}
       <div class="field"><label for="c_street">Street address</label><input id="c_street" required oninput="checkAddress()" value="${esc(a.street)}"></div>
       <div class="fields2">
         <div class="field"><label for="c_city">City</label><input id="c_city" required oninput="checkAddress()" value="${esc(a.city)}"></div>
@@ -3061,6 +3064,7 @@ function toast(msg){
 <script src="market-sales.js"></script>
 <script src="order-tracking.js"></script>
 <script src="customer-accounts.js"></script>
+<script src="customer-experience.js"></script>
 <script src="promo-codes.js"></script>
 <script src="owner-test-checkout.js"></script>
 <script src="apex-policies.js"></script>
