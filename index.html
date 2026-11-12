@@ -1262,7 +1262,7 @@ function combineAddress(a){
   return [a.street, [line2, a.zip].filter(Boolean).join(" ")].filter(Boolean).join(", ");
 }
 /* ---------- router ---------- */
-const PAGES = [["/","Home"],["/products","Products"],["/build","Build a PC"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"],["/track-order","Track order"]];
+const PAGES = [["/","Home"],["/products","Products"],["/build","Build a PC"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"],["/warranty","Warranty"],["/returns","Returns"],["/track-order","Track order"]];
 function go(p){ location.hash = "#"+p; }
 function route(){ return (location.hash||"#/").slice(1).split("?")[0] || "/"; }
 addEventListener("hashchange", ()=>{ render(); scrollTo({top:0}); });
@@ -1410,9 +1410,9 @@ function render(){
   ].filter(Boolean).join(" &nbsp;·&nbsp; ");
 
   const r = route();
-  if(isEmployee && ["/manage","/employees","/inbox","/inventory","/performance"].includes(r)){go("/employee");return;}
+  if(isEmployee && ["/manage","/employees","/inbox","/inventory","/performance","/policies-admin"].includes(r)){go("/employee");return;}
   const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
-    "/contact":contact,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
+    "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
     "/track-order":customerTrackingPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
@@ -2542,7 +2542,7 @@ function staff(){
 function manage(){
   if(!isOwner) return staff();
   const s = S.settings;
-  return `<div class="wrap"><div class="pagehead"><div><h2>Site settings</h2><p>Everything here shows on the public site. No code editing needed.</p></div><a class="btn gold" href="#/employees">Manage employees</a><a class="btn ghost" href="#/performance">Employee performance</a><a class="btn ghost" href="#/inbox">Orders &amp; requests</a></div>
+  return `<div class="wrap"><div class="pagehead"><div><h2>Site settings</h2><p>Everything here shows on the public site. No code editing needed.</p></div><a class="btn gold" href="#/employees">Manage employees</a><a class="btn ghost" href="#/policies-admin">Warranty / Returns editor</a><a class="btn ghost" href="#/performance">Employee performance</a><a class="btn ghost" href="#/inbox">Orders &amp; requests</a></div>
   <div class="notice" style="margin-bottom:22px">${ghConfigured?(cloudConnected?"Connected — reading and writing data.json in your GitHub repo, so every device stays in sync.":`Not connected${cloudError?": "+esc(cloudError):" yet"}. Check that data.json exists in the repo, and that GITHUB_OWNER/GITHUB_REPO/GITHUB_BRANCH in the file match it exactly.`):"No shared file configured — see the setup note at the top of the HTML file (look for GITHUB_OWNER). Until then, changes here only show on this device."}</div>
   <div class="panel" style="margin-bottom:22px"><h3>Connection check</h3>
     <table>
@@ -3063,6 +3063,7 @@ function toast(msg){
 <script src="customer-accounts.js"></script>
 <script src="promo-codes.js"></script>
 <script src="owner-test-checkout.js"></script>
+<script src="apex-policies.js"></script>
 <script>
 initializeSupabaseAuth();
 initializeCustomerAuth();
