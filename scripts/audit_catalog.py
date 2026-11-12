@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Non-destructive Apex catalog integrity audit. Does not claim live Newegg verification."""
-import argparse, collections, csv, datetime, json, pathlib, sys
+import argparse, collections, csv, datetime, json, pathlib, sys, re, urllib.parse
 
 def audit(path):
     data=json.loads(path.read_text(encoding="utf-8"))
@@ -25,16 +25,44 @@ def audit(path):
                     flag("markup_mismatch",section,p,"Apex price does not equal Newegg baseline + $15")
             except (TypeError,ValueError,KeyError):
                 flag("invalid_newegg_baseline",section,p,"Invalid baseline/price")
-        if not p.get("sourceUrl"): flag("missing_source_url",section,p,"Exact Newegg listing URL missing")
-        if not p.get("verifiedDate"): flag("missing_verification_date",section,p,"No recorded verification date")
-        if not p.get("seller"): flag("missing_seller",section,p,"Direct Newegg seller not documented")
-        if not p.get("stockStatus"): flag("missing_stock_status",section,p,"Stock status not documented")
+        source=p.get("sourceUrl")
+        if not source: flag("missing_source_url",section,p,"Exact Newegg listing URL missing")
+        else:
+            url=urllib.parse.urlparse(str(source))
+            if url.scheme!="https" or (url.hostname or "").lower() not in ("newegg.com","www.newegg.com"):
+                flag("invalid_source_url",section,p,"Source URL is not an HTTPS listing on Newegg")
+        date=p.get("verifiedDate")
+        if not date: flag("missing_verification_date",section,p,"No recorded verification date")
+        else:
+            try:
+                verified=datetime.date.fromisoformat(str(date))
+                age=(datetime.datetime.now(datetime.timezone.utc).date()-verified).days
+                if age<0: flag("future_verification_date",section,p,"Recorded verification date is in the future")
+                elif age>=7: flag("stale_verification",section,p,str(age)+" days since last recorded verification; recheck exact listing")
+            except (TypeError,ValueError):
+                flag("invalid_verification_date",section,p,"Invalid YYYY-MM-DD verification date")
+        seller=str(p.get("seller") or "").strip().lower()
+        if not seller: flag("missing_seller",section,p,"Direct Newegg seller not documented")
+        elif seller not in ("newegg","newegg.com"):
+            flag("ineligible_seller",section,p,"Stored seller is not Newegg; verify and unpublish if necessary")
+        stock=str(p.get("stockStatus") or "").strip().lower()
+        if not stock: flag("missing_stock_status",section,p,"Stock status not documented")
+        elif re.search(r"out\s*of\s*stock|back[\s-]*order(?:ed)?|sold\s*out|unavailable|discontinued|price\s*verification\s*required|pre[\s-]*order",stock):
+            flag("ineligible_stock",section,p,"Stored inventory status is not currently eligible for sale")
         if not p.get("image"): flag("missing_image",section,p,"Image URL missing")
     for id,rows in by_id.items():
-        if len(rows)>1:
-            prices={str(p.get("price")) for _,p in rows}
-            kind="duplicate_id_conflicting_prices" if len(prices)>1 else "duplicate_id"
-            for section,p in rows: flag(kind,section,p,"ID occurs in "+str(len(rows))+" records; prices: "+", ".join(sorted(prices)))
+        if len(rows)<2: continue
+        sections={section for section,_ in rows}
+        prices={str(p.get("price")) for _,p in rows}
+        category_names={(str(p.get("category") or "").strip().lower(),str(p.get("name") or "").strip().lower()) for _,p in rows}
+        if len(prices)>1:
+            for section,p in rows: flag("duplicate_id_conflicting_prices",section,p,"ID occurs with different prices across "+", ".join(sorted(sections)))
+        elif len(sections)!=len(rows):
+            for section,p in rows: flag("duplicate_id_same_section",section,p,"ID appears more than once within the same catalog section")
+        elif len(category_names)>1:
+            for section,p in rows: flag("mirrored_identity_conflict",section,p,"Products/parts copies have conflicting names or categories")
+        # A single matching ID in products and parts is an intentional storefront mirror,
+        # not automatically a duplicate catalog error.
     counts=dict(sorted(collections.Counter(i["issue"] for i in issues).items()))
     return {"generated_at_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),
             "scope":"Static data.json only. NOT live Newegg seller, inventory, price, or image verification.",
