@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import vm from 'node:vm';
+const html=await fs.readFile(new URL('../index.html',import.meta.url),'utf8');
+const ctx=vm.createContext({S:{products:[{id:'shared',name:'Old name',price:100,featured:true},{id:'other',price:5}],parts:[{id:'shared',name:'Old name',price:90,lengthMm:220}]},CATS:['Graphics card'],apexPurchasable:()=>true});
+vm.runInContext(html.slice(html.indexOf('const isPartCat ='),html.indexOf('\nfunction partsAll()')),ctx);const run=s=>vm.runInContext(s,ctx);
+run("upsertCatalogRecord('products',{id:'shared',name:'Renamed GPU',price:115,category:'Graphics card'})");assert.equal(ctx.S.parts[0].price,115);assert.equal(ctx.S.parts[0].name,'Renamed GPU');assert.equal(ctx.S.parts[0].lengthMm,220);assert.equal(ctx.S.products[0].featured,true);assert.equal(ctx.S.products[1].price,5);
+run("upsertCatalogRecord('parts',{id:'shared',price:120,lengthMm:230})");assert.equal(ctx.S.products[0].price,120);assert.equal(ctx.S.products[0].lengthMm,230);assert.equal(ctx.S.products[0].featured,true);
+run("upsertCatalogRecord('parts',{id:'new',price:50})");assert.equal(ctx.S.parts.length,2);assert.equal(ctx.S.products.length,2);assert.throws(()=>run("upsertCatalogRecord('orders',{id:'bad'})"));
+ctx.S.parts[0].name='Different legacy name';assert.equal(run("dupeOfPart({id:'shared',name:'Other name',category:'Graphics card'})"),true);
+assert.ok(html.includes('upsertCatalogRecord("products",rec)'));assert.ok(html.includes('upsertCatalogRecord("parts",rec)'));
+console.log('PASS: same-SKU price/name/spec edits sync across catalog sections, unrelated/section-only metadata retained, new entries stay in selected section and same-ID cards deduplicate.');
