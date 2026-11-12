@@ -2001,17 +2001,17 @@ function products(){
   const filterBar = items.length ? `<div class="panel products-filters shop-filter-panel ${shopFiltersOpen?"open":""}" id="shopFilterPanel">
     <div class="shop-filter-drawer-head"><strong>Filter products</strong><button type="button" onclick="toggleShopFilters(false)" aria-label="Close filters">×</button></div>
     <div class="fields2" style="align-items:flex-end">
-      <div class="field"><label>Category</label><select onchange="setProductFilter('category',this.value)">
+      <div class="field"><label for="prod_f_category">Category</label><select id="prod_f_category" onchange="setProductFilter('category',this.value)">
         <option value="">All categories</option>${allCats.map(c=>`<option value="${esc(c)}" ${f.category===c?"selected":""}>${esc(c)}</option>`).join("")}
       </select></div>
 
-      ${cpuTypesUsed.length?`<div class="field"><label>CPU type</label><select onchange="setProductFilter('cpuType',this.value)">
+      ${cpuTypesUsed.length?`<div class="field"><label for="prod_f_cpuType">CPU type</label><select id="prod_f_cpuType" onchange="setProductFilter('cpuType',this.value)">
         <option value="">Any CPU type</option>${cpuTypesUsed.map(c=>`<option value="${esc(c)}" ${f.cpuType===c?"selected":""}>${esc(c)}</option>`).join("")}
       </select></div>`:"<div></div>"}
-      <div class="field"><label>Min price</label><input id="prod_f_min" type="number" value="${esc(f.min)}" oninput="queueStorefrontFilter('products','min',this.value)"></div>
-      <div class="field"><label>Max price</label><input id="prod_f_max" type="number" value="${esc(f.max)}" oninput="queueStorefrontFilter('products','max',this.value)"></div>
+      <div class="field"><label for="prod_f_min">Min price</label><input id="prod_f_min" type="number" value="${esc(f.min)}" oninput="queueStorefrontFilter('products','min',this.value)"></div>
+      <div class="field"><label for="prod_f_max">Max price</label><input id="prod_f_max" type="number" value="${esc(f.max)}" oninput="queueStorefrontFilter('products','max',this.value)"></div>
     </div>
-    <div class="field" style="margin-bottom:0"><label>Search</label><input id="prod_f_q" placeholder="Name, description, processor…" value="${esc(f.q)}" oninput="queueStorefrontFilter('products','q',this.value)"></div>
+    <div class="field" style="margin-bottom:0"><label for="prod_f_q">Search</label><input id="prod_f_q" placeholder="Name, description, processor…" value="${esc(f.q)}" oninput="queueStorefrontFilter('products','q',this.value)"></div>
     ${active?`<button class="btn sm ghost" style="margin-top:10px" onclick="clearProductFilters()">Clear filters</button>`:""}
   </div>` : "";
   const navItem=(label,count,target,icon,active=false)=>`<button class="shop-side-link ${active?"active":""}" onclick="${label==="Storage"?"setProductFilter('category','Storage')":"jumpProductSection('"+target+"')"}"><span class="shop-side-icon">${icon}</span><span>${esc(label)}</span><small>${count}</small></button>`;
@@ -2202,43 +2202,43 @@ function build(){
   const budgetPanel = `<section class="budget-planner panel"><div class="budget-copy"><span class="build-eyebrow">SPEND WITH A PLAN</span><h3>Set your PC budget</h3><p class="muted">Track your selected components against a target. Compatible parts remain the priority, with budget guidance shown as you browse.</p></div><div class="budget-controls"><label for="build_budget_input">Your target budget (USD)</label><div class="budget-input-row"><span>$</span><input id="build_budget_input" type="number" min="1" step="25" placeholder="e.g. 1200" value="${buildBudget||""}" onchange="setBuildBudget(this.value)">${buildBudget?`<button class="btn sm ghost" onclick="clearBuildBudget()">Clear</button>`:""}</div></div>${buildBudget?`<div class="budget-meter"><div class="budget-meter-top"><strong>${money(budgetSpent)} used</strong><strong class="${budgetRemaining<0?"nofit":"fit"}">${budgetRemaining<0?money(Math.abs(budgetRemaining))+" over budget":money(budgetRemaining)+" remaining"}</strong></div><div class="build-progress-track"><span class="${budgetRemaining<0?"over":""}" style="width:${budgetPercent}%"></span></div><small class="muted">Parts only. Assembly, tax and shipping are not included in this target.</small></div>`:""}</section>`;
   const filterBar = partsAll().length ? `<div class="panel build-filter-panel" id="buildFilterPanel" style="margin-bottom:20px">
     <div class="fields2" style="align-items:flex-end">
-      ${brands.length?`<div class="field"><label>Brand</label><select onchange="setPartFilter('brand',this.value)">
+      ${brands.length?`<div class="field"><label for="part_f_brand">Brand</label><select id="part_f_brand" onchange="setPartFilter('brand',this.value)">
         <option value="">All brands</option>${brands.map(b=>`<option value="${esc(b)}" ${f.brand===b?"selected":""}>${esc(b)}</option>`).join("")}
       </select></div>`:"<div></div>"}
-      ${cpuTypesUsed.length?`<div class="field"><label>CPU type</label><select onchange="setPartFilter('cpuType',this.value)">
+      ${cpuTypesUsed.length?`<div class="field"><label for="part_f_cpuType">CPU type</label><select id="part_f_cpuType" onchange="setPartFilter('cpuType',this.value)">
         <option value="">Any CPU type</option>${cpuTypesUsed.map(t=>`<option value="${esc(t)}" ${f.cpuType===t?"selected":""}>${esc(t)}</option>`).join("")}
       </select></div>`:"<div></div>"}
-      <div class="field"><label>Socket (CPUs)</label><select onchange="setPartFilter('socket',this.value)">
+      <div class="field"><label for="part_f_socket">Socket (CPUs)</label><select id="part_f_socket" onchange="setPartFilter('socket',this.value)">
         <option value="">Any socket</option>${socketList().map(s=>`<option value="${esc(s)}" ${f.socket===s?"selected":""}>${esc(s)}</option>`).join("")}
       </select></div>
-      <div class="field"><label>Sort by</label><select onchange="setPartFilter('sort',this.value)">
+      <div class="field"><label for="part_f_sort">Sort by</label><select id="part_f_sort" onchange="setPartFilter('sort',this.value)">
         <option value="">Default order</option>
         <option value="low" ${f.sort==="low"?"selected":""}>Price: low to high</option>
         <option value="high" ${f.sort==="high"?"selected":""}>Price: high to low</option>
         <option value="name" ${f.sort==="name"?"selected":""}>Name A–Z</option>
       </select></div>
-      <div class="field"><label>Min price</label><input id="part_f_min" type="number" value="${esc(f.min)}" oninput="queueStorefrontFilter('build','min',this.value)"></div>
-      <div class="field"><label>Max price</label><input id="part_f_max" type="number" value="${esc(f.max)}" oninput="queueStorefrontFilter('build','max',this.value)"></div>
+      <div class="field"><label for="part_f_min">Min price</label><input id="part_f_min" type="number" value="${esc(f.min)}" oninput="queueStorefrontFilter('build','min',this.value)"></div>
+      <div class="field"><label for="part_f_max">Max price</label><input id="part_f_max" type="number" value="${esc(f.max)}" oninput="queueStorefrontFilter('build','max',this.value)"></div>
     </div>
     <div class="fields2" style="margin-top:12px;align-items:flex-end">
-      <div class="field"><label>PSU wattage</label><select onchange="setPartFilter('psuWatts',this.value)">
+      <div class="field"><label for="part_f_psuWatts">PSU wattage</label><select id="part_f_psuWatts" onchange="setPartFilter('psuWatts',this.value)">
         <option value="">All wattages</option>
         ${["500","550","600","650","750","850","1000","1050","1100","1200","1250","1300","1500","1600","1650"].map(w=>`<option value="${w}" ${f.psuWatts===w?"selected":""}>${w}W</option>`).join("")}
       </select></div>
-      <div class="field"><label>Efficiency rating</label><select onchange="setPartFilter('psuEfficiency',this.value)">
+      <div class="field"><label for="part_f_psuEfficiency">Efficiency rating</label><select id="part_f_psuEfficiency" onchange="setPartFilter('psuEfficiency',this.value)">
         <option value="">All ratings</option>
         ${["80 PLUS Standard","80 PLUS White","80 PLUS Bronze","80 PLUS Silver","80 PLUS Gold","80 PLUS Platinum","80 PLUS Titanium","Cybenetics Bronze","Cybenetics Silver","Cybenetics Gold","Cybenetics Platinum","Cybenetics Titanium"].map(e=>`<option value="${e}" ${f.psuEfficiency===e?"selected":""}>${e}</option>`).join("")}
       </select></div>
-      <div class="field"><label>Cable modularity</label><select onchange="setPartFilter('psuModular',this.value)">
+      <div class="field"><label for="part_f_psuModular">Cable modularity</label><select id="part_f_psuModular" onchange="setPartFilter('psuModular',this.value)">
         <option value="">All cable types</option>
         ${["Fully Modular","Semi-Modular","Non-Modular"].map(m=>`<option value="${m}" ${f.psuModular===m?"selected":""}>${m}</option>`).join("")}
       </select></div>
-      <div class="field"><label>PSU form factor</label><select onchange="setPartFilter('psuFormFactor',this.value)">
+      <div class="field"><label for="part_f_psuFormFactor">PSU form factor</label><select id="part_f_psuFormFactor" onchange="setPartFilter('psuFormFactor',this.value)">
         <option value="">All form factors</option>
         ${["ATX","SFX","SFX-L"].map(ff=>`<option value="${ff}" ${f.psuFormFactor===ff?"selected":""}>${ff}</option>`).join("")}
       </select></div>
     </div>
-    <div class="field" style="margin-bottom:0"><label>Search</label><input id="part_f_q" placeholder="Name, description, brand…" value="${esc(f.q)}" oninput="queueStorefrontFilter('build','q',this.value)"></div>
+    <div class="field" style="margin-bottom:0"><label for="part_f_q">Search</label><input id="part_f_q" placeholder="Name, description, brand…" value="${esc(f.q)}" oninput="queueStorefrontFilter('build','q',this.value)"></div>
     ${filterActive?`<button class="btn sm ghost" style="margin-top:10px" onclick="clearPartFilters()">Clear filters</button>`:""}
   </div>` : "";
   const allCpus = partsAll().filter(p=>p.category==="CPU");
