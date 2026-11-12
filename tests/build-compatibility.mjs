@@ -42,6 +42,10 @@ ctx.catalog=base;ctx.buildSel=Object.fromEntries(base.map(p=>[p.category,p.id]))
 const savePartCode=html.slice(html.indexOf('function savePart('),html.indexOf('function delPart('));
 for(const field of new Set(savePartCode.match(/q_[a-z_]+(?=\.value)/g)))ctx[field]={value:''};
 ctx.q_name.value='Renamed cooler';ctx.q_cat.value='CPU cooler';ctx.q_price.value='45';ctx.q_supported_sockets.value='AM5';ctx.S.parts=[{id:'edited',category:'CPU cooler',name:'Old',price:40,coolingType:'Liquid',radiatorSizeMm:280,sourceUrl:'https://example.invalid/source',keywords:['cooler']}];ctx.readSelectWithAdd=id=>ctx[id]?.value||'';ctx.save=()=>{};
+ctx.upsertCatalogRecord=(section,rec)=>{
+ for(const key of ['products','parts']){ctx.S[key]=(ctx.S[key]||[]).map(item=>item.id===rec.id?{...item,...rec}:item);}
+ if(!ctx.S[section].some(item=>item.id===rec.id))ctx.S[section].push(rec);
+};
 vm.runInContext(savePartCode,ctx);run("savePart('edited',true)");assert.equal(ctx.S.parts[0].name,'Renamed cooler');assert.equal(ctx.S.parts[0].radiatorSizeMm,280);assert.equal(ctx.S.parts[0].coolingType,'Liquid');assert.equal(ctx.S.parts[0].sourceUrl,'https://example.invalid/source');
 // Phase 9: case class must not be forced by aggregate clearance of unrelated mATX cases.
 const phase9Micro={...base.find(p=>p.id==='case'),id:'micro-case',name:'Micro case',caseFormFactors:'Micro ATX, Mini-ITX',maxGpuLengthMm:440};
