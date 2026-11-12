@@ -164,3 +164,13 @@ uploads/             Product photos
   through Let's Encrypt. Logging into an admin panel over plain `http` sends your
   password across the network in the clear.
 - Back up `/data` and `/uploads`. That's your entire site content.
+
+### Private product notes (PR #94)
+
+Apply `supabase/migrations/202611110001_private_product_notes.sql` after the staff workspace and 20261110 migrations. It was applied successfully to the production project on 2026-11-11. The migration adds private notes for all 721 unique catalog IDs without replacing existing content; owner workspace refresh creates notes for future listings.
+
+In Employees → Roles / permissions, set **View product notes** and **Edit product notes** independently. Both default to disabled. Editing requires viewing. Product-note permissions are separate from general internal-note permissions and are enforced by the database for filtered/unfiltered reads and all writes. Only the owner can create, delete, retarget or change product-note access. Product permissions grant access to product notes; role audience lists continue to apply to other internal notes.
+
+Notes include an Apex product link, plus the Newegg source when the catalog records one. Missing Newegg URLs are explicitly labeled and never guessed. Existing private text is preserved. Notes and employee permission overrides are never stored in public `data.json`.
+
+Validation: `PGLITE_MODULE=/path/to/@electric-sql/pglite/dist/index.js node tests/staff-permissions.mjs` and `node tests/staff-workspace-state.mjs`.

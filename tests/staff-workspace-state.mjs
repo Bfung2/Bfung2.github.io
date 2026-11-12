@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import vm from 'node:vm';
 const code=await fs.readFile(new URL('../staff-workspace.js',import.meta.url),'utf8');
 let pendingNoteResolve;
-const context=vm.createContext({isOwner:true,isEmployee:false,employeeProfile:null,employeeProfiles:[],employeeAudit:[],performanceData:[],employeesLoaded:false,employeeAuditLoaded:false,performanceLoaded:false,employeeJobs:{},employeeJobsLoaded:false,
+const context=vm.createContext({S:{products:[],parts:[]},isOwner:true,isEmployee:false,employeeProfile:null,employeeProfiles:[],employeeAudit:[],performanceData:[],employeesLoaded:false,employeeAuditLoaded:false,performanceLoaded:false,employeeJobs:{},employeeJobsLoaded:false,
   Date,URLSearchParams,Intl,console,window:{addEventListener(){}},document:{addEventListener(){},hidden:false},location:{hash:'#/staff-notes'},route:()=>'/staff-notes',render:()=>{},esc:s=>String(s??''),supabaseClient:{rpc:async name=>name==='apex_staff_get_notes'?new Promise(resolve=>{pendingNoteResolve=resolve;}):{data:{roles:[],employees:[],permissions:{}}}},
 });
 vm.runInContext(code,context);
