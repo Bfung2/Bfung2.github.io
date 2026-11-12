@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import vm from 'node:vm';
+const html=await fs.readFile(new URL('../index.html',import.meta.url),'utf8');
+const ctx=vm.createContext({Math,Number,Set,JSON,esc:s=>String(s).replaceAll('"','&quot;'),productCard:p=>`<article class="product-card">${p.id}</article>`,render(){},document:{getElementById:()=>null}});
+vm.runInContext(html.slice(html.indexOf('const SHOP_SHELF_PAGE_SIZE='),html.indexOf('\nfunction scrollShelf')),ctx);const run=s=>vm.runInContext(s,ctx);
+ctx.items=Array.from({length:185},(_,i)=>({id:'p'+i}));let page=run("shelfPageSlice('Power supply',items)");assert.equal(page.items.length,12);assert.equal(page.pages,16);
+run("setShopShelfPage('Power supply',2)");page=run("shelfPageSlice('Power supply',items)");assert.equal(page.items[0].id,'p12');assert.equal(run("shelfPageSlice('Monitor',items).page"),1);
+run("setShopShelfPage('Power supply',999)");page=run("shelfPageSlice('Power supply',items)");assert.equal(page.page,16);assert.equal(page.items.length,5);
+ctx.items=ctx.items.slice(0,3);assert.equal(run("shelfPageSlice('Power supply',items).page"),1);
+ctx.items=Array.from({length:185},(_,i)=>({id:'p'+i}));const markup=run("shelf('Power supply',items,0,false)");assert.equal((markup.match(/class="product-card"/g)||[]).length,12);assert.ok(markup.includes('aria-current="page"'));assert.ok(markup.includes('Showing 1–12 of 185'));assert.ok(markup.includes('Power supply page 16'));
+const data=JSON.parse(await fs.readFile(new URL('../data.json',import.meta.url),'utf8'));const active=[...new Map([...data.parts,...data.products].filter(p=>p.active!==false).map(p=>[p.id,p])).values()],groups=Object.groupBy(active,p=>p.category);const initial=Object.values(groups).reduce((n,g)=>n+Math.min(12,g.length),0);console.log(`PASS: 12-card independent category pages, last-page bounds, current page labels and changed list clamping; static initial category cards ${initial} vs ${active.length} active unique entries.`);

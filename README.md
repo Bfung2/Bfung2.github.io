@@ -202,3 +202,11 @@ Review build before cart opens a final component/price list, known conflicts, un
 The checks are catalog-based guidance, not manufacturer validation or a full system peak-power calculation. No unsupported measurements have been filled in, and no products/prices were changed. Current shipping/tax and promo discounts are finalized during checkout. No database or Edge Function deployment is required for this change.
 
 Run `node tests/build-compatibility.mjs` for socket/memory/clearance/radiator/connector/power cases, candidate replacement, missing data, partial assembly requirements, review acknowledgments and stale-price/cart-total validation.
+
+### Storefront quality and delivery details
+
+Product shelves now use independent 12-card numbered pages instead of rendering the full catalog at once. Filters/search reset shelf pages, all matching products remain reachable, and phone animations are lighter. An empty PC builder no longer shows a partial-build warning.
+
+`supabase/migrations/202611110006_delivery_details.sql` adds optional customer-visible carrier, tracking number, estimated-completion date and pickup instructions. Delivery updates require owner or assigned staff access, retain payment/revision checks, and appear in the private status snapshot/history. No dates or tracking numbers are supplied automatically.
+
+See `audits/2026-11-11/work-report.md` for completed live browser checks and remaining work; targeted supplier evidence and the complete static catalog audit are stored alongside it. Business-policy choices requiring owner approval are in `docs/policy-decisions.md`. No customer terms have been published.

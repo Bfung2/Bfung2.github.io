@@ -1393,7 +1393,7 @@ function globalSearchInput(value){
 function globalSearchPickProduct(id){hideGlobalSearch();productDetail(id);}
 function globalSearchPickPage(path){hideGlobalSearch();go(path);}
 function hideGlobalSearch(){const box=document.getElementById("globalSearchResults");if(box)box.hidden=true;}
-function submitGlobalSearch(){const input=document.getElementById("globalSearch"),q=String(input?.value||"").trim();if(!q)return;productFilters={category:"",cpuType:"",q,min:"",max:""};shopFiltersOpen=false;hideGlobalSearch();go("/products");render();}
+function submitGlobalSearch(){shopShelfPages={};const input=document.getElementById("globalSearch"),q=String(input?.value||"").trim();if(!q)return;productFilters={category:"",cpuType:"",q,min:"",max:""};shopFiltersOpen=false;hideGlobalSearch();go("/products");render();}
 function globalSearchKeydown(event){if(event.key==="Enter"){event.preventDefault();submitGlobalSearch();}if(event.key==="Escape")hideGlobalSearch();}
 document.addEventListener("click",event=>{if(!event.target.closest(".site-search"))hideGlobalSearch();});
 
@@ -1635,8 +1635,8 @@ function toggleBuildPickerColumn(){buildPickerVisible=!buildPickerVisible;render
 let shopFilterResizeBound=false;
 function setupShopFilterLayer(){if(!shopFilterResizeBound){window.addEventListener("resize",()=>{if(route()==="/products")setupShopFilterLayer();},{passive:true});shopFilterResizeBound=true;}const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),sidebar=document.querySelector(".shop-sidebar"),mobile=window.matchMedia("(max-width: 900px)").matches;if(panel&&mobile&&panel.parentElement!==document.body)document.body.appendChild(panel);else if(panel&&!mobile&&panel.parentElement===document.body&&sidebar)sidebar.appendChild(panel);if(backdrop&&backdrop.parentElement!==document.body)document.body.appendChild(backdrop);if(panel)panel.classList.toggle("open",shopFiltersOpen&&mobile);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen&&mobile);document.body.classList.toggle("filters-open",shopFiltersOpen&&mobile);}
 function toggleShopFilters(force){shopFiltersOpen=typeof force==="boolean"?force:!shopFiltersOpen;const panel=document.getElementById("shopFilterPanel"),backdrop=document.querySelector(".shop-filter-backdrop"),button=document.querySelector(".shop-filter-toggle");if(panel)panel.classList.toggle("open",shopFiltersOpen);if(backdrop)backdrop.classList.toggle("open",shopFiltersOpen);if(button)button.setAttribute("aria-expanded",String(shopFiltersOpen));document.body.classList.toggle("filters-open",shopFiltersOpen);}
-function setProductFilter(key,val){ productFilters[key]=val; if(key==="category"){ productFilters.storageType=""; productFilters.coolerType=""; } render(); }
-function clearProductFilters(){ productFilters = {category:"", storageType:"", coolerType:"", cpuType:"", q:"", min:"", max:""}; render(); }
+function setProductFilter(key,val){ shopShelfPages={};productFilters[key]=val; if(key==="category"){ productFilters.storageType=""; productFilters.coolerType=""; } render(); }
+function clearProductFilters(){ shopShelfPages={};productFilters = {category:"", storageType:"", coolerType:"", cpuType:"", q:"", min:"", max:""}; render(); }
 
 /* ---- Products and Build-a-PC parts share one catalog ----
    A part added on Build a PC also shows on the Products page under its category.
@@ -1763,14 +1763,16 @@ function moveProduct(id,dir){
   [arr[a], arr[b]] = [arr[b], arr[a]];
   save(); render();
 }
+const SHOP_SHELF_PAGE_SIZE=12;
+let shopShelfPages={};
+function shelfPageSlice(title,items){const pages=Math.max(1,Math.ceil(items.length/SHOP_SHELF_PAGE_SIZE)),page=Math.max(1,Math.min(pages,Math.trunc(Number(shopShelfPages[title])||1)));shopShelfPages[title]=page;return {page,pages,start:(page-1)*SHOP_SHELF_PAGE_SIZE,items:items.slice((page-1)*SHOP_SHELF_PAGE_SIZE,page*SHOP_SHELF_PAGE_SIZE)};}
+function setShopShelfPage(title,page){shopShelfPages[title]=page;render();const rid='shelf_'+String(title).replace(/[^a-z0-9]/gi,'_');const row=document.getElementById(rid);if(row)row.scrollLeft=0;document.getElementById('shop_'+rid)?.scrollIntoView({behavior:'auto',block:'start'});document.getElementById(rid+'_page_'+shopShelfPages[title])?.focus({preventScroll:true});}
 function shelf(title, items, idx, feat){
-  const rid = "shelf_"+String(title).replace(/[^a-z0-9]/gi,"_");
-  return `<section class="shelf" id="shop_${rid}">
-    <div class="shelf-head"><div><span class="shop-section-kicker">${feat?"APEX PICKS":"BROWSE CATEGORY"}</span><h3>${feat?"✦ ":""}${esc(title)} <span class="muted" style="font-weight:500;font-size:.85rem">(${items.length})</span></h3></div>
-      <div class="shelf-arrows"><button aria-label="Scroll left" onclick="scrollShelf('${rid}',-1)">‹</button><button aria-label="Scroll right" onclick="scrollShelf('${rid}',1)">›</button></div></div>
-    <div class="shelf-row ${feat?'feat':''}" id="${rid}">${items.map(productCard).join("")}</div>
-  </section>`;
+ const rid='shelf_'+String(title).replace(/[^a-z0-9]/gi,'_'),slice=shelfPageSlice(title,items),pages=[...new Set([1,slice.page-1,slice.page,slice.page+1,slice.pages].filter(n=>n>=1&&n<=slice.pages))].sort((a,b)=>a-b),arg=esc(JSON.stringify(title));
+ const pagination=slice.pages>1?`<nav class="shop-shelf-pagination" aria-label="${esc(title)} product pages"><span>Showing ${slice.start+1}–${slice.start+slice.items.length} of ${items.length}</span><button class="btn sm ghost" ${slice.page===1?'disabled':''} onclick="setShopShelfPage(${arg},${slice.page-1})" aria-label="Previous ${esc(title)} page">Previous</button>${pages.map((n,i)=>`${i&&n>pages[i-1]+1?'<span aria-hidden="true">…</span>':''}<button id="${rid}_page_${n}" class="btn sm ${n===slice.page?'gold':'ghost'}" ${n===slice.page?'aria-current="page"':''} onclick="setShopShelfPage(${arg},${n})" aria-label="${esc(title)} page ${n}">${n}</button>`).join('')}<button class="btn sm ghost" ${slice.page===slice.pages?'disabled':''} onclick="setShopShelfPage(${arg},${slice.page+1})" aria-label="Next ${esc(title)} page">Next</button></nav>`:'';
+ return `<section class="shelf" id="shop_${rid}"><div class="shelf-head"><div><span class="shop-section-kicker">${feat?'APEX PICKS':'BROWSE CATEGORY'}</span><h3>${feat?'✦ ':''}${esc(title)} <span class="muted" style="font-weight:500;font-size:.85rem">(${items.length})</span></h3></div><div class="shelf-arrows"><button aria-label="Scroll left" onclick="scrollShelf('${rid}',-1)">‹</button><button aria-label="Scroll right" onclick="scrollShelf('${rid}',1)">›</button></div></div><div class="shelf-row ${feat?'feat':''}" id="${rid}">${slice.items.map(productCard).join('')}</div>${pagination}</section>`;
 }
+
 function scrollShelf(id,dir){ const el=document.getElementById(id); if(el) el.scrollBy({left:dir*Math.max(260,el.clientWidth*0.8),behavior:"smooth"}); }
 
 function jumpProductSection(id){

@@ -1544,20 +1544,19 @@
       "name": "ASUS Prime Radeon RX 9070 GRE EVO OC 12GB",
       "category": "Graphics card",
       "brand": "ASUS",
-      "price": 594.99,
+      "price": 794.99,
       "desc": "12GB GDDR6 - 192-bit - PCIe 5.0 x16 - Triple Fan - Up to 2880 MHz Boost",
       "longDesc": "AMD Radeon RX 9070 GRE (RDNA 4) with 3,072 stream processors, 12GB GDDR6 memory on a 192-bit bus, 18 Gbps effective memory speed, a 2300 MHz game clock, and up to 2880 MHz boost clock. PCI Express 5.0 x16 interface. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1a. Triple-fan ASUS Prime EVO cooling, 304 mm maximum length, two 8-pin power connectors, 220W typical board power (AMD reference), and 650W recommended PSU. Newegg price: $579.99; Apex price includes $15 markup.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-126-841-02.png",
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "220",
-      "watts": "650",
+      "tdp": "",
+      "watts": "",
       "power": 220,
       "sourceUrl": "https://www.newegg.com/asus-radeon-rx-9070-gre-12gb-graphics-card/p/N82E16814126841",
-      "stockStatus": "Price Verification Required",
-      "active": false,
-      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
+      "stockStatus": "In Stock",
+      "active": true,
       "keywords": [
         "graphics card",
         "asus",
@@ -1566,7 +1565,15 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "lengthMm": 304,
+      "requiredPowerConnectors": "2x8-pin",
+      "recommendedPsuWatts": 650,
+      "neweggPrice": 779.99,
+      "seller": "Newegg",
+      "verifiedDate": "2026-11-11",
+      "specVerifiedDate": "2026-11-11",
+      "specSourceUrl": "https://www.newegg.com/asus-radeon-rx-9070-gre-12gb-graphics-card/p/N82E16814126841"
     },
     {
       "id": "gpurx9070gigagaming3x",
@@ -1637,9 +1644,9 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "180",
-      "watts": "600",
-      "power": "180",
+      "tdp": "",
+      "watts": "",
+      "power": 180,
       "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992",
       "stockStatus": "Price Verification Required",
       "active": false,
@@ -1657,7 +1664,12 @@
         "nvidia rtx 5060",
         "nvidia gpu rtx 5060",
         "geforce rtx 5060"
-      ]
+      ],
+      "lengthMm": 227,
+      "requiredPowerConnectors": "8-pin",
+      "recommendedPsuWatts": 600,
+      "specVerifiedDate": "2026-11-11",
+      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992"
     },
     {
       "id": "gpu5060tiventus3x16",
@@ -1721,20 +1733,19 @@
       "name": "MSI Ventus GeForce RTX 3060 12GB VENTUS 2X 12G OCV1",
       "category": "Graphics card",
       "brand": "MSI",
-      "price": 454.99,
+      "price": 478.99,
       "desc": "12GB GDDR6 - 192-bit - PCIe 4.0 - Dual Fan - 1807 MHz Boost",
       "longDesc": "NVIDIA GeForce RTX 3060 (Ampere) graphics card with 3,584 CUDA cores, 12GB GDDR6 memory on a 192-bit bus, 15 Gbps effective memory speed, and a 1807 MHz boost clock. PCI Express 4.0 interface. Video outputs: 1x HDMI 2.1 and 3x DisplayPort 1.4. Dual-fan TORX 3.0 cooling, 235 mm maximum length, one 8-pin power connector, 170W thermal design power, and 550W recommended PSU. Newegg price: $439.99; Apex price includes $15 markup.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-982-013-06.webp",
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "170",
-      "watts": "550",
+      "tdp": "",
+      "watts": "",
       "power": 170,
       "sourceUrl": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013",
-      "stockStatus": "Price Verification Required",
-      "active": false,
-      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
+      "stockStatus": "In Stock",
+      "active": true,
       "keywords": [
         "graphics card",
         "msi",
@@ -1748,7 +1759,15 @@
         "nvidia rtx 3060",
         "nvidia gpu rtx 3060",
         "geforce rtx 3060"
-      ]
+      ],
+      "lengthMm": 235,
+      "requiredPowerConnectors": "1x8-pin",
+      "recommendedPsuWatts": 550,
+      "neweggPrice": 463.99,
+      "seller": "Newegg",
+      "verifiedDate": "2026-11-11",
+      "specVerifiedDate": "2026-11-11",
+      "specSourceUrl": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013"
     },
     {
       "id": "gpu3050msiventus2x6",
@@ -1793,8 +1812,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "250",
-      "watts": "750",
+      "tdp": "",
+      "watts": "",
       "power": 250,
       "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777",
       "stockStatus": "Price Verification Required",
@@ -1813,7 +1832,12 @@
         "nvidia rtx 5070",
         "nvidia gpu rtx 5070",
         "geforce rtx 5070"
-      ]
+      ],
+      "lengthMm": 282,
+      "requiredPowerConnectors": "1x16-pin",
+      "recommendedPsuWatts": 750,
+      "specVerifiedDate": "2026-11-11",
+      "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777"
     },
     {
       "id": "gpu5070tigigawindforce3x",
@@ -9543,9 +9567,9 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "180",
-      "watts": "600",
-      "power": "180",
+      "tdp": "",
+      "watts": "",
+      "power": 180,
       "stockStatus": "Price Verification Required",
       "active": false,
       "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
@@ -9562,7 +9586,13 @@
         "nvidia rtx 5060",
         "nvidia gpu rtx 5060",
         "geforce rtx 5060"
-      ]
+      ],
+      "lengthMm": 227,
+      "requiredPowerConnectors": "8-pin",
+      "recommendedPsuWatts": 600,
+      "specVerifiedDate": "2026-11-11",
+      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992",
+      "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-2x-oc-black-plus-geforce-rtx-5060-ti-16gb-graphics-card-double-fans/p/N82E16814137992"
     },
     {
       "id": "gpu5060tiventus3x16",
@@ -9606,8 +9636,8 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR7",
-      "tdp": "250",
-      "watts": "750",
+      "tdp": "",
+      "watts": "",
       "power": "250",
       "stockStatus": "Price Verification Required",
       "active": false,
@@ -9625,7 +9655,13 @@
         "nvidia rtx 5070",
         "nvidia gpu rtx 5070",
         "geforce rtx 5070"
-      ]
+      ],
+      "lengthMm": 282,
+      "requiredPowerConnectors": "1x16-pin",
+      "recommendedPsuWatts": 750,
+      "specVerifiedDate": "2026-11-11",
+      "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777",
+      "sourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5070wf3oc-12gd-geforce-rtx-5070-12gb-graphics-card-triple-fans/p/N82E16814932777"
     },
     {
       "id": "gpu9060xtgigagaming3x",
@@ -9657,19 +9693,18 @@
       "name": "MSI Ventus GeForce RTX 3060 12GB VENTUS 2X 12G OCV1",
       "category": "Graphics card",
       "brand": "MSI",
-      "price": 494.99,
+      "price": 478.99,
       "desc": "12GB GDDR6 - 192-bit - PCIe 4.0 - Dual Fan - 1807 MHz Boost",
       "longDesc": "NVIDIA GeForce RTX 3060 (Ampere) graphics card with 3,584 CUDA cores, 12GB GDDR6 memory on a 192-bit bus, 15 Gbps effective memory speed, and a 1807 MHz boost clock. PCI Express 4.0 interface. Video outputs: 1x HDMI 2.1 and 3x DisplayPort 1.4. Dual-fan TORX 3.0 cooling, 235 mm maximum length, one 8-pin power connector, 170W thermal design power, and 550W recommended PSU. Newegg price: $479.99; Apex price includes $15 markup.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-982-013-06.webp",
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "170",
-      "watts": "550",
+      "tdp": "",
+      "watts": "",
       "power": 170,
-      "stockStatus": "Price Verification Required",
-      "active": false,
-      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
+      "stockStatus": "In Stock",
+      "active": true,
       "keywords": [
         "graphics card",
         "msi",
@@ -9683,7 +9718,16 @@
         "nvidia rtx 3060",
         "nvidia gpu rtx 3060",
         "geforce rtx 3060"
-      ]
+      ],
+      "lengthMm": 235,
+      "requiredPowerConnectors": "1x8-pin",
+      "recommendedPsuWatts": 550,
+      "neweggPrice": 463.99,
+      "seller": "Newegg",
+      "verifiedDate": "2026-11-11",
+      "specVerifiedDate": "2026-11-11",
+      "specSourceUrl": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013",
+      "sourceUrl": "https://www.newegg.com/msi-rtx-3060-ventus-2x-12g-oc-geforce-rtx-3060-12gb-graphics-card-double-fans/p/N82E16814982013"
     },
     {
       "id": "gpu5060gigablp3x",
@@ -9752,12 +9796,11 @@
       "socket": "",
       "cpuType": "",
       "memType": "GDDR6",
-      "tdp": "220",
-      "watts": "650",
+      "tdp": "",
+      "watts": "",
       "power": 220,
-      "stockStatus": "Price Verification Required",
-      "active": false,
-      "priceReviewReason": "Conflicting Apex prices for the same catalog ID; verify exact Newegg variant, direct seller, stock and current price before reactivation.",
+      "stockStatus": "In Stock",
+      "active": true,
       "keywords": [
         "graphics card",
         "asus",
@@ -9766,7 +9809,16 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "lengthMm": 304,
+      "requiredPowerConnectors": "2x8-pin",
+      "recommendedPsuWatts": 650,
+      "neweggPrice": 779.99,
+      "seller": "Newegg",
+      "verifiedDate": "2026-11-11",
+      "specVerifiedDate": "2026-11-11",
+      "specSourceUrl": "https://www.newegg.com/asus-radeon-rx-9070-gre-12gb-graphics-card/p/N82E16814126841",
+      "sourceUrl": "https://www.newegg.com/asus-radeon-rx-9070-gre-12gb-graphics-card/p/N82E16814126841"
     },
     {
       "id": "gpurx9070gresapphirepulse2x",
@@ -17854,7 +17906,10 @@
         "heatsink",
         "air cooling",
         "fan cooler"
-      ]
+      ],
+      "heightMm": 168,
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/4466",
+      "specVerifiedDate": "2026-11-11"
     },
     {
       "id": "coolerN82E16835269007",
