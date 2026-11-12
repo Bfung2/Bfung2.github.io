@@ -24,7 +24,6 @@ function catalogData(data,today=new Date()){
  const rows=[];
  for(const group of byID.values()){
   const originals=group.records.map(r=>r.item);
-  const best=[...originals].sort((a,b)=>["sourceUrl","neweggPrice","seller","stockStatus","verifiedDate"].reduce((n,k)=>n+(b[k]!=null&&b[k]!==""?1:0)-(a[k]!=null&&a[k]!==""?1:0),0))[0];
   const pick=key=>originals.find(p=>p[key]!==undefined&&p[key]!==null&&p[key]!=="")?.[key];
   const name=String(pick("name")||"Unnamed item");
   const active=originals.some(p=>p.active!==false);
@@ -43,7 +42,7 @@ function catalogData(data,today=new Date()){
   if(yes(pick("seller"))!=="newegg")flag("seller",pick("seller")?"Seller not documented as direct Newegg":"Seller not documented","missing");
   const stock=yes(pick("stockStatus"));
   if(!stock)flag("stock_missing","Stock status not documented","missing");
-  else if(stock!=="in stock"&&stock!=="instock"&&stock!=="available")flag("stock_ineligible","Stored status is not in stock","critical");
+  else if(stock!=="in stock"&&stock!=="instock")flag("stock_ineligible","Stored status is not in stock","critical");
   const verified=String(pick("verifiedDate")||"");
   const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec(verified);
   const parsed=match?Date.UTC(+match[1],+match[2]-1,+match[3]):NaN;
