@@ -1639,7 +1639,7 @@
       "brand": "MSI",
       "price": 804.99,
       "desc": "16GB GDDR7 - 128-bit - PCIe 5.0 x8 - Dual Fan - 2602 MHz Boost",
-      "longDesc": "NVIDIA GeForce RTX 5060 Ti (Blackwell) with 4,608 CUDA cores, 16GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2602 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Dual-fan cooling, 227 mm maximum length, 8-pin power connector, 180W thermal design power, and 600W recommended PSU. Newegg price: $789.99; Apex price includes $15 markup.",
+      "longDesc": "NVIDIA GeForce RTX 5060 Ti (Blackwell) with 4,608 CUDA cores, 16GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2602 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Dual-fan cooling, 227 mm maximum length, 8-pin power connector, 180W thermal design power, and 600W recommended PSU. Price pending Newegg-direct verification; this listing is unavailable for purchase.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-137-992-01.jpg",
       "socket": "",
       "cpuType": "",
@@ -1809,7 +1809,7 @@
       "brand": "GIGABYTE",
       "price": 854.99,
       "desc": "12GB GDDR7 - 192-bit - PCIe 5.0 x16 - Triple Fan - 2542 MHz Boost Clock",
-      "longDesc": "NVIDIA GeForce RTX 5070 (Blackwell) with 6,144 CUDA cores, 12GB GDDR7 memory on a 192-bit bus, and a 2542 MHz boost clock. PCI Express 5.0 x16 interface. Triple-fan WINDFORCE cooling, one 16-pin power connector, 250W total graphics power, and 750W recommended PSU. Newegg direct price: $909.99; Apex price includes the $15 markup.",
+      "longDesc": "NVIDIA GeForce RTX 5070 (Blackwell) with 6,144 CUDA cores, 12GB GDDR7 memory on a 192-bit bus, and a 2542 MHz boost clock. PCI Express 5.0 x16 interface. Triple-fan WINDFORCE cooling, one 16-pin power connector, 250W total graphics power, and 750W recommended PSU. Price pending Newegg-direct verification; this listing is unavailable for purchase.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-932-777-02.jpg",
       "socket": "",
       "cpuType": "",
@@ -2115,7 +2115,7 @@
       "tdp": "65",
       "watts": "",
       "power": "65",
-      "sourceUrl": "https://www.newegg.com/intel-core-i7-14th-gen-core-i7-14700-raptor-lake-lga-1700-desktop-cpu-processor/p/N82E16819118476",
+      "sourceUrl": "https://www.newegg.com/p/N82E16819118476",
       "series": "14th Gen",
       "cores": 20,
       "threads": 28,
@@ -2128,7 +2128,10 @@
         "intel",
         "processor",
         "computer processor"
-      ]
+      ],
+      "seller": "Newegg",
+      "stockStatus": "In Stock",
+      "verifiedDate": "2026-11-12"
     },
     {
       "id": "intel-i5-14500",
@@ -2192,7 +2195,8 @@
       "recommendedPsuWatts": 450,
       "requiredPowerConnectors": "1x 8-pin",
       "specSourceUrl": "https://www.microcenter.com/product/696462/sapphire-technology-amd-radeon",
-      "specVerifiedDate": "2026-11-11"
+      "specVerifiedDate": "2026-11-11",
+      "neweggPrice": 749.99
     },
     {
       "id": "gpu5070tigigagaming3x",
@@ -2620,9 +2624,9 @@
       "cpuType": "Core i5",
       "processor": "Core i5-14600K",
       "brand": "Intel",
-      "neweggPrice": 249.99,
-      "price": 264.99,
-      "sourceUrl": "https://www.newegg.com/intel-core-i5-14th-gen-core-i5-14600k-raptor-lake-lga-1700-desktop-cpu-processor/p/N82E16819118470?Item=N82E16819118470",
+      "neweggPrice": 249.97,
+      "price": 264.97,
+      "sourceUrl": "https://www.newegg.com/p/N82E16819118470",
       "image": "https://c1.neweggimages.com/productimage/nb640/19-118-470-07.jpg",
       "desc": "14-Core / 20-Thread • 3.5 GHz P-Core / 2.6 GHz E-Core Base • Up to 5.3 GHz Boost • 125W • LGA1700",
       "longDesc": "Intel Core i5-14600K desktop processor. 14 cores (6 P-cores + 8 E-cores) and 20 threads, 3.5 GHz P-core / 2.6 GHz E-core base clocks, up to 5.3 GHz P-core boost, 20MB L2 and 24MB L3 cache, 125W processor base power. Socket LGA1700; supports DDR4 or DDR5 memory. Integrated graphics: Intel UHD Graphics 770. Newegg direct-sold listing price checked: $249.99. Apex price includes the $15 markup.",
@@ -2639,7 +2643,7 @@
       "integratedGraphics": "Intel UHD Graphics 770",
       "seller": "Newegg",
       "stockStatus": "In Stock",
-      "verifiedDate": "2026-11-09",
+      "verifiedDate": "2026-11-12",
       "keywords": [
         "cpu",
         "intel",
@@ -8482,14 +8486,15 @@
         "intel",
         "processor",
         "computer processor"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/p/N82E16819118468"
     },
     {
       "id": "gshvuwn",
       "name": "Intel Core i7-14700",
       "category": "CPU",
       "brand": "Intel",
-      "price": 405,
+      "price": 381.24,
       "desc": "20-Core (8P+12E)\n2.1 GHz\nIntel UHD Graphics 770",
       "image": "https://c1.neweggimages.com/ProductImage/19-118-476-01.jpg",
       "socket": "LGA1700",
@@ -8502,7 +8507,12 @@
         "intel",
         "processor",
         "computer processor"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/p/N82E16819118476",
+      "neweggPrice": 366.24,
+      "seller": "Newegg",
+      "stockStatus": "In Stock",
+      "verifiedDate": "2026-11-12"
     },
     {
       "id": "h8olo1u",
@@ -8523,14 +8533,15 @@
         "intel",
         "processor",
         "computer processor"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/p/N82E16819118487"
     },
     {
       "id": "r89m00v",
       "name": "Intel Core i5-14600K",
       "category": "CPU",
       "brand": "Intel",
-      "price": 265,
+      "price": 264.97,
       "desc": "14-Core (6P+8E)\n3.5 GHz\nIntel UHD Graphics 770",
       "image": "https://c1.neweggimages.com/ProductImage/19-118-470-07.jpg",
       "socket": "LGA1700",
@@ -8544,14 +8555,19 @@
         "intel",
         "processor",
         "computer processor"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/p/N82E16819118470",
+      "neweggPrice": 249.97,
+      "seller": "Newegg",
+      "stockStatus": "In Stock",
+      "verifiedDate": "2026-11-12"
     },
     {
       "id": "9mbrbjk",
       "name": "Intel Core i5-14600KF",
       "category": "CPU",
       "brand": "Intel",
-      "price": 255,
+      "price": 247.08,
       "desc": "14-Core (6P+8E)\n3.5 GHz\nNone Integrated Graphics",
       "image": "https://c1.neweggimages.com/ProductImage/19-118-472-03.jpg",
       "socket": "LGA1700",
@@ -8565,7 +8581,12 @@
         "intel",
         "processor",
         "computer processor"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/p/N82E16819118472",
+      "neweggPrice": 232.08,
+      "seller": "Newegg",
+      "stockStatus": "In Stock",
+      "verifiedDate": "2026-11-12"
     },
     {
       "id": "llw40wt",
@@ -9562,16 +9583,17 @@
         "nvidia rtx 5060",
         "nvidia gpu rtx 5060",
         "geforce rtx 5060"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/msi-rtx-5060-8g-ventus-2x-oc-geforce-rtx-5060-8gb-graphics-card-double-fans/p/N82E16814137975"
     },
     {
       "id": "gpu5060tiventus2x16",
       "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
       "category": "Graphics card",
       "brand": "MSI",
-      "price": 864.99,
+      "price": 804.99,
       "desc": "16GB GDDR7 - 128-bit - PCIe 5.0 x8 - Dual Fan - 2602 MHz Boost",
-      "longDesc": "NVIDIA GeForce RTX 5060 Ti (Blackwell) with 4,608 CUDA cores, 16GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2602 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Dual-fan cooling, 227 mm maximum length, 8-pin power connector, 180W thermal design power, and 600W recommended PSU. Newegg price: $849.99; Apex price includes $15 markup.",
+      "longDesc": "NVIDIA GeForce RTX 5060 Ti (Blackwell) with 4,608 CUDA cores, 16GB GDDR7 memory on a 128-bit bus, 28 Gbps effective memory speed, and a 2602 MHz boost clock. PCI Express 5.0 x16 interface operating at x8. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Dual-fan cooling, 227 mm maximum length, 8-pin power connector, 180W thermal design power, and 600W recommended PSU. Price pending Newegg-direct verification; this listing is unavailable for purchase.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-137-992-01.jpg",
       "socket": "",
       "cpuType": "",
@@ -9633,16 +9655,17 @@
         "nvidia rtx 5060",
         "nvidia gpu rtx 5060",
         "geforce rtx 5060"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-3x-oc-geforce-rtx-5060-ti-16gb-graphics-card-triple-fans/p/N82E16814137957"
     },
     {
       "id": "gpu5070gigawindforce3x",
-      "name": "GIGABYTE WindForce GeForce RTX 5070 12GB OC",
+      "name": "GIGABYTE WINDFORCE GeForce RTX 5070 12GB OC",
       "category": "Graphics card",
       "brand": "GIGABYTE",
-      "price": 924.99,
+      "price": 854.99,
       "desc": "12GB GDDR7 - 192-bit - PCIe 5.0 - Triple Fan - 2542 MHz Boost",
-      "longDesc": "NVIDIA GeForce RTX 5070 (Blackwell) with 6,144 CUDA cores, 12GB GDDR7 memory on a 192-bit bus, 28 Gbps effective memory speed, and a 2542 MHz boost clock. PCI Express 5.0 interface. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Triple-fan WINDFORCE cooling, 282 mm maximum length, 16-pin power connector, 250W thermal design power, and 750W recommended PSU. Newegg price: $909.99; Apex price includes $15 markup.",
+      "longDesc": "NVIDIA GeForce RTX 5070 (Blackwell) with 6,144 CUDA cores, 12GB GDDR7 memory on a 192-bit bus, 28 Gbps effective memory speed, and a 2542 MHz boost clock. PCI Express 5.0 interface. Video outputs: 1x HDMI 2.1b and 3x DisplayPort 2.1b. Triple-fan WINDFORCE cooling, 282 mm maximum length, 16-pin power connector, 250W thermal design power, and 750W recommended PSU. Price pending Newegg-direct verification; this listing is unavailable for purchase.",
       "image": "https://c1.neweggimages.com/productimage/nb640/14-932-777-02.jpg",
       "socket": "",
       "cpuType": "",
@@ -9795,7 +9818,8 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/gigabyte-gv-r9070gaming-oc-16gd-radeon-rx-9070-16gb-graphics-card-triple-fans/p/14-932-752"
     },
     {
       "id": "gpurx9070greasusprime3x",
@@ -9856,7 +9880,8 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/sapphire-tech-pulse-radeon-rx-9070-gre-graphics-12gb-graphics-card-double-fans/p/N82E16814202478"
     },
     {
       "id": "gpu5090aorusmasterice3x",
@@ -10139,7 +10164,8 @@
         "nvidia rtx 5070",
         "nvidia gpu rtx 5070",
         "geforce rtx 5070"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/gigabyte-gv-n507tgaming-oc-16gd-geforce-rtx-5070-ti-16gb-graphics-card-triple-fans/p/N82E16814932768"
     },
     {
       "id": "gpurx9070xtasrocksteellegend3x",
@@ -10164,7 +10190,8 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/asrock-steel-legend-rx9070xt-sl-16g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814930136"
     },
     {
       "id": "gpu5060tigigabyteeagle2x8",
@@ -10194,7 +10221,8 @@
         "nvidia rtx 5060",
         "nvidia gpu rtx 5060",
         "geforce rtx 5060"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/gigabyte-gv-n506teagle-oc-8gd-geforce-rtx-5060-ti-8gb-graphics-card-double-fans/p/N82E16814932795"
     },
     {
       "id": "gpurx9070xtsapphirenitro3x",
@@ -10219,7 +10247,8 @@
         "amd",
         "radeon",
         "amd gpu"
-      ]
+      ],
+      "sourceUrl": "https://www.newegg.com/sapphire-tech-nitro-11348-01-20g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814202448"
     },
     {
       "id": "psu550m",
