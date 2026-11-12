@@ -185,7 +185,11 @@ async function staffLoadSales(){
 }
 function staffEmployeePaidCount(id){const paid=staffSales.items.filter(c=>c.employee_id===id&&c.settlement_status==='paid');return 'Paid contributions: '+paid.filter(c=>!c.is_test).length+' · Test paid: '+paid.filter(c=>c.is_test).length;}
 function staffSaleCards(items){return items.length?`<div class="staff-timeline">${items.map(c=>`<article class="panel">${c.is_test?'<span class="staff-pill">TEST</span> ':''}<strong>${esc(c.customer_name||'Customer')}</strong><p>${esc(c.reference)} · ${c.job_kind==='request'?'Tech request lead':'Order contribution'}</p>${isOwner?`<p>Credited to ${esc(c.employee_name)}</p>`:''}<p><strong>Employee commission:</strong> ${c.commission_cents==null?'Not set':money(c.commission_cents/100)}</p>${c.commission_note?`<p class="staff-prewrap">${esc(c.commission_note)}</p>`:''}${c.settlement_status&&c.settlement_status!=='pending'?`<p><strong>${c.settlement_status==='paid'?'Employee paid':'Voided'}</strong> · ${new Date(c.settled_at).toLocaleString()}</p>`:''}<small class="muted">${new Date(c.credited_at).toLocaleString()} · ${esc(c.job_id)}</small>${isOwner&&(!c.settlement_status||c.settlement_status==='pending')?`<div class="row" style="margin-top:12px"><button class="btn sm ghost" data-kind="${esc(c.job_kind)}" data-job="${esc(c.job_id)}" onclick="staffCommissionDialog(this,false)">Set commission</button><button class="btn sm gold" data-kind="${esc(c.job_kind)}" data-job="${esc(c.job_id)}" onclick="staffSettleContribution(this,'paid')">Paid employee</button><button class="btn sm danger" data-kind="${esc(c.job_kind)}" data-job="${esc(c.job_id)}" onclick="staffSettleContribution(this,'void')">Delete / void</button></div>`:''}</article>`).join('')}</div>`:'<div class="empty">No outstanding sales contributions.</div>';}
-function staffSalesList(items){return staffSaleCards(items.filter(c=>(c.settlement_status||'pending')===staffSalesView));}
+function staffSalesList(items){
+ const filtered=staffVisibleContributions(items);
+ return '<p class="muted" role="status">Showing '+filtered.length+' of '+items.length+' loaded contributions</p>'+
+ (filtered.length?staffSaleCards(filtered):'<div class="empty">No contributions match these filters.</div>');
+}
 async function staffSettleContribution(button,action){
  if(!isOwner)return;
  if(action==='paid')return staffCommissionDialog(button,true);
@@ -194,7 +198,7 @@ async function staffSettleContribution(button,action){
  if(!confirm(message))return;
  staffBusy(button,true);try{await staffRPC('apex_settle_sales_contribution',{p_kind:c.job_kind,p_job:c.job_id,p_action:action});staffSales.loaded=false;await staffLoadSales();toast(action==='paid'?'Employee payment recorded.':'Contribution voided.');}catch(e){staffError(e);}finally{staffBusy(button,false);}
 }
-function staffSalesPage(){const denied=staffGate();if(denied)return denied;staffLoadSales();return staffShell(isOwner?'Sales contributions':'My sales contributions','Outstanding employee contributions. TEST entries use the same workflow. Paid employee records a payment you already made; Delete / void cancels the contribution.',`${staffSales.loading?'<p>Loading sales credits…</p>':''}${staffSales.error?`<div class="notice">${esc(staffSales.error)} Apply the sales attribution migration to enable this feature.</div>`:''}${staffCommissionSummary(staffSales.items)}${staffContributionFilters()}${staffSalesList(staffSales.items)}`);}
+function staffSalesPage(){const denied=staffGate();if(denied)return denied;staffLoadSales();return staffShell(isOwner?'Sales contributions':'My sales contributions','Outstanding employee contributions. TEST entries use the same workflow. Paid employee records a payment you already made; Delete / void cancels the contribution.',`${staffSales.loading?'<p>Loading sales credits…</p>':''}${staffSales.error?`<div class="notice">${esc(staffSales.error)} Apply the sales attribution migration to enable this feature.</div>`:''}${staffCommissionSummary(staffSales.items)}${staffEmployeeCommissionOverview(staffSales.items)}${staffContributionFilters()}${staffSalesList(staffSales.items)}`);}
 function staffCreditSale(kind,id){
  if(!isOwner)return;
  const credit=staffSales.items.find(c=>c.job_kind===kind&&c.job_id===id);
@@ -203,12 +207,53 @@ function staffCreditSale(kind,id){
 async function staffSaveSaleCredit(button){staffBusy(button,true);try{await staffRPC('apex_credit_sale',{p_kind:button.dataset.kind,p_job:button.dataset.job,p_employee:document.getElementById('staffSaleEmployee').value||null});editDlg.close();staffSales.loaded=false;await staffLoadSales();toast('Sales contribution recorded.');}catch(e){staffError(e);}finally{staffBusy(button,false);}}
 function staffSaleButton(kind,id){const c=staffSales.items.find(c=>c.job_kind===kind&&c.job_id===id);return `<button class="btn sm ghost" data-kind="${esc(kind)}" data-job="${esc(id)}" onclick="staffCreditSale(this.dataset.kind,this.dataset.job)">${c?'Sale: '+esc(c.employee_name):'Credit sale / lead'}</button>`;}
 
-let staffSalesView='pending';
-function staffContributionFilters(){return `<div class="row" style="margin:18px 0"><label>Contributions <select aria-label="Contribution history" onchange="staffSalesView=this.value;render()">${[['pending','Outstanding'],['paid','Employee payment history'],['void','Voided']].map(([v,t])=>`<option value="${v}" ${staffSalesView===v?'selected':''}>${t}</option>`).join('')}</select></label></div>`;}
+let staffSalesView='pending',staffSalesEmployeeFilter='',staffSalesTestFilter='all',staffSalesSearch='';
+function staffVisibleContributions(items){
+ const query=staffSalesSearch.trim().toLowerCase();
+ return items.filter(c=>{
+  if((c.settlement_status||'pending')!==staffSalesView)return false;
+  if(staffSalesTestFilter==='real'&&c.is_test)return false;
+  if(staffSalesTestFilter==='test'&&!c.is_test)return false;
+  if(isOwner&&staffSalesEmployeeFilter&&c.employee_id!==staffSalesEmployeeFilter)return false;
+  return !query||[c.reference,c.job_id,c.customer_name,c.employee_name].map(v=>String(v||'')).join(' ').toLowerCase().includes(query);
+ });
+}
+function staffContributionFilters(){
+ const employees=new Map();
+ for(const c of staffSales.items){if(c.employee_id)employees.set(c.employee_id,c.employee_name||c.employee_id);}
+ const option=(value,label,current)=>'<option value="'+esc(value)+'" '+(value===current?'selected':'')+'>'+esc(label)+'</option>';
+ return '<div class="row" style="margin:18px 0;gap:12px;flex-wrap:wrap">'+
+ '<label>History <select aria-label="Contribution history" onchange="staffSalesView=this.value;render()">'+
+ [['pending','Outstanding'],['paid','Employee payment history'],['void','Voided']].map(([v,t])=>option(v,t,staffSalesView)).join('')+'</select></label>'+
+ '<label>Type <select aria-label="Test contribution filter" onchange="staffSalesTestFilter=this.value;render()">'+
+ [['all','Real and test'],['real','Real only'],['test','Test only']].map(([v,t])=>option(v,t,staffSalesTestFilter)).join('')+'</select></label>'+
+ (isOwner?'<label>Employee <select aria-label="Employee contribution filter" onchange="staffSalesEmployeeFilter=this.value;render()">'+
+ option('','All employees',staffSalesEmployeeFilter)+[...employees].sort((a,b)=>a[1].localeCompare(b[1])).map(([v,t])=>option(v,t,staffSalesEmployeeFilter)).join('')+'</select></label>':'')+
+ '<label>Find <input id="staffSalesSearch" type="search" value="'+esc(staffSalesSearch)+'" oninput="staffSalesSearch=this.value;render()" placeholder="Order, customer or employee" aria-label="Search contributions"></label></div>';
+}
+function staffEmployeeCommissionOverview(items){
+ if(!isOwner)return '';
+ const groups=new Map();
+ for(const c of items){
+  if(!c.employee_id)continue;
+  if(!groups.has(c.employee_id))groups.set(c.employee_id,{name:c.employee_name||'Unknown employee',outstanding:0,missing:0,paid:0,paidCount:0,voided:0,testPending:0,testPaid:0});
+  const g=groups.get(c.employee_id),status=c.settlement_status||'pending';
+  if(c.is_test){if(status==='pending')g.testPending++;if(status==='paid')g.testPaid++;continue;}
+  if(status==='pending'){g.outstanding+=Number(c.commission_cents||0);if(c.commission_cents==null)g.missing++;}
+  if(status==='paid'){g.paid+=Number(c.commission_cents||0);g.paidCount++;}
+  if(status==='void')g.voided++;
+ }
+ if(!groups.size)return '';
+ return '<details class="panel" style="margin:16px 0"><summary><strong>Employee payout overview</strong> · '+groups.size+' employee(s)</summary>'+
+ '<p class="muted">Totals come from currently loaded contribution records, not from bank transfers. TEST amounts are excluded.</p>'+
+ '<div style="overflow-x:auto"><table><thead><tr><th>Employee</th><th>Unpaid recorded</th><th>Missing amounts</th><th>Paid recorded</th><th>Real paid count</th><th>Voided</th><th>Test pending / paid</th></tr></thead><tbody>'+
+ [...groups.values()].sort((a,b)=>a.name.localeCompare(b.name)).map(g=>'<tr><td>'+esc(g.name)+'</td><td>'+money(g.outstanding/100)+'</td><td>'+g.missing+'</td><td>'+money(g.paid/100)+'</td><td>'+g.paidCount+'</td><td>'+g.voided+'</td><td>'+g.testPending+' / '+g.testPaid+'</td></tr>').join('')+
+ '</tbody></table></div></details>';
+}
 function staffCommissionSummary(items){const real=items.filter(c=>!c.is_test),pending=real.filter(c=>!c.settlement_status||c.settlement_status==='pending'),paid=real.filter(c=>c.settlement_status==='paid');const sum=rows=>rows.reduce((n,c)=>n+(c.commission_cents||0),0)/100,unknown=pending.filter(c=>c.commission_cents==null).length,legacy=paid.filter(c=>c.commission_cents==null).length;return `<div class="notice"><strong>Unpaid commissions: ${money(sum(pending))}</strong>${unknown?` · ${unknown} contribution(s) need an amount`:''}<br>Recorded employee payments: ${money(sum(paid))}${legacy?` · ${legacy} earlier payment(s) have no recorded amount`:''}<br><small>USD. Test contributions are excluded from these balances.</small></div>`;}
 function staffCommissionDialog(button,paying=false){
  if(!isOwner)return;const c=staffSales.items.find(c=>c.job_kind===button.dataset.kind&&c.job_id===button.dataset.job);if(!c||c.settlement_status&&c.settlement_status!=='pending')return;
  openDlg(`<div class="dlg staff-dialog"><h3>${paying?'Record employee payment':'Set employee commission'} ${c.is_test?'· TEST':''}</h3><p>${esc(c.employee_name)} · ${esc(c.reference)}</p><p>${paying?'Record the amount you already paid this employee. This does not transfer money.':'Set the amount owed for this contribution. No automatic rate is assumed.'}</p><form onsubmit="staffSaveCommission(event);return false" data-kind="${esc(c.job_kind)}" data-job="${esc(c.job_id)}" data-paying="${paying}" data-revision="${c.commission_revision||0}"><div class="field"><label for="commissionAmount">Employee amount (USD)</label><input id="commissionAmount" type="number" min="0" max="1000000" step="0.01" required value="${c.commission_cents==null?'':(c.commission_cents/100).toFixed(2)}"></div><div class="field"><label for="commissionNote">${paying?'Payment reference / note (optional)':'Commission note (optional)'}</label><textarea id="commissionNote" maxlength="1000">${esc(c.commission_note||'')}</textarea></div><div class="row"><button class="btn gold" type="submit">${paying?'Confirm employee paid':'Save amount'}</button><button type="button" class="btn ghost" onclick="editDlg.close()">Cancel</button></div></form></div>`);
 }
 async function staffSaveCommission(event){event.preventDefault();if(!isOwner)return;const form=event.currentTarget,button=event.submitter;const raw=document.getElementById('commissionAmount').value;if(!/^\d+(?:\.\d{1,2})?$/.test(raw))return toast('Enter an amount with up to two decimal places.');const cents=Math.round(Number(raw)*100);if(!Number.isSafeInteger(cents)||cents<0||cents>100000000)return toast('Enter a valid amount.');staffBusy(button,true);try{await staffRPC(form.dataset.paying==='true'?'apex_pay_contribution':'apex_save_contribution_amount',{p_kind:form.dataset.kind,p_job:form.dataset.job,p_amount_cents:cents,p_note:document.getElementById('commissionNote').value,p_revision:Number(form.dataset.revision)});editDlg.close();staffSales.loaded=false;await staffLoadSales();toast(form.dataset.paying==='true'?'Employee payment recorded.':'Commission amount saved.');}catch(e){staffError(e);}finally{staffBusy(button,false);}}
-function staffDashboardPage(){const denied=staffOwnerOnly();if(denied)return denied;staffLoadSales();const d=staffSales.dashboard||{},metric=(label,value,url)=>`<a class="panel" href="#${url}"><small>${label}</small><strong class="staff-metric">${value??'—'}</strong></a>`;return staffShell('Owner overview','Orders, service requests and staff payments at a glance.',`${staffSales.error?`<div class="notice" role="alert">${esc(staffSales.error)}</div>`:''}${staffSales.loading?'<p role="status">Loading overview…</p>':''}<div class="staff-metrics">${metric('Orders marked paid',d.paid_orders,'/inbox')}${metric('Orders in progress',d.open_orders,'/inbox')}${metric('Open service requests',d.open_requests,'/inbox')}${metric('Failed order emails',d.failed_notifications,'/market-sales')}${metric('Unused active customer links',d.waiting_links,'/market-sales')}${metric('Outstanding real contributions',staffSales.items.filter(c=>!c.is_test&&(!c.settlement_status||c.settlement_status==='pending')).length,'/sales-credits')}</div>${staffCommissionSummary(staffSales.items)}<div class="row"><a class="btn gold" href="#/sales-credits">Employee payments</a><a class="btn ghost" href="#/employees">Employee details</a><a class="btn ghost" href="#/market-sales">Customer links & email retries</a><a class="btn ghost" href="#/inbox">Orders & requests</a></div><p class="muted">Test orders and test email failures are excluded. Counts reflect current stored statuses; “Orders marked paid” is not lifetime revenue.</p>`);}
+function staffDashboardPage(){const denied=staffOwnerOnly();if(denied)return denied;staffLoadSales();const d=staffSales.dashboard||{},metric=(label,value,url)=>`<a class="panel" href="#${url}"><small>${label}</small><strong class="staff-metric">${value??'—'}</strong></a>`;return staffShell('Owner overview','Orders, service requests and staff payments at a glance.',`${staffSales.error?`<div class="notice" role="alert">${esc(staffSales.error)}</div>`:''}${staffSales.loading?'<p role="status">Loading overview…</p>':''}<div class="staff-metrics">${metric('Orders marked paid',d.paid_orders,'/inbox')}${metric('Orders in progress',d.open_orders,'/inbox')}${metric('Open service requests',d.open_requests,'/inbox')}${metric('Failed order emails',d.failed_notifications,'/market-sales')}${metric('Unused active customer links',d.waiting_links,'/market-sales')}${metric('Outstanding real contributions',staffSales.items.filter(c=>!c.is_test&&(!c.settlement_status||c.settlement_status==='pending')).length,'/sales-credits')}</div>${staffCommissionSummary(staffSales.items)}${staffEmployeeCommissionOverview(staffSales.items)}<div class="row"><a class="btn gold" href="#/sales-credits">Employee payments</a><a class="btn ghost" href="#/employees">Employee details</a><a class="btn ghost" href="#/market-sales">Customer links & email retries</a><a class="btn ghost" href="#/inbox">Orders & requests</a></div><p class="muted">Test orders and test email failures are excluded. Counts reflect current stored statuses; “Orders marked paid” is not lifetime revenue.</p>`);}
