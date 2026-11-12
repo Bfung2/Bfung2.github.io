@@ -86,7 +86,7 @@ assert.equal(offline.status,"fail");
 assert.equal(offline.checks[0].reason,"Network request failed or timed out");
 assert.equal(validatePublicResponse("json","{bad","application/json").ok,false);
 assert.equal(validatePublicResponse("html","<!doctype html>","text/html").ok,false);
-for(const text of ["schedule:","workflow_dispatch:","issues: write","if: failure()","if: success()",
+for(const text of ["schedule:","workflow_dispatch:","issues: write","steps.storefront_health.outcome == 'failure'","if: success()",
  "apex-public-catalog-recovery","retention-days: 30"]){
  assert.ok(monitorWorkflow.includes(text),"Missing scheduling/incident/backup rule "+text);
 }
