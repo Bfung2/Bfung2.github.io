@@ -37,6 +37,19 @@ function analyzeBuildCompatibility(parts){
  const draw=requiredWatts(cpu,parts.filter(p=>p.category!=='CPU'&&p.category!=='Power supply')),target=recommendedPSUWatts(draw);
  if(cpu&&!bcNumber(cpu.tdp))add('cpu-power',['CPU','Power supply'],'unverified','CPU power estimate is missing.');if(gpu&&!bcNumber(gpu.power))add('gpu-power',['Graphics card','Power supply'],'unverified','GPU power estimate is missing.');
  if(psu){const watts=bcNumber(psu.watts);add('psu-watts',['Power supply','CPU','Graphics card'],!watts||!draw?'unverified':watts<draw?'fail':watts<target?'warning':'pass',!watts||!draw?'PSU wattage / build power compatibility unverified.':watts<draw?`PSU output ${watts} W is below estimated draw ${draw} W.`:watts<target?`PSU meets estimated draw, but is below the ${target} W headroom recommendation.`:`PSU meets the ${target} W recommendation.`);}
+ if(psu&&gpu){
+  const manufacturerTarget=bcNumber(gpu.recommendedPsuWatts);
+  const actualOutput=bcNumber(psu.watts);
+  if(manufacturerTarget&&actualOutput){
+   add('gpu-psu-recommendation',['Graphics card','Power supply'],
+    actualOutput>=manufacturerTarget?'pass':'warning',
+    actualOutput>=manufacturerTarget?
+     `PSU meets the GPU manufacturer's ${manufacturerTarget} W system recommendation.`:
+     `PSU meets the catalog draw estimate but is below the GPU manufacturer's ${manufacturerTarget} W system recommendation; verify the complete PC power budget.`);
+  }else if(manufacturerTarget&&!actualOutput){
+   add('gpu-psu-recommendation',['Graphics card','Power supply'],'unverified','GPU manufacturer PSU recommendation is known, but PSU output is missing.');
+  }
+ }
  if(psu&&pcCase){const sizes=bcList(pcCase.supportedPSUFormFactors).map(x=>x.toLowerCase().replace(/\s/g,'')),form=String(psu.formFactor||'').toLowerCase().replace(/\s/g,'');add('psu-case',['Power supply','Case'],!form||!sizes.length?'unverified':sizes.includes(form)?'pass':'fail',!form||!sizes.length?'PSU / case form-factor compatibility unverified.':sizes.includes(form)?'PSU form factor matches the case.':'PSU form factor is not supported by the case.');}
  const connectorCheck=(key,categories,required,available)=>{if(Array.isArray(required)&&!required.length||typeof required==='string'&&/^(none|no external power|slot powered)$/i.test(required.trim())){add(key,categories,'pass','No external power connector is listed as required.');return;}const req=bcConnectorSpec(required),avail=bcConnectorSpec(available);if(key==='cpu-connectors')for(const p of [...req.ports,...avail.ports])if(p.type==='pcie8'&&!p.supports6)p.type='eps8';if(req.unknown||avail.unknown){add(key,categories,'unverified','Required power-connector types or quantities are unverified.');return;}let state='pass';const remaining=avail.ports.map(p=>({...p,left:p.count}));for(const type of [...new Set(req.ports.map(p=>p.type))].sort((a,b)=>(a==='pcie6')-(b==='pcie6'))){const r=req.ports.filter(p=>p.type===type),a=remaining.filter(p=>p.type===type||type==='pcie6'&&p.supports6).sort((x,y)=>Number(x.supports6)-Number(y.supports6)),count=r.reduce((n,p)=>n+p.count,0),have=a.reduce((n,p)=>n+p.left,0);if(!a.length){if(['12vhpwr','12v2x6','16pin'].includes(type)&&avail.ports.some(p=>['12vhpwr','12v2x6','16pin'].includes(p.type)))state=state==='fail'?'fail':'unverified';else state='fail';}else if(r.some(p=>!p.known)||a.some(p=>!p.known)){if(state!=='fail')state='unverified';}else if(have<count)state='fail';else{let need=count;for(const p of a){const used=Math.min(need,p.left);p.left-=used;need-=used;}}}add(key,categories,state,state==='pass'?'Listed power-connector types and counts match.':state==='fail'?'PSU does not list enough matching required power connectors.':'Power-connector quantity or cable-standard compatibility unverified; do not substitute CPU/EPS and PCIe cables.');};
  if(gpu&&psu)connectorCheck('gpu-connectors',['Graphics card','Power supply'],gpu.requiredPowerConnectors,psu.gpuPowerConnectors);

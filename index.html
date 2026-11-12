@@ -1641,7 +1641,21 @@ function resetBuildBoardSize(){buildBoardSize='';buildCategoryPages.Motherboard=
 function gpuVendorOf(gpu){const t=[gpu?.name,gpu?.desc,gpu?.longDesc].join(" ").toLowerCase();if(/geforce|\brtx\b|\bgtx\b|nvidia/.test(t))return "NVIDIA";if(/radeon|\brx\s*\d|amd/.test(t))return "AMD";return "";}
 function setBuildGpuVendor(vendor){buildGpuVendor=vendor;const selected=partsAll().find(p=>p.id===buildSel["Graphics card"]);if(selected&&gpuVendorOf(selected)!==vendor)delete buildSel["Graphics card"];buildCategoryPages["Graphics card"]=1;saveBuild();render();}
 function resetBuildGpuVendor(){buildGpuVendor='';buildCategoryPages["Graphics card"]=1;render();}
-function buildCaseRequirement(){const board=partsAll().find(p=>p.id===buildSel.Motherboard),gpu=partsAll().find(p=>p.id===buildSel["Graphics card"]);const boardSize=inferBoardSize(board);const smallCases=partsAll().filter(p=>p.category==="Case").filter(p=>{const sizes=supportedCaseBoardSizes(p);return sizes.includes("micro-atx")&&!sizes.includes("atx");});const maxSmallGpu=smallCases.map(caseGpuClearanceMm).filter(n=>n>0).reduce((a,b)=>Math.max(a,b),0);const length=gpuLengthMm(gpu);const forced=boardSize==="atx"||boardSize==="e-atx"||(length>0&&maxSmallGpu>0&&length>maxSmallGpu);return {forced,boardSize,length,maxSmallGpu};}
+function buildCaseRequirement(){
+  const board=partsAll().find(p=>p.id===buildSel.Motherboard);
+  const gpu=partsAll().find(p=>p.id===buildSel["Graphics card"]);
+  const boardSize=inferBoardSize(board);
+  const length=gpuLengthMm(gpu);
+  // Never infer that every micro-ATX case fails solely because one GPU is long.
+  // Each candidate is checked against its own documented motherboard support
+  // and numeric GPU clearance by compatibilityReview() below.
+  const forced=boardSize==="atx"||boardSize==="e-atx";
+  const microCases=partsAll().filter(p=>p.category==="Case")
+    .filter(p=>{const sizes=supportedCaseBoardSizes(p);return sizes.includes("micro-atx")&&!sizes.includes("atx");});
+  const microCompatible=microCases.filter(p=>(!board||supportedCaseBoardSizes(p).includes(boardSize))
+    &&(!length||!caseGpuClearanceMm(p)||length<=caseGpuClearanceMm(p)));
+  return {forced,boardSize,length,microCompatible:microCompatible.length,microTotal:microCases.length};
+}
 function setBuildCaseSize(size){buildCaseSize=size;const selected=partsAll().find(p=>p.id===buildSel.Case);if(selected){const sizes=supportedCaseBoardSizes(selected);if(size==="MATX"&&(sizes.includes("atx")||!sizes.includes("micro-atx")))delete buildSel.Case;if(size==="ATX"&&!sizes.includes("atx"))delete buildSel.Case;}buildCategoryPages.Case=1;saveBuild();render();}
 function resetBuildCaseSize(){buildCaseSize='';buildCategoryPages.Case=1;render();}
 
@@ -2153,7 +2167,7 @@ function build(){
       const cases=partsAll().filter(p=>p.category==="Case");
       const matx=cases.filter(p=>{const sizes=supportedCaseBoardSizes(p);return sizes.includes("micro-atx")&&!sizes.includes("atx");}).length;
       const atx=cases.filter(p=>supportedCaseBoardSizes(p).includes("atx")).length;
-      body=`${guideNote}<section class="storage-choice build-storage-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE CASE SIZE</span><h2>PC Case</h2><p>Choose a compact mATX case or a full-size ATX case.</p></div><div class="storage-choice-grid"><button type="button" class="storage-choice-card" onclick="setBuildCaseSize('MATX')"><span class="storage-choice-icon">▤</span><strong>mATX</strong><small>Compact Micro-ATX cases</small><span class="storage-choice-count">${matx} options</span></button><button type="button" class="storage-choice-card" onclick="setBuildCaseSize('ATX')"><span class="storage-choice-icon">▦</span><strong>ATX</strong><small>Full-size ATX cases</small><span class="storage-choice-count">${atx} options</span></button></div></section>`;
+      body=`${guideNote}<section class="storage-choice build-storage-choice"><div class="storage-choice-heading"><span class="shop-section-kicker">CHOOSE CASE SIZE</span><h2>PC Case</h2><p>Choose a compact mATX case or a full-size ATX case. We check the selected motherboard and GPU dimensions for each case; unknown measurements are marked unverified, not assumed to fit.</p></div><div class="storage-choice-grid"><button type="button" class="storage-choice-card" onclick="setBuildCaseSize('MATX')"><span class="storage-choice-icon">▤</span><strong>mATX</strong><small>Compact Micro-ATX cases</small><span class="storage-choice-count">${matx} options</span></button><button type="button" class="storage-choice-card" onclick="setBuildCaseSize('ATX')"><span class="storage-choice-icon">▦</span><strong>ATX</strong><small>Full-size ATX cases</small><span class="storage-choice-count">${atx} options</span></button></div></section>`;
     } else if(cat==="CPU cooler"&&!buildCoolerType){
       body=guideNote+coolerChoice(all,true);
     } else if(cat==="Storage"&&!buildStorageType){
@@ -2315,6 +2329,12 @@ function pickPart(cat,id){
   const candidate=partsAll().find(p=>p.id===id);
   if(candidate && !apexPurchasable(candidate)){toast(candidate.name+" is currently unavailable.");return;}
   const had = buildSel[cat]===id;
+  if(!had&&cat==="Case"){
+    const cpu=partsAll().find(p=>p.id===buildSel.CPU)||null;
+    const chosen=currentChosenParts();
+    const review=compatibilityReview(candidate,cpu,0,chosen);
+    if(!review.fits){toast("This case does not fit: "+review.fails.join("; "));return;}
+  }
   if(had) delete buildSel[cat]; else buildSel[cat]=id;
   if(!had&&(cat==="Motherboard"||cat==="Graphics card")&&buildSel.Case){
     const chosen=CATS.map(c=>partsAll().find(p=>p.id===buildSel[c])).filter(Boolean);

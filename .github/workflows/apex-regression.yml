@@ -57,6 +57,8 @@ jobs:
         run: node tests/phase8-catalog-search.mjs
       - name: Phase 8 static catalog audit unit tests
         run: python3 -m unittest discover -s tests -p 'test_catalog_phase8.py'
+      - name: Phase 9 Build a PC compatibility tests
+        run: node tests/build-compatibility.mjs
       - name: Create non-destructive static catalog report
         run: |
           python3 scripts/audit_catalog.py --data data.json \

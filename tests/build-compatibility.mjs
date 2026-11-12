@@ -4,7 +4,17 @@ import vm from 'node:vm';
 const html=await fs.readFile(new URL('../index.html',import.meta.url),'utf8'),code=await fs.readFile(new URL('../build-compatibility.js',import.meta.url),'utf8');
 let markup='',lastToast='',closed=0,added=[];const inputs={buildReviewAcknowledge:{checked:false}};
 const ctx=vm.createContext({console,Number,Math,Set,Map,JSON,Array,S:{settings:{buildFee:75,taxRate:10,shippingFee:20}},DEFAULTS:{settings:{}},buildSel:{},wantAssembly:false,psuSafetyMargin:20,myCart:[],catalog:[],partsAll:()=>ctx.catalog,apexPurchasable:()=>true,document:{getElementById:id=>inputs[id]},openDlg:s=>{markup=s;},editDlg:{close:()=>closed++},esc:s=>String(s??'').replaceAll('<','&lt;').replaceAll('>','&gt;'),money:n=>'$'+Number(n).toFixed(2),toast:s=>lastToast=s,uid:()=> 'build-id',saveBuild(){},render(){},cartTotals:()=>({sub:ctx.myCart.reduce((n,p)=>n+p.price*(p.qty||1),0)}),addToCart:item=>{added.push(item);ctx.myCart.push(item);return true;}});
-vm.runInContext(html.slice(html.indexOf('const CATS ='),html.indexOf('/* ---------- cart ---------- */')),ctx);vm.runInContext(code,ctx);const run=s=>vm.runInContext(s,ctx);
+vm.runInContext(html.slice(html.indexOf('const CATS ='),html.indexOf('/* ---------- cart ---------- */')),ctx);vm.runInContext(code,ctx);
+const caseStart=html.indexOf('function buildCaseRequirement(){');
+const caseEnd=html.indexOf('function setBuildCaseSize',caseStart);
+const pickStart=html.indexOf('function pickPart(cat,id){');
+const pickEnd=html.indexOf('const CONTACT_REASONS =',pickStart);
+assert.ok(caseStart>0&&caseEnd>caseStart&&pickStart>0&&pickEnd>pickStart,'Case and picker helper boundaries missing');
+vm.runInContext(html.slice(caseStart,caseEnd),ctx);
+vm.runInContext(html.slice(pickStart,pickEnd),ctx);
+ctx.currentChosenParts=()=>ctx.catalog.filter(p=>Object.values(ctx.buildSel).includes(p.id));
+ctx.route=()=>'/build';
+const run=s=>vm.runInContext(s,ctx);
 assert.equal(run('buildReviewState().report.warnings.length'),0,'An empty builder is not a partial-build warning');
 const base=[{id:'cpu',category:'CPU',name:'Processor',socket:'AM5',memType:'DDR5',supportedMemoryTypes:['DDR5'],tdp:65,price:200},{id:'board',category:'Motherboard',name:'Board',socket:'AM5',memType:'DDR5',formFactor:'mATX',supportedCpuIds:['cpu'],biosSupportVerified:true,power:40,requiredCpuPowerConnectors:'1x EPS 8-pin',price:150},{id:'ram',category:'Memory',name:'RAM',memType:'DDR5',heightMm:40,power:10,price:100},{id:'gpu',category:'Graphics card',name:'GPU',lengthMm:300,power:200,requiredPowerConnectors:'2x8-pin',price:300},{id:'case',category:'Case',name:'Case',caseFormFactors:'ATX, mATX',maxGpuLengthMm:350,maxCoolerHeightMm:160,supportedPSUFormFactors:'ATX',price:100},{id:'cooler',category:'CPU cooler',name:'Air cooler',coolingType:'Air',supportedSockets:['AM5'],heightMm:150,maxRamHeightMm:45,price:40},{id:'psu',category:'Power supply',name:'PSU',watts:850,formFactor:'ATX',gpuPowerConnectors:'2x 8-pin',cpuPowerConnectors:'1x 4+4-pin',price:100},{id:'disk',category:'Storage',name:'SSD',power:5,price:80}];
 const review=parts=>{ctx.sample=parts;return run('analyzeBuildCompatibility(sample)');},mutate=(id,fields)=>base.map(p=>p.id===id?{...p,...fields}:{...p});
@@ -42,5 +52,32 @@ ctx.catalog=base;ctx.buildSel=Object.fromEntries(base.map(p=>[p.category,p.id]))
 const savePartCode=html.slice(html.indexOf('function savePart('),html.indexOf('function delPart('));
 for(const field of new Set(savePartCode.match(/q_[a-z_]+(?=\.value)/g)))ctx[field]={value:''};
 ctx.q_name.value='Renamed cooler';ctx.q_cat.value='CPU cooler';ctx.q_price.value='45';ctx.q_supported_sockets.value='AM5';ctx.S.parts=[{id:'edited',category:'CPU cooler',name:'Old',price:40,coolingType:'Liquid',radiatorSizeMm:280,sourceUrl:'https://example.invalid/source',keywords:['cooler']}];ctx.readSelectWithAdd=id=>ctx[id]?.value||'';ctx.save=()=>{};
+ctx.upsertCatalogRecord=(section,rec)=>{
+ for(const key of ['products','parts']){ctx.S[key]=(ctx.S[key]||[]).map(item=>item.id===rec.id?{...item,...rec}:item);}
+ if(!ctx.S[section].some(item=>item.id===rec.id))ctx.S[section].push(rec);
+};
 vm.runInContext(savePartCode,ctx);run("savePart('edited',true)");assert.equal(ctx.S.parts[0].name,'Renamed cooler');assert.equal(ctx.S.parts[0].radiatorSizeMm,280);assert.equal(ctx.S.parts[0].coolingType,'Liquid');assert.equal(ctx.S.parts[0].sourceUrl,'https://example.invalid/source');
+// Phase 9: case class must not be forced by aggregate clearance of unrelated mATX cases.
+const phase9Micro={...base.find(p=>p.id==='case'),id:'micro-case',name:'Micro case',caseFormFactors:'Micro ATX, Mini-ITX',maxGpuLengthMm:440};
+const phase9Tiny={...phase9Micro,id:'tiny-case',name:'Tiny case',maxGpuLengthMm:250};
+const phase9Gpu={...base.find(p=>p.id==='gpu'),lengthMm:420};
+const phase9Board={...base.find(p=>p.id==='board'),formFactor:'mATX'};
+ctx.catalog=base.filter(p=>!['case','gpu','board'].includes(p.id)).concat([phase9Micro,phase9Tiny,phase9Gpu,phase9Board]);
+ctx.buildSel={Motherboard:'board','Graphics card':'gpu'};
+assert.equal(run('buildCaseRequirement().forced'),false,'A long GPU must be checked against each case, not force ATX by aggregate clearance');
+assert.equal(run('buildCaseRequirement().microCompatible'),1,'Only one small case has sufficient documented clearance');
+run("pickPart('Case','tiny-case')");
+assert.equal(ctx.buildSel.Case,undefined,'Do not select a confirmed case/GPU conflict');
+assert.ok(lastToast.includes('does not fit'));
+run("pickPart('Case','micro-case')");
+assert.equal(ctx.buildSel.Case,'micro-case','A Micro-ATX case with actual clearance must remain selectable');
+ctx.catalog=ctx.catalog.map(p=>p.id==='board'?{...p,formFactor:'ATX'}:p);
+assert.equal(run('buildCaseRequirement().forced'),true,'An ATX motherboard must require ATX-compatible cases');
+ctx.sample=ctx.catalog.filter(p=>['board','gpu','micro-case'].includes(p.id));
+assert.equal(run('analyzeBuildCompatibility(sample).fails.some(x=>x.includes("Motherboard form factor"))'),true);
+changed=mutate('gpu',{recommendedPsuWatts:1000});
+assert.ok(review(changed).warnings.some(s=>s.includes("GPU manufacturer's 1000 W system recommendation")));
+changed=mutate('gpu',{recommendedPsuWatts:750});
+assert.ok(!review(changed).warnings.some(s=>s.includes("GPU manufacturer's 750 W system recommendation")));
+
 console.log('PASS: sockets/BIOS, memory generations, physical clearance, radiator sizes/stack, connector counts, PSU minimum vs headroom, candidate replacement, missing specs, partial/assembled builds, mandatory review acknowledgment and stale-price revalidation.');
