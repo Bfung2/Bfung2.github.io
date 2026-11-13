@@ -1,5 +1,5 @@
 {
-  "description": "Manufacturer documentation of physical fit metadata only. Newegg seller, availability, and prices were not rechecked in this pass. Matching dimensions alone do not certify a whole PC build.",
+  "description": "Manufacturer and manufacturer-published physical fit documentation only. One Crucial measurement originates from Micron CPG Support answering for the exact model on a retailer Q&A. Newegg seller, stock and prices are not newly verified in this pass. Matching specs alone do not certify a complete PC build.",
   "records": [
     {
       "id": "8fjd834",
@@ -395,6 +395,159 @@
       "field": "supportedPSUFormFactors",
       "value": "ATX",
       "manufacturer_source": "https://thermaltake.com/products/versa-h16-tg-argb-micro-tower-chassis",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "cooler13C-012U-00001",
+      "name": "Sudokoo SK700V AM5 CPU Cooler 7 Heatpipes TDP 220W Fan - Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 164,
+      "manufacturer_source": "https://www.sudokoo.com/products/Cooling/cpuaircoolers/SK700V-AM5-Designated-Digital-Air-Cooler-with-Full-RAM-Freedom/2025/20904.shtml",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "ramcrucialpro32d4",
+      "name": "Crucial Pro 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CP2K16G4DFRA32A",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 31.9,
+      "manufacturer_source": "https://www.bestbuy.com/site/questions/crucial-pro-32gb-kit-2x16gb-ddr4-3200mhz-c22-udimm-desktop-memory-kit-black/6543927?page=2",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseThermaltakeView600Black",
+      "name": "Thermaltake View 600 TG Full-Tower Case Black",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://thermaltake.com/products/view-600-tg-full-tower-chassis",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurx9070xtasrocksteellegend3x",
+      "name": "ASRock Steel Legend Radeon RX 9070 XT 16GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.asrock.com/Graphics-Card/AMD/Radeon%20RX%209070%20XT%20Steel%20Legend%2016GB/index.asp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5090aorusif2x",
+      "name": "GIGABYTE AORUS GeForce RTX 5090 32GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 16-pin",
+      "manufacturer_source": "https://www.gigabyte.com/us/Graphics-Card/GV-N5090AORUS-IF-32GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurtx5060tigigabyteeaglemax3x8",
+      "name": "GIGABYTE EAGLE GeForce RTX 5060 Ti 8GB OC MAX",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://www.gigabyte.com/sg/Graphics-Card/GV-N506TEAGLEMAX-OC-8GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5060tigigabyteeagle2x8",
+      "name": "GIGABYTE Eagle GeForce RTX 5060 Ti 8GB OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://www.gigabyte.com/lt/Graphics-Card/GV-N506TEAGLE-OC-8GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5070tigigagaming3x",
+      "name": "GIGABYTE Gaming GeForce RTX 5070 Ti 16GB OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 16-pin",
+      "manufacturer_source": "https://www.gigabyte.com/Graphics-Card/GV-N507TGAMING-OC-16GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu3060gigagaming3x",
+      "name": "GIGABYTE Gaming OC GeForce RTX 3060 12GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://www.gigabyte.com/ie/Graphics-Card/GV-N3060GAMING-OC-12GD-rev-20/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurx9070gigagaming3x",
+      "name": "GIGABYTE Gaming Radeon RX 9070 16GB OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.gigabyte.com/Graphics-Card/GV-R9070GAMING-OC-16GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5080windforce3x",
+      "name": "GIGABYTE WINDFORCE GeForce RTX 5080 16GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 16-pin",
+      "manufacturer_source": "https://www.gigabyte.com/Graphics-Card/GV-N5080WF3OC-16GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5070tigigawindforce3x",
+      "name": "GIGABYTE WindForce GeForce RTX 5070 Ti 16GB OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 16-pin",
+      "manufacturer_source": "https://www.gigabyte.com/us/Graphics-Card/GV-N507TWF3OC-16GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu3050msiventus2x8",
+      "name": "MSI Ventus GeForce RTX 3050 8GB VENTUS 2X XS OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 6-pin",
+      "manufacturer_source": "https://us.msi.com/Graphics-Card/GeForce-RTX-3050-VENTUS-2X-XS-8G-OC/Specification",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5060ventus2x",
+      "name": "MSI Ventus GeForce RTX 5060 8GB VENTUS 2X OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://ca.msi.com/Graphics-Card/GeForce-RTX-5060-8G-VENTUS-2X-OC/Specification",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5060tiventus3x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 3X OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://storage-asset.msi.com/datasheet/vga/us/GeForce-RTX-5060-Ti-16G-VENTUS-3X-OC.pdf",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurx9070xtsapphirenitro3x",
+      "name": "SAPPHIRE NITRO+ Radeon RX 9070 XT 16GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 12V-2x6",
+      "manufacturer_source": "https://www.sapphiretech.com/en/consumer/nitro-radeon-rx-9070-xt-16g-gddr6",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurx9070gresapphirepulse2x",
+      "name": "SAPPHIRE PULSE Radeon RX 9070 GRE 12GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.sapphiretech.com/en/consumer/pulse-radeon-rx-9070-gre-12g-gddr6",
       "verified_utc_date": "2026-11-13"
     }
   ],
