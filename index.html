@@ -863,9 +863,9 @@ const DEFAULTS = {
     address:"",
     buildFee:250,
     shippingFee:0,
-    shippingRatePercent:18,
-    taxRate:11.5,
-    pricingPolicy:{targetNetMarginPercent:20,assumedPaymentFeePercent:4.99,assumedPaymentFixedUSD:0.49,assumedTaxRatePercent:11.5,assumedShippingExpensePercent:18},
+    shippingRatePercent:2,
+    taxRate:7,
+    pricingPolicy:{targetNetMarginPercent:0,assumedPaymentFeePercent:4.99,assumedPaymentFixedUSD:0.49,assumedTaxRatePercent:7,assumedShippingExpensePercent:2},
     aboutText:"",
     contactText:"",
     ownerPhone:"",
@@ -1849,7 +1849,7 @@ const nameKey = p => String(p.category||"")+"|"+String(p.name||"").trim().toLowe
 function dupeOfPart(p){ return isPartCat(p.category) && S.parts.some(x=>x.id===p.id || nameKey(x)===nameKey(p)); }
 function upsertCatalogRecord(section,rec){
   if(!["products","parts"].includes(section))throw new Error("Invalid catalog section");
-  // Central price floor: both owner editing routes apply the same Newegg margin policy.
+  // Owner edits recalculate from Newegg cost, PayPal fees and optional extra cost, without a profit markup.
   if(Number(rec.neweggPrice)>0){
     apexProfitPricing.applyToRecord(rec,S.settings);
   }else if(isPartCat(rec.category)||!["Tech Service","Donation","Custom PC","Prebuilt PC","Gaming PC"].includes(rec.category)){
@@ -2794,7 +2794,7 @@ function manage(){
       <div class="field"><label for="s_ship">Shipping (% of item subtotal)</label><input id="s_ship" type="number" min="0" max="100" step="0.01" value="${+s.shippingRatePercent||0}"></div>
       <div class="field"><label for="s_tax">Tax rate (%)</label><input id="s_tax" type="number" step="0.01" value="${+s.taxRate||0}"></div>
     </div>
-    <p class="muted" style="font-size:.83rem">The tax percentage is a proposed checkout setting, not validated for every delivery address. Actual sales tax and taxable shipping must follow applicable jurisdiction rules. Saving shipping or tax adjustments automatically raises any catalog prices that would fall below the target margin.</p>
+    <p class="muted" style="font-size:.83rem">The tax percentage is a proposed checkout setting, not validated for every delivery address. Actual sales tax and taxable shipping must follow applicable jurisdiction rules. Saving shipping or tax adjustments raises any catalog prices below the modeled break-even floor.</p>
     <div class="field"><label for="s_addr">Shop address</label><input id="s_addr" value="${esc(s.address)}"></div>
     <h3 style="margin-top:22px">How customers pay you</h3>
     <p class="muted" style="font-size:.86rem;margin-top:-6px">Shown at checkout. Fill in whichever of these you actually use.</p>
@@ -2875,7 +2875,7 @@ function raiseUnderpricedCatalogItems(){
   const rows=[...(S.products||[]),...(S.parts||[])], minimums=new Map();
   for(const rec of rows){
     if(!Number.isFinite(Number(rec.neweggPrice))||Number(rec.neweggPrice)<=0)continue;
-    const min=apexProfitPricing.quote(rec.neweggPrice,S.settings).price;
+    const min=apexProfitPricing.quote(rec.neweggPrice,S.settings,rec.extraCostUSD??0).price;
     minimums.set(rec.id,Math.max(min,minimums.get(rec.id)||0));
   }
   let raised=0;
@@ -3079,9 +3079,10 @@ function toggleProductSpecs(){
 function supplierPricingFields(prefix,rec){
   const vendor=String(rec.seller||""), stock=String(rec.stockStatus||"");
   return `<div class="panel" style="margin-bottom:16px;padding:14px">
-    <h4 style="margin:0 0 6px">Newegg supplier cost and profit-based pricing</h4>
-    <p class="muted" style="font-size:.82rem">Verify the exact item page, seller, stock, and source cost. The selling price is raised automatically to meet the modeled 20% margin. Unverified merchandise stays inactive.</p>
+    <h4 style="margin:0 0 6px">Newegg cost and break-even pricing</h4>
+    <p class="muted" style="font-size:.82rem">Verify the exact item page, seller, stock, and source cost. The selling price is calculated to recover source cost and modeled payment/shipping expenses without an added profit margin. Add any inbound freight, supplier tax, or packing expense below. Unverified merchandise stays inactive.</p>
     <div class="field"><label>Verified Newegg cost ($)</label><input id="${prefix}_newegg" type="number" min="0" step="0.01" value="${rec.neweggPrice??""}" oninput="updateProfitPreview('${prefix}',true)"></div>
+    <div class="field"><label>Additional per-item expense ($)</label><input id="${prefix}_othercost" type="number" min="0" step="0.01" value="${rec.extraCostUSD??0}" oninput="updateProfitPreview('${prefix}',true)"><small class="muted">Optional: inbound supplier shipping, purchase tax if applicable, packing or handling cost. Use actual costs where possible.</small></div>
     <div class="field"><label>Exact Newegg product URL</label><input id="${prefix}_source" type="url" value="${esc(rec.sourceUrl||"")}" placeholder="https://www.newegg.com/.../p/..." oninput="updateProfitPreview('${prefix}')"></div>
     <div class="fields2">
       <div class="field"><label>Seller</label><select id="${prefix}_seller" onchange="updateProfitPreview('${prefix}')"><option value="">Not verified</option><option value="Newegg" ${vendor==="Newegg"?"selected":""}>Sold by Newegg</option><option value="Marketplace" ${vendor==="Marketplace"?"selected":""}>Third-party seller</option></select></div>
@@ -3098,13 +3099,13 @@ function updateProfitPreview(prefix,updatePrice=false){
   if(!preview)return;
   if(!Number.isFinite(cost)||cost<=0){preview.textContent="Enter a verified Newegg cost to calculate the minimum price.";return;}
   try{
-    const quote=apexProfitPricing.quote(cost,S.settings);
+    const quote=apexProfitPricing.quote(cost,S.settings,Number(input("othercost")?.value||0));
     if(updatePrice)input("price").value=quote.price.toFixed(2);
     const eligible=apexProfitPricing.eligibleForSale({
       sourceUrl:input("source").value,seller:input("seller").value,
       stockStatus:input("stock").value,verifiedDate:input("verified").value
     });
-    preview.textContent="Minimum Apex price "+money(quote.price)+", estimated contribution "+money(quote.contribution)+
+    preview.textContent="Estimated break-even price "+money(quote.price)+", estimated contribution "+money(quote.contribution)+
       " ("+quote.marginPercent.toFixed(2)+"%). "+(eligible?"Eligibility details complete.":"Not ready: verify seller, stock, URL and date.");
   }catch(err){preview.textContent=err.message||"Unable to calculate price.";}
 }
@@ -3195,7 +3196,7 @@ function recHeightForCategory(category,ramId,otherId){
 function saveProduct(id,exists){
   const rec = {...(exists?S.products.find(x=>x.id===id)||{}:{}),id,name:p_name.value.trim(),category:readSelectWithAdd("p_cat","productCategories"),cpuType:readSelectWithAdd("p_cpu","cpuTypes"),
     processor:p_proc.value.trim(),brand:p_brand.value.trim(),price:+p_price.value||0,desc:p_desc.value.trim(),longDesc:p_long.value.trim(),
-    neweggPrice:p_newegg.value?Number(p_newegg.value):null,sourceUrl:p_source.value.trim(),seller:p_seller.value,
+    neweggPrice:p_newegg.value?Number(p_newegg.value):null,extraCostUSD:Number(p_othercost.value),sourceUrl:p_source.value.trim(),seller:p_seller.value,
     stockStatus:p_stock.value,verifiedDate:p_verified.value,active:p_enabled.checked,
     featured:p_feat.checked,image:p_img.value.trim(),
     formFactor:(p_cat.value==="Power supply"?document.getElementById("p_psu_form_factor")?.value:document.getElementById("p_form_factor")?.value||"")?.trim()||"",
@@ -3215,7 +3216,7 @@ function saveProduct(id,exists){
   }
   if(!rec.name){ toast("Give it a name first."); return; }
   try{upsertCatalogRecord("products",rec);}catch(err){toast("Cannot save product: "+err.message);return;}
-  save(); editDlg.close(); render(); toast(rec.active?"Product saved with profit-based pricing.":"Product saved inactive pending supplier verification.");
+  save(); editDlg.close(); render(); toast(rec.active?"Product saved with break-even pricing.":"Product saved inactive pending supplier verification.");
 }
 function delProduct(id){ if(confirm("Delete this product?")){ S.products=S.products.filter(x=>x.id!==id); Object.keys(buildSel).forEach(k=>{if(buildSel[k]===id)delete buildSel[k]}); saveBuild(); save(); render(); } }
 
@@ -3278,7 +3279,7 @@ function editPart(id,presetCat){
 function savePart(id,exists){
   const rec = {...(exists?S.parts.find(x=>x.id===id)||{}:{}),id,name:q_name.value.trim(),category:q_cat.value,brand:q_brand.value.trim(),price:+q_price.value||0,desc:q_desc.value.trim(),longDesc:q_long.value.trim(),
     image:q_img.value.trim(),socket:readSelectWithAdd("q_sock","sockets"),
-    neweggPrice:q_newegg.value?Number(q_newegg.value):null,sourceUrl:q_source.value.trim(),seller:q_seller.value,
+    neweggPrice:q_newegg.value?Number(q_newegg.value):null,extraCostUSD:Number(q_othercost.value),sourceUrl:q_source.value.trim(),seller:q_seller.value,
     stockStatus:q_stock.value,verifiedDate:q_verified.value,active:q_enabled.checked,
     cpuType:(q_cat.value==="CPU"?readSelectWithAdd("q_cpu","cpuTypes"):""),
     memType:q_mem.value,
@@ -3296,7 +3297,7 @@ function savePart(id,exists){
     gpuPowerConnectors:q_psu_connectors.value.trim()};
   if(!rec.name){ toast("Give it a name first."); return; }
   try{upsertCatalogRecord("parts",rec);}catch(err){toast("Cannot save part: "+err.message);return;}
-  save(); editDlg.close(); render(); toast(rec.active?"Part saved with profit-based pricing.":"Part saved inactive pending supplier verification.");
+  save(); editDlg.close(); render(); toast(rec.active?"Part saved with break-even pricing.":"Part saved inactive pending supplier verification.");
 }
 function delPart(id){ if(confirm("Delete this part?")){ S.parts=S.parts.filter(x=>x.id!==id); Object.keys(buildSel).forEach(k=>{if(buildSel[k]===id)delete buildSel[k]}); saveBuild(); save(); render(); } }
 function toggleSpecs(){

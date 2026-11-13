@@ -134,6 +134,48 @@ function calculateOrder(items: any, catalog: any) {
   return { items: verifiedItems, subtotal, shipping, tax, total };
 }
 
+
+/** Fail closed when a promotion would drop a purchase below modeled supplier and processor costs. */
+function checkoutMeetsBreakEven(items: any[], catalog: any, locked: any, originalSubtotal: number) {
+  const records = [...(catalog.products || []), ...(catalog.parts || [])];
+  const settings = catalog.settings || {};
+  const policy = settings.pricingPolicy || {};
+  const feePercent = Number(policy.assumedPaymentFeePercent ?? 4.99);
+  const feeFixed = Number(policy.assumedPaymentFixedUSD ?? 0.49);
+  const shippingExpensePercent = Number(policy.assumedShippingExpensePercent ?? settings.shippingRatePercent ?? 0);
+  if (![feePercent, feeFixed, shippingExpensePercent].every(Number.isFinite) ||
+      feePercent < 0 || feeFixed < 0 || shippingExpensePercent < 0) return false;
+  const costOf = (id: any): number | null => {
+    const matches = records.filter((p: any) => String(p?.id) === String(id));
+    if (!matches.length) return null;
+    const cost = Number(matches[0].neweggPrice);
+    const other = Number(matches[0].extraCostUSD ?? 0);
+    if (!Number.isFinite(cost) || cost <= 0 || !Number.isFinite(other) || other < 0 ||
+        matches.some((p: any) => Number(p.neweggPrice) !== cost || Number(p.extraCostUSD ?? 0) !== other)) return null;
+    return roundMoney(cost + other);
+  };
+  let supplierCost = 0;
+  for (const item of items) {
+    if (item.kind === "product") {
+      const cost = costOf(item.id);
+      if (cost === null) return false;
+      supplierCost += cost * Number(item.qty);
+    } else if (item.kind === "build") {
+      for (const part of item.parts || []) {
+        const cost = costOf(part.id);
+        if (cost === null) return false;
+        supplierCost += cost;
+      }
+    } else return false;
+  }
+  const subtotal = Number(locked.subtotal), shipping = Number(locked.shipping), total = Number(locked.total);
+  if (![supplierCost, subtotal, shipping, total, originalSubtotal].every(Number.isFinite)) return false;
+  const outboundCost = roundMoney(originalSubtotal * shippingExpensePercent / 100);
+  const paymentFee = roundMoney(total * feePercent / 100 + feeFixed);
+  // Collected sales tax is remitted and therefore excluded from contribution.
+  return roundMoney(subtotal + shipping - supplierCost - outboundCost - paymentFee) >= 0;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed." }, 405);
@@ -174,6 +216,7 @@ Deno.serve(async (req) => {
       if (order.status === "paid") return json({ error: "This order has already been paid." }, 409);
       const catalog = await loadPublicCatalog();
       const pricing = calculateOrder(order.items, catalog);
+      const undiscountedSubtotal = pricing.subtotal;
 
       const { data: locked, error: pricingError } = await admin.rpc("apex_lock_checkout_price", {
         p_order: order.id, p_items: pricing.items, p_subtotal: pricing.subtotal,
@@ -181,6 +224,9 @@ Deno.serve(async (req) => {
       });
       if (pricingError || !locked) return json({ error: pricingError?.message || "Could not verify checkout pricing." }, 400);
       Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total) });
+      if (!checkoutMeetsBreakEven(pricing.items, catalog, pricing, undiscountedSubtotal)) {
+        return json({ error: "This order would fall below its cost-recovery price, possibly because of a promo code. Remove the discount and try again." }, 409);
+      }
 
       const response = await fetch(base + "/v2/checkout/orders", {
         method: "POST",
