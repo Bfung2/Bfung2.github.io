@@ -549,6 +549,24 @@
       "value": "2 x 8-pin",
       "manufacturer_source": "https://www.sapphiretech.com/en/consumer/pulse-radeon-rx-9070-gre-12g-gddr6",
       "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseFractalTorrentRGBBlack",
+      "name": "Fractal Design Torrent RGB ATX Mid-Tower Case Black",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://www.fractal-design.com/products/cases/torrent-series/torrent/torrent-rgb-black-tg-light-tint/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu3050msiventus2x6",
+      "name": "MSI Ventus GeForce RTX 3050 6GB VENTUS 2X 6G OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "None",
+      "manufacturer_source": "https://www.msi.com/Graphics-Card/GeForce-RTX-3050-VENTUS-2X-6G-OC/Specification",
+      "verified_utc_date": "2026-11-13"
     }
   ],
   "notes": [
