@@ -1,9 +1,6 @@
 priority,active,id,name,category,sections,catalog_review,fit_review,source_url
-2,True,caseAntecC8ARGBBlack,Antec C8 ARGB Dual-Chamber E-ATX Full-Tower Case Black,Case,parts,,supportedPSUFormFactors,https://www.newegg.com/antec-e-atx-full-tower-case-steel-plastic-glass-computer-case-black-c8-argb/p/N82E16811129310
-2,True,caseAntecC8Black,Antec C8 Dual-Chamber E-ATX Full-Tower Case Black,Case,parts,,supportedPSUFormFactors,https://www.newegg.com/antec-e-atx-full-tower-case-steel-plastic-tempered-glass-computer-case-black-c8/p/N82E16811129306
 2,True,caseDiypcAtx08Wood,DIYPC DIY-ATX08-Wood ATX Mid-Tower Case,Case,parts,,supportedPSUFormFactors,https://www.newegg.com/diypc-atx-mid-tower-steel-tempered-glass-cases-black-diy-atx08-wood/p/N82E16811353271?Item=N82E16811353271
 2,True,caseDiypcG18Wood,DIYPC DIY-G18-WD ATX Mid-Tower Wood-Front Case,Case,parts,,supportedPSUFormFactors,https://www.newegg.com/diypc-atx-mid-tower-steel-tempered-glass-case-black-diy-g18-wd/p/N82E16811353276?Item=N82E16811353276
-2,True,casePhanteksEnthooProTG,Phanteks Enthoo Pro TG ATX Full-Tower Case,Case,parts,,supportedPSUFormFactors,https://www.newegg.com/phanteks-atx-full-tower-enthoo-pro-brushed-plastic-steel-chassis-tempered-glass-window-computer-case-black-ph-es614ptg-bk/p/N82E16811854069
 2,True,caseRosewillHeliumNAS,Rosewill Helium NAS ATX Mid-Tower Case,Case,parts,,supportedPSUFormFactors,https://www.newegg.com/rosewill-atx-mid-tower-steel-plastic-computer-case-black-helium-nas/p/N82E16811147365
 2,True,caseRosewillHeliumNASMax,Rosewill Helium NAS Max ATX Mid-Tower Case,Case,parts,,supportedPSUFormFactors,https://www.newegg.com/rosewill-atx-mid-tower-steel-plastic-tempered-glass-case-black-helium-nas-max/p/N82E16811147403
 3,False,amd-r9-5900xt,AMD Ryzen 9 5900XT,CPU,products,ineligible_stock,,https://www.newegg.com/amd-ryzen-9-5000-series-ryzen-9-5900xt-vermeer-socket-am4-desktop-cpu-processor/p/N82E16819113845
