@@ -864,6 +864,7 @@ const DEFAULTS = {
     buildFee:250,
     shippingFee:0,
     shippingRatePercent:2,
+    shippingMode:"percent", // Enable live carrier quotes only after adding package data and secrets.
     taxRate:7,
     pricingPolicy:{targetNetMarginPercent:0,assumedPaymentFeePercent:4.99,assumedPaymentFixedUSD:0.49,assumedTaxRatePercent:7,assumedShippingExpensePercent:2},
     aboutText:"",
@@ -1397,8 +1398,9 @@ function cartTotals(){
   myCart.forEach(i=>sub+=Number(i.price)*(i.qty||1));
   sub=Math.round(sub*100)/100;
   const tax=Math.round(sub*((+S.settings.taxRate||0)/100)*100)/100;
-  const shipping=myCart.length?Math.round(sub*(+S.settings.shippingRatePercent||0))/100:0;
-  return {sub,tax,shipping,total:Math.round((sub+tax+shipping)*100)/100};
+  const carrier=S.settings.shippingMode==="carrier";
+  const shipping=carrier?0:(myCart.length?Math.round(sub*(+S.settings.shippingRatePercent||0))/100:0);
+  return {sub,tax,shipping,needsShippingQuote:carrier,total:Math.round((sub+tax+shipping)*100)/100};
 }
 
 /* ---------- global storefront search ---------- */
@@ -2588,9 +2590,9 @@ function cart(){
     </div>
     <div class="summary panel">
       <div class="lineitem"><span>Subtotal</span><span>${money(t.sub)}</span></div>
-      ${t.shipping?`<div class="lineitem"><span>Shipping (${(+S.settings.shippingRatePercent||0)}% of items)</span><span>${money(t.shipping)}</span></div>`:""}
+      ${t.needsShippingQuote?`<div class="lineitem"><span>Shipping (live carrier quote at checkout)</span><span>Calculated at checkout</span></div>`:t.shipping?`<div class="lineitem"><span>Shipping (${(+S.settings.shippingRatePercent||0)}% of items)</span><span>${money(t.shipping)}</span></div>`:""}
       ${t.tax?`<div class="lineitem"><span>Tax</span><span>${money(t.tax)}</span></div>`:""}
-      <div class="total"><span>Total</span><span>${money(t.total)}</span></div>
+      <div class="total"><span>${t.needsShippingQuote?"Total before shipping":"Total"}</span><span>${money(t.total)}</span></div>
       <button class="btn gold" style="width:100%;margin-top:14px" onclick="go('/checkout')">Checkout</button>
     </div></div></div>`;
 }
@@ -2637,9 +2639,9 @@ function checkout(){
       <h3>Order summary</h3>
       <div class="checkout-lineitems">${myCart.map(i=>`<div class="lineitem checkout-lineitem"><span>${esc(i.name)}${(+i.qty||1)>1?` <small>× ${esc(i.qty)}</small>`:""}</span><strong>${money((+i.price||0)*(i.qty||1))}</strong></div>`).join("")}</div>
       <div class="lineitem"><span>Items subtotal</span><strong>${money(t.sub)}</strong></div>
-      ${t.shipping?`<div class="lineitem"><span>Shipping</span><span>${money(t.shipping)}</span></div>`:""}
+      ${t.needsShippingQuote?`<div class="lineitem"><span>Shipping (live carrier quote)</span><span id="shippingQuoteCharge">Calculated when you continue</span></div>`:t.shipping?`<div class="lineitem"><span>Shipping</span><span>${money(t.shipping)}</span></div>`:""}
       ${t.tax?`<div class="lineitem"><span>Tax</span><span>${money(t.tax)}</span></div>`:""}
-      ${promoSummary(t)}<div class="total"><span>${checkoutPromo.code?"Total before promo":"Total"}</span><span>${money(t.total)}</span></div>
+      ${promoSummary(t)}<div class="total"><span>${t.needsShippingQuote?"Total before shipping":checkoutPromo.code?"Total before promo":"Total"}</span><span id="checkoutVerifiedTotal">${money(t.total)}</span></div>
     </aside></div></div>`;
 }
 function orderText(o){
@@ -2687,9 +2689,27 @@ async function submitOrder(e){
     items:structuredClone(myCart),sub:t.sub,shipping:t.shipping,tax:t.tax,total:t.total,status:"requested",trackingToken:newOrderTrackingToken()};
   const form=e.target;
   const btn=e.submitter||form.querySelector('button[type="submit"]');
-  if(btn){btn.disabled=true;btn.textContent="Saving order…";}
+  if(btn){btn.disabled=true;btn.textContent=S.settings.shippingMode==="carrier"?"Getting live carrier rates…":"Saving order…";}
   try{
+    if(S.settings.shippingMode==="carrier"){
+      const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"estimate",items:o.items,address:addr}});
+      if(error){
+        let detail;
+        try{detail=await error.context?.json?.();}catch{}
+        throw Error(detail?.error||error.message||"The carrier shipping quote failed.");
+      }
+      if(!data?.pricing||!Number.isFinite(Number(data.pricing.shipping)))throw Error(data?.error||"No valid carrier quote was returned.");
+      o.shipping=Number(data.pricing.shipping);
+      o.total=Number(data.pricing.total);
+      o.tax=Number(data.pricing.tax);
+      const quoteText=document.getElementById("shippingQuoteCharge"),totalText=document.getElementById("checkoutVerifiedTotal");
+      if(quoteText)quoteText.textContent=money(o.shipping);
+      if(totalText)totalText.textContent=money(o.total);
+      const totalLabel=totalText?.parentElement?.querySelector("span");
+      if(totalLabel)totalLabel.textContent="Estimated total including shipping";
+    }
     await promoValidateCheckout();
+    if(btn)btn.textContent="Saving order…";
     const {error}=await supabaseClient.from("apex_orders").insert([{id:o.id,ref:o.ref,created_at:o.at,customer_name:o.name,customer_email:o.email,customer_phone:o.phone,shipping_address:o.address,notes:o.notes,items:o.items,subtotal:o.sub,shipping:o.shipping,tax:o.tax,total:o.total,status:o.status,tracking_token:o.trackingToken,...(checkoutPromo.code?{promo_code:checkoutPromo.code}:{}),...(customerHandoff?.kind==="order"?{handoff_token:customerHandoff.token}:{})}]);
     if(error) throw error;
     if(customerHandoff?.kind==="order")salesForgetHandoff();
