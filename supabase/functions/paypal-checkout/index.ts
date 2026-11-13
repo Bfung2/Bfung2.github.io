@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { quoteActualShipping } from "../_shared/carrier-shipping.mjs";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -125,7 +126,7 @@ function calculateOrder(items: any, catalog: any) {
 
   subtotal = roundMoney(subtotal);
   // Server recalculates percentage shipping from verified subtotal, ignoring browser totals.
-  const shipping = verifiedItems.length ? roundMoney(subtotal * shippingRatePercent / 100) : 0;
+  const shipping = settings.shippingMode === "carrier" ? 0 : (verifiedItems.length ? roundMoney(subtotal * shippingRatePercent / 100) : 0);
   const tax = roundMoney(subtotal * taxRate / 100);
   const total = roundMoney(subtotal + shipping + tax);
   if (!Number.isFinite(total) || total <= 0 || total > 1000000) {
@@ -136,7 +137,7 @@ function calculateOrder(items: any, catalog: any) {
 
 
 /** Fail closed when a promotion would drop a purchase below modeled supplier and processor costs. */
-function checkoutMeetsBreakEven(items: any[], catalog: any, locked: any, originalSubtotal: number) {
+function checkoutMeetsBreakEven(items: any[], catalog: any, locked: any, originalSubtotal: number, actualCarrierCost: number | null = null) {
   const records = [...(catalog.products || []), ...(catalog.parts || [])];
   const settings = catalog.settings || {};
   const policy = settings.pricingPolicy || {};
@@ -170,7 +171,7 @@ function checkoutMeetsBreakEven(items: any[], catalog: any, locked: any, origina
   }
   const subtotal = Number(locked.subtotal), shipping = Number(locked.shipping), total = Number(locked.total);
   if (![supplierCost, subtotal, shipping, total, originalSubtotal].every(Number.isFinite)) return false;
-  const outboundCost = roundMoney(originalSubtotal * shippingExpensePercent / 100);
+  const outboundCost = actualCarrierCost === null ? roundMoney(originalSubtotal * shippingExpensePercent / 100) : actualCarrierCost;
   const paymentFee = roundMoney(total * feePercent / 100 + feeFixed);
   // Collected sales tax is remitted and therefore excluded from contribution.
   return roundMoney(subtotal + shipping - supplierCost - outboundCost - paymentFee) >= 0;
@@ -199,12 +200,27 @@ Deno.serve(async (req) => {
     });
     const body = await req.json();
     const action = body?.action;
+    if (action === "estimate") {
+      // A read-only shipping estimate, calculated from trusted catalog metadata,
+      // not user-provided prices, weights or shipping amounts.
+      const catalog = await loadPublicCatalog();
+      if (catalog.settings?.shippingMode !== "carrier") {
+        return json({ error: "Carrier shipping is not enabled yet." }, 409);
+      }
+      const pricing = calculateOrder(body.items, catalog);
+      const quote = await quoteActualShipping(pricing.items, catalog, body.address, { allowTest: environment === "sandbox" });
+      pricing.shipping = quote.charge;
+      pricing.total = roundMoney(pricing.subtotal + pricing.shipping + pricing.tax);
+      return json({ pricing: { subtotal: pricing.subtotal, shipping: pricing.shipping,
+        tax: pricing.tax, total: pricing.total }, packages: quote.packages.map(p => ({
+        carrier: p.carrier, service: p.service, postage: p.cost })) });
+    }
     const orderId = String(body?.orderId || "");
     if (!orderId || orderId.length > 160) return json({ error: "Invalid order." }, 400);
 
     const { data: order, error: orderError } = await admin
       .from("apex_orders")
-      .select("id, ref, items, total, status, is_test")
+      .select("id, ref, items, total, status, is_test, shipping_address")
       .eq("id", orderId)
       .maybeSingle();
     if (orderError || !order) return json({ error: "Order not found." }, 404);
@@ -217,6 +233,13 @@ Deno.serve(async (req) => {
       const catalog = await loadPublicCatalog();
       const pricing = calculateOrder(order.items, catalog);
       const undiscountedSubtotal = pricing.subtotal;
+      let carrierQuote: { charge: number; carrierCost: number } | null = null;
+      if (catalog.settings?.shippingMode === "carrier") {
+        carrierQuote = await quoteActualShipping(pricing.items, catalog, order.shipping_address,
+          { allowTest: environment === "sandbox" });
+        pricing.shipping = carrierQuote.charge;
+        pricing.total = roundMoney(pricing.subtotal + pricing.shipping + pricing.tax);
+      }
 
       const { data: locked, error: pricingError } = await admin.rpc("apex_lock_checkout_price", {
         p_order: order.id, p_items: pricing.items, p_subtotal: pricing.subtotal,
@@ -224,7 +247,12 @@ Deno.serve(async (req) => {
       });
       if (pricingError || !locked) return json({ error: pricingError?.message || "Could not verify checkout pricing." }, 400);
       Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total) });
-      if (!checkoutMeetsBreakEven(pricing.items, catalog, pricing, undiscountedSubtotal)) {
+      // apex_lock_checkout_price can return an earlier locked order. Never let an
+      // expired or changed carrier quote silently use that older shipping charge.
+      if (carrierQuote && Math.abs(pricing.shipping - carrierQuote.charge) >= 0.005) {
+        return json({ error: "The carrier rate changed after this order was locked. Please start a new checkout to get the current rate." }, 409);
+      }
+      if (!checkoutMeetsBreakEven(pricing.items, catalog, pricing, undiscountedSubtotal, carrierQuote?.carrierCost ?? null)) {
         return json({ error: "This order would fall below its cost-recovery price, possibly because of a promo code. Remove the discount and try again." }, 409);
       }
 
