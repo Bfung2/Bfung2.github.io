@@ -1,19 +1,33 @@
 {
   "catalogEntries": 734,
   "uniqueCatalogIds": 721,
-  "observedCatalogIds": 181,
-  "changedRecords": 203,
-  "changedUniqueIds": 192,
-  "priceCorrections": 23,
-  "pendingLiveIds": 540,
-  "pendingLinkDiscovery": 85,
+  "observedCatalogIds": 721,
+  "changedRecords": 717,
+  "changedUniqueIds": 704,
+  "priceCorrections": 79,
+  "pendingLiveIds": 0,
+  "pendingLinkDiscovery": 0,
   "categoriesObserved": {
-    "CPU": 37,
-    "CPU cooler": 96,
-    "Mouse": 1,
-    "Power supply": 15,
-    "Graphics card": 23,
-    "Motherboard": 8,
-    "Case": 1
-  }
+    "Motherboard": 55,
+    "CPU": 38,
+    "Graphics card": 32,
+    "Keyboard": 15,
+    "Monitor": 92,
+    "Mouse": 6,
+    "Memory": 35,
+    "Power supply": 185,
+    "Case": 22,
+    "Storage": 45,
+    "CPU cooler": 196
+  },
+  "stockStatusCounts": {
+    "In Stock": 676,
+    "Unavailable - Newegg-direct offer not verified": 19,
+    "Out of Stock": 18,
+    "Backordered": 7,
+    "Unavailable - direct Newegg stock not verified": 1
+  },
+  "changeBaseline": "main after PR #120 (328bba8)",
+  "reviewWindow": "2026-11-12 through 2026-11-13 UTC",
+  "limitations": "Observed offer eligibility does not prove every alternative seller was inspected; unverified direct offers stay unavailable. Build-specific BIOS/QVL, cable, RAM clearance and radiator installation checks retain unverified states where source facts are incomplete."
 }

@@ -1,0 +1,45 @@
+[
+  {
+    "models": [
+      "PA-8G2BB-US",
+      "PA-8G2BW-US"
+    ],
+    "family": "NZXT C850 Gold ATX 3.1",
+    "url": "https://nzxt.com/products/c850-gold-atx"
+  },
+  {
+    "models": [
+      "PA-0G2BB-US"
+    ],
+    "family": "NZXT C1000 Gold ATX 3.1",
+    "url": "https://nzxt.com/products/c1000-gold-atx"
+  },
+  {
+    "models": [
+      "PA-2G2BB-US"
+    ],
+    "family": "NZXT C1200 Gold ATX 3.1",
+    "url": "https://nzxt.com/products/c1200-gold-atx"
+  },
+  {
+    "models": [
+      "PH-GO420D30_DBK02"
+    ],
+    "family": "Phanteks Glacier One 420D30 X2 Black",
+    "url": "https://phanteks.com/product/glacier-one-420d30-x2-black/"
+  },
+  {
+    "models": [
+      "PH-GO420D30_DWT02"
+    ],
+    "family": "Phanteks Glacier One 420D30 X2 White",
+    "url": "https://phanteks.com/product/glacier-one-420d30-x2-white/"
+  },
+  {
+    "models": [
+      "R-PTS360-BKDSMP-GAS-1"
+    ],
+    "family": "Sudokoo PROTEUS 360",
+    "url": "https://sudokoo.com/products/Cooling/cpuliquidcoolers/PROTEUS-360-Intelligent-CPU-Liquid-Cooler/2025/20900.shtml"
+  }
+]

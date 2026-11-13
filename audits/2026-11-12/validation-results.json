@@ -1,0 +1,112 @@
+[
+  {
+    "file": "tests/phase7-sales-ledger.mjs",
+    "exitCode": 0,
+    "output": "PASS: Phase 7 payout counts, real/test split, owner CSV export, date and employee filters, spreadsheet safety, live search, and SQL customer detail masking.\n"
+  },
+  {
+    "file": "tests/phase10-storefront.mjs",
+    "exitCode": 0,
+    "output": "PASS: Phase 10 checkout arithmetic, mobile filter focus/Escape behavior, search debouncing, nav accessibility, and responsive CSS.\n"
+  },
+  {
+    "file": "tests/build-compatibility.mjs",
+    "exitCode": 0,
+    "output": "PASS: sockets/BIOS, memory generations, physical clearance, radiator sizes/stack, connector counts, PSU minimum vs headroom, candidate replacement, missing specs, partial/assembled builds, mandatory review acknowledgment and stale-price revalidation.\n"
+  },
+  {
+    "file": "tests/catalog-health.mjs",
+    "exitCode": 0,
+    "output": "PASS: owner catalog health flags, SKU deduplication, stale evidence, markup, source validation, CSV formula escaping.\n"
+  },
+  {
+    "file": "tests/catalog-edit-sync.mjs",
+    "exitCode": 0,
+    "output": "PASS: same-SKU price/name/spec edits sync across catalog sections, unrelated/section-only metadata retained, new entries stay in selected section and same-ID cards deduplicate.\n"
+  },
+  {
+    "file": "tests/order-tracking-state.mjs",
+    "exitCode": 0,
+    "output": "PASS: secure unique tokens, device storage excludes contact details, deduplicated links, test/unpaid/cancelled labels, stale response isolation and escaped tracking content.\nPASS: delivery details rendered as escaped text with explicit estimated-date wording.\n"
+  },
+  {
+    "file": "tests/paid-notifications.mjs",
+    "exitCode": 0,
+    "output": "PASS: mocked notification authorization, fixed server recipients, successful send tracking, Gmail failures and missing employee email handling. No real email sent.\n(node:73) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+  },
+  {
+    "file": "tests/full-catalog-audit.mjs",
+    "exitCode": 0,
+    "output": "PASS: evidence-backed price markup, inactive ineligible inventory and same-ID consistency.\n"
+  },
+  {
+    "file": "tests/phase6-customer.mjs",
+    "exitCode": 0,
+    "output": "PASS: Phase 6 default/fallback addresses, account-scoped saves, safe receipt URLs, private order filters, HTML escaping and order refresh.\n"
+  },
+  {
+    "file": "tests/storefront-pagination.mjs",
+    "exitCode": 0,
+    "output": "PASS: 12-card independent category pages, last-page bounds, current page labels and changed list clamping; static initial category cards 126 vs 672 active unique entries.\n"
+  },
+  {
+    "file": "tests/cart-sales.mjs",
+    "exitCode": 0,
+    "output": "PASS: product/build cart handoff, customer checkout transition, paid-only success state, full paid email details, and no login-code disclosure.\n(node:130) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+  },
+  {
+    "file": "tests/settings-save.mjs",
+    "exitCode": 0,
+    "output": "PASS: settings wait for confirmed save, preserve drafts across renders/failures, roll back failed source changes, and retain edits made during a save.\n"
+  },
+  {
+    "file": "tests/market-link-filters.mjs",
+    "exitCode": 0,
+    "output": "PASS: waiting, submitted, paid, test and expired customer-link filters and counts; submitted links do not regress to expired.\n"
+  },
+  {
+    "file": "tests/staff-sales-view.mjs",
+    "exitCode": 0,
+    "output": "PASS: staff sales filters, owner-only payout summary, missing amounts and real/test separation.\n"
+  },
+  {
+    "file": "tests/catalog-targeted-verification.mjs",
+    "exitCode": 0,
+    "output": "PASS: verified duplicate records synchronized at baseline + $15, eligibility retained, marketplace listings disabled, and sourced fit metadata present.\n"
+  },
+  {
+    "file": "tests/checkout-catalog-validation.mjs",
+    "exitCode": 0,
+    "output": "PASS: frontend and server reject unknown/unavailable/conflicting items, ignore forged prices, reprice builds and fees, and keep GPU mirrors consistent.\n(node:173) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+  },
+  {
+    "file": "tests/customer-accounts.mjs",
+    "exitCode": 0,
+    "output": "PASS: resilient receipt linking, recovery without profile, separate staff/customer sessions, PKCE callback isolation, verified-profile display, escaped test history, pending-response logout isolation, active signup/recovery mocks and recovery event.\n"
+  },
+  {
+    "file": "tests/phase8-catalog-search.mjs",
+    "exitCode": 0,
+    "output": "PASS: category synonyms, multiword NVIDIA/GPU search, SSD/HDD, memory, cooler, known seller and inventory eligibility.\n"
+  },
+  {
+    "file": "tests/phase11-operations.mjs",
+    "exitCode": 0,
+    "output": "PASS: Phase 11 owner-only metrics, queue alert classification, non-owner UI protection, scheduled public monitoring, incident dedup and catalog snapshot boundaries.\n"
+  },
+  {
+    "file": "tests/site-safety.mjs",
+    "exitCode": 0,
+    "output": "PASS: storefront script syntax, local script assets, public catalog privacy, policy routes, customer history integration.\n"
+  },
+  {
+    "file": "tests/phase5-security.mjs",
+    "exitCode": 0,
+    "output": "PASS: customer auth routing, public client secret boundaries, and versioned staff/owner RPC permission hardening.\n"
+  },
+  {
+    "file": "tests/test_catalog_phase8.py",
+    "exitCode": 0,
+    "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.003s\n\nOK\n"
+  }
+]
