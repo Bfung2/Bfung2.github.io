@@ -2811,9 +2811,11 @@ function manage(){
       <div class="field"><label for="s_mail">Email orders and requests to</label><input id="s_mail" type="email" required value="${esc(s.ownerEmail)}"><small class="muted">Public contact and order-notification recipient. Your owner sign-in and Gmail sending account stay unchanged.</small></div>
       <div class="field"><label for="s_phone">Phone</label><input id="s_phone" value="${esc(s.phone)}"></div>
       <div class="field"><label for="s_fee">Assembly fee ($)</label><input id="s_fee" type="number" step="1" value="${+s.buildFee||0}"></div>
-      <div class="field"><label for="s_ship">Shipping (% of item subtotal)</label><input id="s_ship" type="number" min="0" max="100" step="0.01" value="${+s.shippingRatePercent||0}"></div>
+      <div class="field"><label for="s_ship">Legacy shipping percentage</label><input id="s_ship" type="number" min="0" max="100" step="0.01" value="${+s.shippingRatePercent||0}"></div>
+      <div class="field"><label for="s_shipmode">Shipping method</label><select id="s_shipmode"><option value="percent" ${s.shippingMode!=="carrier"?"selected":""}>Legacy percentage</option><option value="carrier" ${s.shippingMode==="carrier"?"selected":""}>Live EasyPost carrier quotes</option></select></div>
       <div class="field"><label for="s_tax">Tax rate (%)</label><input id="s_tax" type="number" step="0.01" value="${+s.taxRate||0}"></div>
     </div>
+    <p class="notice" style="font-size:.84rem">Live shipping requires a secret EasyPost production API key and a private ship-from address in Supabase. Enter verified packed dimensions and weights for each item before activating. Completed PCs also need packed PC measurements on the selected case. Missing data blocks payment rather than guessing. See SHIPPING-SETUP.md.</p>
     <p class="muted" style="font-size:.83rem">The tax percentage is a proposed checkout setting, not validated for every delivery address. Actual sales tax and taxable shipping must follow applicable jurisdiction rules. Saving shipping or tax adjustments raises any catalog prices below the modeled break-even floor.</p>
     <div class="field"><label for="s_addr">Shop address</label><input id="s_addr" value="${esc(s.address)}"></div>
     <h3 style="margin-top:22px">How customers pay you</h3>
@@ -2919,7 +2921,7 @@ async function saveSettings(e){
   if(ghConfigured&&!ghToken()){settingsSaveError="No GitHub write token is saved on this device. Add one under GitHub write access, then retry. Your edits are still here.";render();return false;}
   const shippingRatePercent=Number(value("s_ship")),taxRate=Number(value("s_tax"));
   if(!Number.isFinite(shippingRatePercent)||shippingRatePercent<0||shippingRatePercent>100||!Number.isFinite(taxRate)||taxRate<0||taxRate>25){settingsSaveError="Shipping percentage must be 0–100 and tax percentage 0–25.";render();return false;}
-  const patch={shopName:value("s_shop"),tagline:value("s_tag"),ownerEmail:email,phone:value("s_phone"),buildFee:+value("s_fee")||0,shippingFee:0,shippingRatePercent,taxRate,pricingPolicy:{...(S.settings.pricingPolicy||DEFAULTS.settings.pricingPolicy),assumedTaxRatePercent:taxRate,assumedShippingExpensePercent:shippingRatePercent},address:value("s_addr"),zelleInfo:value("s_zelle"),paypalLink:value("s_paypal"),applePayInfo:value("s_apay")};
+  const patch={shopName:value("s_shop"),tagline:value("s_tag"),ownerEmail:email,phone:value("s_phone"),buildFee:+value("s_fee")||0,shippingFee:0,shippingRatePercent,shippingMode:value("s_shipmode"),taxRate,pricingPolicy:{...(S.settings.pricingPolicy||DEFAULTS.settings.pricingPolicy),assumedTaxRatePercent:taxRate,assumedShippingExpensePercent:shippingRatePercent},address:value("s_addr"),zelleInfo:value("s_zelle"),paypalLink:value("s_paypal"),applePayInfo:value("s_apay")};
   const previous=Object.fromEntries(Object.keys(patch).map(key=>[key,S.settings[key]]));
   const pricesBefore=[...(S.products||[]),...(S.parts||[])].map(p=>[p,p.price]);
   settingsSaving=true;settingsSaveError="";clearTimeout(saveTimer);Object.assign(S.settings,patch);
@@ -3096,6 +3098,17 @@ function toggleProductSpecs(){
   if(s && box) box.style.display = isPartCat(s.value) ? "" : "none";
   updatePowerSpecFields("p",s&&s.value);
 }
+function parcelMetadataFields(prefix,rec){
+  const fields=[["shipLengthIn","Parcel length (in)"],["shipWidthIn","Parcel width (in)"],["shipHeightIn","Parcel height (in)"],["shipWeightOz","Packed weight (oz)"],
+    ["pcShipLengthIn","Completed PC box length (in, for cases)"],["pcShipWidthIn","Completed PC box width (in, for cases)"],["pcShipHeightIn","Completed PC box height (in, for cases)"],["pcShipWeightOz","Completed PC packed weight (oz, for cases)"]];
+  return '<details style="margin:12px 0"><summary style="cursor:pointer;font-weight:600">Packed shipping measurements (live quotes)</summary>'+
+    '<p class="muted" style="font-size:.8rem">Use actual outer carton dimensions and packed weight, not component dimensions. Completed PC fields are for the selected case with a fully assembled computer inside.</p><div class="fields2">'+
+    fields.map(([key,title])=>'<div class="field"><label for="'+prefix+'_'+key+'">'+esc(title)+'</label><input type="number" step="0.01" min="0" id="'+prefix+'_'+key+'" value="'+esc(rec[key]||"")+'"></div>').join('')+'</div></details>';
+}
+function recordedParcelMetadata(prefix){
+  return Object.fromEntries(["shipLengthIn","shipWidthIn","shipHeightIn","shipWeightOz","pcShipLengthIn","pcShipWidthIn","pcShipHeightIn","pcShipWeightOz"]
+    .map(key=>[key,Number(document.getElementById(prefix+"_"+key)?.value||0)]));
+}
 function supplierPricingFields(prefix,rec){
   const vendor=String(rec.seller||""), stock=String(rec.stockStatus||"");
   return `<div class="panel" style="margin-bottom:16px;padding:14px">
@@ -3111,6 +3124,7 @@ function supplierPricingFields(prefix,rec){
     <div class="field"><label>Date seller and stock were checked</label><input id="${prefix}_verified" type="date" value="${esc(rec.verifiedDate||"")}" onchange="updateProfitPreview('${prefix}')"></div>
     <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><input id="${prefix}_enabled" type="checkbox" style="width:auto" ${rec.active!==false?"checked":""}>Allow sale when verification passes</label>
     <p id="${prefix}_profit_preview" class="muted" style="font-size:.83rem;margin:5px 0"></p>
+    ${parcelMetadataFields(prefix,rec)}
   </div>`;
 }
 function updateProfitPreview(prefix,updatePrice=false){
@@ -3216,7 +3230,7 @@ function recHeightForCategory(category,ramId,otherId){
 function saveProduct(id,exists){
   const rec = {...(exists?S.products.find(x=>x.id===id)||{}:{}),id,name:p_name.value.trim(),category:readSelectWithAdd("p_cat","productCategories"),cpuType:readSelectWithAdd("p_cpu","cpuTypes"),
     processor:p_proc.value.trim(),brand:p_brand.value.trim(),price:+p_price.value||0,desc:p_desc.value.trim(),longDesc:p_long.value.trim(),
-    neweggPrice:p_newegg.value?Number(p_newegg.value):null,extraCostUSD:Number(p_othercost.value),sourceUrl:p_source.value.trim(),seller:p_seller.value,
+    neweggPrice:p_newegg.value?Number(p_newegg.value):null,extraCostUSD:Number(p_othercost.value),...recordedParcelMetadata("p"),sourceUrl:p_source.value.trim(),seller:p_seller.value,
     stockStatus:p_stock.value,verifiedDate:p_verified.value,active:p_enabled.checked,
     featured:p_feat.checked,image:p_img.value.trim(),
     formFactor:(p_cat.value==="Power supply"?document.getElementById("p_psu_form_factor")?.value:document.getElementById("p_form_factor")?.value||"")?.trim()||"",
@@ -3299,7 +3313,7 @@ function editPart(id,presetCat){
 function savePart(id,exists){
   const rec = {...(exists?S.parts.find(x=>x.id===id)||{}:{}),id,name:q_name.value.trim(),category:q_cat.value,brand:q_brand.value.trim(),price:+q_price.value||0,desc:q_desc.value.trim(),longDesc:q_long.value.trim(),
     image:q_img.value.trim(),socket:readSelectWithAdd("q_sock","sockets"),
-    neweggPrice:q_newegg.value?Number(q_newegg.value):null,extraCostUSD:Number(q_othercost.value),sourceUrl:q_source.value.trim(),seller:q_seller.value,
+    neweggPrice:q_newegg.value?Number(q_newegg.value):null,extraCostUSD:Number(q_othercost.value),...recordedParcelMetadata("q"),sourceUrl:q_source.value.trim(),seller:q_seller.value,
     stockStatus:q_stock.value,verifiedDate:q_verified.value,active:q_enabled.checked,
     cpuType:(q_cat.value==="CPU"?readSelectWithAdd("q_cpu","cpuTypes"):""),
     memType:q_mem.value,
