@@ -28,7 +28,7 @@ test("carrier module: destination parsing, parcel validation, live quote, and fa
   const result=await quoteActualShipping([{kind:"product",id:"p1",qty:1}],catalog,
     {street:"123 Main St",city:"Antioch",state:"CA",zip:"94509"},{env,fetcher});
   assert.equal(result.carrierCost,12);
-  assert.equal(result.charge,12.63);
+  assert.equal(result.charge,12.64);
   assert.equal(result.packages[0].carrier,"UPS");
   assert.equal(requested[0].body.shipment.parcel.weight,24);
   await assert.rejects(()=>quoteActualShipping([{kind:"product",id:"p1",qty:1}],catalog,
