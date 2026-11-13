@@ -862,6 +862,7 @@ const DEFAULTS = {
     address:"",
     buildFee:250,
     shippingFee:0,
+    shippingRatePercent:0,
     taxRate:0,
     aboutText:"",
     contactText:"",
@@ -1394,7 +1395,7 @@ function cartTotals(){
   myCart.forEach(i=>sub+=Number(i.price)*(i.qty||1));
   sub=Math.round(sub*100)/100;
   const tax=Math.round(sub*((+S.settings.taxRate||0)/100)*100)/100;
-  const shipping=myCart.length?(+S.settings.shippingFee||0):0;
+  const shipping=myCart.length?Math.round(sub*(+S.settings.shippingRatePercent||0))/100:0;
   return {sub,tax,shipping,total:Math.round((sub+tax+shipping)*100)/100};
 }
 
@@ -2579,7 +2580,7 @@ function cart(){
     </div>
     <div class="summary panel">
       <div class="lineitem"><span>Subtotal</span><span>${money(t.sub)}</span></div>
-      ${t.shipping?`<div class="lineitem"><span>Shipping</span><span>${money(t.shipping)}</span></div>`:""}
+      ${t.shipping?`<div class="lineitem"><span>Shipping (${(+S.settings.shippingRatePercent||0)}% of items)</span><span>${money(t.shipping)}</span></div>`:""}
       ${t.tax?`<div class="lineitem"><span>Tax</span><span>${money(t.tax)}</span></div>`:""}
       <div class="total"><span>Total</span><span>${money(t.total)}</span></div>
       <button class="btn gold" style="width:100%;margin-top:14px" onclick="go('/checkout')">Checkout</button>
@@ -2782,7 +2783,7 @@ function manage(){
       <div class="field"><label for="s_mail">Email orders and requests to</label><input id="s_mail" type="email" required value="${esc(s.ownerEmail)}"><small class="muted">Public contact and order-notification recipient. Your owner sign-in and Gmail sending account stay unchanged.</small></div>
       <div class="field"><label for="s_phone">Phone</label><input id="s_phone" value="${esc(s.phone)}"></div>
       <div class="field"><label for="s_fee">Assembly fee ($)</label><input id="s_fee" type="number" step="1" value="${+s.buildFee||0}"></div>
-      <div class="field"><label for="s_ship">Shipping fee ($ per order)</label><input id="s_ship" type="number" step="0.01" value="${+s.shippingFee||0}"></div>
+      <div class="field"><label for="s_ship">Shipping (% of item subtotal)</label><input id="s_ship" type="number" min="0" max="100" step="0.01" value="${+s.shippingRatePercent||0}"></div>
       <div class="field"><label for="s_tax">Tax rate (%)</label><input id="s_tax" type="number" step="0.01" value="${+s.taxRate||0}"></div>
     </div>
     <div class="field"><label for="s_addr">Shop address</label><input id="s_addr" value="${esc(s.address)}"></div>
@@ -2872,7 +2873,9 @@ async function saveSettings(e){
   const email=value("s_mail").trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){settingsSaveError="Enter a valid notification email.";render();return false;}
   if(ghConfigured&&!ghToken()){settingsSaveError="No GitHub write token is saved on this device. Add one under GitHub write access, then retry. Your edits are still here.";render();return false;}
-  const patch={shopName:value("s_shop"),tagline:value("s_tag"),ownerEmail:email,phone:value("s_phone"),buildFee:+value("s_fee")||0,shippingFee:+value("s_ship")||0,taxRate:+value("s_tax")||0,address:value("s_addr"),zelleInfo:value("s_zelle"),paypalLink:value("s_paypal"),applePayInfo:value("s_apay")};
+  const shippingRatePercent=Number(value("s_ship")),taxRate=Number(value("s_tax"));
+  if(!Number.isFinite(shippingRatePercent)||shippingRatePercent<0||shippingRatePercent>100||!Number.isFinite(taxRate)||taxRate<0||taxRate>25){settingsSaveError="Shipping percentage must be 0–100 and tax percentage 0–25.";render();return false;}
+  const patch={shopName:value("s_shop"),tagline:value("s_tag"),ownerEmail:email,phone:value("s_phone"),buildFee:+value("s_fee")||0,shippingFee:0,shippingRatePercent,taxRate,address:value("s_addr"),zelleInfo:value("s_zelle"),paypalLink:value("s_paypal"),applePayInfo:value("s_apay")};
   const previous=Object.fromEntries(Object.keys(patch).map(key=>[key,S.settings[key]]));
   settingsSaving=true;settingsSaveError="";clearTimeout(saveTimer);Object.assign(S.settings,patch);render();
   try{
