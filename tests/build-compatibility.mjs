@@ -51,6 +51,7 @@ ctx.catalog=base;ctx.buildSel=Object.fromEntries(base.map(p=>[p.category,p.id]))
 // Editing a catalog part must retain compatibility metadata that the general form does not expose.
 const savePartCode=html.slice(html.indexOf('function savePart('),html.indexOf('function delPart('));
 for(const field of new Set(savePartCode.match(/q_[a-z_]+(?=\.value)/g)))ctx[field]={value:''};
+ctx.q_enabled={checked:true};ctx.q_source.value='https://example.invalid/source';
 ctx.q_name.value='Renamed cooler';ctx.q_cat.value='CPU cooler';ctx.q_price.value='45';ctx.q_supported_sockets.value='AM5';ctx.S.parts=[{id:'edited',category:'CPU cooler',name:'Old',price:40,coolingType:'Liquid',radiatorSizeMm:280,sourceUrl:'https://example.invalid/source',keywords:['cooler']}];ctx.readSelectWithAdd=id=>ctx[id]?.value||'';ctx.save=()=>{};
 ctx.upsertCatalogRecord=(section,rec)=>{
  for(const key of ['products','parts']){ctx.S[key]=(ctx.S[key]||[]).map(item=>item.id===rec.id?{...item,...rec}:item);}
