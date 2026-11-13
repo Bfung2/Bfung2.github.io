@@ -8,12 +8,12 @@
     "buildFee": 250,
     "shippingFee": 0,
     "shippingRatePercent": 2,
-    "taxRate": 11.5,
+    "taxRate": 7,
     "pricingPolicy": {
       "targetNetMarginPercent": 20,
       "assumedPaymentFeePercent": 4.99,
       "assumedPaymentFixedUSD": 0.49,
-      "assumedTaxRatePercent": 11.5,
+      "assumedTaxRatePercent": 7,
       "assumedShippingExpensePercent": 2,
       "basis": "Single-item order, stored Newegg cost, Pay Later domestic fee, shipping assumed fully spent, sales tax remitted"
     },
