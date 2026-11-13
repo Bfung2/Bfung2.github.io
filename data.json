@@ -13665,11 +13665,12 @@
         "psu",
         "power supply unit"
       ],
-      "specSourceUrl": "https://www.newegg.com/asrock-atx-3-1-650-w-80-plus-gold-certified-power-supply-black-cl-650g/p/N82E16817955016?Item=N82E16817955016&SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.asrock.com/Power-Supply/Challenger/CL-650G/index.asp",
+      "specVerifiedDate": "2026-11-13",
       "model": "CL-650G",
       "lengthMm": 150.0,
-      "connectorSpecifications": "1 x 24 pin ATX / 1 x 8 pin (4+4) EPS (CPU) / 2 x 8 pin (6+2) PCIe / 4 x 4 pin Peripheral / 4 x SATA"
+      "connectorSpecifications": "1 x 24 pin ATX / 1 x 8 pin (4+4) EPS (CPU) / 2 x 8 pin (6+2) PCIe / 4 x 4 pin Peripheral / 4 x SATA",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psu650g",
@@ -13732,10 +13733,11 @@
         "power supply unit"
       ],
       "model": "PA-8G2BB-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-black-pa-8g2bb-us/p/N82E16817116050?Item=N82E16817116050&SoldByNewegg=1",
+      "specSourceUrl": "https://nzxt.com/products/c850-gold-atx",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 160.0,
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psu100r",
@@ -13833,10 +13835,11 @@
         "power supply unit"
       ],
       "model": "PA-0G2BB-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-1000-w-80-plus-gold-certified-power-supplies-black-pa-0g2bb-us/p/N82E16817116052?Item=N82E16817116052&SoldByNewegg=1",
+      "specSourceUrl": "https://nzxt.com/products/c1000-gold-atx",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 160.0,
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psu750r",
@@ -14071,10 +14074,11 @@
         "power supply unit"
       ],
       "model": "CP-9020257-NA",
-      "specSourceUrl": "https://www.newegg.com/corsair-sf-series-sfx-1000-w-80-plus-platinum-certified-power-supply-cp-9020257-na/p/N82E16817139332?Item=N82E16817139332&SoldByNewegg=1",
+      "specSourceUrl": "https://www.corsair.com/us/en/p/psu/cp-9020257-na/sf-series-sf1000-fully-modular-80-plus-platinum-sfx-power-supply-cp-9020257-na",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 125.0,
-      "connectorSpecifications": "1 x ATX Cable (24-PIN) (24): 300mm 2 x EPS/ATX12V Cable (8-PIN) (4+4): 400mm4 x PCI-E Cable (8-PIN) (6+2): 400mm1 x PCI-E Cable (12+4)PIN: 400mm1 x SATA CABLE (4 Straight SATA): 100mm, 115mm, 115mm, 115mm1 x SATA CABLE (4 Right SATA): 100mm, 115mm, 115mm, 115mm1 x PATA-PATA-PATA: 100mm, 115mm, 115mm"
+      "connectorSpecifications": "1 x ATX Cable (24-PIN) (24): 300mm 2 x EPS/ATX12V Cable (8-PIN) (4+4): 400mm4 x PCI-E Cable (8-PIN) (6+2): 400mm1 x PCI-E Cable (12+4)PIN: 400mm1 x SATA CABLE (4 Straight SATA): 100mm, 115mm, 115mm, 115mm1 x SATA CABLE (4 Right SATA): 100mm, 115mm, 115mm, 115mm1 x PATA-PATA-PATA: 100mm, 115mm, 115mm",
+      "gpuPowerConnectors": "4 x 8-pin, 1 x 12VHPWR"
     },
     {
       "id": "psu1050m",
@@ -14171,9 +14175,10 @@
         "power supply unit"
       ],
       "model": "PA-8G2BW-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-white-pa-8g2bw-us/p/N82E16817116051?Item=N82E16817116051&SoldByNewegg=1",
+      "specSourceUrl": "https://nzxt.com/products/c850-gold-atx",
       "specVerifiedDate": "2026-11-13",
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psu850cm",
@@ -14916,10 +14921,11 @@
         "psu",
         "power supply unit"
       ],
-      "specSourceUrl": "https://www.newegg.com/asrock-atx-550-w-80-plus-bronze-certified-power-supplies-black-cl-550b/p/N82E16817955019",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.asrock.com/Power-Supply/Challenger/CL-550B/",
+      "specVerifiedDate": "2026-11-13",
       "model": "CL-550B",
-      "connectorSpecifications": "1 x 24 pin ATX / 1 x 8 pin (4+4) EPS (CPU) / 2 x 8 pin (6+2) PCIe / 4 x SATA"
+      "connectorSpecifications": "1 x 24 pin ATX / 1 x 8 pin (4+4) EPS (CPU) / 2 x 8 pin (6+2) PCIe / 4 x SATA",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psuseasonicgx1000",
@@ -15761,10 +15767,11 @@
         "power supply unit"
       ],
       "model": "CX650",
-      "specSourceUrl": "https://www.newegg.com/corsair-cx-series-atx-650-w-80-plus-bronze-certified-power-supplies-cx650/p/N82E16817139322",
+      "specSourceUrl": "https://www.corsair.com/us/en/p/psu/cp-9020278-na/cx-series-cx650-650-watt-80-plus-bronze-atx-power-supply-cp-9020278-na",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 125.0,
-      "connectorSpecifications": "1x ATX Cable (24-PIN) (24)1x EPS/ATX12V Cable (8-PIN) (4+4) 2x PCI-E Cable (8-PIN) (6+2)/(6+2)P3x SATA CABLE (3 SATA)2x PATA CABLE (2PATA)"
+      "connectorSpecifications": "1x ATX Cable (24-PIN) (24)1x EPS/ATX12V Cable (8-PIN) (4+4) 2x PCI-E Cable (8-PIN) (6+2)/(6+2)P3x SATA CABLE (3 SATA)2x PATA CABLE (2PATA)",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psuseasonicgx650",
@@ -15795,9 +15802,10 @@
         "power supply unit"
       ],
       "model": "GX-650",
-      "specSourceUrl": "https://www.newegg.com/seasonic-usa-core-atx-3-atx-3-1-650-w-80-plus-gold-certified-power-supplies-black-gx-650/p/N82E16817151280",
+      "specSourceUrl": "https://seasonic.com/insights/seasonic-core-gx-power-supplies-guide-2026/",
       "specVerifiedDate": "2026-11-13",
-      "lengthMm": 150.0
+      "lengthMm": 150.0,
+      "gpuPowerConnectors": "2 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psunzxtc1000core",
@@ -15898,10 +15906,11 @@
         "power supply unit"
       ],
       "model": "PA-0G2BB-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-1000-w-80-plus-gold-certified-power-supplies-black-pa-0g2bb-us/p/N82E16817116052",
+      "specSourceUrl": "https://nzxt.com/products/c1000-gold-atx",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 160.0,
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psulianlisx1200p",
@@ -17050,9 +17059,10 @@
         "power supply unit"
       ],
       "model": "PA-8G2BW-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-white-pa-8g2bw-us/p/N82E16817116051",
+      "specSourceUrl": "https://nzxt.com/products/c850-gold-atx",
       "specVerifiedDate": "2026-11-13",
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psudarkflashdg750",
@@ -17256,10 +17266,11 @@
         "power supply unit"
       ],
       "model": "PA-8G2BB-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-black-pa-8g2bb-us/p/N82E16817116050",
+      "specSourceUrl": "https://nzxt.com/products/c850-gold-atx",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 160.0,
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psuttgfa31200",
@@ -17325,9 +17336,10 @@
         "power supply unit"
       ],
       "model": "GX-750",
-      "specSourceUrl": "https://www.newegg.com/seasonic-usa-core-atx-3-atx-3-1-750-w-80-plus-gold-certified-power-supplies-black-gx-750/p/N82E16817151281",
+      "specSourceUrl": "https://seasonic.com/insights/seasonic-core-gx-power-supplies-guide-2026/",
       "specVerifiedDate": "2026-11-13",
-      "lengthMm": 150.0
+      "lengthMm": 150.0,
+      "gpuPowerConnectors": "2 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psusilverstonesx750p",
