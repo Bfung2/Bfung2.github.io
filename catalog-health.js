@@ -8,7 +8,7 @@ const escText=value=>String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":
 const cents=value=>{const v=Number(value);return Number.isFinite(v)?Math.round(v*100):null;};
 const yes=value=>String(value||"").trim().toLowerCase();
 const validSource=value=>{
- try{const u=new URL(value);return u.protocol==="https:"&&(/(^|\.)newegg\.com$/i).test(u.hostname)?u.href:null;}catch{return null;}
+ try{const u=new URL(value);return u.protocol==="https:"&&["newegg.com","www.newegg.com"].includes(u.hostname.toLowerCase())&&/\/p\/[^/]*\d[^/]*$/.test(u.pathname)?u.href:null;}catch{return null;}
 };
 function catalogData(data,today=new Date()){
  const byID=new Map();

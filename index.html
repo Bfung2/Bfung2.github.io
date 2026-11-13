@@ -1346,30 +1346,56 @@ function apexPurchasable(rec){
   if(/out\s*of\s*stock|back[\s-]*order(?:ed)?|sold\s*out|unavailable|discontinued|price\s*verification\s*required|not\s*available|pre[\s-]*order/.test(status))return false;
   return true;
 }
+function apexResolveCartItem(item){
+  if(!item || !["product","build"].includes(item.kind))return null;
+  const resolve=id=>{
+    const matches=[...S.products,...S.parts].filter(p=>p.id===id);
+    if(!matches.length || matches.some(p=>!apexPurchasable(p)))return null;
+    const prices=matches.map(p=>Number(p.price));
+    if(prices.some(p=>!Number.isFinite(p)||p<=0||p>100000)||new Set(prices).size!==1)return null;
+    return matches[0];
+  };
+  if(item.kind==="product"){
+    const p=resolve(item.id),qty=Number(item.qty??1);
+    if(!p||!Number.isInteger(qty)||qty<1||qty>10)return null;
+    return {...item,name:p.name,price:Number(p.price),qty};
+  }
+  if(!Array.isArray(item.parts)||!item.parts.length||item.parts.length>9)return null;
+  const parts=item.parts.map(p=>resolve(p?.id));
+  if(parts.some(p=>!p)||new Set(parts.map(p=>p.category)).size!==parts.length)return null;
+  const fee=item.assembly===true?Number(S.settings.buildFee||0):0;
+  if(!Number.isFinite(fee)||fee<0)return null;
+  return {...item,parts:parts.map(p=>({...p})),fee,qty:1,
+    price:Math.round((parts.reduce((n,p)=>n+Number(p.price),0)+fee)*100)/100};
+}
 function apexUnavailableCartItems(){
-  return myCart.filter(item=>{
-    const ids=item.kind==="build" ? (item.parts||[]).map(p=>p.id) : [item.id];
-    return ids.some(id=>{
-      const matches=[...S.parts,...S.products].filter(p=>p.id===id);
-      return matches.some(rec=>!apexPurchasable(rec));
-    });
+  return myCart.filter(item=>!apexResolveCartItem(item));
+}
+function apexRefreshCart(){
+  let changed=false;
+  myCart=myCart.map(item=>{
+    const current=apexResolveCartItem(item);
+    if(!current)return item;
+    if(JSON.stringify(item)!==JSON.stringify(current))changed=true;
+    return current;
   });
+  if(changed)saveCart();
+  return changed;
 }
 function addToCart(item){
-  if(item && item.id){
-    const ids=item.kind==="build" ? (item.parts||[]).map(p=>p.id) : [item.id];
-    const unavailable=ids.flatMap(id=>[...S.parts,...S.products].filter(p=>p.id===id)).find(rec=>!apexPurchasable(rec));
-    if(unavailable){toast(unavailable.name+" is currently unavailable.");return false;}
-  }
-  myCart.push(item); saveCart(); render(); toast("Added to cart.");return true;
+  const current=apexResolveCartItem(item);
+  if(!current){toast("This item is unavailable. Refresh the catalog and try again.");return false;}
+  myCart.push(current);saveCart();render();toast("Added to cart.");return true;
 }
-function removeCart(i){ myCart.splice(i,1); saveCart(); render(); }
+function removeCart(i){myCart.splice(i,1);saveCart();render();}
 function cartTotals(){
-  let sub = 0;
-  myCart.forEach(i => sub += (+i.price||0)*(i.qty||1));
-  const tax = sub * ((+S.settings.taxRate||0)/100);
-  const shipping = myCart.length ? (+S.settings.shippingFee||0) : 0;
-  return {sub, tax, shipping, total: sub+tax+shipping};
+  apexRefreshCart();
+  let sub=0;
+  myCart.forEach(i=>sub+=Number(i.price)*(i.qty||1));
+  sub=Math.round(sub*100)/100;
+  const tax=Math.round(sub*((+S.settings.taxRate||0)/100)*100)/100;
+  const shipping=myCart.length?(+S.settings.shippingFee||0):0;
+  return {sub,tax,shipping,total:Math.round((sub+tax+shipping)*100)/100};
 }
 
 /* ---------- global storefront search ---------- */
@@ -2643,6 +2669,7 @@ async function submitOrder(e){
     toast("Remove unavailable items before checkout: "+unavailableItems.map(item=>item.name).join(", "));
     return false;
   }
+  if(apexRefreshCart()){render();toast("Your cart was updated to current catalog prices. Review the total and submit again.");return false;}
   if(checkoutPromo.isTest)return ownerSubmitTestCheckout(e);
   if(typeof paypal === "undefined" || !paypal.Buttons){toast("PayPal could not load. Refresh the page and try again.");return false;}
   const t=cartTotals();

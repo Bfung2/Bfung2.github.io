@@ -32,3 +32,6 @@ assert.ok(formula.includes("\"'=1+1\""));
 const missing=audit.summary({products:[{id:"incomplete",name:"Incomplete"}],parts:[]},new Date("2026-11-11T12:00:00Z"));
 assert.equal(missing.attention,1);assert.equal(missing.missing,1);
 console.log("PASS: owner catalog health flags, SKU deduplication, stale evidence, markup, source validation, CSV formula escaping.");
+
+const searchPage=audit.summary({products:[{...good,sourceUrl:"https://www.newegg.com/p/pl?d=gpu"}],parts:[]},new Date("2026-11-11T12:00:00Z"));
+assert.ok(searchPage.rows[0].flags.some(f=>f.id==="source"));

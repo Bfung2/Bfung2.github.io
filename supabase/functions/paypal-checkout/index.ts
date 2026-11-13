@@ -44,7 +44,18 @@ function calculateOrder(items: any, catalog: any) {
     throw new Error("The cart is invalid. Please refresh it and try again.");
   }
   const allProducts = [...(catalog.products || []), ...(catalog.parts || [])];
-  const byId = new Map(allProducts.filter((p: any) => p && p.id).map((p: any) => [String(p.id), p]));
+  const resolve = (id: unknown) => {
+    const matches = allProducts.filter((p: any) => p && String(p.id) === String(id || ""));
+    if (!matches.length || matches.some((p: any) => {
+      const seller = String(p.seller || "").trim().toLowerCase();
+      const stock = String(p.stockStatus || "").trim().toLowerCase();
+      return p.active === false || (seller && !["newegg", "newegg.com"].includes(seller)) ||
+        /out\s*of\s*stock|back[\s-]*order(?:ed)?|sold\s*out|unavailable|discontinued|price\s*verification\s*required|not\s*available|pre[\s-]*order/.test(stock);
+    })) return null;
+    // A conflicting mirror cannot silently override the other catalog entry.
+    if (new Set(matches.map((p: any) => Number(p.price))).size !== 1) return null;
+    return matches[0];
+  };
   const settings = catalog.settings || {};
   const buildFee = Number(settings.buildFee ?? 0);
   const shippingFee = Number(settings.shippingFee ?? 0);
@@ -60,7 +71,7 @@ function calculateOrder(items: any, catalog: any) {
     if (!item || typeof item !== "object") throw new Error("A cart item is invalid.");
 
     if (item.kind === "product") {
-      const product: any = byId.get(String(item.id || ""));
+      const product: any = resolve(item.id);
       const qty = Number(item.qty ?? 1);
       if (!product || !Number.isInteger(qty) || qty < 1 || qty > 10) {
         throw new Error("A product in your cart is unavailable. Please refresh your cart.");
@@ -83,7 +94,7 @@ function calculateOrder(items: any, catalog: any) {
       const verifiedParts: any[] = [];
       let partsTotal = 0;
       for (const selected of item.parts) {
-        const part: any = byId.get(String(selected?.id || ""));
+        const part: any = resolve(selected?.id);
         if (!part || seenIds.has(String(part.id)) || !String(part.category || "")) {
           throw new Error("A part in your custom build is unavailable. Please rebuild it.");
         }

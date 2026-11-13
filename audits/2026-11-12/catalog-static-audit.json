@@ -1,0 +1,3114 @@
+{
+  "generated_at_utc": "2026-11-12T23:05:11.945843+00:00",
+  "scope": "Static data.json only. NOT live Newegg seller, inventory, price, or image verification.",
+  "total_entries": 734,
+  "section_counts": {
+    "products": 212,
+    "parts": 522
+  },
+  "issue_counts": {
+    "ineligible_seller": 2,
+    "ineligible_stock": 13,
+    "missing_newegg_baseline": 87,
+    "missing_seller": 85,
+    "missing_source_url": 85,
+    "missing_stock_status": 85,
+    "missing_verification_date": 85
+  },
+  "issues": [
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "xjyzxl1",
+      "name": "GIGABYTE X870E AORUS ELITE WIFI7 AM5",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "xjyzxl1",
+      "name": "GIGABYTE X870E AORUS ELITE WIFI7 AM5",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "xjyzxl1",
+      "name": "GIGABYTE X870E AORUS ELITE WIFI7 AM5",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "xjyzxl1",
+      "name": "GIGABYTE X870E AORUS ELITE WIFI7 AM5",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "xjyzxl1",
+      "name": "GIGABYTE X870E AORUS ELITE WIFI7 AM5",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "yo23yhu",
+      "name": "GIGABYTE X870 AORUS ELITE WIFI7 ICE AM5",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "yo23yhu",
+      "name": "GIGABYTE X870 AORUS ELITE WIFI7 ICE AM5",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "yo23yhu",
+      "name": "GIGABYTE X870 AORUS ELITE WIFI7 ICE AM5",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "yo23yhu",
+      "name": "GIGABYTE X870 AORUS ELITE WIFI7 ICE AM5",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "yo23yhu",
+      "name": "GIGABYTE X870 AORUS ELITE WIFI7 ICE AM5",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "trxntnj",
+      "name": "ASUS TUF GAMING B650E-E WIFI",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "trxntnj",
+      "name": "ASUS TUF GAMING B650E-E WIFI",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "trxntnj",
+      "name": "ASUS TUF GAMING B650E-E WIFI",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "trxntnj",
+      "name": "ASUS TUF GAMING B650E-E WIFI",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "trxntnj",
+      "name": "ASUS TUF GAMING B650E-E WIFI",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrock62e",
+      "name": "ASRock B650M-HDV/M.2",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrock62e",
+      "name": "ASRock B650M-HDV/M.2",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrock62e",
+      "name": "ASRock B650M-HDV/M.2",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrock62e",
+      "name": "ASRock B650M-HDV/M.2",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrock62e",
+      "name": "ASRock B650M-HDV/M.2",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrock1d6",
+      "name": "ASRock B650M-HDV/M.2 White",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrock1d6",
+      "name": "ASRock B650M-HDV/M.2 White",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrock1d6",
+      "name": "ASRock B650M-HDV/M.2 White",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrock1d6",
+      "name": "ASRock B650M-HDV/M.2 White",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrock1d6",
+      "name": "ASRock B650M-HDV/M.2 White",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gigaby584",
+      "name": "GIGABYTE B650M AORUS ELITE AX",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "gigaby584",
+      "name": "GIGABYTE B650M AORUS ELITE AX",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "gigaby584",
+      "name": "GIGABYTE B650M AORUS ELITE AX",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "gigaby584",
+      "name": "GIGABYTE B650M AORUS ELITE AX",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "gigaby584",
+      "name": "GIGABYTE B650M AORUS ELITE AX",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gigabyec2",
+      "name": "GIGABYTE B650M AORUS ELITE AX ICE",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "gigabyec2",
+      "name": "GIGABYTE B650M AORUS ELITE AX ICE",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "gigabyec2",
+      "name": "GIGABYTE B650M AORUS ELITE AX ICE",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "gigabyec2",
+      "name": "GIGABYTE B650M AORUS ELITE AX ICE",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "gigabyec2",
+      "name": "GIGABYTE B650M AORUS ELITE AX ICE",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gigaby612",
+      "name": "GIGABYTE B650M GAMING PLUS WIFI",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "gigaby612",
+      "name": "GIGABYTE B650M GAMING PLUS WIFI",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "gigaby612",
+      "name": "GIGABYTE B650M GAMING PLUS WIFI",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "gigaby612",
+      "name": "GIGABYTE B650M GAMING PLUS WIFI",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "gigaby612",
+      "name": "GIGABYTE B650M GAMING PLUS WIFI",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gigaby53e",
+      "name": "GIGABYTE B650M D3HP AX",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "gigaby53e",
+      "name": "GIGABYTE B650M D3HP AX",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "gigaby53e",
+      "name": "GIGABYTE B650M D3HP AX",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "gigaby53e",
+      "name": "GIGABYTE B650M D3HP AX",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "gigaby53e",
+      "name": "GIGABYTE B650M D3HP AX",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gigabya25",
+      "name": "GIGABYTE B650M C V3",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "gigabya25",
+      "name": "GIGABYTE B650M C V3",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "gigabya25",
+      "name": "GIGABYTE B650M C V3",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "gigabya25",
+      "name": "GIGABYTE B650M C V3",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "gigabya25",
+      "name": "GIGABYTE B650M C V3",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "msib65b6f",
+      "name": "MSI B650M PROJECT ZERO",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "msib65b6f",
+      "name": "MSI B650M PROJECT ZERO",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "msib65b6f",
+      "name": "MSI B650M PROJECT ZERO",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "msib65b6f",
+      "name": "MSI B650M PROJECT ZERO",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "msib65b6f",
+      "name": "MSI B650M PROJECT ZERO",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asustu5b8",
+      "name": "ASUS TUF GAMING B650M-PLUS WIFI",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asustu5b8",
+      "name": "ASUS TUF GAMING B650M-PLUS WIFI",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asustu5b8",
+      "name": "ASUS TUF GAMING B650M-PLUS WIFI",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asustu5b8",
+      "name": "ASUS TUF GAMING B650M-PLUS WIFI",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asustu5b8",
+      "name": "ASUS TUF GAMING B650M-PLUS WIFI",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asustu64e",
+      "name": "ASUS TUF GAMING B650M-E WIFI",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asustu64e",
+      "name": "ASUS TUF GAMING B650M-E WIFI",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asustu64e",
+      "name": "ASUS TUF GAMING B650M-E WIFI",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asustu64e",
+      "name": "ASUS TUF GAMING B650M-E WIFI",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asustu64e",
+      "name": "ASUS TUF GAMING B650M-E WIFI",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrock442",
+      "name": "ASRock B850M Pro RS WiFi",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrock442",
+      "name": "ASRock B850M Pro RS WiFi",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrock442",
+      "name": "ASRock B850M Pro RS WiFi",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrock442",
+      "name": "ASRock B850M Pro RS WiFi",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrock442",
+      "name": "ASRock B850M Pro RS WiFi",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrockac6",
+      "name": "ASRock B850M Pro RS",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrockac6",
+      "name": "ASRock B850M Pro RS",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrockac6",
+      "name": "ASRock B850M Pro RS",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrockac6",
+      "name": "ASRock B850M Pro RS",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrockac6",
+      "name": "ASRock B850M Pro RS",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrock3f3",
+      "name": "ASRock B850M Pro-A",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrock3f3",
+      "name": "ASRock B850M Pro-A",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrock3f3",
+      "name": "ASRock B850M Pro-A",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrock3f3",
+      "name": "ASRock B850M Pro-A",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrock3f3",
+      "name": "ASRock B850M Pro-A",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrockbd4",
+      "name": "ASRock B850M Pro-A WiFi",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrockbd4",
+      "name": "ASRock B850M Pro-A WiFi",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrockbd4",
+      "name": "ASRock B850M Pro-A WiFi",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrockbd4",
+      "name": "ASRock B850M Pro-A WiFi",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrockbd4",
+      "name": "ASRock B850M Pro-A WiFi",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrock0d7",
+      "name": "ASRock B850M Steel Legend WiFi",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrock0d7",
+      "name": "ASRock B850M Steel Legend WiFi",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrock0d7",
+      "name": "ASRock B850M Steel Legend WiFi",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrock0d7",
+      "name": "ASRock B850M Steel Legend WiFi",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrock0d7",
+      "name": "ASRock B850M Steel Legend WiFi",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrock836",
+      "name": "ASRock B850M Riptide WiFi",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrock836",
+      "name": "ASRock B850M Riptide WiFi",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrock836",
+      "name": "ASRock B850M Riptide WiFi",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrock836",
+      "name": "ASRock B850M Riptide WiFi",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrock836",
+      "name": "ASRock B850M Riptide WiFi",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrockad4",
+      "name": "ASRock B850M Challenger WiFi",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrockad4",
+      "name": "ASRock B850M Challenger WiFi",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrockad4",
+      "name": "ASRock B850M Challenger WiFi",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrockad4",
+      "name": "ASRock B850M Challenger WiFi",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrockad4",
+      "name": "ASRock B850M Challenger WiFi",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "asrock4f4",
+      "name": "ASRock B850M Rock WiFi",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "asrock4f4",
+      "name": "ASRock B850M Rock WiFi",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "asrock4f4",
+      "name": "ASRock B850M Rock WiFi",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "asrock4f4",
+      "name": "ASRock B850M Rock WiFi",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "asrock4f4",
+      "name": "ASRock B850M Rock WiFi",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gigaby47e",
+      "name": "GIGABYTE B850M DS3H",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "gigaby47e",
+      "name": "GIGABYTE B850M DS3H",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "gigaby47e",
+      "name": "GIGABYTE B850M DS3H",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "gigaby47e",
+      "name": "GIGABYTE B850M DS3H",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "gigaby47e",
+      "name": "GIGABYTE B850M DS3H",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gigabyb6b",
+      "name": "GIGABYTE B850M EAGLE WIFI6E",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "gigabyb6b",
+      "name": "GIGABYTE B850M EAGLE WIFI6E",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "gigabyb6b",
+      "name": "GIGABYTE B850M EAGLE WIFI6E",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "gigabyb6b",
+      "name": "GIGABYTE B850M EAGLE WIFI6E",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "gigabyb6b",
+      "name": "GIGABYTE B850M EAGLE WIFI6E",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gigabyf94",
+      "name": "GIGABYTE B850M EAGLE WIFI6E ICE",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "gigabyf94",
+      "name": "GIGABYTE B850M EAGLE WIFI6E ICE",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "gigabyf94",
+      "name": "GIGABYTE B850M EAGLE WIFI6E ICE",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "gigabyf94",
+      "name": "GIGABYTE B850M EAGLE WIFI6E ICE",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "gigabyf94",
+      "name": "GIGABYTE B850M EAGLE WIFI6E ICE",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1851a1",
+      "name": "ASRock B860 Rock WiFi 7",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1851a1",
+      "name": "ASRock B860 Rock WiFi 7",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1851a1",
+      "name": "ASRock B860 Rock WiFi 7",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1851a1",
+      "name": "ASRock B860 Rock WiFi 7",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1851a1",
+      "name": "ASRock B860 Rock WiFi 7",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1851a2",
+      "name": "ASRock B860 Challenger WiFi",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1851a2",
+      "name": "ASRock B860 Challenger WiFi",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1851a2",
+      "name": "ASRock B860 Challenger WiFi",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1851a2",
+      "name": "ASRock B860 Challenger WiFi",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1851a2",
+      "name": "ASRock B860 Challenger WiFi",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1851a3",
+      "name": "ASRock B860 Pro RS",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1851a3",
+      "name": "ASRock B860 Pro RS",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1851a3",
+      "name": "ASRock B860 Pro RS",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1851a3",
+      "name": "ASRock B860 Pro RS",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1851a3",
+      "name": "ASRock B860 Pro RS",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1851a4",
+      "name": "ASRock Z890 Pro RS",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1851a4",
+      "name": "ASRock Z890 Pro RS",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1851a4",
+      "name": "ASRock Z890 Pro RS",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1851a4",
+      "name": "ASRock Z890 Pro RS",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1851a4",
+      "name": "ASRock Z890 Pro RS",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1851a5",
+      "name": "GIGABYTE B860 GAMING X WIFI6E",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1851a5",
+      "name": "GIGABYTE B860 GAMING X WIFI6E",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1851a5",
+      "name": "GIGABYTE B860 GAMING X WIFI6E",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1851a5",
+      "name": "GIGABYTE B860 GAMING X WIFI6E",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1851a5",
+      "name": "GIGABYTE B860 GAMING X WIFI6E",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "products",
+      "id": "intel1851m1",
+      "name": "GIGABYTE B860M EAGLE PLUS WIFI6E",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1851m2",
+      "name": "GIGABYTE B860M AORUS ELITE WIFI6E",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1851m2",
+      "name": "GIGABYTE B860M AORUS ELITE WIFI6E",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1851m2",
+      "name": "GIGABYTE B860M AORUS ELITE WIFI6E",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1851m2",
+      "name": "GIGABYTE B860M AORUS ELITE WIFI6E",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1851m2",
+      "name": "GIGABYTE B860M AORUS ELITE WIFI6E",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1851m3",
+      "name": "ASUS PRIME B860M-A WIFI-CSM",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1851m3",
+      "name": "ASUS PRIME B860M-A WIFI-CSM",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1851m3",
+      "name": "ASUS PRIME B860M-A WIFI-CSM",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1851m3",
+      "name": "ASUS PRIME B860M-A WIFI-CSM",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1851m3",
+      "name": "ASUS PRIME B860M-A WIFI-CSM",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1851m4",
+      "name": "ASRock H810M-X WIFI",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1851m4",
+      "name": "ASRock H810M-X WIFI",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1851m4",
+      "name": "ASRock H810M-X WIFI",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1851m4",
+      "name": "ASRock H810M-X WIFI",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1851m4",
+      "name": "ASRock H810M-X WIFI",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1700a1",
+      "name": "MSI PRO B760-P WIFI DDR4",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1700a1",
+      "name": "MSI PRO B760-P WIFI DDR4",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1700a1",
+      "name": "MSI PRO B760-P WIFI DDR4",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1700a1",
+      "name": "MSI PRO B760-P WIFI DDR4",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1700a1",
+      "name": "MSI PRO B760-P WIFI DDR4",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1700a2",
+      "name": "GIGABYTE Z790 AORUS ELITE AX",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1700a2",
+      "name": "GIGABYTE Z790 AORUS ELITE AX",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1700a2",
+      "name": "GIGABYTE Z790 AORUS ELITE AX",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1700a2",
+      "name": "GIGABYTE Z790 AORUS ELITE AX",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1700a2",
+      "name": "GIGABYTE Z790 AORUS ELITE AX",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1700a3",
+      "name": "ASUS Z790 GAMING WIFI7",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1700a3",
+      "name": "ASUS Z790 GAMING WIFI7",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1700a3",
+      "name": "ASUS Z790 GAMING WIFI7",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1700a3",
+      "name": "ASUS Z790 GAMING WIFI7",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1700a3",
+      "name": "ASUS Z790 GAMING WIFI7",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1700m1",
+      "name": "ASUS B760M-AYW WIFI D4 II",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1700m1",
+      "name": "ASUS B760M-AYW WIFI D4 II",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1700m1",
+      "name": "ASUS B760M-AYW WIFI D4 II",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1700m1",
+      "name": "ASUS B760M-AYW WIFI D4 II",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1700m1",
+      "name": "ASUS B760M-AYW WIFI D4 II",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1700m3",
+      "name": "ASRock B760M PRO RS",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1700m3",
+      "name": "ASRock B760M PRO RS",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1700m3",
+      "name": "ASRock B760M PRO RS",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1700m3",
+      "name": "ASRock B760M PRO RS",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1700m3",
+      "name": "ASRock B760M PRO RS",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "intel1700m4",
+      "name": "MSI PRO B760M-P DDR4",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "products",
+      "id": "intel1700m4",
+      "name": "MSI PRO B760M-P DDR4",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "products",
+      "id": "intel1700m4",
+      "name": "MSI PRO B760M-P DDR4",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "products",
+      "id": "intel1700m4",
+      "name": "MSI PRO B760M-P DDR4",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "products",
+      "id": "intel1700m4",
+      "name": "MSI PRO B760M-P DDR4",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "products",
+      "id": "amd-r9-5900xt",
+      "name": "AMD Ryzen 9 5900XT",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "products",
+      "id": "amd-r9-7900x",
+      "name": "AMD Ryzen 9 7900X",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "products",
+      "id": "gpu5060tiventus2x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "ineligible_seller",
+      "section": "products",
+      "id": "gpu5060tiventus2x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
+      "detail": "Stored seller is not Newegg; verify and unpublish if necessary"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "products",
+      "id": "gpu5060tiventus2x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "llw40wt",
+      "name": "Intel Core i5-14400",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "llw40wt",
+      "name": "Intel Core i5-14400",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "llw40wt",
+      "name": "Intel Core i5-14400",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "llw40wt",
+      "name": "Intel Core i5-14400",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "llw40wt",
+      "name": "Intel Core i5-14400",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "6skacce",
+      "name": "Team T-Force Delta RGB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "6skacce",
+      "name": "Team T-Force Delta RGB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "6skacce",
+      "name": "Team T-Force Delta RGB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "6skacce",
+      "name": "Team T-Force Delta RGB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "6skacce",
+      "name": "Team T-Force Delta RGB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "y69jed9",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "y69jed9",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "y69jed9",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "y69jed9",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "y69jed9",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "2ewivv1",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "2ewivv1",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "2ewivv1",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "2ewivv1",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "2ewivv1",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "zvpnb23",
+      "name": "G.SKILL Trident Z5 RGB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "zvpnb23",
+      "name": "G.SKILL Trident Z5 RGB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "zvpnb23",
+      "name": "G.SKILL Trident Z5 RGB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "zvpnb23",
+      "name": "G.SKILL Trident Z5 RGB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "zvpnb23",
+      "name": "G.SKILL Trident Z5 RGB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "eldmo2c",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "eldmo2c",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "eldmo2c",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "eldmo2c",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "eldmo2c",
+      "name": "CORSAIR Vengeance RGB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "jfhjltb",
+      "name": "CORSAIR Vengeance",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "jfhjltb",
+      "name": "CORSAIR Vengeance",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "jfhjltb",
+      "name": "CORSAIR Vengeance",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "jfhjltb",
+      "name": "CORSAIR Vengeance",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "jfhjltb",
+      "name": "CORSAIR Vengeance",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "3yuf9vc",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "3yuf9vc",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "3yuf9vc",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "3yuf9vc",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "3yuf9vc",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "jgz2gex",
+      "name": "CORSAIR Vengeance 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "jgz2gex",
+      "name": "CORSAIR Vengeance 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "jgz2gex",
+      "name": "CORSAIR Vengeance 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "jgz2gex",
+      "name": "CORSAIR Vengeance 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "jgz2gex",
+      "name": "CORSAIR Vengeance 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "s5irrlt",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "s5irrlt",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "s5irrlt",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "s5irrlt",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "s5irrlt",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "kfftksl",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "kfftksl",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "kfftksl",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "kfftksl",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "kfftksl",
+      "name": "CORSAIR Vengeance RGB 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "52qat7g",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "52qat7g",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "52qat7g",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "52qat7g",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "52qat7g",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "h85yrlo",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "h85yrlo",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "h85yrlo",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "h85yrlo",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "h85yrlo",
+      "name": "CORSAIR Vengeance RGB 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "d0mpe9h",
+      "name": "CORSAIR Vengeance 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "d0mpe9h",
+      "name": "CORSAIR Vengeance 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "d0mpe9h",
+      "name": "CORSAIR Vengeance 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "d0mpe9h",
+      "name": "CORSAIR Vengeance 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "d0mpe9h",
+      "name": "CORSAIR Vengeance 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "8fjd834",
+      "name": "CORSAIR Dominator Titanium 64GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "8fjd834",
+      "name": "CORSAIR Dominator Titanium 64GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "8fjd834",
+      "name": "CORSAIR Dominator Titanium 64GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "8fjd834",
+      "name": "CORSAIR Dominator Titanium 64GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "8fjd834",
+      "name": "CORSAIR Dominator Titanium 64GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "8eospyr",
+      "name": "Klevv Bolt V 64GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "8eospyr",
+      "name": "Klevv Bolt V 64GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "8eospyr",
+      "name": "Klevv Bolt V 64GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "8eospyr",
+      "name": "Klevv Bolt V 64GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "8eospyr",
+      "name": "Klevv Bolt V 64GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "go6mecn",
+      "name": "Team T-Force Delta ECO 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "go6mecn",
+      "name": "Team T-Force Delta ECO 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "go6mecn",
+      "name": "Team T-Force Delta ECO 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "go6mecn",
+      "name": "Team T-Force Delta ECO 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "go6mecn",
+      "name": "Team T-Force Delta ECO 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "oo7bhle",
+      "name": "G.SKILL Trident Z5 Royal Neol Series 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "oo7bhle",
+      "name": "G.SKILL Trident Z5 Royal Neol Series 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "oo7bhle",
+      "name": "G.SKILL Trident Z5 Royal Neol Series 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "oo7bhle",
+      "name": "G.SKILL Trident Z5 Royal Neol Series 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "oo7bhle",
+      "name": "G.SKILL Trident Z5 Royal Neol Series 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "lbr43vq",
+      "name": "CORSAIR Vengeance RGB 64GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "lbr43vq",
+      "name": "CORSAIR Vengeance RGB 64GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "lbr43vq",
+      "name": "CORSAIR Vengeance RGB 64GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "lbr43vq",
+      "name": "CORSAIR Vengeance RGB 64GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "lbr43vq",
+      "name": "CORSAIR Vengeance RGB 64GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "sabkwcr",
+      "name": "G.SKILL Trident Z Royal Series 64GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "sabkwcr",
+      "name": "G.SKILL Trident Z Royal Series 64GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "sabkwcr",
+      "name": "G.SKILL Trident Z Royal Series 64GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "sabkwcr",
+      "name": "G.SKILL Trident Z Royal Series 64GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "sabkwcr",
+      "name": "G.SKILL Trident Z Royal Series 64GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "2f31r8b",
+      "name": "CORSAIR Vengeance RGB Pro SL 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "2f31r8b",
+      "name": "CORSAIR Vengeance RGB Pro SL 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "2f31r8b",
+      "name": "CORSAIR Vengeance RGB Pro SL 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "2f31r8b",
+      "name": "CORSAIR Vengeance RGB Pro SL 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "2f31r8b",
+      "name": "CORSAIR Vengeance RGB Pro SL 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "3lr8mbx",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "3lr8mbx",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "3lr8mbx",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "3lr8mbx",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "3lr8mbx",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "njee07b",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "njee07b",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "njee07b",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "njee07b",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "njee07b",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "3w823jj",
+      "name": "CORSAIR Vengeance RGB Pro SL 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "3w823jj",
+      "name": "CORSAIR Vengeance RGB Pro SL 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "3w823jj",
+      "name": "CORSAIR Vengeance RGB Pro SL 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "3w823jj",
+      "name": "CORSAIR Vengeance RGB Pro SL 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "3w823jj",
+      "name": "CORSAIR Vengeance RGB Pro SL 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "q7ai1hl",
+      "name": "CORSAIR Vengeance LPX 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "q7ai1hl",
+      "name": "CORSAIR Vengeance LPX 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "q7ai1hl",
+      "name": "CORSAIR Vengeance LPX 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "q7ai1hl",
+      "name": "CORSAIR Vengeance LPX 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "q7ai1hl",
+      "name": "CORSAIR Vengeance LPX 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "zbkwdjp",
+      "name": "CORSAIR Vengeance LPX 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "zbkwdjp",
+      "name": "CORSAIR Vengeance LPX 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "zbkwdjp",
+      "name": "CORSAIR Vengeance LPX 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "zbkwdjp",
+      "name": "CORSAIR Vengeance LPX 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "zbkwdjp",
+      "name": "CORSAIR Vengeance LPX 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "59ilhzy",
+      "name": "CORSAIR Vengeance RGB Pro 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "59ilhzy",
+      "name": "CORSAIR Vengeance RGB Pro 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "59ilhzy",
+      "name": "CORSAIR Vengeance RGB Pro 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "59ilhzy",
+      "name": "CORSAIR Vengeance RGB Pro 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "59ilhzy",
+      "name": "CORSAIR Vengeance RGB Pro 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "xjse0tl",
+      "name": "G.SKILL Ripjaws V Series 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "xjse0tl",
+      "name": "G.SKILL Ripjaws V Series 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "xjse0tl",
+      "name": "G.SKILL Ripjaws V Series 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "xjse0tl",
+      "name": "G.SKILL Ripjaws V Series 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "xjse0tl",
+      "name": "G.SKILL Ripjaws V Series 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "9iz3zri",
+      "name": "G.SKILL TridentZ RGB Series 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "9iz3zri",
+      "name": "G.SKILL TridentZ RGB Series 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "9iz3zri",
+      "name": "G.SKILL TridentZ RGB Series 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "9iz3zri",
+      "name": "G.SKILL TridentZ RGB Series 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "9iz3zri",
+      "name": "G.SKILL TridentZ RGB Series 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "r38ntlx",
+      "name": "G.SKILL Ripjaws V Series 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "r38ntlx",
+      "name": "G.SKILL Ripjaws V Series 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "r38ntlx",
+      "name": "G.SKILL Ripjaws V Series 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "r38ntlx",
+      "name": "G.SKILL Ripjaws V Series 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "r38ntlx",
+      "name": "G.SKILL Ripjaws V Series 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "dcnprko",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "dcnprko",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "dcnprko",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "dcnprko",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "dcnprko",
+      "name": "CORSAIR Vengeance RGB Pro 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "ko54jkz",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "ko54jkz",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "ko54jkz",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "ko54jkz",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "ko54jkz",
+      "name": "Team T-Force Delta RGB 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "rx9m78y",
+      "name": "ASUS TUF GAMING X870E-PLUS WIFI7 AMD",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "rx9m78y",
+      "name": "ASUS TUF GAMING X870E-PLUS WIFI7 AMD",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "rx9m78y",
+      "name": "ASUS TUF GAMING X870E-PLUS WIFI7 AMD",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "rx9m78y",
+      "name": "ASUS TUF GAMING X870E-PLUS WIFI7 AMD",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "rx9m78y",
+      "name": "ASUS TUF GAMING X870E-PLUS WIFI7 AMD",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "jwxdzbt",
+      "name": "GIGABYTE B850 AORUS ELITE WIFI7 ICE AMD AM5",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "jwxdzbt",
+      "name": "GIGABYTE B850 AORUS ELITE WIFI7 ICE AMD AM5",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "jwxdzbt",
+      "name": "GIGABYTE B850 AORUS ELITE WIFI7 ICE AMD AM5",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "jwxdzbt",
+      "name": "GIGABYTE B850 AORUS ELITE WIFI7 ICE AMD AM5",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "jwxdzbt",
+      "name": "GIGABYTE B850 AORUS ELITE WIFI7 ICE AMD AM5",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "5yliq5w",
+      "name": "MSI MAG B850 TOMAHAWK MAX WIFI Motherboard",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "5yliq5w",
+      "name": "MSI MAG B850 TOMAHAWK MAX WIFI Motherboard",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "5yliq5w",
+      "name": "MSI MAG B850 TOMAHAWK MAX WIFI Motherboard",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "5yliq5w",
+      "name": "MSI MAG B850 TOMAHAWK MAX WIFI Motherboard",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "5yliq5w",
+      "name": "MSI MAG B850 TOMAHAWK MAX WIFI Motherboard",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "e797b7k",
+      "name": "MSI MAG X870 TOMAHAWK",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "e797b7k",
+      "name": "MSI MAG X870 TOMAHAWK",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "e797b7k",
+      "name": "MSI MAG X870 TOMAHAWK",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "e797b7k",
+      "name": "MSI MAG X870 TOMAHAWK",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "e797b7k",
+      "name": "MSI MAG X870 TOMAHAWK",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "o3rfpwc",
+      "name": "ASUS ROG STRIX X870E-E GAMING WIFI AMD",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "o3rfpwc",
+      "name": "ASUS ROG STRIX X870E-E GAMING WIFI AMD",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "o3rfpwc",
+      "name": "ASUS ROG STRIX X870E-E GAMING WIFI AMD",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "o3rfpwc",
+      "name": "ASUS ROG STRIX X870E-E GAMING WIFI AMD",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "o3rfpwc",
+      "name": "ASUS ROG STRIX X870E-E GAMING WIFI AMD",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "rcdo2rx",
+      "name": "ASUS B850 MAX GAMING WIFI",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "rcdo2rx",
+      "name": "ASUS B850 MAX GAMING WIFI",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "rcdo2rx",
+      "name": "ASUS B850 MAX GAMING WIFI",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "rcdo2rx",
+      "name": "ASUS B850 MAX GAMING WIFI",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "rcdo2rx",
+      "name": "ASUS B850 MAX GAMING WIFI",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "5ury8p7",
+      "name": "MSI B650 GAMING PLUS WIFI",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "5ury8p7",
+      "name": "MSI B650 GAMING PLUS WIFI",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "5ury8p7",
+      "name": "MSI B650 GAMING PLUS WIFI",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "5ury8p7",
+      "name": "MSI B650 GAMING PLUS WIFI",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "5ury8p7",
+      "name": "MSI B650 GAMING PLUS WIFI",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "gpu3050v2x",
+      "name": "MSI Ventus GeForce RTX 3050 8GB VENTUS 2X XS OC",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "gpu3050v2x",
+      "name": "MSI Ventus GeForce RTX 3050 8GB VENTUS 2X XS OC",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "gpu3050v2x",
+      "name": "MSI Ventus GeForce RTX 3050 8GB VENTUS 2X XS OC",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "gpu3050v2x",
+      "name": "MSI Ventus GeForce RTX 3050 8GB VENTUS 2X XS OC",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "gpu3050v2x",
+      "name": "MSI Ventus GeForce RTX 3050 8GB VENTUS 2X XS OC",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "gpu5070tish3x",
+      "name": "MSI SHADOW GeForce RTX 5070 Ti 16GB SHADOW 3X OC",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "gpu5070tish3x",
+      "name": "MSI SHADOW GeForce RTX 5070 Ti 16GB SHADOW 3X OC",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "gpu5070tish3x",
+      "name": "MSI SHADOW GeForce RTX 5070 Ti 16GB SHADOW 3X OC",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "gpu5070tish3x",
+      "name": "MSI SHADOW GeForce RTX 5070 Ti 16GB SHADOW 3X OC",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "gpu5070tish3x",
+      "name": "MSI SHADOW GeForce RTX 5070 Ti 16GB SHADOW 3X OC",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "gpu9060xtdual",
+      "name": "ASUS Dual Radeon RX 9060 XT 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "gpu9060xtdual",
+      "name": "ASUS Dual Radeon RX 9060 XT 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "gpu9060xtdual",
+      "name": "ASUS Dual Radeon RX 9060 XT 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "gpu9060xtdual",
+      "name": "ASUS Dual Radeon RX 9060 XT 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "gpu9060xtdual",
+      "name": "ASUS Dual Radeon RX 9060 XT 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "gpurx9070xtnitro",
+      "name": "SAPPHIRE NITRO+ Radeon RX 9070 XT 16GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "gpurx9070xtnitro",
+      "name": "SAPPHIRE NITRO+ Radeon RX 9070 XT 16GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "gpurx9070xtnitro",
+      "name": "SAPPHIRE NITRO+ Radeon RX 9070 XT 16GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "gpurx9070xtnitro",
+      "name": "SAPPHIRE NITRO+ Radeon RX 9070 XT 16GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "gpurx9070xtnitro",
+      "name": "SAPPHIRE NITRO+ Radeon RX 9070 XT 16GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "gpu5060tiventus2x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "ineligible_seller",
+      "section": "parts",
+      "id": "gpu5060tiventus2x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
+      "detail": "Stored seller is not Newegg; verify and unpublish if necessary"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "gpu5060tiventus2x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 2X OC BLACK PLUS",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "gpu9060xtgigagaming3x",
+      "name": "GIGABYTE Gaming Radeon RX 9060 XT 16GB OC",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "gpu9060xtgigagaming3x",
+      "name": "GIGABYTE Gaming Radeon RX 9060 XT 16GB OC",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "gpu9060xtgigagaming3x",
+      "name": "GIGABYTE Gaming Radeon RX 9060 XT 16GB OC",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "gpu9060xtgigagaming3x",
+      "name": "GIGABYTE Gaming Radeon RX 9060 XT 16GB OC",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "gpu9060xtgigagaming3x",
+      "name": "GIGABYTE Gaming Radeon RX 9060 XT 16GB OC",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "gpu5060gigablp3x",
+      "name": "GIGABYTE Low Profile GeForce RTX 5060 8GB OC",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "gpu5060gigablp3x",
+      "name": "GIGABYTE Low Profile GeForce RTX 5060 8GB OC",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "gpu5060gigablp3x",
+      "name": "GIGABYTE Low Profile GeForce RTX 5060 8GB OC",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "gpu5060gigablp3x",
+      "name": "GIGABYTE Low Profile GeForce RTX 5060 8GB OC",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "gpu5060gigablp3x",
+      "name": "GIGABYTE Low Profile GeForce RTX 5060 8GB OC",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "gpu5090aorusmasterice3x",
+      "name": "GIGABYTE AORUS GeForce RTX 5090 MASTER ICE 32GB",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "gpu5090aorusmasterice3x",
+      "name": "GIGABYTE AORUS GeForce RTX 5090 MASTER ICE 32GB",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "gpu5090aorusmasterice3x",
+      "name": "GIGABYTE AORUS GeForce RTX 5090 MASTER ICE 32GB",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "gpu5090aorusmasterice3x",
+      "name": "GIGABYTE AORUS GeForce RTX 5090 MASTER ICE 32GB",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "gpu5090aorusmasterice3x",
+      "name": "GIGABYTE AORUS GeForce RTX 5090 MASTER ICE 32GB",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "psunzxt1200g",
+      "name": "NZXT C1200 Gold 1200W",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "missing_newegg_baseline",
+      "section": "parts",
+      "id": "caseDiypcIdx6",
+      "name": "DIYPC IDX6-ATX-ARGB Tempered-Glass ATX Case",
+      "detail": "Requires exact live listing, seller and stock verification"
+    },
+    {
+      "issue": "missing_source_url",
+      "section": "parts",
+      "id": "caseDiypcIdx6",
+      "name": "DIYPC IDX6-ATX-ARGB Tempered-Glass ATX Case",
+      "detail": "Exact Newegg listing URL missing"
+    },
+    {
+      "issue": "missing_verification_date",
+      "section": "parts",
+      "id": "caseDiypcIdx6",
+      "name": "DIYPC IDX6-ATX-ARGB Tempered-Glass ATX Case",
+      "detail": "No recorded verification date"
+    },
+    {
+      "issue": "missing_seller",
+      "section": "parts",
+      "id": "caseDiypcIdx6",
+      "name": "DIYPC IDX6-ATX-ARGB Tempered-Glass ATX Case",
+      "detail": "Direct Newegg seller not documented"
+    },
+    {
+      "issue": "missing_stock_status",
+      "section": "parts",
+      "id": "caseDiypcIdx6",
+      "name": "DIYPC IDX6-ATX-ARGB Tempered-Glass ATX Case",
+      "detail": "Stock status not documented"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "ssdSamsung870EVO1TB",
+      "name": "Samsung 870 EVO 1TB 2.5-inch SATA SSD",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "hddWDBlue2TB",
+      "name": "Western Digital Blue 2TB 7200RPM SATA Desktop HDD",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "coolerN82E16835103370",
+      "name": "Cooler Master Hyper 212 PRO ARGB CPU Air Cooler 120mm Fan AM5 AM4 LGA1851 1700 - Black",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "coolerN82E16835984012",
+      "name": "ASRock AIO Pro White 240 ARGB radiator waterblock fan",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "coolerN82E16835984002",
+      "name": "ASRock AIO Challenger 360 Digital 27mm Radiator Black Version",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "coolerN82E16835181528",
+      "name": "Corsair Nautilus II 360 RS Liquid CPU Cooler AM5 AM4 LGA 1851 1700",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    },
+    {
+      "issue": "ineligible_stock",
+      "section": "parts",
+      "id": "coolerN82E16835352135",
+      "name": "Fractal Design Radius 360 360mm AIO Liquid CPU Cooler 3x 120mm Fans - Black",
+      "detail": "Stored inventory status is not currently eligible for sale"
+    }
+  ]
+}
