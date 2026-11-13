@@ -9609,12 +9609,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 164.99,
       "model": "TF3D416G3200HC16FDC01",
-      "specSourceUrl": "https://www.newegg.com/team-group-t-force-delta-rgb-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-black/p/N82E16820331858?Item=N82E16820331858",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 49
     },
     {
       "id": "y69jed9",
@@ -9685,12 +9686,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 579.99,
       "model": "CMH32GX5M2E6000C36W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-32gb-ddr5-6000-cas-latency-cl36-desktop-memory-white/p/N82E16820982058?Item=N82E16820982058",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 36,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "zvpnb23",
@@ -9723,12 +9725,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 569.99,
       "model": "F5-6000J3636F16GX2-TZ5RK",
-      "specSourceUrl": "https://www.newegg.com/g-skill-trident-z5-rgb-series-32gb-ddr5-6000-cas-latency-cl36-desktop-memory-black/p/N82E16820374351?Item=N82E16820374351",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 36,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "eldmo2c",
@@ -9761,12 +9764,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 654.99,
       "model": "CMH32GX5M2B6000Z30WCB",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-32gb-2-x-16gb-ddr5-6000-pc5-48000-cas-latency-cl30-desktop-memory-white/p/N82E16820982277?Item=N82E16820982277",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "jfhjltb",
@@ -9799,12 +9803,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 507.99,
       "model": "CMK32GX5M2B5200C40",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-32gb-ddr5-5200-cas-latency-cl40-desktop-memory-black/p/N82E16820236827?Item=N82E16820236827",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 5200,
       "casLatency": 40,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 35
     },
     {
       "id": "3yuf9vc",
@@ -9837,12 +9842,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 657.99,
       "model": "CMH32GX5M2B6000Z30CB",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-32gb-2-x-16gb-ddr5-6000-pc5-48000-cas-latency-cl30-desktop-memory-gray/p/N82E16820982276?Item=N82E16820982276",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "jgz2gex",
@@ -9875,12 +9881,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 309.99,
       "model": "CMK16GX5M2E6000Z36",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-16gb-2-x-8gb-ddr5-6000-pc5-48000-cas-latency-cl36-desktop-memory-gray/p/N82E16820982324?Item=N82E16820982324",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 6000,
       "casLatency": 36,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 35
     },
     {
       "id": "s5irrlt",
@@ -9913,12 +9920,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 309.99,
       "model": "CMH16GX5M2B5200Z40",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-16gb-2-x-8gb-ddr5-5200-pc5-41600-cas-latency-cl40-desktop-memory-gray/p/N82E16820982322",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 5200,
       "casLatency": 40,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "kfftksl",
@@ -9951,12 +9959,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 637.99,
       "model": "CMH32GX5M2N6000Z30",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-32gb-ddr5-6000-cas-latency-cl30-desktop-memory-gray/p/N82E16820982184?Item=N82E16820982184",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "52qat7g",
@@ -9989,11 +9998,12 @@
       "stockStatus": "In Stock",
       "neweggPrice": 299.99,
       "model": "CMH16GX5M1D6000Z38",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-16gb-2-x-8gb-ddr5-6000-pc5-48000-cas-latency-cl38-desktop-memory-gray/p/N82E16820982351?Item=N82E16820982351",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 6000,
-      "casLatency": 38
+      "casLatency": 38,
+      "heightMm": 44
     },
     {
       "id": "h85yrlo",
@@ -10026,12 +10036,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 299.99,
       "model": "CMH16GX5M2B5200Z40W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-16gb-2-x-8gb-ddr5-5200-pc5-41600-cas-latency-cl40-desktop-memory-white/p/N82E16820982333?Item=N82E16820982333",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 5200,
       "casLatency": 40,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "d0mpe9h",
@@ -10064,12 +10075,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 577.99,
       "model": "CMK32GX5M2D6000Z38W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-32gb-2-x-16gb-ddr5-6000-pc5-48000-cas-latency-cl38-desktop-memory-white/p/N82E16820982347?Item=N82E16820982347",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 38,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 35
     },
     {
       "id": "8fjd834",
@@ -10102,12 +10114,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 1347.99,
       "model": "CMP64GX5M2B6000Z30W",
-      "specSourceUrl": "https://www.newegg.com/corsair-dominator-titanium-64gb-ddr5-6000-cas-latency-cl30-desktop-memory-white/p/N82E16820982257?Item=N82E16820982257",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 64,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 56.75
     },
     {
       "id": "8eospyr",
@@ -10140,12 +10153,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 1079.99,
       "model": "KD5BGUA80-60A300I",
-      "specSourceUrl": "https://www.newegg.com/klevv-64gb-2-x-32gb-ddr5-6000-pc5-48000-cas-latency-cl30-desktop-memory-white/p/N82E16820101098?Item=N82E16820101098",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.klevv.com/ken/products_details/memory/Klevv_BoltV",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 64,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 34
     },
     {
       "id": "go6mecn",
@@ -10178,12 +10192,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 599.99,
       "model": "FF2D532G6400HC32ADC01",
-      "specSourceUrl": "https://www.newegg.com/team-group-t-force-delta-eco-32gb-ddr5-6400-cas-latency-cl32-desktop-memory-silver/p/N82E16820985279?Item=N82E16820985279",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-eco-ddr5-silver/delta-rgb-eco-ddr5-silver-FF2D532G6400HC32ADC01/",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6400,
       "casLatency": 32,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 46.1
     },
     {
       "id": "oo7bhle",
@@ -10216,12 +10231,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 1129.99,
       "model": "F5-6000J2836G16GX2-TR5NS",
-      "specSourceUrl": "https://www.newegg.com/g-skill-trident-z5-royal-series-32gb-ddr5-6000-cas-latency-cl28-desktop-memory-silver/p/N82E16820374614?Item=N82E16820374614",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 28,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "lbr43vq",
@@ -10292,12 +10308,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 2299.99,
       "model": "F5-6000J2836G32GX2-TR5NS",
-      "specSourceUrl": "https://www.newegg.com/g-skill-trident-z-royal-series-64gb-ddr5-6000-cas-latency-cl28-desktop-memory-silver/p/N82E16820374709?Item=N82E16820374709",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 64,
       "speedMTs": 6000,
       "casLatency": 28,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "2f31r8b",
@@ -10330,12 +10347,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 179.99,
       "model": "CMH16GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-sl-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820236704?Item=N82E16820236704",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44.8
     },
     {
       "id": "3lr8mbx",
@@ -10368,12 +10386,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 179.99,
       "model": "CMW16GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-32gb-2-x-16gb-ddr4-3200-pc4-25600-cas-latency-cl16-desktop-memory-white/p/N82E16820982330?Item=N82E16820982330",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 51
     },
     {
       "id": "njee07b",
@@ -10406,12 +10425,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 149.99,
       "model": "TF4D416G3200HC16FDC01",
-      "specSourceUrl": "https://www.newegg.com/team-group-t-force-delta-rgb-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820331859?Item=N82E16820331859",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 49
     },
     {
       "id": "3w823jj",
@@ -10444,12 +10464,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 329.99,
       "model": "CMH32GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-sl-32gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820236710?Item=N82E16820236710",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44.8
     },
     {
       "id": "q7ai1hl",
@@ -10482,12 +10503,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 279.99,
       "model": "CMK32GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-lpx-32gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820236737?Item=N82E16820236737",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 33.53
     },
     {
       "id": "zbkwdjp",
@@ -10520,12 +10542,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 169.99,
       "model": "CMK16GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-lpx-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820236736?Item=N82E16820236736",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 33.53
     },
     {
       "id": "59ilhzy",
@@ -10558,12 +10581,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 279.99,
       "model": "CMW32GX4M2E3200C16",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-32gb-ddr4-3200-cas-latency-cl16-desktop-memory-black/p/N82E16820236570?Item=N82E16820236570",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 51
     },
     {
       "id": "xjse0tl",
@@ -10596,12 +10620,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 249.99,
       "model": "F4-3600C18D-32GVK",
-      "specSourceUrl": "https://www.newegg.com/g-skill-ripjaws-v-series-32gb-ddr4-3600-cas-latency-cl18-desktop-memory-black/p/N82E16820232928?Item=N82E16820232928",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3600,
       "casLatency": 18,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 42
     },
     {
       "id": "9iz3zri",
@@ -10634,12 +10659,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 259.99,
       "model": "F4-3600C18D-32GTZR",
-      "specSourceUrl": "https://www.newegg.com/g-skill-tridentz-rgb-series-32gb-ddr4-3600-cas-latency-cl18-desktop-memory-black/p/N82E16820232920?Item=N82E16820232920",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3600,
       "casLatency": 18,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "r38ntlx",
@@ -10672,12 +10698,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 134.99,
       "model": "F4-3200C16D-16GVKB",
-      "specSourceUrl": "https://www.newegg.com/g-skill-ripjaws-v-series-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-black/p/N82E16820231941?Item=N82E16820231941",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 42
     },
     {
       "id": "dcnprko",
@@ -10710,12 +10737,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 179.99,
       "model": "CMW16GX4M2E3200C16",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-32gb-2-x-16gb-ddr4-3200-pc4-25600-cas-latency-cl16-desktop-memory-white/p/N82E16820982329?Item=N82E16820982329",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 51
     },
     {
       "id": "ko54jkz",
@@ -10748,12 +10776,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 164.99,
       "model": "TF3D416G3200HC16FDC01",
-      "specSourceUrl": "https://www.newegg.com/team-group-t-force-delta-rgb-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-black/p/N82E16820331858?Item=N82E16820331858",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 49
     },
     {
       "id": "rx9m78y",
@@ -18340,9 +18369,10 @@
       ],
       "maxPsuLengthMm": 200.0,
       "compatibilityNotes": "Top radiator plus fan stack is limited to approximately 60 mm; check motherboard and RAM clearance.",
-      "specSourceUrl": "https://support.nzxt.com/hc/en-us/articles/40183529624347-H6-Flow-2023-Specs",
-      "specVerifiedDate": "2026-11-12",
-      "model": "CC-H61FB-01"
+      "specSourceUrl": "https://nzxt.com/products/h6-flow",
+      "specVerifiedDate": "2026-11-13",
+      "model": "CC-H61FB-01",
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseDiypcMatx06Wood",
@@ -18459,9 +18489,10 @@
       ],
       "maxPsuLengthMm": 200.0,
       "compatibilityNotes": "Top radiator plus fan stack is limited to approximately 60 mm; check motherboard and RAM clearance.",
-      "specSourceUrl": "https://support.nzxt.com/hc/en-us/articles/40183529624347-H6-Flow-2023-Specs",
-      "specVerifiedDate": "2026-11-12",
-      "model": "CC-H61FW-01"
+      "specSourceUrl": "https://nzxt.com/products/h6-flow",
+      "specVerifiedDate": "2026-11-13",
+      "model": "CC-H61FW-01",
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseFractalNorthXLMesh",
@@ -18630,8 +18661,9 @@
         "DDR5 6000 (PC5 48000)",
         "Gray"
       ],
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-32gb-ddr5-6000-cas-latency-cl36-desktop-memory-gray/p/N82E16820982114",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 35
     },
     {
       "id": "ramgskillflarex532",
@@ -18667,8 +18699,9 @@
         "DDR5 6000 (PC5 48000)",
         "Black"
       ],
-      "specSourceUrl": "https://www.newegg.com/g-skill-flare-x5-32gb-ddr5-6000-cas-latency-cl36-desktop-memory-black/p/N82E16820374419",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 33
     },
     {
       "id": "ramgskilltz5neo32",
@@ -18844,9 +18877,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/thermaltake-atx-mini-tower-cases/p/2AM-000X-00343",
+      "specSourceUrl": "https://thermaltake.com/products/versa-h16-tg-argb-micro-tower-chassis",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 170.0
+      "maxPsuLengthMm": 170.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseNZXTH5Flow2024Black",
@@ -18874,9 +18908,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx-mid-tower-h5-flow-sgcc-steel-dark-tinted-tempered-glass-case-black-cc-h52fb-01/p/N82E16811146365",
+      "specSourceUrl": "https://nzxt.com/products/h5-flow",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 200.0
+      "maxPsuLengthMm": 200.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseAntecC8Black",
@@ -20828,8 +20863,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-pro-3-120mm/p/N82E16835269026?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5599",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 155
     },
     {
       "id": "coolerN82E16835269025",
@@ -20867,8 +20903,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-3-lx-120mm/p/N82E16835269025?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5592",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 154
     },
     {
       "id": "cooler13C-001F-00071",
@@ -21095,8 +21132,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/p/N82E16835103385?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-12"
+      "specSourceUrl": "https://www.coolermaster.com/en-sg/products/hyper-212-3dhp-black-argb.html",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 158
     },
     {
       "id": "coolerN82E16835269028",
@@ -21134,8 +21172,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-pro-3-lx-120mm/p/N82E16835269028?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5601",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 155
     },
     {
       "id": "coolerN82E16835269027",
@@ -21173,8 +21212,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-pro-3-black-120mm/p/N82E16835269027?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5600",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 155
     },
     {
       "id": "coolerN82E16835099046",
@@ -21296,8 +21336,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-3-black-120mm/p/N82E16835269024?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5591",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 154
     },
     {
       "id": "coolerN82E16835103384",
@@ -21336,8 +21377,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/p/N82E16835103384?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-12"
+      "specSourceUrl": "https://www.coolermaster.com/en-global/products/hyper-212-3dhp-black.html",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 158
     },
     {
       "id": "coolerN82E16835106779",
@@ -21463,8 +21505,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/montech-nx600-28mm-intel-lga115x-1200-1700-1851-and-amd-am4-am5/p/N82E16835988018?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.montechpc.com/nx600-argb",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 160
     },
     {
       "id": "coolerN82E16835846080",
@@ -21498,8 +21541,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/msi-mag-corefrozr-aa13-120mm-amd-socket-am4-amd-socket-am5-intel-lga-1700-intel-lga-1851/p/N82E16835846080?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.msi.com/Air-Cooling/MAG-COREFROZR-AA13/Overview",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 152
     },
     {
       "id": "coolerN82E16835607021",
