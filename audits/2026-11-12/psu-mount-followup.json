@@ -1,0 +1,50 @@
+{
+  "verified_utc_date": "2026-11-13",
+  "verification_scope": "Case PSU form-factor evidence only; no Newegg offers revalidated",
+  "confirmed": [
+    {
+      "id": "caseAntecC8Black",
+      "name": "Antec C8 Black",
+      "supportedPSUFormFactors": "ATX",
+      "sourceUrl": "https://www.microcenter.com/product/701827/antec-c8-tempered-glass-eatx-full-tower-computer-case-black",
+      "note": "Exact Micro Center model C8 specifies PSU mount Bottom (ATX)."
+    },
+    {
+      "id": "caseAntecC8ARGBBlack",
+      "name": "Antec C8 ARGB Black",
+      "supportedPSUFormFactors": "ATX",
+      "sourceUrl": "https://global.channelonline.com/smbi_canada/store/Products/overview/M015606150",
+      "note": "Exact manufacturer-model cabinet data lists Power Device: No power supply (ATX); Antec specs max length 210mm."
+    },
+    {
+      "id": "casePhanteksEnthooProTG",
+      "name": "Phanteks Enthoo Pro TG PH-ES614PTG_BK",
+      "supportedPSUFormFactors": "ATX",
+      "sourceUrl": "https://www.cclonline.com/ph-es614ptg-bk-phanteks-enthoo-pro-tg-full-tower-gaming-case-black-usb-3-0/",
+      "note": "Exact model listing explicitly lists ATX Power Supply supported. Manufacturer model page confirms identity."
+    }
+  ],
+  "remaining": [
+    {
+      "id": "caseDiypcAtx08Wood",
+      "verification": "unverified PSU mounting form factor"
+    },
+    {
+      "id": "caseDiypcG18Wood",
+      "verification": "unverified PSU mounting form factor"
+    },
+    {
+      "id": "caseRosewillHeliumNAS",
+      "verification": "unverified PSU mounting form factor"
+    },
+    {
+      "id": "caseRosewillHeliumNASMax",
+      "verification": "unverified PSU mounting form factor"
+    }
+  ],
+  "safetyNotes": [
+    "PSU max length is an independent fit constraint.",
+    "An ATX motherboard support label is not an ATX PSU mount confirmation.",
+    "PSU cable routes and SFX adapters are not established here."
+  ]
+}
