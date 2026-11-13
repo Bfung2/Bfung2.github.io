@@ -18351,9 +18351,10 @@
         "chassis"
       ],
       "model": "ARGB-N3-W",
-      "specSourceUrl": "https://www.newegg.com/diypc-e-atx-atx-case-steel-tempered-glass-cases-white-argb-n3-w/p/N82E16811353280?Item=N82E16811353280",
+      "specSourceUrl": "https://www.newegg.com/diypc-e-atx-atx-case-steel-tempered-glass-cases-white-argb-n3-w/p/N82E16811353280",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 200.0
+      "maxPsuLengthMm": 200.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseDiypcAtx08Wood",
@@ -18441,8 +18442,9 @@
       "maxCoolerHeightMm": 174.0,
       "maxPsuLengthMm": 240.0,
       "specSourceUrl": "https://www.mydiypcusa.com/product/diypc-diy-matx06-wood-black-usb3-0-type-c-micro-atx-tower-gaming-computer-case-w-tempered-glass-side-panel-and-walnut-wood-front-panel",
-      "specVerifiedDate": "2026-11-12",
-      "model": "DIY-mATX06-Wood"
+      "specVerifiedDate": "2026-11-13",
+      "model": "DIY-mATX06-Wood",
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseFractalNorthXLDark",
@@ -18500,9 +18502,10 @@
       ],
       "maxCoolerHeightMm": 180.0,
       "maxPsuLengthMm": 270.0,
-      "specSourceUrl": "https://www.mydiypcusa.com/product/computer-case/rgb-fan-cases/diypc-vanguard-f1-bk-black-dual-usb3-0-type-c-tempered-glass-atx-full-tower-gaming-case-w-4-argb-pwm-fans",
-      "specVerifiedDate": "2026-11-12",
-      "model": "Vanguard-F1-BK"
+      "specSourceUrl": "https://www.newegg.com/diypc-atx-full-tower-steel-tempered-glass-cases-black-vanguard-f1-bk/p/N82E16811353267",
+      "specVerifiedDate": "2026-11-13",
+      "model": "Vanguard-F1-BK",
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseNzxtH6FlowWhite",
@@ -18589,7 +18592,7 @@
       "maxCoolerHeightMm": 179.0,
       "maxRamHeightMm": "",
       "supportedSockets": "",
-      "supportedPSUFormFactors": "",
+      "supportedPSUFormFactors": "ATX",
       "requiredPowerConnectors": "",
       "gpuPowerConnectors": "",
       "keywords": [
@@ -18606,7 +18609,7 @@
       "neweggPrice": 58.94,
       "model": "IDX6-ATX-ARGB",
       "specSourceUrl": "https://www.newegg.com/diypc-atx-tower-steel-tempered-glass-computer-case-black-idx6-atx-argb/p/N82E16811353300",
-      "specVerifiedDate": "2026-11-12",
+      "specVerifiedDate": "2026-11-13",
       "maxPsuLengthMm": 200.0
     },
     {
