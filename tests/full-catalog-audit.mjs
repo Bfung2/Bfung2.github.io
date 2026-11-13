@@ -5,7 +5,7 @@ const changes=JSON.parse(await fs.readFile('audits/2026-11-12/confirmed-catalog-
 const records=[...data.products,...data.parts];
 const policy=data.settings.pricingPolicy;
 assert.equal(data.settings.shippingRatePercent,18);
-assert.equal(data.settings.taxRate,14.5);
+assert.equal(data.settings.taxRate,11.5);
 assert.equal(policy.targetNetMarginPercent,20);
 const cent=n=>Math.round((n+Number.EPSILON)*100)/100;
 function netFor(p){
