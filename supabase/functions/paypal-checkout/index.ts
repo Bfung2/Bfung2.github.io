@@ -247,6 +247,11 @@ Deno.serve(async (req) => {
       });
       if (pricingError || !locked) return json({ error: pricingError?.message || "Could not verify checkout pricing." }, 400);
       Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total) });
+      // apex_lock_checkout_price can return an earlier locked order. Never let an
+      // expired or changed carrier quote silently use that older shipping charge.
+      if (carrierQuote && Math.abs(pricing.shipping - carrierQuote.charge) >= 0.005) {
+        return json({ error: "The carrier rate changed after this order was locked. Please start a new checkout to get the current rate." }, 409);
+      }
       if (!checkoutMeetsBreakEven(pricing.items, catalog, pricing, undiscountedSubtotal, carrierQuote?.carrierCost ?? null)) {
         return json({ error: "This order would fall below its cost-recovery price, possibly because of a promo code. Remove the discount and try again." }, 409);
       }
