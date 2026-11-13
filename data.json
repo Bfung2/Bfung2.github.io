@@ -2063,11 +2063,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 934.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-r9070gaming-oc-16gd-radeon-rx-9070-16gb-graphics-card-triple-fans/p/14-932-752",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-R9070GAMING-OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-R9070GAMING OC-16GD",
       "lengthMm": 288.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu5060ventus2x",
@@ -2103,11 +2104,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 519.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-8g-ventus-2x-oc-geforce-rtx-5060-8gb-graphics-card-double-fans/p/N82E16814137975",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://ca.msi.com/Graphics-Card/GeForce-RTX-5060-8G-VENTUS-2X-OC/Specification",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 5060 8G VENTUS 2X OC",
       "lengthMm": 197.0,
-      "recommendedPsuWatts": 550
+      "recommendedPsuWatts": 550,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpu5060tiventus2x16",
@@ -2185,11 +2187,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 859.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-3x-oc-geforce-rtx-5060-ti-16gb-graphics-card-triple-fans/p/N82E16814137957",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://storage-asset.msi.com/datasheet/vga/us/GeForce-RTX-5060-Ti-16G-VENTUS-3X-OC.pdf",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 5060 Ti 16G VENTUS 3X OC",
       "lengthMm": 304.0,
-      "recommendedPsuWatts": 600
+      "recommendedPsuWatts": 600,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpurx9070gresapphirepulse2x",
@@ -2220,11 +2223,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 779.99,
-      "specSourceUrl": "https://www.newegg.com/sapphire-tech-pulse-radeon-rx-9070-gre-graphics-12gb-graphics-card-double-fans/p/N82E16814202478",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.sapphiretech.com/en/consumer/pulse-radeon-rx-9070-gre-12g-gddr6",
+      "specVerifiedDate": "2026-11-13",
       "model": "11354-01-20G RX 9070 GRE GAMING 12GB OC",
       "lengthMm": 280.0,
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu3060msiventus2x",
@@ -2302,11 +2306,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 259.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-3050-ventus-2x-6g-oc-geforce-rtx-3050-6gb-graphics-card-double-fans/p/N82E16814137878",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.msi.com/Graphics-Card/GeForce-RTX-3050-VENTUS-2X-6G-OC/Specification",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 3050 VENTUS 2X 6G OC",
       "lengthMm": 189.0,
-      "recommendedPsuWatts": 300
+      "recommendedPsuWatts": 300,
+      "requiredPowerConnectors": "None"
     },
     {
       "id": "gpu5070gigawindforce3x",
@@ -2384,11 +2389,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1439.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n507twf3oc-16gd-geforce-rtx-5070-ti-16gb-graphics-card-triple-fans/p/N82E16814932771",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/us/Graphics-Card/GV-N507TWF3OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N507TWF3OC-16GD",
       "lengthMm": 304.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpu5090aorusif2x",
@@ -2424,11 +2430,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 7189.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n5090aorus-if-32gd-geforce-rtx-5090-32gb-graphics-card/p/N82E16814932838",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/us/Graphics-Card/GV-N5090AORUS-IF-32GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N5090AORUS IF-32GD",
       "lengthMm": 330.0,
-      "recommendedPsuWatts": 1000
+      "recommendedPsuWatts": 1000,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpu5080windforce3x",
@@ -2464,11 +2471,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 2199.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5080wf3oc-16gd-geforce-rtx-5080-16gb-graphics-card-triple-fans/p/N82E16814932754",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-N5080WF3OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N5080WF3OC-16GD",
       "lengthMm": 304.0,
-      "recommendedPsuWatts": 850
+      "recommendedPsuWatts": 850,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpu3060gigagaming3x",
@@ -2504,11 +2512,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 479.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n3060gaming-oc-12gd-geforce-rtx-3060-12gb-graphics-card-windforce-3x/p/N82E16814932433",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/ie/Graphics-Card/GV-N3060GAMING-OC-12GD-rev-20/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N3060GAMING OC-12GD (rev. 2.0)",
       "lengthMm": 282.0,
-      "recommendedPsuWatts": 550
+      "recommendedPsuWatts": 550,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpu3050msiventus2x8",
@@ -2544,11 +2553,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 349.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-3050-ventus-2x-xs-8g-oc-geforce-rtx-3050-8gb-graphics-card-double-fans/p/N82E16814137810",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://us.msi.com/Graphics-Card/GeForce-RTX-3050-VENTUS-2X-XS-8G-OC/Specification",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 3050 VENTUS 2X XS 8G OC",
       "lengthMm": 205.0,
-      "recommendedPsuWatts": 500
+      "recommendedPsuWatts": 500,
+      "requiredPowerConnectors": "1 x 6-pin"
     },
     {
       "id": "intel-u9-285k",
@@ -2815,11 +2825,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1319.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n507tgaming-oc-16gd-geforce-rtx-5070-ti-16gb-graphics-card-triple-fans/p/N82E16814932768",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-N507TGAMING-OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N507TGAMING OC-16GD",
       "lengthMm": 342.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpurx9070xtasrocksteellegend3x",
@@ -2850,11 +2861,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 969.99,
-      "specSourceUrl": "https://www.newegg.com/asrock-steel-legend-rx9070xt-sl-16g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814930136",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.asrock.com/Graphics-Card/AMD/Radeon%20RX%209070%20XT%20Steel%20Legend%2016GB/index.asp",
+      "specVerifiedDate": "2026-11-13",
       "model": "RX9070XT SL 16G",
       "lengthMm": 298.0,
-      "recommendedPsuWatts": 800
+      "recommendedPsuWatts": 800,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu5060tigigabyteeagle2x8",
@@ -2890,11 +2902,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 539.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n506teagle-oc-8gd-geforce-rtx-5060-ti-8gb-graphics-card-double-fans/p/N82E16814932795",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/lt/Graphics-Card/GV-N506TEAGLE-OC-8GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N506TEAGLE OC-8GD",
       "lengthMm": 215.0,
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpurx9070xtsapphirenitro3x",
@@ -2925,11 +2938,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1099.99,
-      "specSourceUrl": "https://www.newegg.com/sapphire-tech-nitro-11348-01-20g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814202448",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.sapphiretech.com/en/consumer/nitro-radeon-rx-9070-xt-16g-gddr6",
+      "specVerifiedDate": "2026-11-13",
       "model": "11348-01-20G",
       "lengthMm": 331.0,
-      "recommendedPsuWatts": 850
+      "recommendedPsuWatts": 850,
+      "requiredPowerConnectors": "1 x 12V-2x6"
     },
     {
       "id": "am4asrock550m",
@@ -9609,12 +9623,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 164.99,
       "model": "TF3D416G3200HC16FDC01",
-      "specSourceUrl": "https://www.newegg.com/team-group-t-force-delta-rgb-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-black/p/N82E16820331858?Item=N82E16820331858",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 49
     },
     {
       "id": "y69jed9",
@@ -9685,12 +9700,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 579.99,
       "model": "CMH32GX5M2E6000C36W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-32gb-ddr5-6000-cas-latency-cl36-desktop-memory-white/p/N82E16820982058?Item=N82E16820982058",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 36,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "zvpnb23",
@@ -9723,12 +9739,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 569.99,
       "model": "F5-6000J3636F16GX2-TZ5RK",
-      "specSourceUrl": "https://www.newegg.com/g-skill-trident-z5-rgb-series-32gb-ddr5-6000-cas-latency-cl36-desktop-memory-black/p/N82E16820374351?Item=N82E16820374351",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 36,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "eldmo2c",
@@ -9761,12 +9778,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 654.99,
       "model": "CMH32GX5M2B6000Z30WCB",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-32gb-2-x-16gb-ddr5-6000-pc5-48000-cas-latency-cl30-desktop-memory-white/p/N82E16820982277?Item=N82E16820982277",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "jfhjltb",
@@ -9799,12 +9817,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 507.99,
       "model": "CMK32GX5M2B5200C40",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-32gb-ddr5-5200-cas-latency-cl40-desktop-memory-black/p/N82E16820236827?Item=N82E16820236827",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 5200,
       "casLatency": 40,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 35
     },
     {
       "id": "3yuf9vc",
@@ -9837,12 +9856,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 657.99,
       "model": "CMH32GX5M2B6000Z30CB",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-32gb-2-x-16gb-ddr5-6000-pc5-48000-cas-latency-cl30-desktop-memory-gray/p/N82E16820982276?Item=N82E16820982276",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "jgz2gex",
@@ -9875,12 +9895,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 309.99,
       "model": "CMK16GX5M2E6000Z36",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-16gb-2-x-8gb-ddr5-6000-pc5-48000-cas-latency-cl36-desktop-memory-gray/p/N82E16820982324?Item=N82E16820982324",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 6000,
       "casLatency": 36,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 35
     },
     {
       "id": "s5irrlt",
@@ -9913,12 +9934,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 309.99,
       "model": "CMH16GX5M2B5200Z40",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-16gb-2-x-8gb-ddr5-5200-pc5-41600-cas-latency-cl40-desktop-memory-gray/p/N82E16820982322",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 5200,
       "casLatency": 40,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "kfftksl",
@@ -9951,12 +9973,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 637.99,
       "model": "CMH32GX5M2N6000Z30",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-32gb-ddr5-6000-cas-latency-cl30-desktop-memory-gray/p/N82E16820982184?Item=N82E16820982184",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "52qat7g",
@@ -9989,11 +10012,12 @@
       "stockStatus": "In Stock",
       "neweggPrice": 299.99,
       "model": "CMH16GX5M1D6000Z38",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-16gb-2-x-8gb-ddr5-6000-pc5-48000-cas-latency-cl38-desktop-memory-gray/p/N82E16820982351?Item=N82E16820982351",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 6000,
-      "casLatency": 38
+      "casLatency": 38,
+      "heightMm": 44
     },
     {
       "id": "h85yrlo",
@@ -10026,12 +10050,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 299.99,
       "model": "CMH16GX5M2B5200Z40W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-16gb-2-x-8gb-ddr5-5200-pc5-41600-cas-latency-cl40-desktop-memory-white/p/N82E16820982333?Item=N82E16820982333",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 5200,
       "casLatency": 40,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "d0mpe9h",
@@ -10064,12 +10089,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 577.99,
       "model": "CMK32GX5M2D6000Z38W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-32gb-2-x-16gb-ddr5-6000-pc5-48000-cas-latency-cl38-desktop-memory-white/p/N82E16820982347?Item=N82E16820982347",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 38,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 35
     },
     {
       "id": "8fjd834",
@@ -10102,12 +10128,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 1347.99,
       "model": "CMP64GX5M2B6000Z30W",
-      "specSourceUrl": "https://www.newegg.com/corsair-dominator-titanium-64gb-ddr5-6000-cas-latency-cl30-desktop-memory-white/p/N82E16820982257?Item=N82E16820982257",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 64,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 56.75
     },
     {
       "id": "8eospyr",
@@ -10140,12 +10167,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 1079.99,
       "model": "KD5BGUA80-60A300I",
-      "specSourceUrl": "https://www.newegg.com/klevv-64gb-2-x-32gb-ddr5-6000-pc5-48000-cas-latency-cl30-desktop-memory-white/p/N82E16820101098?Item=N82E16820101098",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.klevv.com/ken/products_details/memory/Klevv_BoltV",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 64,
       "speedMTs": 6000,
       "casLatency": 30,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 34
     },
     {
       "id": "go6mecn",
@@ -10178,12 +10206,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 599.99,
       "model": "FF2D532G6400HC32ADC01",
-      "specSourceUrl": "https://www.newegg.com/team-group-t-force-delta-eco-32gb-ddr5-6400-cas-latency-cl32-desktop-memory-silver/p/N82E16820985279?Item=N82E16820985279",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-eco-ddr5-silver/delta-rgb-eco-ddr5-silver-FF2D532G6400HC32ADC01/",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6400,
       "casLatency": 32,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 46.1
     },
     {
       "id": "oo7bhle",
@@ -10216,12 +10245,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 1129.99,
       "model": "F5-6000J2836G16GX2-TR5NS",
-      "specSourceUrl": "https://www.newegg.com/g-skill-trident-z5-royal-series-32gb-ddr5-6000-cas-latency-cl28-desktop-memory-silver/p/N82E16820374614?Item=N82E16820374614",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 6000,
       "casLatency": 28,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "lbr43vq",
@@ -10292,12 +10322,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 2299.99,
       "model": "F5-6000J2836G32GX2-TR5NS",
-      "specSourceUrl": "https://www.newegg.com/g-skill-trident-z-royal-series-64gb-ddr5-6000-cas-latency-cl28-desktop-memory-silver/p/N82E16820374709?Item=N82E16820374709",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 64,
       "speedMTs": 6000,
       "casLatency": 28,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "2f31r8b",
@@ -10330,12 +10361,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 179.99,
       "model": "CMH16GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-sl-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820236704?Item=N82E16820236704",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44.8
     },
     {
       "id": "3lr8mbx",
@@ -10368,12 +10400,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 179.99,
       "model": "CMW16GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-32gb-2-x-16gb-ddr4-3200-pc4-25600-cas-latency-cl16-desktop-memory-white/p/N82E16820982330?Item=N82E16820982330",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 51
     },
     {
       "id": "njee07b",
@@ -10406,12 +10439,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 149.99,
       "model": "TF4D416G3200HC16FDC01",
-      "specSourceUrl": "https://www.newegg.com/team-group-t-force-delta-rgb-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820331859?Item=N82E16820331859",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 49
     },
     {
       "id": "3w823jj",
@@ -10444,12 +10478,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 329.99,
       "model": "CMH32GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-sl-32gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820236710?Item=N82E16820236710",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44.8
     },
     {
       "id": "q7ai1hl",
@@ -10482,12 +10517,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 279.99,
       "model": "CMK32GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-lpx-32gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820236737?Item=N82E16820236737",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 33.53
     },
     {
       "id": "zbkwdjp",
@@ -10520,12 +10556,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 169.99,
       "model": "CMK16GX4M2E3200C16W",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-lpx-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-white/p/N82E16820236736?Item=N82E16820236736",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 33.53
     },
     {
       "id": "59ilhzy",
@@ -10558,12 +10595,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 279.99,
       "model": "CMW32GX4M2E3200C16",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-32gb-ddr4-3200-cas-latency-cl16-desktop-memory-black/p/N82E16820236570?Item=N82E16820236570",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 51
     },
     {
       "id": "xjse0tl",
@@ -10596,12 +10634,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 249.99,
       "model": "F4-3600C18D-32GVK",
-      "specSourceUrl": "https://www.newegg.com/g-skill-ripjaws-v-series-32gb-ddr4-3600-cas-latency-cl18-desktop-memory-black/p/N82E16820232928?Item=N82E16820232928",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3600,
       "casLatency": 18,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 42
     },
     {
       "id": "9iz3zri",
@@ -10634,12 +10673,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 259.99,
       "model": "F4-3600C18D-32GTZR",
-      "specSourceUrl": "https://www.newegg.com/g-skill-tridentz-rgb-series-32gb-ddr4-3600-cas-latency-cl18-desktop-memory-black/p/N82E16820232920?Item=N82E16820232920",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 32,
       "speedMTs": 3600,
       "casLatency": 18,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 44
     },
     {
       "id": "r38ntlx",
@@ -10672,12 +10712,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 134.99,
       "model": "F4-3200C16D-16GVKB",
-      "specSourceUrl": "https://www.newegg.com/g-skill-ripjaws-v-series-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-black/p/N82E16820231941?Item=N82E16820231941",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 42
     },
     {
       "id": "dcnprko",
@@ -10710,12 +10751,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 179.99,
       "model": "CMW16GX4M2E3200C16",
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-rgb-pro-32gb-2-x-16gb-ddr4-3200-pc4-25600-cas-latency-cl16-desktop-memory-white/p/N82E16820982329?Item=N82E16820982329",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 51
     },
     {
       "id": "ko54jkz",
@@ -10748,12 +10790,13 @@
       "stockStatus": "In Stock",
       "neweggPrice": 164.99,
       "model": "TF3D416G3200HC16FDC01",
-      "specSourceUrl": "https://www.newegg.com/team-group-t-force-delta-rgb-16gb-ddr4-3200-cas-latency-cl16-desktop-memory-black/p/N82E16820331858?Item=N82E16820331858",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "specVerifiedDate": "2026-11-13",
       "capacityGB": 16,
       "speedMTs": 3200,
       "casLatency": 16,
-      "modules": 2
+      "modules": 2,
+      "heightMm": 49
     },
     {
       "id": "rx9m78y",
@@ -11161,11 +11204,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 519.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-8g-ventus-2x-oc-geforce-rtx-5060-8gb-graphics-card-double-fans/p/N82E16814137975",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://ca.msi.com/Graphics-Card/GeForce-RTX-5060-8G-VENTUS-2X-OC/Specification",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 5060 8G VENTUS 2X OC",
       "lengthMm": 197.0,
-      "recommendedPsuWatts": 550
+      "recommendedPsuWatts": 550,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpu5060tiventus2x16",
@@ -11243,11 +11287,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 859.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-3x-oc-geforce-rtx-5060-ti-16gb-graphics-card-triple-fans/p/N82E16814137957",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://storage-asset.msi.com/datasheet/vga/us/GeForce-RTX-5060-Ti-16G-VENTUS-3X-OC.pdf",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 5060 Ti 16G VENTUS 3X OC",
       "lengthMm": 304.0,
-      "recommendedPsuWatts": 600
+      "recommendedPsuWatts": 600,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpu5070gigawindforce3x",
@@ -11439,11 +11484,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 934.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-r9070gaming-oc-16gd-radeon-rx-9070-16gb-graphics-card-triple-fans/p/14-932-752",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-R9070GAMING-OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-R9070GAMING OC-16GD",
       "lengthMm": 288.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpurx9070greasusprime3x",
@@ -11511,11 +11557,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 779.99,
-      "specSourceUrl": "https://www.newegg.com/sapphire-tech-pulse-radeon-rx-9070-gre-graphics-12gb-graphics-card-double-fans/p/N82E16814202478",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.sapphiretech.com/en/consumer/pulse-radeon-rx-9070-gre-12g-gddr6",
+      "specVerifiedDate": "2026-11-13",
       "model": "11354-01-20G RX 9070 GRE GAMING 12GB OC",
       "lengthMm": 280.0,
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu5090aorusmasterice3x",
@@ -11778,13 +11825,14 @@
       "seller": "Newegg",
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n506teagle-oc-8gd-geforce-rtx-5060-ti-8gb-graphics-card-double-fans/p/N82E16814932812?Item=N82E16814932812",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/sg/Graphics-Card/GV-N506TEAGLEMAX-OC-8GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N506TEAGLEMAX OC-8GD",
       "lengthMm": 281.0,
       "tdp": "",
       "watts": "",
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpurtx5060tiasustuf3x8",
@@ -11862,11 +11910,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1319.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n507tgaming-oc-16gd-geforce-rtx-5070-ti-16gb-graphics-card-triple-fans/p/N82E16814932768",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-N507TGAMING-OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N507TGAMING OC-16GD",
       "lengthMm": 342.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpurx9070xtasrocksteellegend3x",
@@ -11897,11 +11946,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 969.99,
-      "specSourceUrl": "https://www.newegg.com/asrock-steel-legend-rx9070xt-sl-16g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814930136",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.asrock.com/Graphics-Card/AMD/Radeon%20RX%209070%20XT%20Steel%20Legend%2016GB/index.asp",
+      "specVerifiedDate": "2026-11-13",
       "model": "RX9070XT SL 16G",
       "lengthMm": 298.0,
-      "recommendedPsuWatts": 800
+      "recommendedPsuWatts": 800,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu5060tigigabyteeagle2x8",
@@ -11937,11 +11987,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 539.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n506teagle-oc-8gd-geforce-rtx-5060-ti-8gb-graphics-card-double-fans/p/N82E16814932795",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/lt/Graphics-Card/GV-N506TEAGLE-OC-8GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N506TEAGLE OC-8GD",
       "lengthMm": 215.0,
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpurx9070xtsapphirenitro3x",
@@ -11972,11 +12023,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1099.99,
-      "specSourceUrl": "https://www.newegg.com/sapphire-tech-nitro-11348-01-20g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814202448",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.sapphiretech.com/en/consumer/nitro-radeon-rx-9070-xt-16g-gddr6",
+      "specVerifiedDate": "2026-11-13",
       "model": "11348-01-20G",
       "lengthMm": 331.0,
-      "recommendedPsuWatts": 850
+      "recommendedPsuWatts": 850,
+      "requiredPowerConnectors": "1 x 12V-2x6"
     },
     {
       "id": "psu550m",
@@ -13613,11 +13665,12 @@
         "psu",
         "power supply unit"
       ],
-      "specSourceUrl": "https://www.newegg.com/asrock-atx-3-1-650-w-80-plus-gold-certified-power-supply-black-cl-650g/p/N82E16817955016?Item=N82E16817955016&SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.asrock.com/Power-Supply/Challenger/CL-650G/index.asp",
+      "specVerifiedDate": "2026-11-13",
       "model": "CL-650G",
       "lengthMm": 150.0,
-      "connectorSpecifications": "1 x 24 pin ATX / 1 x 8 pin (4+4) EPS (CPU) / 2 x 8 pin (6+2) PCIe / 4 x 4 pin Peripheral / 4 x SATA"
+      "connectorSpecifications": "1 x 24 pin ATX / 1 x 8 pin (4+4) EPS (CPU) / 2 x 8 pin (6+2) PCIe / 4 x 4 pin Peripheral / 4 x SATA",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psu650g",
@@ -13680,10 +13733,11 @@
         "power supply unit"
       ],
       "model": "PA-8G2BB-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-black-pa-8g2bb-us/p/N82E16817116050?Item=N82E16817116050&SoldByNewegg=1",
+      "specSourceUrl": "https://nzxt.com/products/c850-gold-atx",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 160.0,
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psu100r",
@@ -13781,10 +13835,11 @@
         "power supply unit"
       ],
       "model": "PA-0G2BB-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-1000-w-80-plus-gold-certified-power-supplies-black-pa-0g2bb-us/p/N82E16817116052?Item=N82E16817116052&SoldByNewegg=1",
+      "specSourceUrl": "https://nzxt.com/products/c1000-gold-atx",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 160.0,
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psu750r",
@@ -14019,10 +14074,11 @@
         "power supply unit"
       ],
       "model": "CP-9020257-NA",
-      "specSourceUrl": "https://www.newegg.com/corsair-sf-series-sfx-1000-w-80-plus-platinum-certified-power-supply-cp-9020257-na/p/N82E16817139332?Item=N82E16817139332&SoldByNewegg=1",
+      "specSourceUrl": "https://www.corsair.com/us/en/p/psu/cp-9020257-na/sf-series-sf1000-fully-modular-80-plus-platinum-sfx-power-supply-cp-9020257-na",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 125.0,
-      "connectorSpecifications": "1 x ATX Cable (24-PIN) (24): 300mm 2 x EPS/ATX12V Cable (8-PIN) (4+4): 400mm4 x PCI-E Cable (8-PIN) (6+2): 400mm1 x PCI-E Cable (12+4)PIN: 400mm1 x SATA CABLE (4 Straight SATA): 100mm, 115mm, 115mm, 115mm1 x SATA CABLE (4 Right SATA): 100mm, 115mm, 115mm, 115mm1 x PATA-PATA-PATA: 100mm, 115mm, 115mm"
+      "connectorSpecifications": "1 x ATX Cable (24-PIN) (24): 300mm 2 x EPS/ATX12V Cable (8-PIN) (4+4): 400mm4 x PCI-E Cable (8-PIN) (6+2): 400mm1 x PCI-E Cable (12+4)PIN: 400mm1 x SATA CABLE (4 Straight SATA): 100mm, 115mm, 115mm, 115mm1 x SATA CABLE (4 Right SATA): 100mm, 115mm, 115mm, 115mm1 x PATA-PATA-PATA: 100mm, 115mm, 115mm",
+      "gpuPowerConnectors": "4 x 8-pin, 1 x 12VHPWR"
     },
     {
       "id": "psu1050m",
@@ -14119,9 +14175,10 @@
         "power supply unit"
       ],
       "model": "PA-8G2BW-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-white-pa-8g2bw-us/p/N82E16817116051?Item=N82E16817116051&SoldByNewegg=1",
+      "specSourceUrl": "https://nzxt.com/products/c850-gold-atx",
       "specVerifiedDate": "2026-11-13",
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psu850cm",
@@ -14864,10 +14921,11 @@
         "psu",
         "power supply unit"
       ],
-      "specSourceUrl": "https://www.newegg.com/asrock-atx-550-w-80-plus-bronze-certified-power-supplies-black-cl-550b/p/N82E16817955019",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.asrock.com/Power-Supply/Challenger/CL-550B/",
+      "specVerifiedDate": "2026-11-13",
       "model": "CL-550B",
-      "connectorSpecifications": "1 x 24 pin ATX / 1 x 8 pin (4+4) EPS (CPU) / 2 x 8 pin (6+2) PCIe / 4 x SATA"
+      "connectorSpecifications": "1 x 24 pin ATX / 1 x 8 pin (4+4) EPS (CPU) / 2 x 8 pin (6+2) PCIe / 4 x SATA",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psuseasonicgx1000",
@@ -14967,9 +15025,10 @@
         "power supply unit"
       ],
       "model": "BETA 2 650W",
-      "specSourceUrl": "https://www.newegg.com/montech-atx-650-w-80-plus-bronze-certified-power-supplies-beta-2-650w/p/N82E16817959016",
+      "specSourceUrl": "https://www.montechpc.com/beta-2-650w",
       "specVerifiedDate": "2026-11-13",
-      "connectorSpecifications": "M/B 20+4Pin: 1 (20+4 Pins)CPU 4+4Pin: 2 (4+4 Pins)PCIE 6+2: 2 (6+2 Pins)SATA: 4Molex 4Pin: 4"
+      "connectorSpecifications": "M/B 20+4Pin: 1 (20+4 Pins)CPU 4+4Pin: 2 (4+4 Pins)PCIE 6+2: 2 (6+2 Pins)SATA: 4Molex 4Pin: 4",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psumsgamdias1000",
@@ -15170,8 +15229,9 @@
         "power supply unit"
       ],
       "model": "Century II 550W",
-      "specSourceUrl": "https://www.newegg.com/montech-atx-3-1-550-w-80-plus-gold-certified-power-supplies-silver-century-ii-550w/p/N82E16817959019",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.montechpc.com/century-ii-550w",
+      "specVerifiedDate": "2026-11-13",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psubequietpz2750",
@@ -15201,8 +15261,9 @@
         "psu",
         "power supply unit"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-power-zone-2-atx12v-3-1-750-w-80-plus-platinum-and-cybenetics-platinum-efficiency-power-supplies-black/p/N82E16817222041",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/powersupply/5767",
+      "specVerifiedDate": "2026-11-13",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psuasusrogstrix1000p",
@@ -15709,10 +15770,11 @@
         "power supply unit"
       ],
       "model": "CX650",
-      "specSourceUrl": "https://www.newegg.com/corsair-cx-series-atx-650-w-80-plus-bronze-certified-power-supplies-cx650/p/N82E16817139322",
+      "specSourceUrl": "https://www.corsair.com/us/en/p/psu/cp-9020278-na/cx-series-cx650-650-watt-80-plus-bronze-atx-power-supply-cp-9020278-na",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 125.0,
-      "connectorSpecifications": "1x ATX Cable (24-PIN) (24)1x EPS/ATX12V Cable (8-PIN) (4+4) 2x PCI-E Cable (8-PIN) (6+2)/(6+2)P3x SATA CABLE (3 SATA)2x PATA CABLE (2PATA)"
+      "connectorSpecifications": "1x ATX Cable (24-PIN) (24)1x EPS/ATX12V Cable (8-PIN) (4+4) 2x PCI-E Cable (8-PIN) (6+2)/(6+2)P3x SATA CABLE (3 SATA)2x PATA CABLE (2PATA)",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psuseasonicgx650",
@@ -15743,9 +15805,10 @@
         "power supply unit"
       ],
       "model": "GX-650",
-      "specSourceUrl": "https://www.newegg.com/seasonic-usa-core-atx-3-atx-3-1-650-w-80-plus-gold-certified-power-supplies-black-gx-650/p/N82E16817151280",
+      "specSourceUrl": "https://seasonic.com/insights/seasonic-core-gx-power-supplies-guide-2026/",
       "specVerifiedDate": "2026-11-13",
-      "lengthMm": 150.0
+      "lengthMm": 150.0,
+      "gpuPowerConnectors": "2 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psunzxtc1000core",
@@ -15846,10 +15909,11 @@
         "power supply unit"
       ],
       "model": "PA-0G2BB-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-1000-w-80-plus-gold-certified-power-supplies-black-pa-0g2bb-us/p/N82E16817116052",
+      "specSourceUrl": "https://nzxt.com/products/c1000-gold-atx",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 160.0,
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psulianlisx1200p",
@@ -16896,9 +16960,10 @@
         "psu",
         "power supply unit"
       ],
-      "specSourceUrl": "https://www.newegg.com/silverstone-technology-sfx-750-w-80-plus-gold-certified-power-supplies/p/1HU-00RG-00280",
+      "specSourceUrl": "https://aerocooler.com/silverstone-sst-sx750-g-80-plus-gold-750w-sfx-fully-modular-power-supply/",
       "specVerifiedDate": "2026-11-13",
-      "lengthMm": 125.0
+      "lengthMm": 125.0,
+      "gpuPowerConnectors": "4 x 8-pin"
     },
     {
       "id": "psucmelite850gold",
@@ -16998,9 +17063,10 @@
         "power supply unit"
       ],
       "model": "PA-8G2BW-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-white-pa-8g2bw-us/p/N82E16817116051",
+      "specSourceUrl": "https://nzxt.com/products/c850-gold-atx",
       "specVerifiedDate": "2026-11-13",
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psudarkflashdg750",
@@ -17204,10 +17270,11 @@
         "power supply unit"
       ],
       "model": "PA-8G2BB-US",
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-black-pa-8g2bb-us/p/N82E16817116050",
+      "specSourceUrl": "https://nzxt.com/products/c850-gold-atx",
       "specVerifiedDate": "2026-11-13",
       "lengthMm": 160.0,
-      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4"
+      "connectorSpecifications": "24-pin ATX Power Cable: 600mm with nylon sleeving, Output Connectors: 14+4-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 18-pin CPU Power Cable: 700mm with nylon sleeving, Output Connectors: 16+2-pin PCIe Power Cable: 650mm with nylon sleeving, Output Connectors: 316-pin (12+4) 12V-2x6 PCIe Cable: 650mm with nylon sleeving, Output Connectors: 1SATA Cable: 500+150mm, Output Connectors: 12Peripherals Cable: 500+150mm, Output Connectors: 4",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psuttgfa31200",
@@ -17273,9 +17340,10 @@
         "power supply unit"
       ],
       "model": "GX-750",
-      "specSourceUrl": "https://www.newegg.com/seasonic-usa-core-atx-3-atx-3-1-750-w-80-plus-gold-certified-power-supplies-black-gx-750/p/N82E16817151281",
+      "specSourceUrl": "https://seasonic.com/insights/seasonic-core-gx-power-supplies-guide-2026/",
       "specVerifiedDate": "2026-11-13",
-      "lengthMm": 150.0
+      "lengthMm": 150.0,
+      "gpuPowerConnectors": "2 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psusilverstonesx750p",
@@ -17304,9 +17372,10 @@
         "power supply unit"
       ],
       "model": "sx750 platinum",
-      "specSourceUrl": "https://www.newegg.com/silverstone-technology-sfx-750-w-80-plus-platinum-certified-power-supplies-black-sx750-platinum/p/1HU-00RG-000Z2",
+      "specSourceUrl": "https://www.newegg.com/silverstone-sx750-platinum-sfx-750-w-80-plus-platinum-certified-power-supply-black-sst-sx750-pt/p/N82E16817256221",
       "specVerifiedDate": "2026-11-13",
-      "lengthMm": 125.0
+      "lengthMm": 125.0,
+      "gpuPowerConnectors": "4 x 8-pin"
     },
     {
       "id": "psurosewillvnw750",
@@ -17848,9 +17917,10 @@
         "power supply unit"
       ],
       "model": "SX700-LPT",
-      "specSourceUrl": "https://www.newegg.com/silverstone-sfx-l-700w-80-plus-platinum-certified-power-supply-sx700-lpt/p/N82E16817256166",
+      "specSourceUrl": "https://www.tekwind.co.jp/SilverStone/products/entry_15222.php",
       "specVerifiedDate": "2026-11-13",
-      "connectorSpecifications": "1 x 24 / 20-Pin motherboard connector(300mm)1 x 8 / 4-Pin EPS / ATX 12V connector(400mm)2 x 8 / 6-Pin PCIE connector(400mm / 150mm)2 x 8 / 6-Pin PCIE connector(550mm / 150mm)6 x SATA connector(\"300mm / 200mm / 100mm\" x 2)3 x SATA connector(600mm / 150mm / 150mm)3 x 4-Pin Peripheral connector(300mm / 200mm / 200mm)1 x 4-Pin Floppy adapter connector(100mm)"
+      "connectorSpecifications": "1 x 24 / 20-Pin motherboard connector(300mm)1 x 8 / 4-Pin EPS / ATX 12V connector(400mm)2 x 8 / 6-Pin PCIE connector(400mm / 150mm)2 x 8 / 6-Pin PCIE connector(550mm / 150mm)6 x SATA connector(\"300mm / 200mm / 100mm\" x 2)3 x SATA connector(600mm / 150mm / 150mm)3 x 4-Pin Peripheral connector(300mm / 200mm / 200mm)1 x 4-Pin Floppy adapter connector(100mm)",
+      "gpuPowerConnectors": "4 x 8-pin"
     },
     {
       "id": "psuasustuf1000gevo",
@@ -18281,9 +18351,10 @@
         "chassis"
       ],
       "model": "ARGB-N3-W",
-      "specSourceUrl": "https://www.newegg.com/diypc-e-atx-atx-case-steel-tempered-glass-cases-white-argb-n3-w/p/N82E16811353280?Item=N82E16811353280",
+      "specSourceUrl": "https://www.newegg.com/diypc-e-atx-atx-case-steel-tempered-glass-cases-white-argb-n3-w/p/N82E16811353280",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 200.0
+      "maxPsuLengthMm": 200.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseDiypcAtx08Wood",
@@ -18340,9 +18411,10 @@
       ],
       "maxPsuLengthMm": 200.0,
       "compatibilityNotes": "Top radiator plus fan stack is limited to approximately 60 mm; check motherboard and RAM clearance.",
-      "specSourceUrl": "https://support.nzxt.com/hc/en-us/articles/40183529624347-H6-Flow-2023-Specs",
-      "specVerifiedDate": "2026-11-12",
-      "model": "CC-H61FB-01"
+      "specSourceUrl": "https://nzxt.com/products/h6-flow",
+      "specVerifiedDate": "2026-11-13",
+      "model": "CC-H61FB-01",
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseDiypcMatx06Wood",
@@ -18370,8 +18442,9 @@
       "maxCoolerHeightMm": 174.0,
       "maxPsuLengthMm": 240.0,
       "specSourceUrl": "https://www.mydiypcusa.com/product/diypc-diy-matx06-wood-black-usb3-0-type-c-micro-atx-tower-gaming-computer-case-w-tempered-glass-side-panel-and-walnut-wood-front-panel",
-      "specVerifiedDate": "2026-11-12",
-      "model": "DIY-mATX06-Wood"
+      "specVerifiedDate": "2026-11-13",
+      "model": "DIY-mATX06-Wood",
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseFractalNorthXLDark",
@@ -18429,9 +18502,10 @@
       ],
       "maxCoolerHeightMm": 180.0,
       "maxPsuLengthMm": 270.0,
-      "specSourceUrl": "https://www.mydiypcusa.com/product/computer-case/rgb-fan-cases/diypc-vanguard-f1-bk-black-dual-usb3-0-type-c-tempered-glass-atx-full-tower-gaming-case-w-4-argb-pwm-fans",
-      "specVerifiedDate": "2026-11-12",
-      "model": "Vanguard-F1-BK"
+      "specSourceUrl": "https://www.newegg.com/diypc-atx-full-tower-steel-tempered-glass-cases-black-vanguard-f1-bk/p/N82E16811353267",
+      "specVerifiedDate": "2026-11-13",
+      "model": "Vanguard-F1-BK",
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseNzxtH6FlowWhite",
@@ -18459,9 +18533,10 @@
       ],
       "maxPsuLengthMm": 200.0,
       "compatibilityNotes": "Top radiator plus fan stack is limited to approximately 60 mm; check motherboard and RAM clearance.",
-      "specSourceUrl": "https://support.nzxt.com/hc/en-us/articles/40183529624347-H6-Flow-2023-Specs",
-      "specVerifiedDate": "2026-11-12",
-      "model": "CC-H61FW-01"
+      "specSourceUrl": "https://nzxt.com/products/h6-flow",
+      "specVerifiedDate": "2026-11-13",
+      "model": "CC-H61FW-01",
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseFractalNorthXLMesh",
@@ -18517,7 +18592,7 @@
       "maxCoolerHeightMm": 179.0,
       "maxRamHeightMm": "",
       "supportedSockets": "",
-      "supportedPSUFormFactors": "",
+      "supportedPSUFormFactors": "ATX",
       "requiredPowerConnectors": "",
       "gpuPowerConnectors": "",
       "keywords": [
@@ -18534,7 +18609,7 @@
       "neweggPrice": 58.94,
       "model": "IDX6-ATX-ARGB",
       "specSourceUrl": "https://www.newegg.com/diypc-atx-tower-steel-tempered-glass-computer-case-black-idx6-atx-argb/p/N82E16811353300",
-      "specVerifiedDate": "2026-11-12",
+      "specVerifiedDate": "2026-11-13",
       "maxPsuLengthMm": 200.0
     },
     {
@@ -18630,8 +18705,9 @@
         "DDR5 6000 (PC5 48000)",
         "Gray"
       ],
-      "specSourceUrl": "https://www.newegg.com/corsair-vengeance-32gb-ddr5-6000-cas-latency-cl36-desktop-memory-gray/p/N82E16820982114",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 35
     },
     {
       "id": "ramgskillflarex532",
@@ -18667,8 +18743,9 @@
         "DDR5 6000 (PC5 48000)",
         "Black"
       ],
-      "specSourceUrl": "https://www.newegg.com/g-skill-flare-x5-32gb-ddr5-6000-cas-latency-cl36-desktop-memory-black/p/N82E16820374419",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 33
     },
     {
       "id": "ramgskilltz5neo32",
@@ -18741,8 +18818,9 @@
         "DDR4 3200 (PC4 25600)",
         "Black"
       ],
-      "specSourceUrl": "https://www.newegg.com/crucial-pro-32gb-ddr4-3200-cas-latency-cl22-desktop-memory-black/p/N82E16820156326",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bestbuy.com/site/questions/crucial-pro-32gb-kit-2x16gb-ddr4-3200mhz-c22-udimm-desktop-memory-kit-black/6543927?page=2",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 31.9
     },
     {
       "id": "casePhanteksEnthooProTG",
@@ -18844,9 +18922,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/thermaltake-atx-mini-tower-cases/p/2AM-000X-00343",
+      "specSourceUrl": "https://thermaltake.com/products/versa-h16-tg-argb-micro-tower-chassis",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 170.0
+      "maxPsuLengthMm": 170.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseNZXTH5Flow2024Black",
@@ -18874,9 +18953,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/nzxt-atx-mid-tower-h5-flow-sgcc-steel-dark-tinted-tempered-glass-case-black-cc-h52fb-01/p/N82E16811146365",
+      "specSourceUrl": "https://nzxt.com/products/h5-flow",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 200.0
+      "maxPsuLengthMm": 200.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseAntecC8Black",
@@ -18964,9 +19044,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/p/N82E16811133572",
-      "specVerifiedDate": "2026-11-12",
-      "maxPsuLengthMm": 220.0
+      "specSourceUrl": "https://thermaltake.com/products/view-600-tg-full-tower-chassis",
+      "specVerifiedDate": "2026-11-13",
+      "maxPsuLengthMm": 220.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseFractalTorrentRGBBlack",
@@ -18994,9 +19075,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/fractal-design-atx-mid-tower-torrent-steel-tempered-glass-computer-case-black-fd-c-tor1a-04/p/N82E16811352146",
+      "specSourceUrl": "https://www.fractal-design.com/products/cases/torrent-series/torrent/torrent-rgb-black-tg-light-tint/",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 230.0
+      "maxPsuLengthMm": 230.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseFractalPopAirBlackTG",
@@ -20828,8 +20910,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-pro-3-120mm/p/N82E16835269026?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5599",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 155
     },
     {
       "id": "coolerN82E16835269025",
@@ -20867,8 +20950,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-3-lx-120mm/p/N82E16835269025?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5592",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 154
     },
     {
       "id": "cooler13C-001F-00071",
@@ -20939,8 +21023,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/sudokoo-sk700-v-amazon-sk700-v-120mm-amd-socket-am5/p/13C-012U-00001?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.sudokoo.com/products/Cooling/cpuaircoolers/SK700V-AM5-Designated-Digital-Air-Cooler-with-Full-RAM-Freedom/2025/20904.shtml",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 164
     },
     {
       "id": "cooler13C-012U-00007",
@@ -21095,8 +21180,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/p/N82E16835103385?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-12"
+      "specSourceUrl": "https://www.coolermaster.com/en-sg/products/hyper-212-3dhp-black-argb.html",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 158
     },
     {
       "id": "coolerN82E16835269028",
@@ -21134,8 +21220,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-pro-3-lx-120mm/p/N82E16835269028?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5601",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 155
     },
     {
       "id": "coolerN82E16835269027",
@@ -21173,8 +21260,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-pro-3-black-120mm/p/N82E16835269027?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5600",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 155
     },
     {
       "id": "coolerN82E16835099046",
@@ -21296,8 +21384,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-pure-rock-3-black-120mm/p/N82E16835269024?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/cpucooler/5591",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 154
     },
     {
       "id": "coolerN82E16835103384",
@@ -21336,8 +21425,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/p/N82E16835103384?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-12"
+      "specSourceUrl": "https://www.coolermaster.com/en-global/products/hyper-212-3dhp-black.html",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 158
     },
     {
       "id": "coolerN82E16835106779",
@@ -21463,8 +21553,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/montech-nx600-28mm-intel-lga115x-1200-1700-1851-and-amd-am4-am5/p/N82E16835988018?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.montechpc.com/nx600-argb",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 160
     },
     {
       "id": "coolerN82E16835846080",
@@ -21498,8 +21589,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/msi-mag-corefrozr-aa13-120mm-amd-socket-am4-amd-socket-am5-intel-lga-1700-intel-lga-1851/p/N82E16835846080?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.msi.com/Air-Cooling/MAG-COREFROZR-AA13/Overview",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 152
     },
     {
       "id": "coolerN82E16835607021",

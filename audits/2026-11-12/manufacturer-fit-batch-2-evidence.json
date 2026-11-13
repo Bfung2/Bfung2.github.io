@@ -1,0 +1,777 @@
+{
+  "description": "Exact-model physical fit and power-connector references from manufacturer sources or original product specifications reproduced by retailers/distributors. Newegg pricing, stock, and seller were not rechecked in this batch. Cable counts include splitter ends and must not be interpreted as separate cables; build-level power safety verification remains required.",
+  "records": [
+    {
+      "id": "8fjd834",
+      "name": "CORSAIR Dominator Titanium 64GB (2 x 32GB) DDR5 6000 (PC5 48000) Desktop Memory Model CMP64GX5M2B6000Z30W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 56.75,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "jgz2gex",
+      "name": "CORSAIR Vengeance 16GB (2 x 8GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop memory Model CMK16GX5M2E6000Z36",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 35,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "jfhjltb",
+      "name": "CORSAIR Vengeance 32GB (2 x 16GB) 288-Pin PC RAM DDR5 5200 (PC5 41600) Desktop Memory Model CMK32GX5M2B5200C40",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 35,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "d0mpe9h",
+      "name": "CORSAIR Vengeance 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model CMK32GX5M2D6000Z38W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 35,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "ramcorsair32d5cl36",
+      "name": "CORSAIR Vengeance 32GB (2 x 16GB) DDR5 6000 (PC5 48000) Desktop Memory Model CMK32GX5M2E6000Z36",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 35,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "zbkwdjp",
+      "name": "CORSAIR Vengeance LPX 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMK16GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 33.53,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "q7ai1hl",
+      "name": "CORSAIR Vengeance LPX 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMK32GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 33.53,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "s5irrlt",
+      "name": "CORSAIR Vengeance RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR5 5200 (PC5 41600) Desktop Memory Model CMH16GX5M2B5200Z40",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "h85yrlo",
+      "name": "CORSAIR Vengeance RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR5 5200 (PC5 41600) Desktop Memory Model CMH16GX5M2B5200Z40W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "52qat7g",
+      "name": "CORSAIR Vengeance RGB 16GB 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model CMH16GX5M1D6000Z38",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "3yuf9vc",
+      "name": "CORSAIR Vengeance RGB 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Custom Lab Cherry Blossom Desktop Memory Model CMH32GX5M2B6000Z30CB - Gray",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "eldmo2c",
+      "name": "CORSAIR Vengeance RGB 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Custom Lab Cherry Blossom Desktop Memory Model CMH32GX5M2B6000Z30WCB - White",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "kfftksl",
+      "name": "CORSAIR Vengeance RGB 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model CMH32GX5M2N6000Z30",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "2ewivv1",
+      "name": "CORSAIR Vengeance RGB CMH32GX5M2E6000C36W 32GB (2 x 16GB) DDR5 6000 PC5-48000 Desktop Memory CL36 Intel XMP 3.0 White",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "dcnprko",
+      "name": "CORSAIR Vengeance RGB Pro 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMW16GX4M2E3200C16",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 51,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "3lr8mbx",
+      "name": "CORSAIR Vengeance RGB Pro 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMW16GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 51,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "59ilhzy",
+      "name": "CORSAIR Vengeance RGB Pro 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMW32GX4M2E3200C16",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 51,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "2f31r8b",
+      "name": "CORSAIR Vengeance RGB Pro SL 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMH16GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44.8,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "3w823jj",
+      "name": "CORSAIR Vengeance RGB Pro SL 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMH32GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44.8,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "ramgskillflarex532",
+      "name": "G.SKILL Flare X5 Series AMD EXPO 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 Desktop Memory Model F5-6000J3636F16GX2-FX5",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 33,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "r38ntlx",
+      "name": "G.SKILL Ripjaws V Series 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model F4-3200C16D-16GVKB",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 42,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "xjse0tl",
+      "name": "G.SKILL Ripjaws V Series 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3600 (PC4 28800) Desktop Memory Model F4-3600C18D-32GVK",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 42,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "sabkwcr",
+      "name": "G.SKILL Trident Z Royal Series 64GB (2 x 32GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model F5-6000J2836G32GX2-TR5NS",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "zvpnb23",
+      "name": "G.SKILL Trident Z5 RGB Series 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model F5-6000J3636F16GX2-TZ5RK",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "oo7bhle",
+      "name": "G.SKILL Trident Z5 Royal Neol Series 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model F5-6000J2836G16GX2-TR5NS",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "9iz3zri",
+      "name": "G.SKILL TridentZ RGB Series 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3600 (PC4 28800) Desktop Memory Model F4-3600C18D-32GTZR",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "8eospyr",
+      "name": "Klevv Bolt V 64GB (2 x 32GB) DDR5 6000 (PC5 48000) Desktop Memory Model KD5BGUA80-60A300I",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 34,
+      "manufacturer_source": "https://www.klevv.com/ken/products_details/memory/Klevv_BoltV",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "go6mecn",
+      "name": "Team T-Force Delta ECO 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6400 (PC5 51200) Desktop Memory Model FF2D532G6400HC32ADC01",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 46.1,
+      "manufacturer_source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-eco-ddr5-silver/delta-rgb-eco-ddr5-silver-FF2D532G6400HC32ADC01/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "6skacce",
+      "name": "Team T-Force Delta RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model TF3D416G3200HC16FDC01",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 49,
+      "manufacturer_source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "ko54jkz",
+      "name": "Team T-Force Delta RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model TF3D416G3200HC16FDC01",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 49,
+      "manufacturer_source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "njee07b",
+      "name": "Team T-Force Delta RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model TF4D416G3200HC16FDC01",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 49,
+      "manufacturer_source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835103385",
+      "name": "Cooler Master Hyper 212 3DHP CPU Air Cooler ARGB - Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 158,
+      "manufacturer_source": "https://www.coolermaster.com/en-sg/products/hyper-212-3dhp-black-argb.html",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835103384",
+      "name": "Cooler Master Hyper 212 3DHP CPU Air Cooler Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 158,
+      "manufacturer_source": "https://www.coolermaster.com/en-global/products/hyper-212-3dhp-black.html",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835988018",
+      "name": "MONTECH NX600 ARGB Dual-Tower Air Cooler Intel LGA1700 1851 AMD AM5 Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 160,
+      "manufacturer_source": "https://www.montechpc.com/nx600-argb",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835846080",
+      "name": "MSI MAG COREFROZR AA13 ARGB CPU Cooler LGA 1700/1851 AM5/AM4 120mm Fan Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 152,
+      "manufacturer_source": "https://www.msi.com/Air-Cooling/MAG-COREFROZR-AA13/Overview",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269024",
+      "name": "be quiet Pure Rock 3 120mm CPU Cooler Intel 1851 1700 1200 1150 1151 1155 AMD AM5 AM4 BK039 - Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 154,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5591",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269027",
+      "name": "be quiet Pure Rock Pro 3 Black 120mm CPU Cooler",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 155,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5600",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269028",
+      "name": "be quiet Pure Rock Pro 3 LX 120mm CPU Cooler ARGB - Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 155,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5601",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269025",
+      "name": "be quiet! Pure Rock 3 LX",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 154,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5592",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269026",
+      "name": "be quiet! Pure Rock Pro 3",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 155,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5599",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseNZXTH5Flow2024Black",
+      "name": "NZXT H5 Flow 2024 ATX Mid-Tower Case Black",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://nzxt.com/products/h5-flow",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseNzxtH6FlowBlack",
+      "name": "NZXT H6 Flow Black Dual-Chamber Mid-Tower",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://nzxt.com/products/h6-flow",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseNzxtH6FlowWhite",
+      "name": "NZXT H6 Flow White Dual-Chamber Mid-Tower",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://nzxt.com/products/h6-flow",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseThermaltakeVersaH16ARGB",
+      "name": "Thermaltake Versa H16 TG ARGB Micro-ATX Case Black",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://thermaltake.com/products/versa-h16-tg-argb-micro-tower-chassis",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "cooler13C-012U-00001",
+      "name": "Sudokoo SK700V AM5 CPU Cooler 7 Heatpipes TDP 220W Fan - Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 164,
+      "manufacturer_source": "https://www.sudokoo.com/products/Cooling/cpuaircoolers/SK700V-AM5-Designated-Digital-Air-Cooler-with-Full-RAM-Freedom/2025/20904.shtml",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "ramcrucialpro32d4",
+      "name": "Crucial Pro 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CP2K16G4DFRA32A",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 31.9,
+      "manufacturer_source": "https://www.bestbuy.com/site/questions/crucial-pro-32gb-kit-2x16gb-ddr4-3200mhz-c22-udimm-desktop-memory-kit-black/6543927?page=2",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseThermaltakeView600Black",
+      "name": "Thermaltake View 600 TG Full-Tower Case Black",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://thermaltake.com/products/view-600-tg-full-tower-chassis",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurx9070xtasrocksteellegend3x",
+      "name": "ASRock Steel Legend Radeon RX 9070 XT 16GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.asrock.com/Graphics-Card/AMD/Radeon%20RX%209070%20XT%20Steel%20Legend%2016GB/index.asp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5090aorusif2x",
+      "name": "GIGABYTE AORUS GeForce RTX 5090 32GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 16-pin",
+      "manufacturer_source": "https://www.gigabyte.com/us/Graphics-Card/GV-N5090AORUS-IF-32GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurtx5060tigigabyteeaglemax3x8",
+      "name": "GIGABYTE EAGLE GeForce RTX 5060 Ti 8GB OC MAX",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://www.gigabyte.com/sg/Graphics-Card/GV-N506TEAGLEMAX-OC-8GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5060tigigabyteeagle2x8",
+      "name": "GIGABYTE Eagle GeForce RTX 5060 Ti 8GB OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://www.gigabyte.com/lt/Graphics-Card/GV-N506TEAGLE-OC-8GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5070tigigagaming3x",
+      "name": "GIGABYTE Gaming GeForce RTX 5070 Ti 16GB OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 16-pin",
+      "manufacturer_source": "https://www.gigabyte.com/Graphics-Card/GV-N507TGAMING-OC-16GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu3060gigagaming3x",
+      "name": "GIGABYTE Gaming OC GeForce RTX 3060 12GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://www.gigabyte.com/ie/Graphics-Card/GV-N3060GAMING-OC-12GD-rev-20/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurx9070gigagaming3x",
+      "name": "GIGABYTE Gaming Radeon RX 9070 16GB OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.gigabyte.com/Graphics-Card/GV-R9070GAMING-OC-16GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5080windforce3x",
+      "name": "GIGABYTE WINDFORCE GeForce RTX 5080 16GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 16-pin",
+      "manufacturer_source": "https://www.gigabyte.com/Graphics-Card/GV-N5080WF3OC-16GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5070tigigawindforce3x",
+      "name": "GIGABYTE WindForce GeForce RTX 5070 Ti 16GB OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 16-pin",
+      "manufacturer_source": "https://www.gigabyte.com/us/Graphics-Card/GV-N507TWF3OC-16GD/sp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu3050msiventus2x8",
+      "name": "MSI Ventus GeForce RTX 3050 8GB VENTUS 2X XS OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 6-pin",
+      "manufacturer_source": "https://us.msi.com/Graphics-Card/GeForce-RTX-3050-VENTUS-2X-XS-8G-OC/Specification",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5060ventus2x",
+      "name": "MSI Ventus GeForce RTX 5060 8GB VENTUS 2X OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://ca.msi.com/Graphics-Card/GeForce-RTX-5060-8G-VENTUS-2X-OC/Specification",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu5060tiventus3x16",
+      "name": "MSI Ventus GeForce RTX 5060 Ti 16GB VENTUS 3X OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 8-pin",
+      "manufacturer_source": "https://storage-asset.msi.com/datasheet/vga/us/GeForce-RTX-5060-Ti-16G-VENTUS-3X-OC.pdf",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurx9070xtsapphirenitro3x",
+      "name": "SAPPHIRE NITRO+ Radeon RX 9070 XT 16GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "1 x 12V-2x6",
+      "manufacturer_source": "https://www.sapphiretech.com/en/consumer/nitro-radeon-rx-9070-xt-16g-gddr6",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpurx9070gresapphirepulse2x",
+      "name": "SAPPHIRE PULSE Radeon RX 9070 GRE 12GB",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.sapphiretech.com/en/consumer/pulse-radeon-rx-9070-gre-12g-gddr6",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseFractalTorrentRGBBlack",
+      "name": "Fractal Design Torrent RGB ATX Mid-Tower Case Black",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://www.fractal-design.com/products/cases/torrent-series/torrent/torrent-rgb-black-tg-light-tint/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "gpu3050msiventus2x6",
+      "name": "MSI Ventus GeForce RTX 3050 6GB VENTUS 2X 6G OC",
+      "category": "Graphics card",
+      "field": "requiredPowerConnectors",
+      "value": "None",
+      "manufacturer_source": "https://www.msi.com/Graphics-Card/GeForce-RTX-3050-VENTUS-2X-6G-OC/Specification",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psuasrockcl550b",
+      "name": "ASRock Challenger CL-550B 550W",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.asrock.com/Power-Supply/Challenger/CL-550B/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psu650c",
+      "name": "ASRock Challenger CL-650G 650W",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.asrock.com/Power-Supply/Challenger/CL-650G/index.asp",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psucorsaircx650",
+      "name": "CORSAIR CX650 650W",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.corsair.com/us/en/p/psu/cp-9020278-na/cx-series-cx650-650-watt-80-plus-bronze-atx-power-supply-cp-9020278-na",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psu1000s",
+      "name": "Corsair SF1000 1000W SFX",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "4 x 8-pin, 1 x 12VHPWR",
+      "manufacturer_source": "https://www.corsair.com/us/en/p/psu/cp-9020257-na/sf-series-sf1000-fully-modular-80-plus-platinum-sfx-power-supply-cp-9020257-na",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psu100n",
+      "name": "NZXT ATX 3.1 1000 Watt 80 Plus Gold Fully Modular Power Supply - Black - PA-0G2BB-US",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "3 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://nzxt.com/products/c1000-gold-atx",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psunzxt1000atx31",
+      "name": "NZXT ATX 3.1 1000 Watt 80 Plus Gold Fully Modular Power Supply - Black - PA-0G2BB-US",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "3 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://nzxt.com/products/c1000-gold-atx",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psu850nw",
+      "name": "NZXT ATX 3.1 850 Watt 80 Plus Gold Fully Modular Low-Noise Power Supply - White - PA-8G2BW-US",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "3 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://nzxt.com/products/c850-gold-atx",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psunzxt850white",
+      "name": "NZXT ATX 3.1 850 Watt 80 Plus Gold Fully Modular Low-Noise Power Supply - White - PA-8G2BW-US",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "3 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://nzxt.com/products/c850-gold-atx",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psu850n",
+      "name": "NZXT ATX 3.1 850 Watt 80 Plus Gold Fully Modular Power Supply - Black-PA-8G2BB-US",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "3 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://nzxt.com/products/c850-gold-atx",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psunzxt850black",
+      "name": "NZXT ATX 3.1 850 Watt 80 Plus Gold Fully Modular Power Supply - Black-PA-8G2BB-US",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "3 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://nzxt.com/products/c850-gold-atx",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psuseasonicgx650",
+      "name": "SeaSonic CORE GX-650 ATX3 650W",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "2 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://seasonic.com/insights/seasonic-core-gx-power-supplies-guide-2026/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psuseasonicgx750",
+      "name": "SeaSonic CORE GX-750 ATX 3 750W",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "2 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://seasonic.com/insights/seasonic-core-gx-power-supplies-guide-2026/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psumontechbeta2650",
+      "name": "MONTECH BETA 2 650W",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.montechpc.com/beta-2-650w",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psumontech550",
+      "name": "MONTECH Century II 550W",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "2 x 8-pin",
+      "manufacturer_source": "https://www.montechpc.com/century-ii-550w",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psusilverstonesx700lpt",
+      "name": "SilverStone SX700-LPT 700W SFX-L Platinum",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "4 x 8-pin",
+      "manufacturer_source": "https://www.tekwind.co.jp/SilverStone/products/entry_15222.php",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psusilverstonesx750gold",
+      "name": "SilverStone SX750 Gold 750W SFX",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "4 x 8-pin",
+      "manufacturer_source": "https://aerocooler.com/silverstone-sst-sx750-g-80-plus-gold-750w-sfx-fully-modular-power-supply/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psusilverstonesx750p",
+      "name": "SilverStone SX750 Platinum 750W SFX",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "4 x 8-pin",
+      "manufacturer_source": "https://www.newegg.com/silverstone-sx750-platinum-sfx-750-w-80-plus-platinum-certified-power-supply-black-sst-sx750-pt/p/N82E16817256221",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "psubequietpz2750",
+      "name": "be quiet! Power Zone 2 750W",
+      "category": "Power supply",
+      "field": "gpuPowerConnectors",
+      "value": "3 x 8-pin, 1 x 12V-2x6",
+      "manufacturer_source": "https://www.bequiet.com/en/powersupply/5767",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseDiypcMatx06Wood",
+      "name": "DIYPC DIY-mATX06-Wood Micro-ATX Mid-Tower",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://www.mydiypcusa.com/product/diypc-diy-matx06-wood-black-usb3-0-type-c-micro-atx-tower-gaming-computer-case-w-tempered-glass-side-panel-and-walnut-wood-front-panel",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseDiypcArgbN3White",
+      "name": "DIYPC ARGB-N3-W White E-ATX Dual-Chamber Case",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://www.newegg.com/diypc-e-atx-atx-case-steel-tempered-glass-cases-white-argb-n3-w/p/N82E16811353280",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseDiypcIdx6",
+      "name": "DIYPC IDX6-ATX-ARGB Black Dual USB3.0 / Type C Tempered Glass ATX Gaming Computer Case w/ Dual Tempered Glass Panel and 4 x ARGB PWM Fans (Pre-Installed).",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://www.newegg.com/diypc-atx-tower-steel-tempered-glass-computer-case-black-idx6-atx-argb/p/N82E16811353300",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseDiypcVanguardF1",
+      "name": "DIYPC Vanguard-F1-BK ATX Full-Tower Gaming Case",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://www.newegg.com/diypc-atx-full-tower-steel-tempered-glass-cases-black-vanguard-f1-bk/p/N82E16811353267",
+      "verified_utc_date": "2026-11-13"
+    }
+  ],
+  "notes": [
+    "RAM heights describe module height; the motherboard socket and air-cooler placement still require physical review.",
+    "Case PSU form factor confirms standard ATX/PS2 only; installed length and cable routing require separate validation.",
+    "CPU cooler height does not establish RAM interference clearance.",
+    "For CORSAIR CX650, MONTECH BETA 2/Century II and Seasonic CORE GX-650/750, two PCIe connectors are on a single cable. PSU connector-count checks alone do not establish independent cable capacity.",
+    "SilverStone connector evidence includes exact-model original specifications reproduced by a distributor or retailer, not fresh manufacturer-site inspection."
+  ]
+}
