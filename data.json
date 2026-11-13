@@ -15025,9 +15025,10 @@
         "power supply unit"
       ],
       "model": "BETA 2 650W",
-      "specSourceUrl": "https://www.newegg.com/montech-atx-650-w-80-plus-bronze-certified-power-supplies-beta-2-650w/p/N82E16817959016",
+      "specSourceUrl": "https://www.montechpc.com/beta-2-650w",
       "specVerifiedDate": "2026-11-13",
-      "connectorSpecifications": "M/B 20+4Pin: 1 (20+4 Pins)CPU 4+4Pin: 2 (4+4 Pins)PCIE 6+2: 2 (6+2 Pins)SATA: 4Molex 4Pin: 4"
+      "connectorSpecifications": "M/B 20+4Pin: 1 (20+4 Pins)CPU 4+4Pin: 2 (4+4 Pins)PCIE 6+2: 2 (6+2 Pins)SATA: 4Molex 4Pin: 4",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psumsgamdias1000",
@@ -15228,8 +15229,9 @@
         "power supply unit"
       ],
       "model": "Century II 550W",
-      "specSourceUrl": "https://www.newegg.com/montech-atx-3-1-550-w-80-plus-gold-certified-power-supplies-silver-century-ii-550w/p/N82E16817959019",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.montechpc.com/century-ii-550w",
+      "specVerifiedDate": "2026-11-13",
+      "gpuPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "psubequietpz2750",
@@ -15259,8 +15261,9 @@
         "psu",
         "power supply unit"
       ],
-      "specSourceUrl": "https://www.newegg.com/be-quiet-power-zone-2-atx12v-3-1-750-w-80-plus-platinum-and-cybenetics-platinum-efficiency-power-supplies-black/p/N82E16817222041",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bequiet.com/en/powersupply/5767",
+      "specVerifiedDate": "2026-11-13",
+      "gpuPowerConnectors": "3 x 8-pin, 1 x 12V-2x6"
     },
     {
       "id": "psuasusrogstrix1000p",
@@ -16957,9 +16960,10 @@
         "psu",
         "power supply unit"
       ],
-      "specSourceUrl": "https://www.newegg.com/silverstone-technology-sfx-750-w-80-plus-gold-certified-power-supplies/p/1HU-00RG-00280",
+      "specSourceUrl": "https://aerocooler.com/silverstone-sst-sx750-g-80-plus-gold-750w-sfx-fully-modular-power-supply/",
       "specVerifiedDate": "2026-11-13",
-      "lengthMm": 125.0
+      "lengthMm": 125.0,
+      "gpuPowerConnectors": "4 x 8-pin"
     },
     {
       "id": "psucmelite850gold",
@@ -17368,9 +17372,10 @@
         "power supply unit"
       ],
       "model": "sx750 platinum",
-      "specSourceUrl": "https://www.newegg.com/silverstone-technology-sfx-750-w-80-plus-platinum-certified-power-supplies-black-sx750-platinum/p/1HU-00RG-000Z2",
+      "specSourceUrl": "https://www.newegg.com/silverstone-sx750-platinum-sfx-750-w-80-plus-platinum-certified-power-supply-black-sst-sx750-pt/p/N82E16817256221",
       "specVerifiedDate": "2026-11-13",
-      "lengthMm": 125.0
+      "lengthMm": 125.0,
+      "gpuPowerConnectors": "4 x 8-pin"
     },
     {
       "id": "psurosewillvnw750",
@@ -17912,9 +17917,10 @@
         "power supply unit"
       ],
       "model": "SX700-LPT",
-      "specSourceUrl": "https://www.newegg.com/silverstone-sfx-l-700w-80-plus-platinum-certified-power-supply-sx700-lpt/p/N82E16817256166",
+      "specSourceUrl": "https://www.tekwind.co.jp/SilverStone/products/entry_15222.php",
       "specVerifiedDate": "2026-11-13",
-      "connectorSpecifications": "1 x 24 / 20-Pin motherboard connector(300mm)1 x 8 / 4-Pin EPS / ATX 12V connector(400mm)2 x 8 / 6-Pin PCIE connector(400mm / 150mm)2 x 8 / 6-Pin PCIE connector(550mm / 150mm)6 x SATA connector(\"300mm / 200mm / 100mm\" x 2)3 x SATA connector(600mm / 150mm / 150mm)3 x 4-Pin Peripheral connector(300mm / 200mm / 200mm)1 x 4-Pin Floppy adapter connector(100mm)"
+      "connectorSpecifications": "1 x 24 / 20-Pin motherboard connector(300mm)1 x 8 / 4-Pin EPS / ATX 12V connector(400mm)2 x 8 / 6-Pin PCIE connector(400mm / 150mm)2 x 8 / 6-Pin PCIE connector(550mm / 150mm)6 x SATA connector(\"300mm / 200mm / 100mm\" x 2)3 x SATA connector(600mm / 150mm / 150mm)3 x 4-Pin Peripheral connector(300mm / 200mm / 200mm)1 x 4-Pin Floppy adapter connector(100mm)",
+      "gpuPowerConnectors": "4 x 8-pin"
     },
     {
       "id": "psuasustuf1000gevo",
