@@ -1,5 +1,6 @@
 /* Shared Apex Computers pricing policy: sold price must cover stored Newegg cost,
-   estimated shipping expense and PayPal fees while targeting a contribution margin.
+   estimated shipping expense, per-item extra costs and PayPal fees. A zero
+   target margin means estimated break-even, not a guarantee of profit.
    Estimates are not live supplier verification, tax advice or guaranteed net profit. */
 (function(root){
   "use strict";
@@ -15,35 +16,37 @@
       taxPercent:Number(settings?.taxRate??p.assumedTaxRatePercent)
     };
     if(Object.values(cfg).some(x=>!Number.isFinite(x))||
-       cfg.margin<=0||cfg.margin>=100||cfg.feePercent<0||cfg.feePercent>=100||
+       cfg.margin<0||cfg.margin>=100||cfg.feePercent<0||cfg.feePercent>=100||
        cfg.fixed<0||cfg.shippingPercent<0||cfg.shippingPercent>100||
        cfg.shippingExpensePercent<0||cfg.shippingExpensePercent>100||
        cfg.taxPercent<0||cfg.taxPercent>25)
       throw Error("Invalid catalog pricing settings. Check target margin, PayPal fees, shipping and tax.");
     return cfg;
   }
-  function simulate(costCents,priceCents,cfg){
+  function simulate(costCents,priceCents,cfg,otherCostCents=0){
     const shippingCents=Math.round(priceCents*cfg.shippingPercent/100);
     const taxCents=Math.round(priceCents*cfg.taxPercent/100);
     const expenseCents=Math.round(priceCents*cfg.shippingExpensePercent/100);
     const feeCents=Math.round((priceCents+shippingCents+taxCents)*cfg.feePercent/100+cfg.fixed*100);
-    const contributionCents=priceCents+shippingCents-costCents-expenseCents-feeCents;
+    const contributionCents=priceCents+shippingCents-costCents-otherCostCents-expenseCents-feeCents;
     return {shippingCents,taxCents,expenseCents,feeCents,contributionCents,
       contributionMarginPercent:100*contributionCents/priceCents};
   }
-  function quote(neweggPrice,settings){
+  function quote(neweggPrice,settings,extraCostUSD=0){
     const cost=Number(neweggPrice);
+    const extraCost=Number(extraCostUSD);
+    if(!Number.isFinite(extraCost)||extraCost<0)throw Error("Other per-item costs must be zero or greater.");
     if(!Number.isFinite(cost)||cost<=0)throw Error("A verified Newegg purchase price is required.");
-    const cfg=policy(settings), costCents=asMoneyCents(cost);
+    const cfg=policy(settings), costCents=asMoneyCents(cost), extraCostCents=asMoneyCents(extraCost);
     const denominator=1+(cfg.shippingPercent-cfg.shippingExpensePercent)/100-
       cfg.feePercent/100*(1+(cfg.shippingPercent+cfg.taxPercent)/100)-cfg.margin/100;
     if(denominator<=0)throw Error("The current margin and fees cannot produce a viable selling price.");
-    let priceCents=Math.max(1,Math.ceil((cost+cfg.fixed)/denominator*100));
-    const passes=n=>simulate(costCents,n,cfg).contributionCents*100+1e-8>=n*cfg.margin;
+    let priceCents=Math.max(1,Math.ceil((cost+extraCost+cfg.fixed)/denominator*100));
+    const passes=n=>simulate(costCents,n,cfg,extraCostCents).contributionCents*100+1e-8>=n*cfg.margin;
     while(!passes(priceCents))priceCents++;
     while(priceCents>1&&passes(priceCents-1))priceCents--;
-    const model=simulate(costCents,priceCents,cfg);
-    return {price:priceCents/100,neweggCost:costCents/100,
+    const model=simulate(costCents,priceCents,cfg,extraCostCents);
+    return {price:priceCents/100,neweggCost:costCents/100,extraCostUSD:extraCostCents/100,
       shipping:model.shippingCents/100,tax:model.taxCents/100,
       estimatedPayPalFee:model.feeCents/100,
       assumedShippingExpense:model.expenseCents/100,
@@ -68,9 +71,9 @@
   function applyToRecord(rec,settings,options={}){
     const cost=Number(rec?.neweggPrice);
     if(!Number.isFinite(cost)||cost<=0)return {priced:false,reason:"Missing stored Newegg cost"};
-    const proposed=quote(cost,settings);
+    const proposed=quote(cost,settings,rec.extraCostUSD??0);
     const previous=Number(rec.price);
-    const preserveHigher=options.preserveHigher!==false;
+    const preserveHigher=options.preserveHigher===true; // Default to actual break-even cost, not a previous higher markup.
     rec.price=preserveHigher&&Number.isFinite(previous)&&previous>proposed.price?
       Math.round(previous*100)/100:proposed.price;
     rec.active=rec.active!==false&&eligibleForSale(rec,options.now);
