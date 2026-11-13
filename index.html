@@ -791,6 +791,7 @@ footer.site a{color:var(--gold)}
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="catalog-pricing.js"></script>
 <script>
 /* =====================================================================
    SHARED STORAGE SETUP — saves straight into a JSON file in your GitHub
@@ -862,7 +863,9 @@ const DEFAULTS = {
     address:"",
     buildFee:250,
     shippingFee:0,
-    taxRate:0,
+    shippingRatePercent:18,
+    taxRate:11.5,
+    pricingPolicy:{targetNetMarginPercent:20,assumedPaymentFeePercent:4.99,assumedPaymentFixedUSD:0.49,assumedTaxRatePercent:11.5,assumedShippingExpensePercent:18},
     aboutText:"",
     contactText:"",
     ownerPhone:"",
@@ -1394,7 +1397,7 @@ function cartTotals(){
   myCart.forEach(i=>sub+=Number(i.price)*(i.qty||1));
   sub=Math.round(sub*100)/100;
   const tax=Math.round(sub*((+S.settings.taxRate||0)/100)*100)/100;
-  const shipping=myCart.length?(+S.settings.shippingFee||0):0;
+  const shipping=myCart.length?Math.round(sub*(+S.settings.shippingRatePercent||0))/100:0;
   return {sub,tax,shipping,total:Math.round((sub+tax+shipping)*100)/100};
 }
 
@@ -1846,6 +1849,12 @@ const nameKey = p => String(p.category||"")+"|"+String(p.name||"").trim().toLowe
 function dupeOfPart(p){ return isPartCat(p.category) && S.parts.some(x=>x.id===p.id || nameKey(x)===nameKey(p)); }
 function upsertCatalogRecord(section,rec){
   if(!["products","parts"].includes(section))throw new Error("Invalid catalog section");
+  // Central price floor: both owner editing routes apply the same Newegg margin policy.
+  if(Number(rec.neweggPrice)>0){
+    apexProfitPricing.applyToRecord(rec,S.settings);
+  }else if(isPartCat(rec.category)||!["Tech Service","Donation","Custom PC","Prebuilt PC","Gaming PC"].includes(rec.category)){
+    rec.active=false; // Never list an uncosted physical item as purchasable.
+  }
   const exists=S[section].some(x=>x.id===rec.id);
   for(const key of ["products","parts"]){
     S[key]=S[key].map(x=>x.id===rec.id?{...x,...rec}:x);
@@ -2579,7 +2588,7 @@ function cart(){
     </div>
     <div class="summary panel">
       <div class="lineitem"><span>Subtotal</span><span>${money(t.sub)}</span></div>
-      ${t.shipping?`<div class="lineitem"><span>Shipping</span><span>${money(t.shipping)}</span></div>`:""}
+      ${t.shipping?`<div class="lineitem"><span>Shipping (${(+S.settings.shippingRatePercent||0)}% of items)</span><span>${money(t.shipping)}</span></div>`:""}
       ${t.tax?`<div class="lineitem"><span>Tax</span><span>${money(t.tax)}</span></div>`:""}
       <div class="total"><span>Total</span><span>${money(t.total)}</span></div>
       <button class="btn gold" style="width:100%;margin-top:14px" onclick="go('/checkout')">Checkout</button>
@@ -2782,9 +2791,10 @@ function manage(){
       <div class="field"><label for="s_mail">Email orders and requests to</label><input id="s_mail" type="email" required value="${esc(s.ownerEmail)}"><small class="muted">Public contact and order-notification recipient. Your owner sign-in and Gmail sending account stay unchanged.</small></div>
       <div class="field"><label for="s_phone">Phone</label><input id="s_phone" value="${esc(s.phone)}"></div>
       <div class="field"><label for="s_fee">Assembly fee ($)</label><input id="s_fee" type="number" step="1" value="${+s.buildFee||0}"></div>
-      <div class="field"><label for="s_ship">Shipping fee ($ per order)</label><input id="s_ship" type="number" step="0.01" value="${+s.shippingFee||0}"></div>
+      <div class="field"><label for="s_ship">Shipping (% of item subtotal)</label><input id="s_ship" type="number" min="0" max="100" step="0.01" value="${+s.shippingRatePercent||0}"></div>
       <div class="field"><label for="s_tax">Tax rate (%)</label><input id="s_tax" type="number" step="0.01" value="${+s.taxRate||0}"></div>
     </div>
+    <p class="muted" style="font-size:.83rem">The tax percentage is a proposed checkout setting, not validated for every delivery address. Actual sales tax and taxable shipping must follow applicable jurisdiction rules. Saving shipping or tax adjustments automatically raises any catalog prices that would fall below the target margin.</p>
     <div class="field"><label for="s_addr">Shop address</label><input id="s_addr" value="${esc(s.address)}"></div>
     <h3 style="margin-top:22px">How customers pay you</h3>
     <p class="muted" style="font-size:.86rem;margin-top:-6px">Shown at checkout. Fill in whichever of these you actually use.</p>
@@ -2861,6 +2871,21 @@ function listMove(key,i,dir){
   if(j<0 || j>=list.length) return;
   [list[i],list[j]] = [list[j],list[i]]; save(); render();
 }
+function raiseUnderpricedCatalogItems(){
+  const rows=[...(S.products||[]),...(S.parts||[])], minimums=new Map();
+  for(const rec of rows){
+    if(!Number.isFinite(Number(rec.neweggPrice))||Number(rec.neweggPrice)<=0)continue;
+    const min=apexProfitPricing.quote(rec.neweggPrice,S.settings).price;
+    minimums.set(rec.id,Math.max(min,minimums.get(rec.id)||0));
+  }
+  let raised=0;
+  for(const rec of rows){
+    if(!minimums.has(rec.id))continue;
+    const min=minimums.get(rec.id);
+    if(Number(rec.price)<min){rec.price=min;raised++;}
+  }
+  return raised;
+}
 let settingsDirty=false,settingsSaving=false,settingsSaveError="",settingsDraft=null,settingsDraftVersion=0;
 function trackSettingsDraft(form){settingsDraft=Object.fromEntries([...form.elements].filter(el=>el.id&&el.id.startsWith("s_")).map(el=>[el.id,el.value]));settingsDirty=true;settingsDraftVersion++;}
 function restoreSettingsDraft(){if(!settingsDraft)return;for(const [id,value] of Object.entries(settingsDraft)){const el=document.getElementById(id);if(el)el.value=value;}}
@@ -2872,15 +2897,23 @@ async function saveSettings(e){
   const email=value("s_mail").trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){settingsSaveError="Enter a valid notification email.";render();return false;}
   if(ghConfigured&&!ghToken()){settingsSaveError="No GitHub write token is saved on this device. Add one under GitHub write access, then retry. Your edits are still here.";render();return false;}
-  const patch={shopName:value("s_shop"),tagline:value("s_tag"),ownerEmail:email,phone:value("s_phone"),buildFee:+value("s_fee")||0,shippingFee:+value("s_ship")||0,taxRate:+value("s_tax")||0,address:value("s_addr"),zelleInfo:value("s_zelle"),paypalLink:value("s_paypal"),applePayInfo:value("s_apay")};
+  const shippingRatePercent=Number(value("s_ship")),taxRate=Number(value("s_tax"));
+  if(!Number.isFinite(shippingRatePercent)||shippingRatePercent<0||shippingRatePercent>100||!Number.isFinite(taxRate)||taxRate<0||taxRate>25){settingsSaveError="Shipping percentage must be 0–100 and tax percentage 0–25.";render();return false;}
+  const patch={shopName:value("s_shop"),tagline:value("s_tag"),ownerEmail:email,phone:value("s_phone"),buildFee:+value("s_fee")||0,shippingFee:0,shippingRatePercent,taxRate,pricingPolicy:{...(S.settings.pricingPolicy||DEFAULTS.settings.pricingPolicy),assumedTaxRatePercent:taxRate,assumedShippingExpensePercent:shippingRatePercent},address:value("s_addr"),zelleInfo:value("s_zelle"),paypalLink:value("s_paypal"),applePayInfo:value("s_apay")};
   const previous=Object.fromEntries(Object.keys(patch).map(key=>[key,S.settings[key]]));
-  settingsSaving=true;settingsSaveError="";clearTimeout(saveTimer);Object.assign(S.settings,patch);render();
+  const pricesBefore=[...(S.products||[]),...(S.parts||[])].map(p=>[p,p.price]);
+  settingsSaving=true;settingsSaveError="";clearTimeout(saveTimer);Object.assign(S.settings,patch);
+  try{raiseUnderpricedCatalogItems();}catch(err){
+    Object.assign(S.settings,previous);for(const [p,price] of pricesBefore)p.price=price;
+    settingsSaving=false;settingsSaveError="Pricing settings are invalid: "+err.message;render();return false;
+  }
+  render();
   try{
     if(ghConfigured){if(!await pushToGithub())throw Error(cloudError||"GitHub did not confirm the save.");}
     else localStorage.setItem(KEY,JSON.stringify(S));
     if(settingsDraftVersion===version){settingsDirty=false;settingsDraft=null;}
     toast(ghConfigured?"Settings saved to GitHub." : "Settings saved on this device.");
-  }catch(err){Object.assign(S.settings,previous);settingsDirty=true;settingsSaveError="Settings were not saved: "+(err.message||String(err))+" Your edits are preserved; fix the connection and retry.";toast("Settings were not saved.");}
+  }catch(err){Object.assign(S.settings,previous);for(const [p,price] of pricesBefore)p.price=price;settingsDirty=true;settingsSaveError="Settings were not saved: "+(err.message||String(err))+" Your edits are preserved; fix the connection and retry.";toast("Settings were not saved.");}
   finally{settingsSaving=false;render();}
   return false;
 }
@@ -3043,6 +3076,38 @@ function toggleProductSpecs(){
   if(s && box) box.style.display = isPartCat(s.value) ? "" : "none";
   updatePowerSpecFields("p",s&&s.value);
 }
+function supplierPricingFields(prefix,rec){
+  const vendor=String(rec.seller||""), stock=String(rec.stockStatus||"");
+  return `<div class="panel" style="margin-bottom:16px;padding:14px">
+    <h4 style="margin:0 0 6px">Newegg supplier cost and profit-based pricing</h4>
+    <p class="muted" style="font-size:.82rem">Verify the exact item page, seller, stock, and source cost. The selling price is raised automatically to meet the modeled 20% margin. Unverified merchandise stays inactive.</p>
+    <div class="field"><label>Verified Newegg cost ($)</label><input id="${prefix}_newegg" type="number" min="0" step="0.01" value="${rec.neweggPrice??""}" oninput="updateProfitPreview('${prefix}',true)"></div>
+    <div class="field"><label>Exact Newegg product URL</label><input id="${prefix}_source" type="url" value="${esc(rec.sourceUrl||"")}" placeholder="https://www.newegg.com/.../p/..." oninput="updateProfitPreview('${prefix}')"></div>
+    <div class="fields2">
+      <div class="field"><label>Seller</label><select id="${prefix}_seller" onchange="updateProfitPreview('${prefix}')"><option value="">Not verified</option><option value="Newegg" ${vendor==="Newegg"?"selected":""}>Sold by Newegg</option><option value="Marketplace" ${vendor==="Marketplace"?"selected":""}>Third-party seller</option></select></div>
+      <div class="field"><label>Availability</label><select id="${prefix}_stock" onchange="updateProfitPreview('${prefix}')"><option value="">Not verified</option><option value="In Stock" ${stock==="In Stock"?"selected":""}>In Stock</option><option value="Out of Stock" ${stock==="Out of Stock"?"selected":""}>Out of Stock</option><option value="Backordered" ${stock==="Backordered"?"selected":""}>Backordered</option></select></div>
+    </div>
+    <div class="field"><label>Date seller and stock were checked</label><input id="${prefix}_verified" type="date" value="${esc(rec.verifiedDate||"")}" onchange="updateProfitPreview('${prefix}')"></div>
+    <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><input id="${prefix}_enabled" type="checkbox" style="width:auto" ${rec.active!==false?"checked":""}>Allow sale when verification passes</label>
+    <p id="${prefix}_profit_preview" class="muted" style="font-size:.83rem;margin:5px 0"></p>
+  </div>`;
+}
+function updateProfitPreview(prefix,updatePrice=false){
+  const input=id=>document.getElementById(prefix+"_"+id);
+  const preview=input("profit_preview"),cost=Number(input("newegg")?.value);
+  if(!preview)return;
+  if(!Number.isFinite(cost)||cost<=0){preview.textContent="Enter a verified Newegg cost to calculate the minimum price.";return;}
+  try{
+    const quote=apexProfitPricing.quote(cost,S.settings);
+    if(updatePrice)input("price").value=quote.price.toFixed(2);
+    const eligible=apexProfitPricing.eligibleForSale({
+      sourceUrl:input("source").value,seller:input("seller").value,
+      stockStatus:input("stock").value,verifiedDate:input("verified").value
+    });
+    preview.textContent="Minimum Apex price "+money(quote.price)+", estimated contribution "+money(quote.contribution)+
+      " ("+quote.marginPercent.toFixed(2)+"%). "+(eligible?"Eligibility details complete.":"Not ready: verify seller, stock, URL and date.");
+  }catch(err){preview.textContent=err.message||"Unable to calculate price.";}
+}
 function editProduct(id){
   if(!isOwner) return;
   const p = id ? S.products.find(x=>x.id===id) : {id:uid(),name:"",category:(S.settings.productCategories||[])[0]||"",cpuType:"",processor:"",brand:"",price:0,desc:"",longDesc:"",featured:false,image:""};
@@ -3083,7 +3148,8 @@ function editProduct(id){
       <div class="field"><label>Processor model (for PCs)</label><input id="p_proc" value="${esc(p.processor||"")}" placeholder="Intel Core i5-13400F"></div>
     </div>
     <div class="field"><label>Brand (optional)</label><input id="p_brand" value="${esc(p.brand||"")}" placeholder="Apex, ASUS, HP..."></div>
-    <div class="field"><label>Price ($)</label><input id="p_price" type="number" step="0.01" value="${+p.price||0}"></div>
+    <div class="field"><label>Apex selling price ($)</label><input id="p_price" type="number" min="0" step="0.01" value="${+p.price||0}"></div>
+    ${supplierPricingFields("p",p)}
     <div class="field"><label>Short description (shown on the card)</label><textarea id="p_desc" style="min-height:70px">${esc(p.desc)}</textarea></div>
     <div class="field"><label>Detailed description (shown when a customer taps Details)</label><textarea id="p_long" style="min-height:140px" placeholder="Full specs, what's included, warranty, who it's for…">${esc(p.longDesc||"")}</textarea></div>
     <div class="field"><label>Photo</label>
@@ -3096,6 +3162,7 @@ function editProduct(id){
     <button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`;
   openDlg(html);
   toggleProductSpecs();
+  updateProfitPreview("p");
 }
 function handleImageUpload(e, fieldId, previewId){
   const file = e.target.files[0]; if(!file) return;
@@ -3128,6 +3195,8 @@ function recHeightForCategory(category,ramId,otherId){
 function saveProduct(id,exists){
   const rec = {...(exists?S.products.find(x=>x.id===id)||{}:{}),id,name:p_name.value.trim(),category:readSelectWithAdd("p_cat","productCategories"),cpuType:readSelectWithAdd("p_cpu","cpuTypes"),
     processor:p_proc.value.trim(),brand:p_brand.value.trim(),price:+p_price.value||0,desc:p_desc.value.trim(),longDesc:p_long.value.trim(),
+    neweggPrice:p_newegg.value?Number(p_newegg.value):null,sourceUrl:p_source.value.trim(),seller:p_seller.value,
+    stockStatus:p_stock.value,verifiedDate:p_verified.value,active:p_enabled.checked,
     featured:p_feat.checked,image:p_img.value.trim(),
     formFactor:(p_cat.value==="Power supply"?document.getElementById("p_psu_form_factor")?.value:document.getElementById("p_form_factor")?.value||"")?.trim()||"",
     caseFormFactors:document.getElementById("p_case_form_factors")?.value.trim()||"",
@@ -3145,8 +3214,8 @@ function saveProduct(id,exists){
     rec.power = (rec.category!=="CPU"&&rec.category!=="Power supply") ? p_power.value : "";
   }
   if(!rec.name){ toast("Give it a name first."); return; }
-  upsertCatalogRecord("products",rec);
-  save(); editDlg.close(); render(); toast("Product saved.");
+  try{upsertCatalogRecord("products",rec);}catch(err){toast("Cannot save product: "+err.message);return;}
+  save(); editDlg.close(); render(); toast(rec.active?"Product saved with profit-based pricing.":"Product saved inactive pending supplier verification.");
 }
 function delProduct(id){ if(confirm("Delete this product?")){ S.products=S.products.filter(x=>x.id!==id); Object.keys(buildSel).forEach(k=>{if(buildSel[k]===id)delete buildSel[k]}); saveBuild(); save(); render(); } }
 
@@ -3161,7 +3230,8 @@ function editPart(id,presetCat){
         <datalist id="q_brand_list"><option value="AMD"><option value="Intel"><option value="NVIDIA"><option value="Corsair"><option value="ASUS"><option value="MSI"></datalist>
       </div>
     </div>
-    <div class="field"><label>Price ($)</label><input id="q_price" type="number" step="0.01" value="${+p.price||0}"></div>
+    <div class="field"><label>Apex selling price ($)</label><input id="q_price" type="number" min="0" step="0.01" value="${+p.price||0}"></div>
+    ${supplierPricingFields("q",p)}
     <div class="field"><label>Short summary (shown in the parts list)</label><textarea id="q_desc" style="min-height:70px">${esc(p.desc)}</textarea></div>
     <div class="field"><label>Full description (shown when someone taps the part)</label><textarea id="q_long" style="min-height:140px" placeholder="Full specs, features, what's in the box, warranty…">${esc(p.longDesc||"")}</textarea></div>
     <div class="field"><label>Photo</label>
@@ -3203,10 +3273,13 @@ function editPart(id,presetCat){
     <button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`;
   openDlg(html);
   toggleSpecs();
+  updateProfitPreview("q");
 }
 function savePart(id,exists){
   const rec = {...(exists?S.parts.find(x=>x.id===id)||{}:{}),id,name:q_name.value.trim(),category:q_cat.value,brand:q_brand.value.trim(),price:+q_price.value||0,desc:q_desc.value.trim(),longDesc:q_long.value.trim(),
     image:q_img.value.trim(),socket:readSelectWithAdd("q_sock","sockets"),
+    neweggPrice:q_newegg.value?Number(q_newegg.value):null,sourceUrl:q_source.value.trim(),seller:q_seller.value,
+    stockStatus:q_stock.value,verifiedDate:q_verified.value,active:q_enabled.checked,
     cpuType:(q_cat.value==="CPU"?readSelectWithAdd("q_cpu","cpuTypes"):""),
     memType:q_mem.value,
     tdp:q_cat.value==="CPU"?q_tdp.value:"",
@@ -3222,8 +3295,8 @@ function savePart(id,exists){
     requiredPowerConnectors:q_gpu_connectors.value.trim(),
     gpuPowerConnectors:q_psu_connectors.value.trim()};
   if(!rec.name){ toast("Give it a name first."); return; }
-  upsertCatalogRecord("parts",rec);
-  save(); editDlg.close(); render(); toast("Part saved.");
+  try{upsertCatalogRecord("parts",rec);}catch(err){toast("Cannot save part: "+err.message);return;}
+  save(); editDlg.close(); render(); toast(rec.active?"Part saved with profit-based pricing.":"Part saved inactive pending supplier verification.");
 }
 function delPart(id){ if(confirm("Delete this part?")){ S.parts=S.parts.filter(x=>x.id!==id); Object.keys(buildSel).forEach(k=>{if(buildSel[k]===id)delete buildSel[k]}); saveBuild(); save(); render(); } }
 function toggleSpecs(){

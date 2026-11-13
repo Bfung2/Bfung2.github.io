@@ -3,16 +3,32 @@ import fs from 'node:fs/promises';
 const data=JSON.parse(await fs.readFile('data.json','utf8'));
 const changes=JSON.parse(await fs.readFile('audits/2026-11-12/confirmed-catalog-changes.json','utf8'));
 const records=[...data.products,...data.parts];
-for(const id of new Set(changes.map(c=>c.id))){
- const rows=records.filter(p=>p.id===id);assert.ok(rows.length);
- for(const p of rows){
-  if(/out\s*of\s*stock|back[\s-]*order|sold\s*out|unavailable|discontinued|price\s*verification\s*required|pre[\s-]*order/i.test(p.stockStatus||''))assert.equal(p.active,false,p.name);
-  if(p.stockStatus==='In Stock'&&p.verifiedDate==='2026-11-12'){
-   assert.equal(p.seller,'Newegg',p.name);
-   assert.ok(/^https:\/\/www\.newegg\.com\/.*\/p\/|^https:\/\/www\.newegg\.com\/p\//.test(p.sourceUrl),p.name);
-   assert.equal(Math.round((p.price-p.neweggPrice)*100),1500,p.name);
-  }
- }
- if(rows.length>1)assert.equal(new Set(rows.map(p=>p.price)).size,1,id);
+const policy=data.settings.pricingPolicy;
+assert.equal(data.settings.shippingRatePercent,18);
+assert.equal(data.settings.taxRate,11.5);
+assert.equal(policy.targetNetMarginPercent,20);
+const cent=n=>Math.round((n+Number.EPSILON)*100)/100;
+function netFor(p){
+ const subtotal=p.price,ship=cent(subtotal*data.settings.shippingRatePercent/100),tax=cent(subtotal*policy.assumedTaxRatePercent/100);
+ const fee=cent((subtotal+ship+tax)*policy.assumedPaymentFeePercent/100+policy.assumedPaymentFixedUSD);
+ return cent(subtotal-p.neweggPrice-fee);
 }
-console.log('PASS: evidence-backed price markup, inactive ineligible inventory and same-ID consistency.');
+const ids=new Map();
+let priced=0,unknown=0;
+for(const p of records){
+ if(/out\s*of\s*stock|back[\s-]*order|sold\s*out|unavailable|discontinued|price\s*verification\s*required|pre[\s-]*order/i.test(p.stockStatus||'')) assert.equal(p.active,false,p.name);
+ if(p.neweggPrice===undefined||p.neweggPrice===null){unknown++;assert.equal(p.active,false,p.id);continue;}
+ priced++;
+ assert.ok(netFor(p)+0.0001>=p.price*.20,p.name+" below 20% margin");
+ if(ids.has(p.id))assert.equal(p.price,ids.get(p.id),p.id);
+ ids.set(p.id,p.price);
+}
+for(const id of new Set(changes.map(c=>c.id))){
+ const rows=records.filter(p=>p.id===id);assert.ok(rows.length,id);
+ for(const p of rows){if(p.stockStatus==='In Stock'&&p.verifiedDate==='2026-11-12'){assert.equal(p.seller,'Newegg',p.name);assert.match(p.sourceUrl,/^https:\/\/www\.newegg\.com\/(?:.*\/)?p\//,p.name);assert.ok(netFor(p)+0.0001>=p.price*.2,p.name);}}
+}
+assert.equal(records.length,734);
+assert.equal(priced,716);
+assert.equal(unknown,18);
+assert.equal(ids.size,704);
+console.log('PASS: 704 baseline-priced unique SKUs maintain the 20% modeled Pay Later margin; inactive unknown-cost SKUs stay disabled; mirrored prices align.');

@@ -58,10 +58,10 @@ function calculateOrder(items: any, catalog: any) {
   };
   const settings = catalog.settings || {};
   const buildFee = Number(settings.buildFee ?? 0);
-  const shippingFee = Number(settings.shippingFee ?? 0);
+  const shippingRatePercent = Number(settings.shippingRatePercent ?? 0);
   const taxRate = Number(settings.taxRate ?? 0);
-  if (![buildFee, shippingFee, taxRate].every(Number.isFinite) ||
-      buildFee < 0 || shippingFee < 0 || taxRate < 0 || taxRate > 25) {
+  if (![buildFee, shippingRatePercent, taxRate].every(Number.isFinite) ||
+      buildFee < 0 || shippingRatePercent < 0 || shippingRatePercent > 100 || taxRate < 0 || taxRate > 25) {
     throw new Error("Shop pricing settings are invalid. Please contact Apex Computers.");
   }
 
@@ -124,7 +124,8 @@ function calculateOrder(items: any, catalog: any) {
   }
 
   subtotal = roundMoney(subtotal);
-  const shipping = verifiedItems.length ? roundMoney(shippingFee) : 0;
+  // Server recalculates percentage shipping from verified subtotal, ignoring browser totals.
+  const shipping = verifiedItems.length ? roundMoney(subtotal * shippingRatePercent / 100) : 0;
   const tax = roundMoney(subtotal * taxRate / 100);
   const total = roundMoney(subtotal + shipping + tax);
   if (!Number.isFinite(total) || total <= 0 || total > 1000000) {

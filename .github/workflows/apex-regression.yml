@@ -53,6 +53,12 @@ jobs:
         run: node tests/full-catalog-audit.mjs
       - name: Checkout catalog validation regression
         run: node tests/checkout-catalog-validation.mjs
+      - name: Automatic profit pricing and Newegg eligibility regression
+        run: node tests/catalog-profit-pricing.mjs
+      - name: Owner shipping and tax settings regression
+        run: node tests/settings-save.mjs
+      - name: Targeted catalog pricing and SKU evidence regression
+        run: node tests/catalog-targeted-verification.mjs
       - name: Catalog edit synchronization regression
         run: node tests/catalog-edit-sync.mjs
       - name: Optional newer component regressions

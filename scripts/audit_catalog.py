@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 """Non-destructive Apex catalog integrity audit. Does not claim live Newegg verification."""
-import argparse, collections, csv, datetime, json, pathlib, sys, re, urllib.parse
+import argparse, collections, csv, datetime, json, pathlib, sys, re, urllib.parse, math
 
 def audit(path):
     data=json.loads(path.read_text(encoding="utf-8"))
     records=[(section,p) for section in ("products","parts") for p in data.get(section,[])]
+    pricing_policy=data.get("settings",{}).get("pricingPolicy",{})
+    shipping_pct=float(data.get("settings",{}).get("shippingRatePercent",0))
+    tax_pct=float(pricing_policy.get("assumedTaxRatePercent",data.get("settings",{}).get("taxRate",0)))
+    margin_pct=float(pricing_policy.get("targetNetMarginPercent",0))
+    fee_pct=float(pricing_policy.get("assumedPaymentFeePercent",0))
+    fixed_fee=float(pricing_policy.get("assumedPaymentFixedUSD",0))
     by_id=collections.defaultdict(list)
     for section,p in records: by_id[str(p.get("id",""))].append((section,p))
     issues=[]
@@ -21,7 +27,20 @@ def audit(path):
             flag("missing_newegg_baseline",section,p,"Requires exact live listing, seller and stock verification")
         else:
             try:
-                if round(float(p["price"])-float(baseline),2)!=15.00:
+                item_price=float(p["price"])
+                cost=float(baseline)
+                if pricing_policy:
+                    if not (0 <= shipping_pct <= 100 and 0 <= tax_pct <= 25 and 0 < margin_pct < 100 and 0 <= fee_pct < 100 and fixed_fee >= 0):
+                        flag("pricing_policy_invalid",section,p,"Invalid policy inputs; cannot model margin")
+                    else:
+                        shipping=round(item_price*shipping_pct/100+1e-9,2)
+                        tax=round(item_price*tax_pct/100+1e-9,2)
+                        transaction_fee=round((item_price+shipping+tax)*fee_pct/100+fixed_fee+1e-9,2)
+                        net=item_price-cost-transaction_fee
+                        if net+0.001 < item_price*margin_pct/100:
+                            flag("margin_below_target",section,p,
+                                 f"Stored supplier cost and payment fees imply net margin below {margin_pct:g}%")
+                elif round(item_price-cost,2)!=15.00:
                     flag("markup_mismatch",section,p,"Apex price does not equal Newegg baseline + $15")
             except (TypeError,ValueError,KeyError):
                 flag("invalid_newegg_baseline",section,p,"Invalid baseline/price")

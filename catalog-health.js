@@ -21,6 +21,12 @@ function catalogData(data,today=new Date()){
   });
  }
  const now=Date.UTC(today.getUTCFullYear(),today.getUTCMonth(),today.getUTCDate());
+ const policy=data?.settings?.pricingPolicy||null;
+ const shippingPct=Number(data?.settings?.shippingRatePercent??0);
+ const taxPct=Number(policy?.assumedTaxRatePercent??data?.settings?.taxRate??0);
+ const feePct=Number(policy?.assumedPaymentFeePercent??0);
+ const fixedFee=Number(policy?.assumedPaymentFixedUSD??0);
+ const target=Number(policy?.targetNetMarginPercent??0);
  const rows=[];
  for(const group of byID.values()){
   const originals=group.records.map(r=>r.item);
@@ -36,6 +42,18 @@ function catalogData(data,today=new Date()){
   if(new Set(priceValues).size>1)flag("price_conflict","Product / builder price differs","critical");
   const baseline=cents(pick("neweggPrice"));
   if(baseline==null||baseline<=0)flag("baseline","Missing Newegg baseline","missing");
+  else if(price!=null&&policy){
+   const amount=price/100,cost=baseline/100;
+   if(![shippingPct,taxPct,feePct,fixedFee,target].every(Number.isFinite)||target<=0||target>=100||shippingPct<0||shippingPct>100||taxPct<0||taxPct>25){
+    flag("policy_invalid","Profit pricing assumptions invalid","critical");
+   }else{
+    const shipping=Math.round(amount*shippingPct)/100,tax=Math.round(amount*taxPct)/100;
+    const transactionFee=Math.round(((amount+shipping+tax)*feePct/100+fixedFee)*100)/100;
+    if((amount-cost-transactionFee)+0.00001<amount*target/100){
+     flag("margin","Estimated net contribution below "+target+"% price target","critical");
+    }
+   }
+  }
   else if(price!=null&&price-baseline!==1500)flag("markup","Stored price is not baseline + $15","critical");
   const source=validSource(pick("sourceUrl"));
   if(!source)flag("source","Missing or invalid Newegg source URL","missing");
