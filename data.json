@@ -2306,11 +2306,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 259.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-3050-ventus-2x-6g-oc-geforce-rtx-3050-6gb-graphics-card-double-fans/p/N82E16814137878",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.msi.com/Graphics-Card/GeForce-RTX-3050-VENTUS-2X-6G-OC/Specification",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 3050 VENTUS 2X 6G OC",
       "lengthMm": 189.0,
-      "recommendedPsuWatts": 300
+      "recommendedPsuWatts": 300,
+      "requiredPowerConnectors": "None"
     },
     {
       "id": "gpu5070gigawindforce3x",
@@ -19053,9 +19054,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/fractal-design-atx-mid-tower-torrent-steel-tempered-glass-computer-case-black-fd-c-tor1a-04/p/N82E16811352146",
+      "specSourceUrl": "https://www.fractal-design.com/products/cases/torrent-series/torrent/torrent-rgb-black-tg-light-tint/",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 230.0
+      "maxPsuLengthMm": 230.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseFractalPopAirBlackTG",
