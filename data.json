@@ -21958,10 +21958,11 @@
       "neweggPrice": 89.99,
       "sourceUrl": "https://www.newegg.com/silverstone-rl-xe04-sp3b-92mm/p/N82E16835985001?SoldByNewegg=1",
       "image": "https://c1.neweggimages.com/productimage/nb640/35-985-001-01.jpg",
-      "desc": "Fan and heatsink CPU cooler • SP3, TR4",
-      "longDesc": "Fan and heatsink CPU cooler • SP3, TR4. Fan Size: 92mm. Confirm case height and RAM clearance before installation.",
+      "desc": "Fan and heatsink CPU cooler • SP6, SP3, TR4",
+      "longDesc": "Fan and heatsink CPU cooler • SP6, SP3, TR4. Fan Size: 92mm. Confirm case height and RAM clearance before installation.",
       "coolingType": "Air",
       "supportedSockets": [
+        "SP6",
         "SP3",
         "TR4"
       ],
@@ -21978,8 +21979,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/silverstone-rl-xe04-sp3b-92mm/p/N82E16835985001?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.tekwind.co.jp/SilverStone/products/entry_18011.php",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 126
     },
     {
       "id": "coolerN82E16835220141",

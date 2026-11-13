@@ -1,0 +1,22 @@
+{
+  "reviewDateUTC": "2026-11-13",
+  "reviewType": "Physical-fit source verification; not Newegg price, stock or seller recheck",
+  "fixed": [
+    {
+      "id": "coolerN82E16835985001",
+      "model": "RL-XE04-SP3B / SST-XE04-SP3B",
+      "name": "SilverStone XE04-SP3B",
+      "heightMm": 126,
+      "supportedSockets": [
+        "SP6",
+        "SP3",
+        "TR4"
+      ],
+      "manufacturerRegionalDistributorSource": "https://www.tekwind.co.jp/SilverStone/products/entry_18011.php",
+      "crossCheck": "https://aerocooler.com/silverstone-sst-xe04-sp3b-amd-socket-sp3-tr4-4u-server-cpu-cooler/",
+      "sourceNote": "Exact SP3B revision. Avoid substituting specifications from different XE04-SP3 revision."
+    }
+  ],
+  "unresolved": "7 case PSU form-factor evidence gaps. No form-factor value invented.",
+  "scopeNote": "No change to public sourceUrl, live price, seller, stock, or availability."
+}
