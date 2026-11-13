@@ -902,7 +902,12 @@ function loadLocalFallback(){
   try{
     const raw = localStorage.getItem(KEY);
     if(!raw) return null;
-    return mergeIntoDefaults(JSON.parse(raw));
+    const cached=JSON.parse(raw);
+    // Do not revive the retired 734-item catalog from an old browser backup when GitHub is offline.
+    if(cached?.settings?.catalogResetId!=="catalog-clear-2026-11-12"){
+      cached.products=[];cached.parts=[];
+    }
+    return mergeIntoDefaults(cached);
   }catch(e){ return null; }
 }
 function loadCart(){ try{ myCart = JSON.parse(sessionStorage.getItem("apex.cart")||"[]"); }catch(e){ myCart = []; } }
@@ -1271,7 +1276,7 @@ function combineAddress(a){
   return [a.street, [line2, a.zip].filter(Boolean).join(" ")].filter(Boolean).join(", ");
 }
 /* ---------- router ---------- */
-const PAGES = [["/","Home"],["/products","Products"],["/build","Build a PC"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"],["/warranty","Warranty"],["/returns","Returns"],["/track-order","Track order"]];
+const PAGES = [["/","Home"],["/products","Products"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"],["/warranty","Warranty"],["/returns","Returns"],["/track-order","Track order"]];
 function go(p){ location.hash = "#"+p; }
 function route(){ return (location.hash||"#/").slice(1).split("?")[0] || "/"; }
 addEventListener("hashchange", ()=>{ render(); scrollTo({top:0}); });
@@ -1437,7 +1442,7 @@ function globalSearchInput(value){
  const box=document.getElementById("globalSearchResults");if(!box)return;
  const q=String(value||"").trim().toLowerCase();if(!q){hideGlobalSearch();box.innerHTML="";return;}
  const products=catalogAll().filter(p=>matchesProductSearch(p,q)).slice(0,7);
- const pageTerms={"/":["home","apex computers"],"/products":["products","shop","parts","components","computer parts"],"/build":["build a pc","custom pc","pc builder","computer build","compatibility"],"/tech":["tech support","repair","fix","installation","install","troubleshooting","home tech service"],"/about":["about us"],"/contact":["contact us","email","phone"]};
+ const pageTerms={"/":["home","apex computers"],"/products":["products","shop","parts","components","computer parts"],"/tech":["tech support","repair","fix","installation","install","troubleshooting","home tech service"],"/about":["about us"],"/contact":["contact us","email","phone"]};
  const pages=PAGES.filter(([path,label])=>(label+" "+path+" "+(pageTerms[path]||[]).join(" ")).toLowerCase().includes(q)).slice(0,3);
  const productRows=products.map(p=>`<button class="global-search-result" type="button" data-id="${esc(p.id)}" onclick="globalSearchPickProduct(this.dataset.id)"><span class="global-result-thumb">${p.image?`<img loading="lazy" decoding="async" src="${esc(p.image)}" alt="">`:"▣"}</span><span class="global-result-copy"><strong>${esc(p.name)}</strong><small>${esc(displayCat(p)||"Product")} · ${money(p.price)}</small></span><span class="global-result-arrow">↗</span></button>`).join("");
  const pageRows=pages.map(([path,label])=>`<button class="global-search-result global-page-result" type="button" data-path="${esc(path)}" onclick="globalSearchPickPage(this.dataset.path)"><span class="global-result-thumb">⌁</span><span class="global-result-copy"><strong>${esc(label)}</strong><small>Website page</small></span><span class="global-result-arrow">↗</span></button>`).join("");
@@ -1473,7 +1478,17 @@ document.addEventListener("keydown",event=>{
 });
 
 /* ---------- render ---------- */
+function pruneObsoleteCartEntries(){
+  if(!cloudConnected||!myCart.length)return;
+  const knownIds=new Set([...(S.products||[]),...(S.parts||[])].map(p=>String(p.id)));
+  const previous=myCart.length;
+  myCart=myCart.filter(item=>
+    item?.kind==="product"&&knownIds.has(String(item.id))
+  ); // Retired builder carts and deleted listings cannot remain in customer sessions.
+  if(myCart.length!==previous)saveCart();
+}
 function render(){
+  pruneObsoleteCartEntries();
   document.querySelector("#brandName span:last-child").textContent = S.settings.shopName || "Apex Computers";
   document.title = (S.settings.shopName||"Apex Computers") + " — Custom PCs, Parts & Tech Service";
   const previousNavPage=nav.querySelector("a.on")?.getAttribute("href"),previousNavOffset=nav.scrollLeft;
@@ -1502,8 +1517,9 @@ function render(){
   ].filter(Boolean).join(" &nbsp;·&nbsp; ");
 
   const r = route();
+  if(r==="/build"){go("/products");return;} // Retired PC-builder URL redirects to the preserved shop.
   if(isEmployee && ["/manage","/employees","/inbox","/inventory","/performance","/policies-admin","/catalog-health","/operations"].includes(r)){go("/employee");return;}
-  const views = {"/":home,"/products":products,"/build":build,"/inventory":inventory,"/tech":tech,"/about":about,
+  const views = {"/":home,"/products":products,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/catalog-health":()=>ownerCatalogHealth.page(),"/operations":opsPage,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
     "/track-order":customerTrackingPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
@@ -1516,14 +1532,12 @@ function render(){
   if(r!=="/products"){shopFiltersOpen=false;document.body.classList.remove("filters-open");}
   if(r!=="/"&&homeMotionCleanup){homeMotionCleanup();homeMotionCleanup=null;}
   if(r!=="/products"&&productsMotionCleanup){productsMotionCleanup();productsMotionCleanup=null;}
-  if(r!=="/build"){buildMenuOpen=false;buildPickerOpen=false;document.body.classList.remove("build-menu-open","build-picker-open");}
   app.innerHTML = (views[r]||home)();
   if(r==="/manage")restoreSettingsDraft();
   if(isOwner)opsRefreshIfStale();
   else if(apexOpsState.data)apexOpsState.data=null;
   opsUpdateBadge();
   if(r==="/products") setupShopFilterLayer();
-  if(r==="/build") syncBuildDrawerAccessibility();
   if(r==="/") setupHomeMotion();
   if(r==="/products") setupProductsMotion();
   Object.keys(rows).forEach(id=>{ const el = document.getElementById(id); if(el) el.scrollLeft = rows[id]; });
@@ -1646,8 +1660,8 @@ function home(){
         <h1>Power your<br><span>next big idea.</span></h1>
         <p>${esc(S.settings.tagline||"Custom PCs, parts and on-site tech help.")} From the right components to a complete custom build, let's make your setup work harder.</p>
         <div class="row home-hero-actions">
-          <a class="btn gold" href="#/build">Build your PC <span aria-hidden="true">↗</span></a>
-          <a class="btn home-outline-btn" href="#/products">Explore products</a>
+          <a class="btn gold" href="#/products">Shop products <span aria-hidden="true">↗</span></a>
+          <a class="btn home-outline-btn" href="#/tech">Request tech help</a>
         </div>
         <div class="home-trust-row"><span>✦ Carefully selected parts</span><span>✦ Custom build support</span><span>✦ Local tech help</span></div>
       </div>
@@ -1660,9 +1674,9 @@ function home(){
       </div>
     </div>
     <div class="home-stats wrap">
-      <div><strong>${nParts}</strong><span>PC components</span></div>
+      <div><strong>${nParts}</strong><span>PC parts in stock</span></div>
       <div><strong>${nP}</strong><span>Products listed</span></div>
-      <div><strong>${money(S.settings.buildFee)}</strong><span>PC assembly</span></div>
+      <div><strong>Custom PCs</strong><span>Ask for a quote</span></div>
       <div><strong>On demand</strong><span>Tech service</span></div>
     </div>
   </section>
@@ -1672,12 +1686,12 @@ function home(){
     <section class="home-journey home-reveal">
       <div class="home-section-head"><div><span class="home-kicker">YOUR SETUP, YOUR WAY</span><h2>Start with what you need.</h2><p>Whether you're building from scratch or fixing what you already own, we've got a place to start.</p></div></div>
       <div class="home-journey-grid">
-        <a class="home-journey-card journey-build" href="#/build"><span class="journey-icon">⌘</span><span class="journey-number">01 / BUILD</span><h3>Create your custom PC</h3><p>Choose compatible parts and shape a PC around your games, work, and budget.</p><b>Start building <span>↗</span></b></a>
+        <a class="home-journey-card journey-build" href="#/contact"><span class="journey-icon">⌘</span><span class="journey-number">01 / CUSTOM PCS</span><h3>Ask about a custom PC</h3><p>Tell us what you need and we can discuss options for your setup.</p><b>Contact us <span>↗</span></b></a>
         <a class="home-journey-card journey-shop" href="#/products"><span class="journey-icon">▦</span><span class="journey-number">02 / SHOP</span><h3>Find your next upgrade</h3><p>Explore components, computers, accessories, and gear for your setup.</p><b>Browse products <span>↗</span></b></a>
         <a class="home-journey-card journey-help" href="#/tech"><span class="journey-icon">⌁</span><span class="journey-number">03 / GET HELP</span><h3>Tech support, minus the headache</h3><p>Need help installing, troubleshooting, or setting up your tech? Send a request.</p><b>Request a tech <span>↗</span></b></a>
       </div>
     </section>
-    <section class="home-build-strip home-reveal"><div><span class="home-kicker">LET'S MAKE IT HAPPEN</span><h2>Your next PC starts here.</h2><p>Pick your parts, check compatibility, and bring your build to life.</p></div><a class="btn gold" href="#/build">Start a build <span aria-hidden="true">↗</span></a></section>
+    <section class="home-build-strip home-reveal"><div><span class="home-kicker">LET'S MAKE IT HAPPEN</span><h2>Have a PC in mind?</h2><p>Tell us about your budget and goals, and we can talk through the possibilities.</p></div><a class="btn gold" href="#/contact">Contact Apex <span aria-hidden="true">↗</span></a></section>
   </div>`;
 }
 
@@ -2064,7 +2078,7 @@ function products(){
       ${featured.length?navItem("Featured",featured.length,"shop_shelf_Featured","✦"):""}
       ${allCats.map((c,i)=>navItem(c,shown.filter(p=>displayCat(p)===c).length,"shop_shelf_"+String(c).replace(/[^a-z0-9]/gi,"_"),(["▣","◈","▤","◉","▱","ϟ","▦","❄","＋"][i%9]))).join("")}
     </nav>
-    <div class="shop-sidebar-promo"><span>✦ APEX TIP</span><p>Not sure what fits? Try the PC builder to check component compatibility.</p><a href="#/build">Build a PC ↗</a></div>
+    <div class="shop-sidebar-promo"><span>✦ APEX TIP</span><p>Need help finding the right product for your setup?</p><a href="#/tech">Request tech help ↗</a></div>
     ${filterBar}
   </aside>`;
   return `<div class="products-page">
@@ -2162,7 +2176,7 @@ function loadSavedBuild(id){
   const valid={};CATS.forEach(cat=>{const part=partsAll().find(p=>p.id===item.sel[cat]&&p.category===cat);if(part)valid[cat]=part.id;});
   buildSel=valid;wantAssembly=!!item.assembly;
   if(Number.isFinite(+item.budget)&&+item.budget>0)buildBudget=+item.budget;
-  saveBuild();render();go("/build");toast("Saved build loaded.");
+  saveBuild();render();go("/products");toast("The PC builder has been retired. You can browse products instead.");
 }
 function renameSavedBuild(id){
   const item=savedBuilds.find(b=>b.id===id);if(!item)return;
@@ -2522,7 +2536,7 @@ function pickPart(cat,id){
     if(existingCase&&!compatibilityReview(existingCase,cpu,watts,chosen).fits)delete buildSel.Case;
   }
   saveBuild(); render();
-  if(route()!=="/build") toast(had ? "Removed from your build list." : "Added to your build list — see it on Build a PC.");
+  if(route()!=="/build") toast(had ? "Removed from your saved selection." : "Saved your selection.");
 }
 
 const CONTACT_REASONS = ["Repair or tech support","Help building a PC","Question about an order","Something else"];
@@ -2580,7 +2594,7 @@ function contact(){
 function cart(){
   const t = cartTotals();
   if(!myCart.length) return `<div class="wrap"><div class="pagehead"><h2>Cart</h2></div>${marketCartControls()}
-    <div class="empty"><strong>Your cart is empty</strong><a class="btn" style="margin-top:12px" href="#/build">Start a build</a></div></div>`;
+    <div class="empty"><strong>Your cart is empty</strong><a class="btn" style="margin-top:12px" href="#/products">Browse products</a></div></div>`;
   return `<div class="wrap"><div class="pagehead"><h2>Cart</h2></div>${marketCartControls()}
   <div class="split">
     <div class="panel">${myCart.map((i,ix)=>`
@@ -2943,7 +2957,7 @@ async function saveSettings(e){
 function inventory(){
   if(!isOwner) return staff();
   const groups = CATS.map(cat => ({cat, items: partsAll().filter(p=>p.category===cat)}));
-  return `<div class="wrap"><div class="pagehead"><div><h2>Manage parts</h2><p>Every part you've uploaded, grouped by category. The Build a PC page is what customers actually browse — this is just for keeping it organized.</p></div>
+  return `<div class="wrap"><div class="pagehead"><div><h2>Manage parts</h2><p>Manage any PC parts you add in the future. Customers can browse listed parts on the Products page.</p></div>
   <button class="btn gold" onclick="editPart()">Add a part</button></div>
   ${groups.map(g=>`
     <h3 style="margin-top:28px">${esc(g.cat)} (${g.items.length})</h3>
@@ -3148,13 +3162,13 @@ function editProduct(id){
   const p = id ? S.products.find(x=>x.id===id) : {id:uid(),name:"",category:(S.settings.productCategories||[])[0]||"",cpuType:"",processor:"",brand:"",price:0,desc:"",longDesc:"",featured:false,image:""};
   const html = `<div class="dlg"><h3>${id?"Edit":"New"} product</h3>
     <div class="field"><label>Name</label><input id="p_name" value="${esc(p.name)}"></div>
-    <div class="field"><label>Product type (which row it appears in)</label>${selectWithAdd("p_cat","productCategories",p.category,null,{extra:CATS.filter(isPartCat),extraLabel:"PC parts — also shown on Build a PC",onchange:"toggleProductSpecs()"})}</div>
+    <div class="field"><label>Product type (which row it appears in)</label>${selectWithAdd("p_cat","productCategories",p.category,null,{extra:CATS.filter(isPartCat),extraLabel:"PC parts",onchange:"toggleProductSpecs()"})}</div>
     <div id="partSpecBox" style="${isPartCat(p.category)?"":"display:none"}">
-      <div class="notice" style="font-size:.86rem">This is a PC part, so it also appears on the Build a PC page. These details let that page match it with other parts.</div>
+      <div class="notice" style="font-size:.86rem">PC parts can also appear on the Products page. Keep accurate specifications to help customers choose.</div>
       <div class="field"><label>Socket</label>${selectWithAdd("p_sock","sockets",p.socket||"","—")}</div>
       <div class="field"><label>Memory type</label><select id="p_mem"><option value="">—</option><option ${p.memType==="DDR5"?"selected":""}>DDR5</option><option ${p.memType==="DDR4"?"selected":""}>DDR4</option></select></div>
       <details class="field" style="margin-top:10px"><summary style="cursor:pointer;font-weight:700">Physical fit specifications (optional)</summary>
-        <p class="muted" style="font-size:.8rem">Enter measurements from the manufacturer's specifications. These are used by Build a PC to check case, cooler, board and power-connector fit.</p>
+        <p class="muted" style="font-size:.8rem">Enter measurements from the manufacturer's specifications. These help describe case, cooler, board and power-connector fit.</p>
         <div class="fields2">
           <div class="field"><label>Motherboard form factor</label><input id="p_form_factor" value="${esc(p.formFactor||"")}" placeholder="ATX, Micro-ATX, Mini-ITX"></div>
           <div class="field"><label>Case-supported board sizes</label><input id="p_case_form_factors" value="${esc(p.caseFormFactors||"")}" placeholder="ATX, Micro-ATX, Mini-ITX"></div>
