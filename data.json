@@ -18848,9 +18848,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/phanteks-atx-full-tower-enthoo-pro-brushed-plastic-steel-chassis-tempered-glass-window-computer-case-black-ph-es614ptg-bk/p/N82E16811854069",
+      "specSourceUrl": "https://www.cclonline.com/ph-es614ptg-bk-phanteks-enthoo-pro-tg-full-tower-gaming-case-black-usb-3-0/",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 200.0
+      "maxPsuLengthMm": 200.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseAsusPrimeAP201Black",
@@ -18984,9 +18985,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/antec-e-atx-full-tower-case-steel-plastic-tempered-glass-computer-case-black-c8/p/N82E16811129306",
+      "specSourceUrl": "https://www.microcenter.com/product/701827/antec-c8-tempered-glass-eatx-full-tower-computer-case-black",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 210.0
+      "maxPsuLengthMm": 210.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseAntecC8ARGBBlack",
@@ -19014,9 +19016,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/antec-e-atx-full-tower-case-steel-plastic-glass-computer-case-black-c8-argb/p/N82E16811129310",
+      "specSourceUrl": "https://global.channelonline.com/smbi_canada/store/Products/overview/M015606150",
       "specVerifiedDate": "2026-11-13",
-      "maxPsuLengthMm": 210.0
+      "maxPsuLengthMm": 210.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseThermaltakeView600Black",
