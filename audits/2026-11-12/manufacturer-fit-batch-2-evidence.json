@@ -1,0 +1,406 @@
+{
+  "description": "Manufacturer documentation of physical fit metadata only. Newegg seller, availability, and prices were not rechecked in this pass. Matching dimensions alone do not certify a whole PC build.",
+  "records": [
+    {
+      "id": "8fjd834",
+      "name": "CORSAIR Dominator Titanium 64GB (2 x 32GB) DDR5 6000 (PC5 48000) Desktop Memory Model CMP64GX5M2B6000Z30W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 56.75,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "jgz2gex",
+      "name": "CORSAIR Vengeance 16GB (2 x 8GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop memory Model CMK16GX5M2E6000Z36",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 35,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "jfhjltb",
+      "name": "CORSAIR Vengeance 32GB (2 x 16GB) 288-Pin PC RAM DDR5 5200 (PC5 41600) Desktop Memory Model CMK32GX5M2B5200C40",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 35,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "d0mpe9h",
+      "name": "CORSAIR Vengeance 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model CMK32GX5M2D6000Z38W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 35,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "ramcorsair32d5cl36",
+      "name": "CORSAIR Vengeance 32GB (2 x 16GB) DDR5 6000 (PC5 48000) Desktop Memory Model CMK32GX5M2E6000Z36",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 35,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "zbkwdjp",
+      "name": "CORSAIR Vengeance LPX 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMK16GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 33.53,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "q7ai1hl",
+      "name": "CORSAIR Vengeance LPX 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMK32GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 33.53,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "s5irrlt",
+      "name": "CORSAIR Vengeance RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR5 5200 (PC5 41600) Desktop Memory Model CMH16GX5M2B5200Z40",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "h85yrlo",
+      "name": "CORSAIR Vengeance RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR5 5200 (PC5 41600) Desktop Memory Model CMH16GX5M2B5200Z40W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "52qat7g",
+      "name": "CORSAIR Vengeance RGB 16GB 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model CMH16GX5M1D6000Z38",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "3yuf9vc",
+      "name": "CORSAIR Vengeance RGB 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Custom Lab Cherry Blossom Desktop Memory Model CMH32GX5M2B6000Z30CB - Gray",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "eldmo2c",
+      "name": "CORSAIR Vengeance RGB 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Custom Lab Cherry Blossom Desktop Memory Model CMH32GX5M2B6000Z30WCB - White",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "kfftksl",
+      "name": "CORSAIR Vengeance RGB 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model CMH32GX5M2N6000Z30",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "2ewivv1",
+      "name": "CORSAIR Vengeance RGB CMH32GX5M2E6000C36W 32GB (2 x 16GB) DDR5 6000 PC5-48000 Desktop Memory CL36 Intel XMP 3.0 White",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "dcnprko",
+      "name": "CORSAIR Vengeance RGB Pro 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMW16GX4M2E3200C16",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 51,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "3lr8mbx",
+      "name": "CORSAIR Vengeance RGB Pro 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMW16GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 51,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "59ilhzy",
+      "name": "CORSAIR Vengeance RGB Pro 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMW32GX4M2E3200C16",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 51,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "2f31r8b",
+      "name": "CORSAIR Vengeance RGB Pro SL 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMH16GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44.8,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "3w823jj",
+      "name": "CORSAIR Vengeance RGB Pro SL 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model CMH32GX4M2E3200C16W",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44.8,
+      "manufacturer_source": "https://help.corsair.com/hc/en-us/articles/34381966388881-RAM-Memory-Module-Dimensions",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "ramgskillflarex532",
+      "name": "G.SKILL Flare X5 Series AMD EXPO 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 Desktop Memory Model F5-6000J3636F16GX2-FX5",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 33,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "r38ntlx",
+      "name": "G.SKILL Ripjaws V Series 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model F4-3200C16D-16GVKB",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 42,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "xjse0tl",
+      "name": "G.SKILL Ripjaws V Series 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3600 (PC4 28800) Desktop Memory Model F4-3600C18D-32GVK",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 42,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "sabkwcr",
+      "name": "G.SKILL Trident Z Royal Series 64GB (2 x 32GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model F5-6000J2836G32GX2-TR5NS",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "zvpnb23",
+      "name": "G.SKILL Trident Z5 RGB Series 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model F5-6000J3636F16GX2-TZ5RK",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "oo7bhle",
+      "name": "G.SKILL Trident Z5 Royal Neol Series 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model F5-6000J2836G16GX2-TR5NS",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "9iz3zri",
+      "name": "G.SKILL TridentZ RGB Series 32GB (2 x 16GB) 288-Pin PC RAM DDR4 3600 (PC4 28800) Desktop Memory Model F4-3600C18D-32GTZR",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 44,
+      "manufacturer_source": "https://www.gskill.com/faq/1502180912/DRAM-Memory",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "8eospyr",
+      "name": "Klevv Bolt V 64GB (2 x 32GB) DDR5 6000 (PC5 48000) Desktop Memory Model KD5BGUA80-60A300I",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 34,
+      "manufacturer_source": "https://www.klevv.com/ken/products_details/memory/Klevv_BoltV",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "go6mecn",
+      "name": "Team T-Force Delta ECO 32GB (2 x 16GB) 288-Pin PC RAM DDR5 6400 (PC5 51200) Desktop Memory Model FF2D532G6400HC32ADC01",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 46.1,
+      "manufacturer_source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-eco-ddr5-silver/delta-rgb-eco-ddr5-silver-FF2D532G6400HC32ADC01/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "6skacce",
+      "name": "Team T-Force Delta RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model TF3D416G3200HC16FDC01",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 49,
+      "manufacturer_source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "ko54jkz",
+      "name": "Team T-Force Delta RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model TF3D416G3200HC16FDC01",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 49,
+      "manufacturer_source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "njee07b",
+      "name": "Team T-Force Delta RGB 16GB (2 x 8GB) 288-Pin PC RAM DDR4 3200 (PC4 25600) Desktop Memory Model TF4D416G3200HC16FDC01",
+      "category": "Memory",
+      "field": "heightMm",
+      "value": 49,
+      "manufacturer_source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr4-black/delta-rgb-ddr4-black-TF3D416G4000HC20CDC01/",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835103385",
+      "name": "Cooler Master Hyper 212 3DHP CPU Air Cooler ARGB - Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 158,
+      "manufacturer_source": "https://www.coolermaster.com/en-sg/products/hyper-212-3dhp-black-argb.html",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835103384",
+      "name": "Cooler Master Hyper 212 3DHP CPU Air Cooler Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 158,
+      "manufacturer_source": "https://www.coolermaster.com/en-global/products/hyper-212-3dhp-black.html",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835988018",
+      "name": "MONTECH NX600 ARGB Dual-Tower Air Cooler Intel LGA1700 1851 AMD AM5 Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 160,
+      "manufacturer_source": "https://www.montechpc.com/nx600-argb",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835846080",
+      "name": "MSI MAG COREFROZR AA13 ARGB CPU Cooler LGA 1700/1851 AM5/AM4 120mm Fan Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 152,
+      "manufacturer_source": "https://www.msi.com/Air-Cooling/MAG-COREFROZR-AA13/Overview",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269024",
+      "name": "be quiet Pure Rock 3 120mm CPU Cooler Intel 1851 1700 1200 1150 1151 1155 AMD AM5 AM4 BK039 - Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 154,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5591",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269027",
+      "name": "be quiet Pure Rock Pro 3 Black 120mm CPU Cooler",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 155,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5600",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269028",
+      "name": "be quiet Pure Rock Pro 3 LX 120mm CPU Cooler ARGB - Black",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 155,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5601",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269025",
+      "name": "be quiet! Pure Rock 3 LX",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 154,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5592",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "coolerN82E16835269026",
+      "name": "be quiet! Pure Rock Pro 3",
+      "category": "CPU cooler",
+      "field": "heightMm",
+      "value": 155,
+      "manufacturer_source": "https://www.bequiet.com/en/cpucooler/5599",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseNZXTH5Flow2024Black",
+      "name": "NZXT H5 Flow 2024 ATX Mid-Tower Case Black",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://nzxt.com/products/h5-flow",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseNzxtH6FlowBlack",
+      "name": "NZXT H6 Flow Black Dual-Chamber Mid-Tower",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://nzxt.com/products/h6-flow",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseNzxtH6FlowWhite",
+      "name": "NZXT H6 Flow White Dual-Chamber Mid-Tower",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://nzxt.com/products/h6-flow",
+      "verified_utc_date": "2026-11-13"
+    },
+    {
+      "id": "caseThermaltakeVersaH16ARGB",
+      "name": "Thermaltake Versa H16 TG ARGB Micro-ATX Case Black",
+      "category": "Case",
+      "field": "supportedPSUFormFactors",
+      "value": "ATX",
+      "manufacturer_source": "https://thermaltake.com/products/versa-h16-tg-argb-micro-tower-chassis",
+      "verified_utc_date": "2026-11-13"
+    }
+  ],
+  "notes": [
+    "RAM heights describe module height; the motherboard socket and air-cooler placement still require physical review.",
+    "Case PSU form factor confirms standard ATX/PS2 only; installed length and cable routing require separate validation.",
+    "CPU cooler height does not establish RAM interference clearance."
+  ]
+}
