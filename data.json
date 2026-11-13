@@ -2063,11 +2063,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 934.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-r9070gaming-oc-16gd-radeon-rx-9070-16gb-graphics-card-triple-fans/p/14-932-752",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-R9070GAMING-OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-R9070GAMING OC-16GD",
       "lengthMm": 288.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu5060ventus2x",
@@ -2103,11 +2104,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 519.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-8g-ventus-2x-oc-geforce-rtx-5060-8gb-graphics-card-double-fans/p/N82E16814137975",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://ca.msi.com/Graphics-Card/GeForce-RTX-5060-8G-VENTUS-2X-OC/Specification",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 5060 8G VENTUS 2X OC",
       "lengthMm": 197.0,
-      "recommendedPsuWatts": 550
+      "recommendedPsuWatts": 550,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpu5060tiventus2x16",
@@ -2185,11 +2187,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 859.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-3x-oc-geforce-rtx-5060-ti-16gb-graphics-card-triple-fans/p/N82E16814137957",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://storage-asset.msi.com/datasheet/vga/us/GeForce-RTX-5060-Ti-16G-VENTUS-3X-OC.pdf",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 5060 Ti 16G VENTUS 3X OC",
       "lengthMm": 304.0,
-      "recommendedPsuWatts": 600
+      "recommendedPsuWatts": 600,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpurx9070gresapphirepulse2x",
@@ -2220,11 +2223,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 779.99,
-      "specSourceUrl": "https://www.newegg.com/sapphire-tech-pulse-radeon-rx-9070-gre-graphics-12gb-graphics-card-double-fans/p/N82E16814202478",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.sapphiretech.com/en/consumer/pulse-radeon-rx-9070-gre-12g-gddr6",
+      "specVerifiedDate": "2026-11-13",
       "model": "11354-01-20G RX 9070 GRE GAMING 12GB OC",
       "lengthMm": 280.0,
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu3060msiventus2x",
@@ -2384,11 +2388,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1439.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n507twf3oc-16gd-geforce-rtx-5070-ti-16gb-graphics-card-triple-fans/p/N82E16814932771",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/us/Graphics-Card/GV-N507TWF3OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N507TWF3OC-16GD",
       "lengthMm": 304.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpu5090aorusif2x",
@@ -2424,11 +2429,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 7189.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n5090aorus-if-32gd-geforce-rtx-5090-32gb-graphics-card/p/N82E16814932838",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/us/Graphics-Card/GV-N5090AORUS-IF-32GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N5090AORUS IF-32GD",
       "lengthMm": 330.0,
-      "recommendedPsuWatts": 1000
+      "recommendedPsuWatts": 1000,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpu5080windforce3x",
@@ -2464,11 +2470,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 2199.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-windforce-gv-n5080wf3oc-16gd-geforce-rtx-5080-16gb-graphics-card-triple-fans/p/N82E16814932754",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-N5080WF3OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N5080WF3OC-16GD",
       "lengthMm": 304.0,
-      "recommendedPsuWatts": 850
+      "recommendedPsuWatts": 850,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpu3060gigagaming3x",
@@ -2504,11 +2511,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 479.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n3060gaming-oc-12gd-geforce-rtx-3060-12gb-graphics-card-windforce-3x/p/N82E16814932433",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/ie/Graphics-Card/GV-N3060GAMING-OC-12GD-rev-20/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N3060GAMING OC-12GD (rev. 2.0)",
       "lengthMm": 282.0,
-      "recommendedPsuWatts": 550
+      "recommendedPsuWatts": 550,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpu3050msiventus2x8",
@@ -2544,11 +2552,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 349.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-3050-ventus-2x-xs-8g-oc-geforce-rtx-3050-8gb-graphics-card-double-fans/p/N82E16814137810",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://us.msi.com/Graphics-Card/GeForce-RTX-3050-VENTUS-2X-XS-8G-OC/Specification",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 3050 VENTUS 2X XS 8G OC",
       "lengthMm": 205.0,
-      "recommendedPsuWatts": 500
+      "recommendedPsuWatts": 500,
+      "requiredPowerConnectors": "1 x 6-pin"
     },
     {
       "id": "intel-u9-285k",
@@ -2815,11 +2824,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1319.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n507tgaming-oc-16gd-geforce-rtx-5070-ti-16gb-graphics-card-triple-fans/p/N82E16814932768",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-N507TGAMING-OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N507TGAMING OC-16GD",
       "lengthMm": 342.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpurx9070xtasrocksteellegend3x",
@@ -2850,11 +2860,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 969.99,
-      "specSourceUrl": "https://www.newegg.com/asrock-steel-legend-rx9070xt-sl-16g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814930136",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.asrock.com/Graphics-Card/AMD/Radeon%20RX%209070%20XT%20Steel%20Legend%2016GB/index.asp",
+      "specVerifiedDate": "2026-11-13",
       "model": "RX9070XT SL 16G",
       "lengthMm": 298.0,
-      "recommendedPsuWatts": 800
+      "recommendedPsuWatts": 800,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu5060tigigabyteeagle2x8",
@@ -2890,11 +2901,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 539.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n506teagle-oc-8gd-geforce-rtx-5060-ti-8gb-graphics-card-double-fans/p/N82E16814932795",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/lt/Graphics-Card/GV-N506TEAGLE-OC-8GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N506TEAGLE OC-8GD",
       "lengthMm": 215.0,
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpurx9070xtsapphirenitro3x",
@@ -2925,11 +2937,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1099.99,
-      "specSourceUrl": "https://www.newegg.com/sapphire-tech-nitro-11348-01-20g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814202448",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.sapphiretech.com/en/consumer/nitro-radeon-rx-9070-xt-16g-gddr6",
+      "specVerifiedDate": "2026-11-13",
       "model": "11348-01-20G",
       "lengthMm": 331.0,
-      "recommendedPsuWatts": 850
+      "recommendedPsuWatts": 850,
+      "requiredPowerConnectors": "1 x 12V-2x6"
     },
     {
       "id": "am4asrock550m",
@@ -11190,11 +11203,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 519.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-8g-ventus-2x-oc-geforce-rtx-5060-8gb-graphics-card-double-fans/p/N82E16814137975",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://ca.msi.com/Graphics-Card/GeForce-RTX-5060-8G-VENTUS-2X-OC/Specification",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 5060 8G VENTUS 2X OC",
       "lengthMm": 197.0,
-      "recommendedPsuWatts": 550
+      "recommendedPsuWatts": 550,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpu5060tiventus2x16",
@@ -11272,11 +11286,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 859.99,
-      "specSourceUrl": "https://www.newegg.com/msi-rtx-5060-ti-16g-ventus-3x-oc-geforce-rtx-5060-ti-16gb-graphics-card-triple-fans/p/N82E16814137957",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://storage-asset.msi.com/datasheet/vga/us/GeForce-RTX-5060-Ti-16G-VENTUS-3X-OC.pdf",
+      "specVerifiedDate": "2026-11-13",
       "model": "RTX 5060 Ti 16G VENTUS 3X OC",
       "lengthMm": 304.0,
-      "recommendedPsuWatts": 600
+      "recommendedPsuWatts": 600,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpu5070gigawindforce3x",
@@ -11468,11 +11483,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 934.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-r9070gaming-oc-16gd-radeon-rx-9070-16gb-graphics-card-triple-fans/p/14-932-752",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-R9070GAMING-OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-R9070GAMING OC-16GD",
       "lengthMm": 288.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpurx9070greasusprime3x",
@@ -11540,11 +11556,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 779.99,
-      "specSourceUrl": "https://www.newegg.com/sapphire-tech-pulse-radeon-rx-9070-gre-graphics-12gb-graphics-card-double-fans/p/N82E16814202478",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.sapphiretech.com/en/consumer/pulse-radeon-rx-9070-gre-12g-gddr6",
+      "specVerifiedDate": "2026-11-13",
       "model": "11354-01-20G RX 9070 GRE GAMING 12GB OC",
       "lengthMm": 280.0,
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu5090aorusmasterice3x",
@@ -11807,13 +11824,14 @@
       "seller": "Newegg",
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n506teagle-oc-8gd-geforce-rtx-5060-ti-8gb-graphics-card-double-fans/p/N82E16814932812?Item=N82E16814932812",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/sg/Graphics-Card/GV-N506TEAGLEMAX-OC-8GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N506TEAGLEMAX OC-8GD",
       "lengthMm": 281.0,
       "tdp": "",
       "watts": "",
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpurtx5060tiasustuf3x8",
@@ -11891,11 +11909,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1319.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n507tgaming-oc-16gd-geforce-rtx-5070-ti-16gb-graphics-card-triple-fans/p/N82E16814932768",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/Graphics-Card/GV-N507TGAMING-OC-16GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N507TGAMING OC-16GD",
       "lengthMm": 342.0,
-      "recommendedPsuWatts": 750
+      "recommendedPsuWatts": 750,
+      "requiredPowerConnectors": "1 x 16-pin"
     },
     {
       "id": "gpurx9070xtasrocksteellegend3x",
@@ -11926,11 +11945,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 969.99,
-      "specSourceUrl": "https://www.newegg.com/asrock-steel-legend-rx9070xt-sl-16g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814930136",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.asrock.com/Graphics-Card/AMD/Radeon%20RX%209070%20XT%20Steel%20Legend%2016GB/index.asp",
+      "specVerifiedDate": "2026-11-13",
       "model": "RX9070XT SL 16G",
       "lengthMm": 298.0,
-      "recommendedPsuWatts": 800
+      "recommendedPsuWatts": 800,
+      "requiredPowerConnectors": "2 x 8-pin"
     },
     {
       "id": "gpu5060tigigabyteeagle2x8",
@@ -11966,11 +11986,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 539.99,
-      "specSourceUrl": "https://www.newegg.com/gigabyte-gv-n506teagle-oc-8gd-geforce-rtx-5060-ti-8gb-graphics-card-double-fans/p/N82E16814932795",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.gigabyte.com/lt/Graphics-Card/GV-N506TEAGLE-OC-8GD/sp",
+      "specVerifiedDate": "2026-11-13",
       "model": "GV-N506TEAGLE OC-8GD",
       "lengthMm": 215.0,
-      "recommendedPsuWatts": 650
+      "recommendedPsuWatts": 650,
+      "requiredPowerConnectors": "1 x 8-pin"
     },
     {
       "id": "gpurx9070xtsapphirenitro3x",
@@ -12001,11 +12022,12 @@
       "verifiedDate": "2026-11-12",
       "stockStatus": "In Stock",
       "neweggPrice": 1099.99,
-      "specSourceUrl": "https://www.newegg.com/sapphire-tech-nitro-11348-01-20g-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/N82E16814202448",
-      "specVerifiedDate": "2026-11-12",
+      "specSourceUrl": "https://www.sapphiretech.com/en/consumer/nitro-radeon-rx-9070-xt-16g-gddr6",
+      "specVerifiedDate": "2026-11-13",
       "model": "11348-01-20G",
       "lengthMm": 331.0,
-      "recommendedPsuWatts": 850
+      "recommendedPsuWatts": 850,
+      "requiredPowerConnectors": "1 x 12V-2x6"
     },
     {
       "id": "psu550m",
@@ -18774,8 +18796,9 @@
         "DDR4 3200 (PC4 25600)",
         "Black"
       ],
-      "specSourceUrl": "https://www.newegg.com/crucial-pro-32gb-ddr4-3200-cas-latency-cl22-desktop-memory-black/p/N82E16820156326",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.bestbuy.com/site/questions/crucial-pro-32gb-kit-2x16gb-ddr4-3200mhz-c22-udimm-desktop-memory-kit-black/6543927?page=2",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 31.9
     },
     {
       "id": "casePhanteksEnthooProTG",
@@ -18999,9 +19022,10 @@
         "computer case",
         "chassis"
       ],
-      "specSourceUrl": "https://www.newegg.com/p/N82E16811133572",
-      "specVerifiedDate": "2026-11-12",
-      "maxPsuLengthMm": 220.0
+      "specSourceUrl": "https://thermaltake.com/products/view-600-tg-full-tower-chassis",
+      "specVerifiedDate": "2026-11-13",
+      "maxPsuLengthMm": 220.0,
+      "supportedPSUFormFactors": "ATX"
     },
     {
       "id": "caseFractalTorrentRGBBlack",
@@ -20976,8 +21000,9 @@
         "air cooling",
         "fan cooler"
       ],
-      "specSourceUrl": "https://www.newegg.com/sudokoo-sk700-v-amazon-sk700-v-120mm-amd-socket-am5/p/13C-012U-00001?SoldByNewegg=1",
-      "specVerifiedDate": "2026-11-13"
+      "specSourceUrl": "https://www.sudokoo.com/products/Cooling/cpuaircoolers/SK700V-AM5-Designated-Digital-Air-Cooler-with-Full-RAM-Freedom/2025/20904.shtml",
+      "specVerifiedDate": "2026-11-13",
+      "heightMm": 164
     },
     {
       "id": "cooler13C-012U-00007",
