@@ -1,0 +1,135 @@
+[
+  {
+    "id": "psu850n",
+    "previousName": "NZXT C850 Gold 850W",
+    "verifiedName": "NZXT ATX 3.1 850 Watt 80 Plus Gold Fully Modular Power Supply - Black-PA-8G2BB-US",
+    "sourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-black-pa-8g2bb-us/p/N82E16817116050?Item=N82E16817116050&SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "psu100n",
+    "previousName": "NZXT C1000 Gold 1000W",
+    "verifiedName": "NZXT ATX 3.1 1000 Watt 80 Plus Gold Fully Modular Power Supply - Black - PA-0G2BB-US",
+    "sourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-1000-w-80-plus-gold-certified-power-supplies-black-pa-0g2bb-us/p/N82E16817116052?Item=N82E16817116052&SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "psu100w",
+    "previousName": "ASRock Steel Legend SL-1000GW 1000W White",
+    "verifiedName": "ASRock SL-1000GW 1000W 80 PLUS GOLD & Cybenetics PLATINUM Full Modular Power Supply, ATX3.1 & PCIe5.1 Ready with Dual Color 12V-2x6 Cable, 10 Years Warranty, White Edition",
+    "sourceUrl": "https://www.newegg.com/asrock-atx3-1-pcie5-1-1000-w-80-plus-gold-certified-power-supply-white-sl-1000gw/p/N82E16817955012?Item=N82E16817955012&SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "psu850nw",
+    "previousName": "NZXT C850 Gold 850W White",
+    "verifiedName": "NZXT ATX 3.1 850 Watt 80 Plus Gold Fully Modular Low-Noise Power Supply - White - PA-8G2BW-US",
+    "sourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-white-pa-8g2bw-us/p/N82E16817116051?Item=N82E16817116051&SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "psunzxt1200g",
+    "previousName": "NZXT C1200 Gold 1200W",
+    "verifiedName": "NZXT ATX 3.1 1200 Watt 80 Plus Gold Fully Modular Power Supply - Black - PA-2G2BB-US",
+    "sourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-1200-w-80-plus-gold-certified-power-supplies-black-pa-2g2bb-us/p/N82E16817116054",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "psunzxt1000atx31",
+    "previousName": "NZXT C1000 Gold 1000W ATX 3.1",
+    "verifiedName": "NZXT ATX 3.1 1000 Watt 80 Plus Gold Fully Modular Power Supply - Black - PA-0G2BB-US",
+    "sourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-1000-w-80-plus-gold-certified-power-supplies-black-pa-0g2bb-us/p/N82E16817116052",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "psunzxt850white",
+    "previousName": "NZXT C850 850W White ATX 3.1",
+    "verifiedName": "NZXT ATX 3.1 850 Watt 80 Plus Gold Fully Modular Low-Noise Power Supply - White - PA-8G2BW-US",
+    "sourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-white-pa-8g2bw-us/p/N82E16817116051",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "psunzxt850black",
+    "previousName": "NZXT C850 850W Black ATX 3.1",
+    "verifiedName": "NZXT ATX 3.1 850 Watt 80 Plus Gold Fully Modular Power Supply - Black-PA-8G2BB-US",
+    "sourceUrl": "https://www.newegg.com/nzxt-atx12v-v3-1-eps12v-v2-92-850-w-80-plus-gold-certified-power-supplies-black-pa-8g2bb-us/p/N82E16817116050",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "caseDiypcIdx6",
+    "previousName": "DIYPC IDX6-ATX-ARGB Tempered-Glass ATX Case",
+    "verifiedName": "DIYPC IDX6-ATX-ARGB Black Dual USB3.0 / Type C Tempered Glass ATX Gaming Computer Case w/ Dual Tempered Glass Panel and 4 x ARGB PWM Fans (Pre-Installed).",
+    "sourceUrl": "https://www.newegg.com/diypc-atx-tower-steel-tempered-glass-computer-case-black-idx6-atx-argb/p/N82E16811353300",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "hddWDRedPlus8TB",
+    "previousName": "Western Digital Red Plus 8TB 5640RPM SATA NAS HDD",
+    "verifiedName": "WD Red Plus 8TB 5640 RPM 256MB Cache SATA 6.0Gb/s 3.5\" Hard Drives -WD80EFPX",
+    "sourceUrl": "https://www.newegg.com/red-plus-wd80efpx-8tb/p/1Z4-0002-01NP7",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "hddWDBlack8TB",
+    "previousName": "Western Digital Black 8TB 7200RPM SATA Performance HDD",
+    "verifiedName": "WD Black 8TB 7200 RPM 256MB Cache SATA 6.0Gb/s 3.5\" Hard Drives - WD8002FZBX",
+    "sourceUrl": "https://www.newegg.com/black-wd8002fzbx-8tb/p/N82E16822234558",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "coolerN82E16835099046",
+    "previousName": "Gamdias GD-BOREAS M2-51D HW ARGB 120mm Hydraulic CPU Air Cooler - White",
+    "verifiedName": "Gamdias Boreas M2-51D White ARGB CPU Air Cooler with Digital Display, 5 Copper Heat Pipes, 120mm Hydraulic Bearing PWM ARGB Fan, Support LGA 1700/1151/1150/1155/1156/1200/2011/2066/AM5/AM4",
+    "sourceUrl": "https://www.newegg.com/gamdias-gd-boreas-m2-51d-hw-argb-120mm/p/N82E16835099046?SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "cooler2YM-00BJ-00001",
+    "previousName": "Sudokoo R-PTS360-BKDSMP-GAS-1 - Black",
+    "verifiedName": "Sudokoo Proteus 360 AIO CPU Liquid Cooler, 3.4-inch 480x480 TFT LCD, 320W TDP, PWM Pump, 3 x 120 mm Fans, Intel LGA1851/1700/1200/1151/1150/1155, AMD AM5/AM4",
+    "sourceUrl": "https://www.newegg.com/sudokoo-liquid-cooler-cpu-black/p/2YM-00BJ-00001?SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "coolerN82E16835709307",
+    "previousName": "Phanteks PH-GO420D30_DBK02 - Black",
+    "verifiedName": "Phanteks Glacier One 420D30 X2 AIO Liquid CPU Cooler, Evolv X2 Aluminum Cap Design, 3x Performance D30-140 D-RGB Fans, for Intel LGA 1851, 1700, 1200, 115x and AMD AM4/AM5 sockets, Black",
+    "sourceUrl": "https://www.newegg.com/phanteks-aio-radiator-size-456-x-138-5-x-27mm-intel-socket-lga-115x-1200-1700-1851-amd-socket-am4-am5-black/p/N82E16835709307?SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "coolerN82E16835846073",
+    "previousName": "MSI MPG CORELIQUID P13 360 Black AIO Cooler 360mm Radiator 3x120mm Fans",
+    "verifiedName": "MSI MPG CORELIQUID P13 360 Black - AIO ARGB CPU Liquid Cooler - 360mm Radiator - IPS 2.1\" LCD Screen - Triple 120mm ARGB PWM Fans - Uni Bracket - LGA 1851 / AM5 Ready",
+    "sourceUrl": "https://www.newegg.com/msi-aio-coreliquid-p13-series-radiator-size-394-x-119-6-x-27mm-lga-1700-1851-am5-am4-black/p/N82E16835846073?SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "coolerN82E16835709308",
+    "previousName": "Phanteks PH-GO420D30_DWT02 - White",
+    "verifiedName": "Phanteks Glacier One 420D30 X2 AIO Liquid CPU Cooler, Evolv X2 Aluminum Cap Design, 3x Performance D30-140 D-RGB Fans, for Intel LGA 1851, 1700, 1200, 115x and AMD AM4/AM5 sockets, White",
+    "sourceUrl": "https://www.newegg.com/phanteks-aio-radiator-size-456-x-138-5-x-27mm-intel-socket-lga-115x-1200-1700-1851-amd-socket-am4-am5-white/p/N82E16835709308?SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "coolerN82E16835846074",
+    "previousName": "MSI MPG CORELIQUID P13 360 White AIO Liquid Cooler 360mm Radiator 3x 120mm PWM Fans LGA 1851 AM5",
+    "verifiedName": "MSI MPG CORELIQUID P13 360 White - AIO ARGB CPU Liquid Cooler - 360mm Radiator - IPS 2.1\" LCD Screen - Triple 120mm ARGB PWM Fans - Uni Bracket - LGA 1851 / AM5 Ready",
+    "sourceUrl": "https://www.newegg.com/msi-aio-coreliquid-p13-series-radiator-size-394-x-119-6-x-27mm-lga-1700-1851-am5-am4-white/p/N82E16835846074?SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "coolerN82E16835607007",
+    "previousName": "SAMA L70 360mm Liquid CPU Cooler ARGB Mirror Effect for AMD Intel - Black",
+    "verifiedName": "SAMA L70 Black 360 mm Liquid CPU Cooler, ARGB Infinity Mirror, 3 x 120 mm PWM Fans, AMD AM4/AM5, Intel LGA 1150/1151/1155/1156/1200/1700/1851",
+    "sourceUrl": "https://www.newegg.com/sama-liquid-cooling-system-radiator-size-397-x-120-x-27mm/p/N82E16835607007?SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  },
+  {
+    "id": "coolerN82E16835607010",
+    "previousName": "SAMA L70 240mm Liquid CPU Cooler ARGB Mirror PWM for AM4 AM5 LGA1700 1150 1200 1851 - White",
+    "verifiedName": "SAMA L70 White 240mm Liquid CPU Cooler, ARGB Infinity Mirror, 2x 120mm PWM Fans, AMD AM4/AM5, Intel LGA 1150/1151/1155/1156/1200/1700/1851",
+    "sourceUrl": "https://www.newegg.com/sama-liquid-cooling-system-radiator-size-277-x-120-x-27mm/p/N82E16835607010?SoldByNewegg=1",
+    "resolution": "Use exact observed listing title; source SKU, product family, capacity/wattage/size and color were reconciled. Unsupported legacy title abbreviations removed."
+  }
+]

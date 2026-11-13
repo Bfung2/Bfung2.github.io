@@ -18,5 +18,5 @@ The merged live storefront renders 126 product cards and 2,552 DOM elements in t
 
 - Configure the business SMTP sender, keep email confirmation enabled, correct Site URL and allow the two exact callback URLs, test delivery/recovery, then enable CUSTOMER_EMAIL_READY.
 - Complete owner decisions in docs/policy-decisions.md and approve completed wording in docs/customer-policy-draft.md before publication.
-- Live source verification for remaining catalog entries. The static queue contains 237 SKUs (233 active) needing catalog evidence or selected fit metadata checks. This is a review queue, not proof of incompatibility. The 734 source records still include 118 missing Newegg baselines, 99 missing source URLs, 150 missing seller/date records and 146 missing stock records. No price/availability was invented or changed in this follow-up.
-- Existing price conflicts for two inactive marketplace GPUs remain recorded for source review; this change prevents future same-SKU owner edits from diverging.
+- Catalog live review is complete as of November 13: 721 IDs observed, all exact links recovered, and no missing source/seller/stock/date fields. See remediation.md and full-review-progress.json. The separate fit queue retains 138 IDs with incomplete physical/cable documentation; it is not a source-price verification backlog.
+- No same-ID price conflicts remain. Unavailable marketplace inventory stays disabled.
