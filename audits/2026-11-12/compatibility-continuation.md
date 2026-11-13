@@ -1,21 +1,26 @@
-# Compatibility documentation continuation: November 13, 2026
+# Remaining case PSU mounting compatibility verification: November 13, 2026
 
-PR #122 resolved 85 of the original 93 active unique catalog fit documentation gaps, across 93 mirrored storefront/PC builder records.
+Following the merged catalog audit (#121), the 85-fit-fact continuation (#122), and the SilverStone SP3B follow-up (#123), the active physical-fit documentation queue contained seven cases with unconfirmed PSU form factor. This branch resolves three exact-model standard ATX mounts using positive third-party product documentation, retaining four genuinely unknown mounts.
 
-## Exact-model SilverStone follow-up
+## Confirmed cases (ATX PSU mounting)
 
-After PR #122 merged, the remaining SilverStone RL-XE04-SP3B server cooler was checked against the **SST-XE04-SP3B** manufacturer's regional distributor. The specified full assembly dimensions are 93 × 126 × 119 mm (W × H × D), and the compatible sockets are SP6, SP3 and TR4. The catalog now records `heightMm: 126`, adds `SP6` to the supported socket list, and clarifies its short and long descriptions.
+| Catalog ID | Model | Evidence | Notes |
+|---|---|---|---|
+| `caseAntecC8Black` | Antec C8 Black | https://www.microcenter.com/product/701827/antec-c8-tempered-glass-eatx-full-tower-computer-case-black | Exact Micro Center model C8 specifies PSU mount Bottom (ATX). |
+| `caseAntecC8ARGBBlack` | Antec C8 ARGB Black | https://global.channelonline.com/smbi_canada/store/Products/overview/M015606150 | Exact manufacturer-model cabinet data lists Power Device: No power supply (ATX); Antec specs max length 210mm. |
+| `casePhanteksEnthooProTG` | Phanteks Enthoo Pro TG PH-ES614PTG_BK | https://www.cclonline.com/ph-es614ptg-bk-phanteks-enthoo-pro-tg-full-tower-gaming-case-black-usb-3-0/ | Exact model listing explicitly lists ATX Power Supply supported. Manufacturer model page confirms identity. |
 
-Source: https://www.tekwind.co.jp/SilverStone/products/entry_18011.php (exact model SST-XE04-SP3B). The alternate reseller source https://aerocooler.com/silverstone-sst-xe04-sp3b-amd-socket-sp3-tr4-4u-server-cpu-cooler/ independently identifies 126 mm height for this model. The product's Newegg listing `RL-XE04-SP3B` identifies the same SP3B variant.
+Only `supportedPSUFormFactors: "ATX"` is being confirmed. PSU maximum length already existed and still applies. No inference is made about SFX/SFX-L adapters, cable routing space, side connectors, or coexistence with drive cages and fans.
 
-## Remaining 7 active facts
+## Four remaining open
 
-Only seven PSU **form-factor** gaps remain: Antec C8 ARGB, Antec C8, DIYPC DIY-ATX08-Wood, DIYPC DIY-G18-WD, Phanteks Enthoo Pro TG, Rosewill Helium NAS and Rosewill Helium NAS Max. Their published PSU **length limits** do not alone prove form-factor mounting-hole or bracket compatibility. Do not silently infer `supportedPSUFormFactors: "ATX"` from a motherboard-size label or PSU length. Leave the builder's `psu-case` state `unverified` for these cases until an exact model's PSU supported form factor is established.
+- `caseDiypcAtx08Wood`: DIYPC DIY-ATX08-Wood, PSU maximum length known (240mm), exact mounting PSU form factor not explicitly listed by inspected sources.
+- `caseDiypcG18Wood`: DIYPC DIY-G18-WD, PSU maximum length known (160mm), exact mounting PSU form factor not explicitly listed.
+- `caseRosewillHeliumNAS`: Rosewill Helium NAS, PSU maximum length known (200mm); exact PSU form factor not explicit in manufacturer product page or manual.
+- `caseRosewillHeliumNASMax`: Rosewill Helium NAS Max, PSU maximum length known (200mm); exact PSU form factor not explicit in manufacturer product page.
 
-The **45 disabled/inactive inventory-review records** remain unchanged. This is not an unfinished live catalog offer pass: source-price verification was completed in PR #121.
+These four remain `unverified` in the PC builder until explicit exact-model PSU compatibility or manufacturer confirmation exists. A case's compatibility with an ATX **motherboard** is not proof of ATX **PSU** mounting.
 
-## Invariants
+## Guardrails
 
-The new update changes only SilverStone cooler height, supported sockets, product description wording, and `specSourceUrl`. All other products, product IDs, images, Newegg source URLs, prices, seller, stock, active flags and historical baselines remain untouched.
-
-Matching dimensions or sockets still do not certify a full PC build. Build-specific BIOS/QVL, CPU power budget, cable source/independence, GPU/CPU fit, radiator and memory interference remain subject to warnings and assembly review.
+Changed three cases' `supportedPSUFormFactors`, `specSourceUrl`, and `specVerifiedDate` only. All 734 records, IDs, models, Newegg URLs, images, prices, baselines, seller, stock, and active flags preserved. This check is physical compatibility only, not live price/stock verification. The 45 inactive inventory-review queue entries remain intact. A final full-build inspection remains necessary even for a nominal format match.
