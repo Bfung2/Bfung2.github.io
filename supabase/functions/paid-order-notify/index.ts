@@ -13,6 +13,8 @@ Deno.serve(async(req)=>{
    const caller=createClient(url,anon,{global:{headers:{Authorization:authorization}},auth:{persistSession:false}});
    const {data:{user},error}=await caller.auth.getUser();
    if(error||!user||user.email?.toLowerCase()!=='apexcomputers039@gmail.com')return json({error:'Owner or payment server required'},403);
+   const {data:ownerVerified,error:securityError}=await caller.rpc('apex_is_owner');
+   if(securityError||ownerVerified!==true)return json({error:'Owner authenticator verification required'},403);
   }
   const input=await req.json(),orderId=String(input.orderId||'');
   if(!orderId||orderId.length>160)return json({error:'Order ID required'},400);

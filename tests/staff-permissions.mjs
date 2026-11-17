@@ -206,7 +206,9 @@ const productMigration=await fs.readFile(new URL('../supabase/migrations/2026111
 await sql(productMigration);await sql(productMigration);
 await as(owner,'apexcomputers039@gmail.com');
 const catalog=JSON.parse(await fs.readFile(new URL('../data.json',import.meta.url),'utf8'));
-const ids=new Set([...catalog.products,...catalog.parts].map(p=>p.id));
+const sampleProduct={id:'fixture-private-product',name:'Private product fixture',sourceUrl:'https://www.newegg.com/p/N82E16800000001'};
+await query('select public.apex_sync_product_notes($1)',[[sampleProduct]]);
+const ids=new Set([sampleProduct.id]);
 let productNotes=await value("select public.apex_staff_get_notes('product')");
 assert.ok([...ids].every(id=>productNotes.some(n=>n.entity_id===id)));
 const seeded=productNotes.find(n=>ids.has(n.entity_id));

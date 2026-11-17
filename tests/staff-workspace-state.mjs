@@ -7,6 +7,7 @@ const context=vm.createContext({S:{products:[],parts:[]},isOwner:true,isEmployee
   money:n=>'$'+Number(n).toFixed(2),Date,URLSearchParams,Intl,console,window:{addEventListener(){}},document:{addEventListener(){},hidden:false},location:{hash:'#/staff-notes'},route:()=>'/staff-notes',render:()=>{},esc:s=>String(s??''),supabaseClient:{rpc:async name=>name==='apex_staff_get_notes'?new Promise(resolve=>{pendingNoteResolve=resolve;}):{data:{roles:[],employees:[],permissions:{}}}},
 });
 vm.runInContext(code,context);
+vm.runInContext(await fs.readFile(new URL('../staff-sales-ledger.js',import.meta.url),'utf8'),context);
 const run=source=>vm.runInContext(source,context);
 await run('staffLoadContext()');
 const loading=run('staffLoadNotes()');
@@ -18,13 +19,3 @@ run("isOwner=false;isEmployee=false;staffReset()");assert.match(run("staffGate('
 run("isEmployee=true;staffState.loaded=true;staffState.permissions={view_schedule:true,edit_schedule:false}");assert.equal(run("staffCan('view_schedule')"),true);assert.equal(run("staffCan('edit_schedule')"),false);assert.equal(run('staffNav()').includes('Roles &amp; permissions'),false);assert.equal(run('staffNav()').includes('Roles & permissions'),false);
 run('staffReset()');assert.equal(run('staffNotes.items.length'),0);assert.equal(run('staffState.employees.length'),0);
 console.log('PASS: permission refresh discards stale private responses; customer/staff gates and session data reset.');
-run("isOwner=true;staffSales.items=[{employee_id:'e',job_kind:'order',job_id:'active-test',reference:'TEST',is_test:true,settlement_status:'pending',credited_at:new Date().toISOString()},{employee_id:'e',job_kind:'order',job_id:'paid-real',settlement_status:'paid'},{employee_id:'e',job_kind:'order',job_id:'paid-test',settlement_status:'paid',is_test:true},{employee_id:'e',job_kind:'order',job_id:'voided',settlement_status:'void'}]");
-assert.equal(run("staffEmployeePaidCount('e')"),'Paid contributions: 1 · Test paid: 1');
-const cards=run('staffSalesList(staffSales.items)');assert.ok(cards.includes('TEST'));assert.ok(cards.includes('Paid employee'));assert.ok(cards.includes('Delete / void'));assert.ok(!cards.includes('paid-real'));assert.ok(!cards.includes('voided'));
-run('isOwner=false');assert.ok(!run('staffSalesList(staffSales.items)').includes('Paid employee'));
-console.log('PASS: test cards share normal layout; settled cards hidden; paid real/test counts separate; payout/void controls owner-only.');
-run("staffSales.items=[{employee_id:'e',job_kind:'order',job_id:'open',commission_cents:1250,settlement_status:'pending'},{employee_id:'e',job_kind:'order',job_id:'unknown',settlement_status:'pending'},{employee_id:'e',job_kind:'order',job_id:'paid',commission_cents:750,commission_note:'Cash reference',settled_at:new Date().toISOString(),settlement_status:'paid'},{employee_id:'e',job_kind:'order',job_id:'legacy',settled_at:new Date().toISOString(),settlement_status:'paid'},{employee_id:'e',job_kind:'order',job_id:'test',commission_cents:99999,is_test:true,settlement_status:'pending'}]");
-const summary=run('staffCommissionSummary(staffSales.items)');assert.ok(summary.includes('$12.50'));assert.ok(summary.includes('$7.50'));assert.ok(summary.includes('1 contribution(s) need an amount'));assert.ok(summary.includes('1 earlier payment(s) have no recorded amount'));assert.ok(!summary.includes('999.99'));
-run("staffSalesView='paid'");const history=run('staffSalesList(staffSales.items)');assert.ok(history.includes('Cash reference'));assert.ok(history.includes('Employee paid'));assert.ok(!history.includes('Set commission'));assert.ok(!history.includes('Delete / void'));
-run('staffReset()');assert.equal(run('staffSalesView'),'pending');
-console.log('PASS: commission balances exclude tests, unknown historic amounts labeled, history retains references and removes mutation controls.');

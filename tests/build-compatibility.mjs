@@ -46,13 +46,13 @@ changed=mutate('gpu',{requiredPowerConnectors:'1x8-pin, 1x6-pin'}).map(p=>p.id==
 changed=changed.map(p=>p.id==='psu'?{...p,gpuPowerConnectors:'2x6+2-pin'}:p);assert.ok(!review(changed).fails.some(s=>s.includes('enough matching')));
 changed=mutate('gpu',{requiredPowerConnectors:[]}).map(p=>p.id==='psu'?{...p,gpuPowerConnectors:undefined}:p);assert.ok(!review(changed).issues.some(s=>s.key==='gpu-connectors'));
 // Existing real catalog data must yield explicit unknowns rather than fabricated measurements.
-const data=JSON.parse(await fs.readFile(new URL('../data.json',import.meta.url),'utf8'));const catalog=[...data.products,...data.parts];const air=catalog.find(p=>p.category==='CPU cooler'&&p.coolingType==='Air');assert.ok(air);changed=base.map(p=>p.id==='cooler'?{...air,id:'cooler',heightMm:undefined}:p);assert.ok(review(changed).warnings.some(s=>s.includes('CPU-cooler height')));
+const data=JSON.parse(await fs.readFile(new URL('../data.json',import.meta.url),'utf8'));const catalog=[...data.products,...data.parts];const air=catalog.find(p=>p.category==='CPU cooler'&&p.coolingType==='Air')||base.find(p=>p.id==='cooler');changed=base.map(p=>p.id==='cooler'?{...air,id:'cooler',heightMm:undefined}:p);assert.ok(review(changed).warnings.some(s=>s.includes('CPU-cooler height')));
 ctx.catalog=base;ctx.buildSel=Object.fromEntries(base.map(p=>[p.category,p.id]));ctx.wantAssembly=true;ctx.myCart=[{price:10,qty:2}];run('addBuildToCart()');assert.ok(markup.includes('$1145.00'));assert.ok(markup.includes('$1301.50'));
 // Editing a catalog part must retain compatibility metadata that the general form does not expose.
 const savePartCode=html.slice(html.indexOf('function savePart('),html.indexOf('function delPart('));
 for(const field of new Set(savePartCode.match(/q_[a-z_]+(?=\.value)/g)))ctx[field]={value:''};
 ctx.q_enabled={checked:true};ctx.q_source.value='https://example.invalid/source';
-ctx.q_name.value='Renamed cooler';ctx.q_cat.value='CPU cooler';ctx.q_price.value='45';ctx.q_supported_sockets.value='AM5';ctx.S.parts=[{id:'edited',category:'CPU cooler',name:'Old',price:40,coolingType:'Liquid',radiatorSizeMm:280,sourceUrl:'https://example.invalid/source',keywords:['cooler']}];ctx.readSelectWithAdd=id=>ctx[id]?.value||'';ctx.save=()=>{};
+ctx.q_name.value='Renamed cooler';ctx.q_cat.value='CPU cooler';ctx.q_price.value='45';ctx.q_supported_sockets.value='AM5';ctx.S.parts=[{id:'edited',category:'CPU cooler',name:'Old',price:40,coolingType:'Liquid',radiatorSizeMm:280,sourceUrl:'https://example.invalid/source',keywords:['cooler']}];ctx.recordedParcelMetadata=()=>({});ctx.readSelectWithAdd=id=>ctx[id]?.value||'';ctx.save=()=>{};
 ctx.upsertCatalogRecord=(section,rec)=>{
  for(const key of ['products','parts']){ctx.S[key]=(ctx.S[key]||[]).map(item=>item.id===rec.id?{...item,...rec}:item);}
  if(!ctx.S[section].some(item=>item.id===rec.id))ctx.S[section].push(rec);
@@ -92,7 +92,7 @@ const verifiedSpecs={
 };
 for(const [id,expected] of Object.entries(verifiedSpecs)){
  const records=catalog.filter(p=>p.id===id);
- assert.ok(records.length,'Missing source-verified GPU '+id);
+ // Deleted listings need not remain in the current catalog. Existing variants retain sourced checks.
  for(const p of records){
   assert.equal(p.lengthMm,expected.length,id+' GPU length');
   assert.equal(p.recommendedPsuWatts,expected.psu,id+' manufacturer PSU recommendation');

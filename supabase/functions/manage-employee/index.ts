@@ -28,13 +28,19 @@ Deno.serve(async (req) => {
       return json({ error: "Owner authentication required." }, 401);
     }
 
+    const { data: ownerVerified, error: ownerSecurityError } = await caller.rpc("apex_is_owner");
+    if (ownerSecurityError || ownerVerified !== true) return json({ error: "Verify your owner authenticator before managing employees." }, 403);
+    const securePassword = () => {
+      const bytes = new Uint8Array(24); crypto.getRandomValues(bytes);
+      return Array.from(bytes, value => value.toString(16).padStart(2, "0")).join("") + "Aa!9";
+    };
     const admin = createClient(url, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } });
     const body = await req.json();
     const action = String(body.action || "");
     const validEmail = (value: string) => !value || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
     const permissionKeys = ["orders", "requests", "customer_details", "claim_jobs", "update_status"] as const;
-    const defaultPermissions = { orders: true, requests: true, customer_details: true, claim_jobs: true, update_status: true };
+    const defaultPermissions = { orders: false, requests: false, customer_details: false, claim_jobs: false, update_status: false };
     const readPermissions = (value: unknown) => {
       if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Employee permissions are missing or invalid.");
       const input = value as Record<string, unknown>;
@@ -57,6 +63,7 @@ Deno.serve(async (req) => {
       const contactEmail = String(body.email || "").trim().toLowerCase();
       if (displayName.length < 1 || displayName.length > 100) return json({ error: "Enter an employee display name." }, 400);
       if (contactEmail.length > 254 || !validEmail(contactEmail)) return json({ error: "Enter a valid employee email address." }, 400);
+      const password = securePassword();
       let passcode = "";
       let createdUser: { id: string } | null = null;
       for (let attempt = 0; attempt < 20; attempt++) {
@@ -65,7 +72,7 @@ Deno.serve(async (req) => {
         passcode = String(random[0] % 1_000_000).padStart(6, "0");
         const authEmail = passcode + "@employees.apexcomputers.internal";
         const { data: created, error: createError } = await admin.auth.admin.createUser({
-          email: authEmail, password: passcode, email_confirm: true,
+          email: authEmail, password, email_confirm: true,
           user_metadata: { account_type: "employee", display_name: displayName }
         });
         if (!createError && created.user) { createdUser = created.user; break; }
@@ -75,14 +82,14 @@ Deno.serve(async (req) => {
       if (!createdUser) return json({ error: "Could not generate an unused passcode. Please try again." }, 503);
       const { error: profileError } = await admin.from("employee_profiles").insert({
         user_id: createdUser.id, username: passcode, display_name: displayName,
-        email: contactEmail || null, active: true, permissions: defaultPermissions
+        email: contactEmail || null, active: true, permissions: defaultPermissions, credential_version: 1, credentials_changed_at: new Date().toISOString()
       });
       if (profileError) {
         await admin.auth.admin.deleteUser(createdUser.id);
         return json({ error: profileError.message }, 500);
       }
       await logOwnerActivity("employee_created", createdUser.id, { display_name: displayName, email: contactEmail || null });
-      return json({ success: true, passcode, employee: { user_id: createdUser.id, display_name: displayName, email: contactEmail || null, active: true, permissions: defaultPermissions } });
+      return json({ success: true, passcode, password, employee: { user_id: createdUser.id, display_name: displayName, email: contactEmail || null, active: true, permissions: defaultPermissions } });
     }
 
     if (action === "update") {
@@ -110,27 +117,16 @@ Deno.serve(async (req) => {
 
     if (action === "reset_passcode") {
       const userId = String(body.user_id || "");
-      const { data: target, error: lookupError } = await admin.from("employee_profiles").select("user_id").eq("user_id", userId).maybeSingle();
-      if (lookupError) return json({ error: lookupError.message }, 400);
-      if (!target) return json({ error: "Employee account was not found." }, 404);
-      let passcode = "";
-      let updated = false;
-      for (let attempt = 0; attempt < 20; attempt++) {
-        const random = new Uint32Array(1);
-        crypto.getRandomValues(random);
-        passcode = String(random[0] % 1_000_000).padStart(6, "0");
-        const authEmail = passcode + "@employees.apexcomputers.internal";
-        const { error } = await admin.auth.admin.updateUserById(userId, {
-          email: authEmail, password: passcode, email_confirm: true
-        });
-        if (!error) { updated = true; break; }
-        if (!/already|registered|duplicate|exists/i.test(error.message || "")) return json({ error: error.message }, 400);
-      }
-      if (!updated) return json({ error: "Could not generate an unused passcode. Please try again." }, 503);
-      const { error: profileError } = await admin.from("employee_profiles").update({ username: passcode }).eq("user_id", userId);
-      if (profileError) return json({ error: "The new code was set, but the profile could not be updated: " + profileError.message }, 500);
-      await logOwnerActivity("employee_passcode_reset", userId, {});
-      return json({ success: true, passcode });
+      const { data: target, error: lookupError } = await admin.from("employee_profiles").select("user_id,username").eq("user_id", userId).maybeSingle();
+      if (lookupError || !target) return json({ error: "Employee account was not found." }, 404);
+      const password = securePassword();
+      const changedAt = new Date().toISOString();
+      const { error: authUpdateError } = await admin.auth.admin.updateUserById(userId, { password });
+      if (authUpdateError) return json({ error: authUpdateError.message }, 400);
+      const { error: profileError } = await admin.from("employee_profiles").update({ credential_version: 1, credentials_changed_at: changedAt }).eq("user_id", userId);
+      if (profileError) return json({ error: "Password changed, but secure session activation failed. Issue another password before using this account." }, 500);
+      await logOwnerActivity("employee_password_issued", userId, {});
+      return json({ success: true, passcode: target.username, password });
     }
 
     if (action === "set_active") {

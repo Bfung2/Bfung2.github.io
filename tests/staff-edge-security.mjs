@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import {stripTypeScriptTypes} from 'node:module';
+let handler,verified=false,authCreates=[],profileWrites=[];
+const caller={auth:{getUser:async()=>({data:{user:{id:'owner',email:'apexcomputers039@gmail.com'}},error:null})},rpc:async()=>({data:verified,error:null})};
+const admin={auth:{admin:{createUser:async data=>{authCreates.push(data);return {data:{user:{id:'new-employee'}},error:null};}}},from:table=>({insert:async data=>{profileWrites.push({table,data});return {error:null};}})};
+const context=vm.createContext({Request,Response,crypto,console,createClient:(url,key)=>key==='service'?admin:caller,Deno:{env:{get:key=>({SUPABASE_URL:'https://example.invalid',SUPABASE_ANON_KEY:'anon',SUPABASE_SERVICE_ROLE_KEY:'service'})[key]},serve:fn=>handler=fn}});
+vm.runInContext(stripTypeScriptTypes(fs.readFileSync('supabase/functions/manage-employee/index.ts','utf8').replace(/^import .*;$/m,'')),context);
+const request=()=>new Request('https://example.invalid/manage-employee',{method:'POST',headers:{Authorization:'Bearer test','Content-Type':'application/json'},body:JSON.stringify({action:'create',display_name:'Fixture',email:''})});
+let response=await handler(request());assert.equal(response.status,403);assert.equal(authCreates.length,0);
+verified=true;response=await handler(request());assert.equal(response.status,200);const output=await response.json();assert.ok(output.password.length>=48);assert.notEqual(output.password,output.passcode);assert.equal(authCreates[0].password,output.password);const profile=profileWrites.find(x=>x.table==='employee_profiles').data;assert.equal(profile.credential_version,1);assert.equal(profile.permissions.customer_details,false);assert.ok(profile.credentials_changed_at);
+assert.ok(!profileWrites.filter(x=>x.table==='employee_activity_logs').some(x=>JSON.stringify(x).includes(output.password)));
+console.log('PASS: unverified owner cannot create users; verified owner gets independent strong employee password, default-deny access and no password audit leak.');

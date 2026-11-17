@@ -30,6 +30,7 @@ jobs:
           node --check customer-experience.js
           node --check staff-workspace.js
           node --check team-management.js
+          node --check staff-security.js
           node --check staff-sales-ledger.js
           node --check order-tracking.js
           node --check market-sales.js
@@ -78,6 +79,13 @@ jobs:
         run: npm install --prefix "$RUNNER_TEMP/apex-tests" --no-save @electric-sql/pglite@0.5.16
       - name: Team database permissions
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/team-permissions.mjs
+      - name: Staff security and current storefront regressions
+        run: |
+          node tests/staff-security.mjs
+          node tests/staff-edge-security.mjs
+          node tests/staff-workspace-state.mjs
+          node --test tests/catalog-break-even.test.cjs tests/carrier-shipping.test.cjs tests/products-page-preserved.test.cjs
+          bash -n scripts/private-db-backup.sh
       - name: Team management regression
         run: node tests/team-management.mjs
       - name: Phase 11 owner operations and public monitor regression
