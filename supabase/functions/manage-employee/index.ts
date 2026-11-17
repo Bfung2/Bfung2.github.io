@@ -34,11 +34,33 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const action = String(body.action || "");
 
+    if (action === "sign_in_by_name") {
+      const name = typeof body.name === "string" ? body.name.trim() : "";
+      const password = typeof body.password === "string" ? body.password : "";
+      const invalid = () => json({ error: "Sign-in failed. Check your credentials or use your employee ID." }, 401);
+      if (!name || name.length > 100 || !password || new TextEncoder().encode(password).length > 72) return invalid();
+      // ILIKE is case-insensitive. Escape wildcard characters so this is an exact match.
+      const literalName = name.replace(/[\\%_*]/g, "\\$&");
+      const { data: employees, error: lookupError } = await admin.from("employee_profiles")
+        .select("user_id,username").ilike("display_name", literalName)
+        .eq("active", true).gte("credential_version", 1).limit(2);
+      if (lookupError) return json({ error: "Name sign-in is temporarily unavailable. Try your employee ID." }, 503);
+      const employee = employees?.length === 1 ? employees[0] : null;
+      const email = (employee?.username || "unknown") + "@employees.apexcomputers.internal";
+      const employeeAuth = createClient(url, anon, { auth: { autoRefreshToken: false, persistSession: false } });
+      const { data, error } = await employeeAuth.auth.signInWithPassword({ email, password });
+      if (error?.status === 429) return json({ error: "Too many attempts. Wait before signing in again." }, 429);
+      if (error || !employee || !data.session || data.user?.id !== employee.user_id) return invalid();
+      const { data: security, error: securityError } = await employeeAuth.rpc("apex_staff_security_status");
+      if (securityError || security?.verified !== true || security?.owner !== false) return invalid();
+      return json({ access_token: data.session.access_token, refresh_token: data.session.refresh_token });
+    }
+
     if (action === "activate") {
       const setupCode = String(body.setup_code || "").trim();
       const password = typeof body.password === "string" ? body.password : "";
       const match = /^(\d{6})\.[a-f0-9]{48}Aa!9$/.exec(setupCode);
-      if (!match) return json({ error: "Enter the full setup code from Apex Computers." }, 400);
+      if (!match || body.employee_id !== match[1]) return json({ error: "Check your employee ID and one-time setup code." }, 400);
       const passwordBytes = new TextEncoder().encode(password).length;
       if (password.length < 12 || passwordBytes > 72 || setupCode.endsWith("." + password)) {
         return json({ error: "Choose a new password with at least 12 characters and at most 72 UTF-8 bytes." }, 400);
