@@ -8,16 +8,16 @@ const context=vm.createContext({console,roundMoney:n=>Math.round((n+Number.EPSIL
 vm.runInContext(html.slice(html.indexOf('function apexPurchasable('),html.indexOf('/* ---------- global storefront search')),context);
 vm.runInContext(stripTypeScriptTypes(server.slice(server.indexOf('function calculateOrder('),server.indexOf('Deno.serve('))),context);
 const run=src=>vm.runInContext(src,context);
-run(`S.products=[{id:'cpu',category:'CPU',name:'CPU',price:200},{id:'gpu',category:'Graphics card',name:'GPU',price:300}];`);
+run(`S.products=[{id:'cpu',category:'CPU',name:'CPU',price:200,seller:'Newegg',stockStatus:'In Stock'},{id:'gpu',category:'Graphics card',name:'GPU',price:300,seller:'Newegg',stockStatus:'In Stock'}];`);
 const product={kind:'product',id:'cpu',qty:2,price:0.01};
 context.item=product;
 assert.equal(run('apexResolveCartItem(item).price'),200);
 assert.equal(run('calculateOrder([item],S).subtotal'),400);
-for(const patch of [{active:false},{seller:'Marketplace'},{stockStatus:'Backordered'},{stockStatus:'Out of Stock'},{stockStatus:'Pre-order'}]){
+for(const patch of [{seller:''},{stockStatus:''},{active:false},{seller:'Marketplace'},{stockStatus:'Backordered'},{stockStatus:'Out of Stock'},{stockStatus:'Pre-order'}]){
  context.patch=patch;run('Object.assign(S.products[0],patch)');
  assert.equal(run('apexResolveCartItem(item)'),null);
  assert.throws(()=>run('calculateOrder([item],S)'),/unavailable/);
- run(`S.products[0]={id:'cpu',category:'CPU',name:'CPU',price:200}`);
+ run(`S.products[0]={id:'cpu',category:'CPU',name:'CPU',price:200,seller:'Newegg',stockStatus:'In Stock'}`);
 }
 context.item={kind:'product',id:'missing',qty:1,price:1};
 assert.equal(run('apexResolveCartItem(item)'),null);assert.throws(()=>run('calculateOrder([item],S)'),/unavailable/);

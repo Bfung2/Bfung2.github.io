@@ -30,8 +30,7 @@ assert.equal(run('matchesProductSearch(item,"water cooling")'),true);
 ctx.item={name:"ASRock B650",category:"Motherboard"};
 assert.equal(run('matchesProductSearch(item,"mobo")'),true);
 
-// Explicitly disqualified listings must not reach checkout. Unknown evidence remains a review flag,
-// not fabricated stock/seller certainty.
+// Explicitly disqualified listings must not reach checkout. Unknown evidence must also block purchases.
 for(const status of ["Sold Out","Out of Stock","Backordered","Price verification required","Pre-order","Unavailable"]){
   ctx.record={seller:"Newegg",stockStatus:status};
   assert.equal(run("apexPurchasable(record)"),false,status);
@@ -41,7 +40,7 @@ assert.equal(run("apexPurchasable(record)"),false);
 ctx.record={seller:"Newegg",stockStatus:"In Stock"};
 assert.equal(run("apexPurchasable(record)"),true);
 ctx.record={stockStatus:"",seller:""};
-assert.equal(run("apexPurchasable(record)"),true);
+assert.equal(run("apexPurchasable(record)"),false);
 ctx.record={seller:"Newegg",stockStatus:"In Stock",active:false};
 assert.equal(run("apexPurchasable(record)"),false);
 console.log("PASS: category synonyms, multiword NVIDIA/GPU search, SSD/HDD, memory, cooler, known seller and inventory eligibility.");

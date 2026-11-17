@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -81,6 +81,10 @@ jobs:
         run: npm install --prefix "$RUNNER_TEMP/apex-tests" --no-save @electric-sql/pglite@0.5.16
       - name: Team database permissions
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/team-permissions.mjs
+      - name: Staff database permissions
+        run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/staff-permissions.mjs
+      - name: Payment binding database permissions
+        run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/payment-binding.mjs
       - name: Staff security and current storefront regressions
         run: |
           node tests/staff-security.mjs
@@ -88,6 +92,13 @@ jobs:
           node tests/private-record-backup.mjs
           node tests/staff-edge-security.mjs
           node tests/staff-workspace-state.mjs
+          node tests/checkout-guards.test.cjs
+          node tests/payment-checkout.mjs
+          node tests/paid-notifications.mjs
+          node tests/cart-sales.mjs
+          node tests/order-tracking-state.mjs
+          node tests/market-link-filters.mjs
+          node tests/storefront-pagination.mjs
           node --test tests/catalog-break-even.test.cjs tests/carrier-shipping.test.cjs tests/products-page-preserved.test.cjs
           bash -n scripts/private-db-backup.sh
       - name: Team management regression

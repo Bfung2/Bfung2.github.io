@@ -2496,7 +2496,7 @@ async function submitOrder(e){
     paypal.Buttons({
       style:{layout:"vertical",color:"gold",shape:"rect",label:"paypal"},
       createOrder:async function(){
-        const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"create",orderId:o.id}});
+        const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"create",orderId:o.id,checkoutToken:o.trackingToken}});
         if(error) throw new Error(error.message||"Could not start PayPal checkout.");
         if(!data||!data.id) throw new Error(data?.error||"PayPal did not return an order ID.");
         if(checkoutPromo.code&&!data.pricing)throw new Error("Promo checkout is not activated yet. Contact Apex before paying.");
@@ -2505,7 +2505,7 @@ async function submitOrder(e){
       },
       onApprove:async function(data){
         document.getElementById("paypalStatus").textContent="Payment received by PayPal. Verifying it now…";
-        const {data:result,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"capture",orderId:o.id,paypalOrderId:data.orderID}});
+        const {data:result,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"capture",orderId:o.id,checkoutToken:o.trackingToken,paypalOrderId:data.orderID}});
         if(error) throw new Error(error.message||"Payment verification failed.");
         if(!result||!result.success) throw new Error(result?.error||"PayPal could not verify the payment.");
         o.status="paid";
@@ -2518,7 +2518,7 @@ async function submitOrder(e){
       },
       onError:function(err){
         console.error("PayPal checkout error:",err);
-        document.getElementById("paypalStatus").textContent="PayPal had a problem. Your order is saved but not marked paid. Please try again or contact Apex Computers.";
+        document.getElementById("paypalStatus").textContent="We could not confirm the payment result. Check your order tracking and PayPal activity before trying another payment, or contact Apex Computers.";
       }
     }).render("#paypalButtons");
   }catch(err){
