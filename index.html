@@ -1355,8 +1355,10 @@ function apexPurchasable(rec){
   // A missing seller/stock claim remains a catalog review task, not fabricated proof.
   // Explicit known ineligibility must never reach the cart or PC picker.
   const seller=String(rec.seller||"").trim().toLowerCase();
-  if(seller && seller!=="newegg" && seller!=="newegg.com")return false;
+  // Fail closed: an unverified seller or missing stock claim is not purchasable.
+  if(seller!=="newegg" && seller!=="newegg.com")return false;
   const status=String(rec.stockStatus||"").trim().toLowerCase();
+  if(!/^(in stock|available)$/i.test(status))return false;
   if(/out\s*of\s*stock|back[\s-]*order(?:ed)?|sold\s*out|unavailable|discontinued|price\s*verification\s*required|not\s*available|pre[\s-]*order/.test(status))return false;
   return true;
 }
