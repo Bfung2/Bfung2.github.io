@@ -50,7 +50,7 @@ function calculateOrder(items: any, catalog: any) {
     if (!matches.length || matches.some((p: any) => {
       const seller = String(p.seller || "").trim().toLowerCase();
       const stock = String(p.stockStatus || "").trim().toLowerCase();
-      return p.active === false || (seller && !["newegg", "newegg.com"].includes(seller)) ||
+      return p.active === false || !["newegg", "newegg.com"].includes(seller) || !["in stock", "available"].includes(stock) ||
         /out\s*of\s*stock|back[\s-]*order(?:ed)?|sold\s*out|unavailable|discontinued|price\s*verification\s*required|not\s*available|pre[\s-]*order/.test(stock);
     })) return null;
     // A conflicting mirror cannot silently override the other catalog entry.
@@ -169,7 +169,9 @@ function checkoutMeetsBreakEven(items: any[], catalog: any, locked: any, origina
       }
     } else return false;
   }
-  const subtotal = Number(locked.subtotal), shipping = Number(locked.shipping), total = Number(locked.total);
+  const discount = Number(locked.discount ?? 0);
+  const subtotal = Number(locked.subtotal) - discount, shipping = Number(locked.shipping), total = Number(locked.total);
+  if (!Number.isFinite(discount) || discount < 0 || subtotal < 0) return false;
   if (![supplierCost, subtotal, shipping, total, originalSubtotal].every(Number.isFinite)) return false;
   const outboundCost = actualCarrierCost === null ? roundMoney(originalSubtotal * shippingExpensePercent / 100) : actualCarrierCost;
   const paymentFee = roundMoney(total * feePercent / 100 + feeFixed);
@@ -215,21 +217,31 @@ Deno.serve(async (req) => {
         tax: pricing.tax, total: pricing.total }, packages: quote.packages.map(p => ({
         carrier: p.carrier, service: p.service, postage: p.cost })) });
     }
+    if (!["create", "capture"].includes(action)) return json({ error: "Unknown payment action." }, 400);
     const orderId = String(body?.orderId || "");
     if (!orderId || orderId.length > 160) return json({ error: "Invalid order." }, 400);
 
     const { data: order, error: orderError } = await admin
       .from("apex_orders")
-      .select("id, ref, items, total, status, is_test, shipping_address")
+      .select("id, ref, items, total, status, is_test, shipping_address, tracking_token, pricing_locked, paypal_capture_id, paypal_order_id, fulfillment_stage, subtotal, shipping, tax, discount_amount, promo_code")
       .eq("id", orderId)
       .maybeSingle();
-    if (orderError || !order) return json({ error: "Order not found." }, 404);
+    // The 256-bit receipt capability authorizes guest checkout without an account.
+    // Neither the predictable order reference nor a customer-supplied email is authority.
+    const checkoutToken = String(body?.checkoutToken || "");
+    if (orderError || !order || !/^[a-f0-9]{64}$/.test(checkoutToken) || checkoutToken !== order.tracking_token) {
+      return json({ error: "Checkout access denied. Reopen your receipt or start a new checkout." }, 403);
+    }
 
     if (order.is_test) return json({ error: "Test orders cannot use real payment processing." }, 409);
     const token = await paypalToken(base, clientId, secret);
 
     if (action === "create") {
-      if (order.status === "paid") return json({ error: "This order has already been paid." }, 409);
+      if (order.paypal_capture_id || order.status === "paid") return json({ error: "This order has already been paid." }, 409);
+      if (["cancelled", "refunded"].includes(order.status) || order.fulfillment_stage === "cancelled") {
+        return json({ error: "This order cannot accept a payment." }, 409);
+      }
+      if (order.paypal_order_id) return json({ id: order.paypal_order_id, pricing: { subtotal: order.subtotal, shipping: order.shipping, tax: order.tax, total: order.total, discount: order.discount_amount, promo_code: order.promo_code } });
       const catalog = await loadPublicCatalog();
       const pricing = calculateOrder(order.items, catalog);
       const undiscountedSubtotal = pricing.subtotal;
@@ -246,7 +258,7 @@ Deno.serve(async (req) => {
         p_shipping: pricing.shipping, p_tax_rate: Number(catalog.settings?.taxRate ?? 0),
       });
       if (pricingError || !locked) return json({ error: pricingError?.message || "Could not verify checkout pricing." }, 400);
-      Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total) });
+      Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total), discount: Number(locked.discount ?? 0) });
       // apex_lock_checkout_price can return an earlier locked order. Never let an
       // expired or changed carrier quote silently use that older shipping charge.
       if (carrierQuote && Math.abs(pricing.shipping - carrierQuote.charge) >= 0.005) {
@@ -283,7 +295,18 @@ Deno.serve(async (req) => {
         console.error("PayPal create order error:", data);
         return json({ error: "PayPal could not start this payment." }, 502);
       }
-      return json({ id: data.id, pricing: { ...locked, total: pricing.total } });
+      // Persist the provider order before allowing approval. A concurrent create
+      // must reuse the first binding, even beyond PayPal's idempotency window.
+      const { data: bound, error: bindError } = await admin.from("apex_orders")
+        .update({ paypal_order_id: data.id }).eq("id", order.id).is("paypal_order_id", null)
+        .select("paypal_order_id").maybeSingle();
+      if (bindError) return json({ error: "Could not save the payment reference. Please retry." }, 500);
+      if (!bound) {
+        const { data: current, error } = await admin.from("apex_orders").select("paypal_order_id").eq("id", order.id).maybeSingle();
+        if (error || !current?.paypal_order_id) return json({ error: "Payment reference needs review." }, 409);
+        return json({ id: current.paypal_order_id, pricing: { ...locked, total: pricing.total } });
+      }
+      return json({ id: bound.paypal_order_id, pricing: { ...locked, total: pricing.total } });
     }
 
     if (action === "capture") {
@@ -294,45 +317,63 @@ Deno.serve(async (req) => {
         return json({ error: "This order has not passed server-side price verification." }, 409);
       }
 
-      const captureResponse = await fetch(base + "/v2/checkout/orders/" + encodeURIComponent(paypalOrderId) + "/capture", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-          "PayPal-Request-Id": "apex-capture-" + paypalOrderId,
-        },
-      });
-      const captureResult = await captureResponse.json();
-      if (!captureResponse.ok) {
-        console.error("PayPal capture error:", captureResult);
-        return json({ error: "PayPal could not complete the payment." }, 502);
+      if (!order.paypal_capture_id && (["cancelled", "refunded"].includes(order.status) || order.fulfillment_stage === "cancelled")) {
+        return json({ error: "This order needs payment reconciliation. Contact Apex Computers." }, 409);
       }
-
-      // The capture response can omit custom_id. Verify against PayPal's canonical order record.
-      const detailResponse = await fetch(base + "/v2/checkout/orders/" + encodeURIComponent(paypalOrderId), {
-        headers: { Authorization: "Bearer " + token },
-      });
-      const detail = await detailResponse.json();
-      if (!detailResponse.ok) {
-        console.error("PayPal order verification error:", detail);
-        return json({ error: "PayPal payment could not be verified. Contact Apex Computers." }, 502);
+      if (!order.pricing_locked || !order.paypal_order_id || order.paypal_order_id !== paypalOrderId) {
+        return json({ error: "This payment does not match the verified checkout." }, 409);
       }
-      const unit = detail.purchase_units?.[0];
-      const capture = unit?.payments?.captures?.[0];
-      const capturedValue = Number(capture?.amount?.value);
-      if (unit?.custom_id !== order.id ||
-          capture?.status !== "COMPLETED" ||
-          !Number.isFinite(capturedValue) ||
-          capturedValue.toFixed(2) !== value ||
-          capture?.amount?.currency_code !== "USD") {
+      const detailUrl = base + "/v2/checkout/orders/" + encodeURIComponent(paypalOrderId);
+      const readDetail = async () => {
+        const response = await fetch(detailUrl, { headers: { Authorization: "Bearer " + token } });
+        if (!response.ok) throw new Error("PayPal payment could not be verified. Contact Apex Computers.");
+        return await response.json();
+      };
+      let detail = await readDetail();
+      const matchesOrder = (data: any) => {
+        const units = data.purchase_units;
+        const unit = units?.[0];
+        return data.id === paypalOrderId && Array.isArray(units) && units.length === 1 &&
+          unit.custom_id === order.id && unit.amount?.currency_code === "USD" &&
+          Number.isFinite(Number(unit.amount?.value)) && Number(unit.amount.value).toFixed(2) === value;
+      };
+      // Validate the canonical provider order BEFORE any money-moving request.
+      if (!matchesOrder(detail)) return json({ error: "Payment does not match this order." }, 409);
+      let capture = detail.purchase_units[0].payments?.captures?.[0];
+      if (!capture) {
+        if (order.paypal_capture_id || order.status === "paid" ||
+            ["cancelled", "refunded"].includes(order.status) || order.fulfillment_stage === "cancelled" || detail.status !== "APPROVED") {
+          return json({ error: "This order cannot be captured. Contact Apex Computers." }, 409);
+        }
+        const response = await fetch(detailUrl + "/capture", {
+          method: "POST",
+          headers: { Authorization: "Bearer " + token, "Content-Type": "application/json",
+            "PayPal-Request-Id": "apex-capture-" + paypalOrderId },
+        });
+        // Reconcile even after an error response: the earlier attempt may already
+        // have succeeded. A later retry also starts with this canonical GET.
+        detail = await readDetail();
+        capture = detail.purchase_units?.[0]?.payments?.captures?.[0];
+        if (!response.ok && !capture) return json({ error: "Payment is not confirmed. Check PayPal activity before retrying." }, 502);
+      }
+      if (!matchesOrder(detail) || detail.purchase_units[0].payments?.captures?.length !== 1 ||
+          !capture?.id || capture.status !== "COMPLETED" || capture.amount?.currency_code !== "USD" ||
+          !Number.isFinite(Number(capture.amount?.value)) || Number(capture.amount.value).toFixed(2) !== value) {
         return json({ error: "Payment verification failed. Contact Apex Computers before retrying." }, 409);
       }
-
-      const { error: updateError } = await admin.from("apex_orders")
-        .update({ status: "paid", paypal_capture_id: capture.id }).eq("id", order.id);
-      if (updateError) {
-        console.error("Could not update paid order:", updateError);
-        return json({ error: "Payment succeeded, but the order status needs manual review." }, 500);
+      if (order.paypal_capture_id) {
+        if (order.paypal_capture_id !== capture.id) return json({ error: "Payment reference conflict. Contact Apex Computers." }, 409);
+        // Preserve shipped/delivered status and do not resend mail on a retry.
+        return json({ success: true, captureId: capture.id, status: "paid", notificationsPending: true });
+      }
+      const { data: saved, error: updateError } = await admin.from("apex_orders")
+        .update({ status: "paid", paypal_capture_id: capture.id }).eq("id", order.id)
+        .is("paypal_capture_id", null).select("paypal_capture_id").maybeSingle();
+      if (updateError) return json({ error: "Payment succeeded, but the order status needs manual review." }, 500);
+      if (!saved) {
+        const { data: current, error } = await admin.from("apex_orders").select("paypal_capture_id").eq("id", order.id).maybeSingle();
+        if (error || current?.paypal_capture_id !== capture.id) return json({ error: "Payment record needs manual review." }, 409);
+        return json({ success: true, captureId: capture.id, status: "paid", notificationsPending: true });
       }
       // Delivery failures never turn a verified payment into a failed checkout.
       let notificationsPending = true;

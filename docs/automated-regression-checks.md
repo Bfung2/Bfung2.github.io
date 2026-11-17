@@ -3,6 +3,8 @@
 GitHub Actions workflow: `.github/workflows/apex-regression.yml`. Triggered by pull requests and pushes to main, with read-only repository permissions.
 
 ## Automated checks
+
+The workflow uses Node 24 because payment and notification mocks use Node’s built-in TypeScript stripping. Both isolated PGlite database suites and the payment-binding suite run with the pinned test-only dependency. Checkout guards, the mocked payment lifecycle, notifications, referral carts, customer tracking state, link filters and pagination now run on every PR and main push.
 - Parse critical JavaScript modules and inline storefront scripts.
 - Check that local JavaScript assets referenced by index.html exist.
 - Guard against orders, service requests, accounts and customer-link records being committed into public `data.json`.
@@ -17,7 +19,7 @@ The catalog audit intentionally never fails CI for historical missing seller/sto
 - No production customer signup or real emails.
 - No automatic Newegg scraping or price adjustment.
 - No database writes.
-- SQL integration tests needing PGlite are not in this minimal no-dependency workflow yet.
+- Live PayPal approval/capture, carrier-account setup and a full private recovery drill require separate acceptance.
 
 ## Operational checks
 After merging this PR, visit **GitHub → Actions → Apex storefront regression checks** and inspect the first run. If any assertion fails, review the logs and fix the regression before proceeding with risky changes. For any catalog review output, download the `static-catalog-review-queue` artifact in the run summary.

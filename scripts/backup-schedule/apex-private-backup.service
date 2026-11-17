@@ -1,0 +1,11 @@
+[Unit]
+Description=Encrypted Apex database backup
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/apex/backup.env
+ExecStart=%h/.local/bin/apex-private-db-backup
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=%h

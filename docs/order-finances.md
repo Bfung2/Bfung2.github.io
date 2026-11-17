@@ -1,0 +1,15 @@
+# Owner financial records
+
+Open **Order finances** in the owner toolbar after merging PR #137. The server checks verified owner MFA on every read/write. Employees, customers and anonymous visitors have no table access. The page lists the latest 100 non-test orders. Costs can be saved only for captured payments; stale revisions are rejected and prior cost entries are preserved privately in history.
+
+Enter actual supplier/inbound costs, postage, retained processor fees, packing, total commission expense, and other costs in dollars. Zero is an explicit recorded value; missing costs never produce a profit figure. Commission totals are entered manually and are not pulled from payout history. Net contribution equals subtotal minus discount plus shipping, less refunds excluding refunded tax and all entered costs. This is recorded order contribution, not accounting net income: include all relevant expenses and allocate overhead separately. Values are owner-entered, not supplier/PayPal verified.
+
+Complete refunds in PayPal first. Record their provider refund ID, gross refund and refunded tax here. Duplicate identical references are idempotent; conflicting references, over-refunds and excess refunded tax are rejected. Recorded refunds are immutable. No money moves, no customer notification is sent, and no employee credit is automatically voided. Review full/partial refund commissions separately. Automated provider reconciliation and in-site refund issuance remain unfinished. The page deliberately labels manual records; it never claims PayPal verified them.
+
+The new costs, refund records and cost-edit history are included in manual encrypted owner exports. No business records were exported during implementation.
+
+# Private backup scheduling preparation
+
+Provided `scripts/backup-schedule/apex-private-backup.service` and `.timer` for a trusted Linux machine. Copy `scripts/private-db-backup.sh` to `~/.local/bin/apex-private-db-backup` and make executable; copy both units to `~/.config/systemd/user/`. Store the required environment variables from docs/private-backup-recovery.md in a private `~/.config/apex/backup.env` with mode 600. This includes the database credentials and owner-controlled GPG recipient and private output directory. Do not put that environment file in GitHub.
+
+After a successful manual encrypted backup, enable with `systemctl --user enable --now apex-private-backup.timer`; inspect `systemctl --user list-timers` and `journalctl --user -u apex-private-backup.service`. The timer runs at 03:00 local machine time with up to 15 minutes delay and catches missed runs. The script refuses to write backups inside its checkout. Configure private off-machine copies and retention as described in the recovery guide. No timer was enabled here: an owner-controlled machine, credentials, key and private destination are still required. A restore drill needs an actual encrypted backup and isolated PostgreSQL target; file encryption tests alone do not prove recovery.

@@ -776,6 +776,7 @@ footer.site a{color:var(--gold)}
     <button onclick="go('/employees')">Manage employees</button>
     <button onclick="go('/inventory')">Manage parts</button>
     <button onclick="go('/inbox')">Orders &amp; requests</button>
+    <button onclick="go('/finances')">Order finances</button>
     <button onclick="go('/operations')">Operations <span class="ops-owner-badge" id="opsAlertBadge" hidden></span></button>
     <button onclick="logout()">Sign out</button>
   </div>
@@ -1527,7 +1528,7 @@ function render(){
   if(r==="/build"){go("/products");return;} // Retired PC-builder URL redirects to the preserved shop.
   if(isEmployee && ["/manage","/employees","/inbox","/inventory","/performance","/policies-admin","/catalog-health","/operations"].includes(r)){go("/employee");return;}
   const views = {"/":home,"/products":products,"/inventory":inventory,"/tech":tech,"/about":about,
-    "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/catalog-health":()=>ownerCatalogHealth.page(),"/operations":opsPage,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
+    "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/catalog-health":()=>ownerCatalogHealth.page(),"/operations":opsPage,"/finances":financePage,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
     "/track-order":customerTrackingPage,"/team-workflow":teamWorkflowPage,"/team-overview":teamOverview,"/team-activity":teamActivityPage,"/private-backup":recordBackupPage,"/team-security":teamSecurityPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
@@ -2496,7 +2497,7 @@ async function submitOrder(e){
     paypal.Buttons({
       style:{layout:"vertical",color:"gold",shape:"rect",label:"paypal"},
       createOrder:async function(){
-        const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"create",orderId:o.id}});
+        const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"create",orderId:o.id,checkoutToken:o.trackingToken}});
         if(error) throw new Error(error.message||"Could not start PayPal checkout.");
         if(!data||!data.id) throw new Error(data?.error||"PayPal did not return an order ID.");
         if(checkoutPromo.code&&!data.pricing)throw new Error("Promo checkout is not activated yet. Contact Apex before paying.");
@@ -2505,7 +2506,7 @@ async function submitOrder(e){
       },
       onApprove:async function(data){
         document.getElementById("paypalStatus").textContent="Payment received by PayPal. Verifying it now…";
-        const {data:result,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"capture",orderId:o.id,paypalOrderId:data.orderID}});
+        const {data:result,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"capture",orderId:o.id,checkoutToken:o.trackingToken,paypalOrderId:data.orderID}});
         if(error) throw new Error(error.message||"Payment verification failed.");
         if(!result||!result.success) throw new Error(result?.error||"PayPal could not verify the payment.");
         o.status="paid";
@@ -2518,7 +2519,7 @@ async function submitOrder(e){
       },
       onError:function(err){
         console.error("PayPal checkout error:",err);
-        document.getElementById("paypalStatus").textContent="PayPal had a problem. Your order is saved but not marked paid. Please try again or contact Apex Computers.";
+        document.getElementById("paypalStatus").textContent="We could not confirm the payment result. Check your order tracking and PayPal activity before trying another payment, or contact Apex Computers.";
       }
     }).render("#paypalButtons");
   }catch(err){
@@ -3165,6 +3166,7 @@ function toast(msg){
 <script src="staff-security.js?v=20261117-security"></script>
 <script src="private-record-crypto.js"></script>
 <script src="private-record-backup.js"></script>
+<script src="owner-finances.js"></script>
 <script src="staff-sales-ledger.js"></script>
 <script src="market-sales.js"></script>
 <script src="order-tracking.js"></script>
