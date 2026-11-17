@@ -1106,16 +1106,67 @@ async function tryLogin(e){
   isOwner=true; go("/manage"); toast("Signed in securely."); return false;
 }
 function employeeAuthEmail(passcode){return String(passcode||"").trim().toLowerCase()+"@employees.apexcomputers.internal";}
+async function employeeAuthAction(body){
+  const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body});
+  if(error){
+    const detail=await error.context?.json?.().catch(()=>null);
+    throw Error(detail?.error||"Employee sign-in is temporarily unavailable. Try again.");
+  }
+  return data;
+}
 async function tryEmployeeLogin(e){
   e.preventDefault();
-  const passcode=document.getElementById("employeePasscode").value.trim().toLowerCase();
-  const {data,error}=await supabaseClient.auth.signInWithPassword({email:employeeAuthEmail(passcode),password:document.getElementById("employeePassword").value});
-  if(error||!data.user||data.user.email===OWNER_EMAIL){const el=document.getElementById("employeeLoginError");if(el)el.textContent="That employee ID or password is incorrect, or the account is disabled.";return false;}
+  const button=e.submitter;
+  const identifier=document.getElementById("employeePasscode").value.trim();
+  const password=document.getElementById("employeePassword").value;
+  const message=document.getElementById("employeeLoginError");
+  message.textContent="";
+  staffBusy(button,true);
+  let data;
+  try{
+    const result=/^\d{6}$/.test(identifier)
+      ?await supabaseClient.auth.signInWithPassword({email:employeeAuthEmail(identifier),password})
+      :await supabaseClient.auth.setSession(await employeeAuthAction({action:"sign_in_by_name",name:identifier,password}));
+    if(result.error||!result.data.user||result.data.user.email===OWNER_EMAIL){
+      throw Error("Sign-in failed. Check your employee ID or name and password.");
+    }
+    data=result.data;
+  }catch(error){message.textContent=error.message;return false;}
+  finally{staffBusy(button,false);}
   const {data:profile,error:pe}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions").eq("user_id",data.user.id).eq("active",true).maybeSingle();
   if(pe||!profile){await supabaseClient.auth.signOut();const el=document.getElementById("employeeLoginError");if(el)el.textContent="This employee account is not active.";return false;}
+  const {data:security,error:securityError}=await supabaseClient.rpc("apex_staff_security_status");
+  if(securityError||!security?.verified){
+    await supabaseClient.auth.signOut({scope:"local"});
+    const el=document.getElementById("employeeLoginError");
+    if(el)el.textContent="Your account needs setup or a fresh sign-in. Use the setup code from the owner.";
+    return false;
+  }
   const {error:loginLogError}=await supabaseClient.rpc("apex_record_employee_login",{p_user_agent:navigator.userAgent||""});if(loginLogError)console.error("Employee login could not be recorded:",loginLogError);
   setGhToken("");
   isEmployee=true;employeeProfile=profile;staffSecurityReset();await staffSecurityLoad();go("/employee");toast("Welcome, "+profile.display_name+".");return false;
+}
+async function activateEmployee(event){
+  event.preventDefault();
+  const form=event.currentTarget,button=event.submitter;
+  const message=form.querySelector('[role="alert"]');
+  const employee_id=form.elements.employeeId.value.trim();
+  const setup_code=form.elements.setupCode.value.trim(),password=form.elements.newPassword.value;
+  if(password!==form.elements.confirmPassword.value){message.textContent="The passwords must match.";return;}
+  staffBusy(button,true);
+  message.textContent="";
+  let data;
+  try{
+    data=await employeeAuthAction({action:"activate",employee_id,setup_code,password});
+    if(!data?.success)throw Error(data?.error||"Employee setup is temporarily unavailable.");
+  }catch(error){message.textContent=error.message;return;}
+  finally{staffBusy(button,false);}
+  form.reset();
+  form.closest("details").open=false;
+  document.getElementById("employeePasscode").value=data.passcode;
+  document.getElementById("employeePassword").focus();
+  const loginStatus=document.getElementById("employeeLoginStatus");
+  loginStatus.textContent="Password created. Sign in with your employee ID or name and your new password.";
 }
 async function callEmployeeAdmin(payload){const {data,error}=await supabaseClient.functions.invoke("manage-employee",{body:payload});if(error)throw error;if(data&&data.error)throw new Error(data.error);employeeAuditLoaded=false;return data;}
 async function createEmployee(e){
@@ -1125,7 +1176,7 @@ async function createEmployee(e){
   try{
     const result=await callEmployeeAdmin({action:"create",display_name,email});
     e.target.reset();employeesLoaded=false;await loadEmployees();render();
-    showEmployeePasscode(result.passcode,result.employee.display_name,result.password);
+    showEmployeePasscode(result.setup_code,result.employee.display_name);
   }catch(err){toast("Could not create employee: "+err.message);}
   return false;
 }
@@ -1134,14 +1185,14 @@ function editEmployee(userId){staffEditEmployee(userId);}
 async function saveEmployeeEdit(userId){await staffSaveEmployee(userId);}
 
 async function resetEmployeePasscode(userId,name){
-  if(!confirm("Issue a new secure password for "+name+"? Previous passwords and staff sessions will stop working."))return;
+  if(!confirm("Issue a new setup code for "+name+"? They will need to create a new password to regain staff access."))return;
   try{
     const result=await callEmployeeAdmin({action:"reset_passcode",user_id:userId});
-    showEmployeePasscode(result.passcode,name,result.password);
+    showEmployeePasscode(result.setup_code,name);
   }catch(err){toast("Could not reset passcode: "+err.message);}
 }
-function showEmployeePasscode(code,name,password){
-  openDlg(`<div class="dlg"><h3>Employee login details</h3><p>Give these details privately to <strong>${esc(name)}</strong>. The password is shown only now.</p><label class="field">Employee ID<input readonly value="${esc(code)}"></label><label class="field">Password<input readonly type="password" id="createdEmployeePassword" value="${esc(password||'')}"></label><label><input type="checkbox" onchange="document.getElementById('createdEmployeePassword').type=this.checked?'text':'password'"> Show password</label><button class="btn ghost" onclick="editDlg.close()">Done</button></div>`);
+function showEmployeePasscode(code,name){
+  openDlg(`<div class="dlg"><h3>Employee setup code</h3><p>Share the employee ID and one-time setup code privately with <strong>${esc(name)}</strong>. They’ll enter both under First-time setup and choose a password. The setup code expires in 7 days.</p><label class="field">Employee ID<input readonly value="${esc(code.slice(0,6))}" onfocus="this.select()"></label><label class="field">One-time setup code<input readonly value="${esc(code)}" onfocus="this.select()"></label><button class="btn ghost" onclick="editDlg.close()">Done</button></div>`);
 }
 let employeesLoaded=false,employeesLoading=false,employeesError="";
 async function loadEmployees(){if(!isOwner)return;await staffLoadContext(true);employeeProfiles=staffState.employees;employeesLoaded=true;}
@@ -1222,7 +1273,15 @@ async function assignJob(kind,id,userId){
 }
 function employeeLogin(){
   if(isEmployee){go("/employee");return "";}
-  return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Employee login</h2><p>Enter your employee ID and separate password provided by the owner.</p></div></div><form class="panel" onsubmit="return tryEmployeeLogin(event)"><div class="field"><label for="employeePasscode">Employee ID</label><input id="employeePasscode" type="text" required minlength="6" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" autocomplete="username" aria-label="Six-digit employee ID"></div><div class="field"><label for="employeePassword">Password</label><input id="employeePassword" type="password" required minlength="12" autocomplete="current-password"></div><button class="btn gold" type="submit">Sign in</button><p id="employeeLoginError" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p></form><p style="margin-top:18px"><a href="#/staff">Owner login</a></p></div>`;
+  return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Employee login</h2><p>Sign in with your employee ID or name and password.</p></div></div><form class="panel" onsubmit="return tryEmployeeLogin(event)"><div class="field"><label for="employeePasscode">Employee ID or name</label><input id="employeePasscode" type="text" required maxlength="100" autocomplete="username"></div><div class="field"><label for="employeePassword">Password</label><input id="employeePassword" type="password" required minlength="12" autocomplete="current-password"></div><button class="btn gold" type="submit">Sign in</button><p id="employeeLoginStatus" role="status"></p><p id="employeeLoginError" role="alert" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p></form><details class="panel" style="margin-top:16px"><summary>First-time setup or password reset</summary>
+    <form onsubmit="activateEmployee(event);return false">
+      <p>Enter the employee ID and one-time setup code from the owner to create your password.</p>
+      <label class="field">Employee ID<input name="employeeId" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" autocomplete="username"></label>
+      <label class="field">One-time setup code<input name="setupCode" required maxlength="59" autocapitalize="off" spellcheck="false" autocomplete="off"></label>
+      <label class="field">New password<input name="newPassword" type="password" required minlength="12" maxlength="72" autocomplete="new-password"></label>
+      <label class="field">Confirm password<input name="confirmPassword" type="password" required minlength="12" maxlength="72" autocomplete="new-password"></label>
+      <button class="btn gold" type="submit">Create password</button><p role="alert"></p>
+    </form></details><p style="margin-top:18px"><a href="#/staff">Owner login</a></p></div>`;
 }
 function employeesPage(){return staffEmployeesPage();}
 
@@ -2562,7 +2621,7 @@ function staff(){
   if(isOwner){go("/manage");return "";}if(isEmployee){go("/employee");return "";}
   return `<div class="wrap" style="max-width:480px"><div class="pagehead"><div><h2>Owner login</h2><p>Sign in with the owner email and password.</p></div></div>
   <form class="panel" onsubmit="tryLogin(event)"><div class="field"><label for="ownerEmail">Owner email</label><input id="ownerEmail" type="email" required autocomplete="username"></div><div class="field"><label for="ownerPassword">Password</label><input id="ownerPassword" type="password" required autocomplete="current-password"></div><button class="btn gold" type="submit">Owner sign in</button><p id="ownerLoginError" style="color:var(--alert);margin:12px 0 0;font-size:.9rem"></p></form>
-  <div class="panel" style="margin-top:16px"><h3>Employee login</h3><p class="muted">Employees can sign in with their username and password.</p><a class="btn ghost" href="#/employee-login">Employee sign in</a></div><p style="margin-top:20px"><a href="#/login">Customer sign-in instead</a></p></div>`;
+  <div class="panel" style="margin-top:16px"><h3>Employee login</h3><p class="muted">Employees can sign in with their employee ID or name and password.</p><a class="btn ghost" href="#/employee-login">Employee sign in</a></div><p style="margin-top:20px"><a href="#/login">Customer sign-in instead</a></p></div>`;
 }
 function manage(){
   if(!isOwner) return staff();
@@ -3161,9 +3220,9 @@ function toast(msg){
 }
 </script>
 <script src="build-compatibility.js"></script>
-<script src="staff-workspace.js?v=20261117-record-backup"></script>
+<script src="staff-workspace.js?v=20261117-employee-sales"></script>
 <script src="team-management.js?v=20261117-record-backup"></script>
-<script src="staff-security.js?v=20261117-security"></script>
+<script src="staff-security.js?v=20261117-employee-setup"></script>
 <script src="private-record-crypto.js"></script>
 <script src="private-record-backup.js"></script>
 <script src="owner-finances.js"></script>
@@ -3172,7 +3231,7 @@ function toast(msg){
 <script src="order-tracking.js"></script>
 <script src="customer-accounts.js"></script>
 <script src="customer-experience.js"></script>
-<script src="promo-codes.js"></script>
+<script src="promo-codes.js?v=20261117-employee-sales"></script>
 <script src="owner-test-checkout.js"></script>
 <script src="apex-policies.js"></script>
 <script src="catalog-health.js"></script>

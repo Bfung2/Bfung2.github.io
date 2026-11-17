@@ -13,6 +13,6 @@ function staffSecurityGate(){
  if(!staffSecurity.loaded){if(!staffSecurity.loading)void staffSecurityLoad();return '<div class="wrap"><p role="status">Verifying staff security…</p></div>';}
  if(staffSecurity.verified)return null;
  if(isOwner)return teamSecurityPage();
- return '<div class="wrap"><h2>Employee password setup required</h2><p>Ask the owner to issue your employee ID and a separate password from Employees. Previous code-only sessions no longer have staff access.</p><button class="btn gold" onclick="logout()">Sign out</button></div>';
+ return '<div class="wrap"><h2>Employee password setup required</h2><p>Sign out and use the one-time setup code from the owner to create your password.</p><button class="btn gold" onclick="logout()">Sign out</button></div>';
 }
 function staffSecurityControls(){return `<div class="row"><button class="btn ghost" onclick="staffSecurityReset();render()">Refresh security status</button><button class="btn ghost" onclick="logout()">Sign out</button></div>`;}
