@@ -27,3 +27,7 @@ The additive migration `202611170001_team_management.sql` was applied to the con
 - No signed-in browser acceptance test or real authenticator enrollment was performed. No real payment, settlement, sale attribution, employee setting change or notification was made for verification.
 
 After merge, check Overview, Order workflow, Team activity and Security as owner. Check Overview and assigned workflow as an employee. Confirm an unassigned or disabled employee cannot open a private order note. For authenticator setup, scan the QR code, verify a code, and retain access to your authenticator and Supabase recovery account.
+
+## Follow-up
+
+See `docs/staff-security-completion.md` for mandatory MFA, independent employee passwords, repaired tests, browser checks and verified backup limitations. The optional-MFA and legacy-test limitations above describe the earlier PR only.

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const code=fs.readFileSync('staff-security.js','utf8');
+let resolve,draws=0;
+const ctx={isOwner:true,isEmployee:false,teamSecurityPage:()=>'<owner challenge>',staffLoadContext:async()=>{},render:()=>draws++,supabaseClient:{rpc:()=>new Promise(r=>resolve=r)}};
+vm.createContext(ctx);vm.runInContext(code,ctx);
+const run=s=>vm.runInContext(s,ctx);
+assert.match(ctx.staffSecurityGate(),/Verifying staff security/);
+ctx.staffSecurityReset();resolve({data:{verified:true,owner:true}});await Promise.resolve();await Promise.resolve();assert.equal(run('staffSecurity.verified'),false,'Old session response must not unlock new session');
+const loading=ctx.staffSecurityLoad();resolve({data:{verified:false,owner:true,enrolled:true}});await loading;assert.equal(ctx.staffSecurityGate(),'<owner challenge>');
+ctx.isOwner=false;ctx.isEmployee=true;assert.match(ctx.staffSecurityGate(),/Employee password setup required/);
+run('staffSecurity.verified=true');assert.equal(ctx.staffSecurityGate(),null);
+ctx.isEmployee=false;assert.equal(ctx.staffSecurityGate(),null);
+const html=fs.readFileSync('index.html','utf8');assert.match(html,/id="employeePassword" type="password"/);assert.doesNotMatch(html,/password:passcode/);assert.match(html,/staffSecurityGate\(\)/);
+const edge=fs.readFileSync('supabase/functions/manage-employee/index.ts','utf8');assert.match(edge,/crypto.getRandomValues\(bytes\)/);assert.match(edge,/credential_version: 1/);assert.doesNotMatch(edge,/password: passcode/);
+for(const path of ['manage-employee','send-gmail','paid-order-notify'])assert.match(fs.readFileSync(`supabase/functions/${path}/index.ts`,'utf8'),/rpc\(['"]apex_is_owner['"]\)/);
+console.log('PASS: owner challenge, employee migration gate, stale session isolation, independent password generation and all owner Edge checks.');

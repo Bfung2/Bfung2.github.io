@@ -46,6 +46,8 @@ Deno.serve(async (req) => {
     const input = await req.json();
     const to = String(input.to || "").trim();
     const subject = String(input.subject || "").trim();
+    const { data: ownerVerified, error: ownerSecurityError } = await supabase.rpc("apex_is_owner");
+    if (ownerSecurityError || ownerVerified !== true) return json({ error: "Owner authenticator verification required." }, 403);
     const body = String(input.body || "");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to) || to.length > 254) {
       return json({ error: "A valid recipient email is required." }, 400);

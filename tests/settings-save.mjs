@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import vm from 'node:vm';
 const source=await fs.readFile(new URL('../index.html',import.meta.url),'utf8');
 const settingsCode=source.slice(source.indexOf('function raiseUnderpricedCatalogItems()'),source.indexOf('\nfunction inventory()',source.indexOf('function raiseUnderpricedCatalogItems()')));
-const defaults={s_shop:'Apex',s_tag:'Tagline',s_mail:'new-owner@example.invalid',s_phone:'555',s_fee:'20',s_ship:'18',s_tax:'11.5',s_addr:'Shop',s_zelle:'',s_paypal:'',s_apay:''};
+const defaults={s_shop:'Apex',s_tag:'Tagline',s_mail:'new-owner@example.invalid',s_phone:'555',s_fee:'20',s_ship:'18',s_shipmode:'percent',s_tax:'11.5',s_addr:'Shop',s_zelle:'',s_paypal:'',s_apay:''};
 function fixture({token=true,saveResult=true,local=false}={}){
  const controls=Object.entries(defaults).map(([id,value])=>({id,value}));controls.namedItem=id=>controls.find(c=>c.id===id);
  const form={elements:controls};const toasts=[];let resolve;
