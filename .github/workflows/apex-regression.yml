@@ -82,6 +82,7 @@ jobs:
       - name: Staff security and current storefront regressions
         run: |
           node tests/staff-security.mjs
+          node tests/mfa-resume.mjs
           node tests/staff-edge-security.mjs
           node tests/staff-workspace-state.mjs
           node --test tests/catalog-break-even.test.cjs tests/carrier-shipping.test.cjs tests/products-page-preserved.test.cjs

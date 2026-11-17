@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+let dialog='',enrolls=0,removes=[],verifications=0,factors=[];
+const ctx={supabaseClient:{auth:{mfa:{listFactors:async()=>({data:{all:factors,totp:factors.filter(x=>x.status==='verified')},error:null}),unenroll:async x=>{removes.push(x.factorId);return {error:null};},enroll:async()=>{enrolls++;return {data:{id:'new',totp:{secret:'test-fixture',qr_code:'<svg/>'}},error:null};}}}},openDlg:s=>dialog=s,esc:String,document:{getElementById:()=>({src:''})},staffError:e=>{throw e;}};
+vm.createContext(ctx);vm.runInContext(fs.readFileSync('team-management.js','utf8'),ctx);ctx.teamMFAVerify=async()=>verifications++;
+factors=[{id:'pending',factor_type:'totp',status:'unverified'}];
+await ctx.teamMFASetup();assert.match(dialog,/Finish authenticator setup/);assert.match(dialog,/data-factor="pending"/);assert.equal(enrolls,0);assert.equal(removes.length,0);
+await ctx.teamMFASetup();assert.equal(enrolls,0,'Reopening must resume without changing the scanned secret');
+await ctx.teamMFASetup(true);assert.deepEqual(removes,['pending']);assert.equal(enrolls,1);assert.match(dialog,/Scan with your authenticator/);
+factors=[{id:'verified',factor_type:'totp',status:'verified'}];await ctx.teamMFASetup(true);assert.equal(verifications,1);assert.deepEqual(removes,['pending'],'Restart never removes a verified factor');
+factors=[];await ctx.teamMFASetup();assert.equal(enrolls,2);
+console.log('PASS: unfinished factor resumes across closes, explicit restart clears only unfinished setup, verified authenticator preserved.');

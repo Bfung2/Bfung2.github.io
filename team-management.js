@@ -29,15 +29,25 @@ async function teamOrderNote(id){
 async function teamSaveNote(event){event.preventDefault();const f=event.currentTarget,b=event.submitter;staffBusy(b,true);try{await staffRPC('apex_private_order_note',{p_order:f.dataset.order,p_body:f.elements.body.value,p_revision:Number(f.dataset.revision)});editDlg.close();toast('Private note saved.');}catch(e){staffError(e);}finally{staffBusy(b,false);}}
 function teamSecurityPage(){if(!isOwner)return '<div class="wrap"><h2>Owner sign-in required</h2></div>';return `<div class="wrap" style="max-width:800px"><h2>Owner security</h2><section class="panel"><p>${staffSecurity.error?esc(staffSecurity.error):staffSecurity.verified?'Authenticator verified. Owner tools are unlocked.':staffSecurity.enrolled?'Enter your authenticator code to unlock owner tools.':'Set up an authenticator to unlock owner tools. Backend protection requires two-factor verification.'}</p><button class="btn gold" onclick="teamMFASetup()">${staffSecurity.enrolled?'Verify authenticator':'Set up authenticator'}</button>${staffSecurityControls()}</section>${staffSecurity.verified?'<p><a class="btn gold" href="#/team-overview">Open owner overview</a></p>':''}<section class="panel"><h3>Backups</h3><p>Supabase Free does not include scheduled backups. See the private backup and restore procedure in the repository. Backup coverage is unverified until an encrypted backup and restore drill succeed.</p><a href="https://supabase.com/dashboard/project/arvdrrrbobjpmmygojfm/database/backups" target="_blank" rel="noopener noreferrer">Review database backups</a></section></div>`;}
 
-async function teamMFASetup(){
- try{const {data:f,error:fe}=await supabaseClient.auth.mfa.listFactors();if(fe)throw fe;if(f.totp.some(x=>x.status==='verified'))return teamMFAVerify();
- // Remove abandoned unverified enrollments before retrying setup.
- for(const x of f.totp.filter(x=>x.status==='unverified')){const {error}=await supabaseClient.auth.mfa.unenroll({factorId:x.id});if(error)throw error;}
+async function teamMFASetup(restart=false){
+ try{
+ const {data:f,error:fe}=await supabaseClient.auth.mfa.listFactors();if(fe)throw fe;
+ // Supabase's totp list contains verified factors; unfinished factors are in all.
+ const factors=f.all||f.totp||[];
+ if(factors.some(x=>x.factor_type==='totp'&&x.status==='verified')||(f.totp||[]).some(x=>x.status==='verified'))return teamMFAVerify();
+ const pending=factors.filter(x=>x.factor_type==='totp'&&x.status==='unverified');
+ if(pending.length&&!restart){
+   openDlg(`<div class="dlg"><h3>Finish authenticator setup</h3><p>If you already scanned the QR code, enter the current code from that authenticator entry. Closing this window does not cancel setup.</p>${teamMFAForm(pending[0].id)}<p>If you did not save the QR code, restart setup and scan the new code.</p><button type="button" class="btn ghost" onclick="teamMFASetup(true)">Restart unfinished setup</button></div>`);
+   return;
+ }
+ // Restart only unfinished enrollments; never remove a verified authenticator.
+ for(const x of pending){const {error}=await supabaseClient.auth.mfa.unenroll({factorId:x.id});if(error)throw error;}
  const {data,error}=await supabaseClient.auth.mfa.enroll({factorType:'totp',friendlyName:'Apex owner authenticator'});if(error)throw error;
  openDlg(`<div class="dlg"><h3>Scan with your authenticator</h3><img id="teamMFAQR" alt="Authenticator setup QR code" style="max-width:240px"><p>Or enter this setup key:</p><code>${esc(data.totp.secret)}</code>${teamMFAForm(data.id)}</div>`);
  document.getElementById('teamMFAQR').src=data.totp.qr_code.startsWith('data:image/')?data.totp.qr_code:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(data.totp.qr_code);
  }catch(e){staffError(e);}
 }
+
 function teamMFAForm(id){return `<form data-factor="${esc(id)}" onsubmit="teamMFAConfirm(event)"><label class="field">Authenticator code<input name="code" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code"></label><button class="btn gold">Verify code</button><button type="button" class="btn ghost" onclick="editDlg.close()">Cancel</button></form>`;}
 async function teamMFAVerify(){try{const {data,error}=await supabaseClient.auth.mfa.listFactors();if(error)throw error;const factor=data.totp.find(f=>f.status==='verified');if(!factor)return toast('Set up an authenticator first.');openDlg(`<div class="dlg"><h3>Verify authenticator</h3>${teamMFAForm(factor.id)}</div>`);}catch(e){staffError(e);}}
 async function teamMFAConfirm(event){event.preventDefault();const f=event.currentTarget,b=event.submitter;staffBusy(b,true);try{const {error}=await supabaseClient.auth.mfa.challengeAndVerify({factorId:f.dataset.factor,code:f.elements.code.value});if(error)throw error;editDlg?.close();staffSecurityReset();await staffSecurityLoad();await staffLoadContext(true);toast('Authenticator verified.');}catch(e){staffError(e);}finally{staffBusy(b,false);}}
