@@ -89,6 +89,8 @@ jobs:
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/owner-finances.mjs
       - name: PayPal refund verification and permissions
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/refunds.mjs
+      - name: Signed refund webhook and private inbox
+        run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/refund-webhook.mjs
       - name: Staff security and current storefront regressions
         run: |
           node tests/staff-security.mjs

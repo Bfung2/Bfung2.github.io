@@ -3,7 +3,7 @@ const headers={'Access-Control-Allow-Origin':'https://bfung2.github.io','Access-
 const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{...headers,'Content-Type':'application/json'}});
 function refundCents(value:unknown){if(typeof value!=='string'||!/^\d+(?:\.\d{1,2})?$/.test(value))throw Error('Invalid provider amount');const n=Math.round(Number(value)*100);if(!Number.isSafeInteger(n)||n<=0)throw Error('Invalid provider amount');return n;}
 function verifyRefund(data:any,reference:string,capture:string,base:string){
- if(data.id!==reference||data.status!=='COMPLETED'||data.amount?.currency_code!=='USD'||!Array.isArray(data.links)||!data.links.some((l:any)=>l.rel==='up'&&l.href===base+'/v2/payments/captures/'+encodeURIComponent(capture)))throw Error('Refund is not completed for this capture');
+ if(data.id!==reference||data.status!=='COMPLETED'||data.amount?.currency_code!=='USD'||!Array.isArray(data.links)||!data.links.some((l:any)=>l.rel==='up'&&[base,base.replace('api-m.','api.')].some(origin=>l.href===origin+'/v2/payments/captures/'+encodeURIComponent(capture))))throw Error('Refund is not completed for this capture');
  return refundCents(data.amount.value);
 }
 Deno.serve(async(req)=>{
@@ -13,10 +13,8 @@ Deno.serve(async(req)=>{
  const caller=createClient(url,anon,{global:{headers:{Authorization:req.headers.get('Authorization')||''}},auth:{persistSession:false}});
  const {data:{user},error:authError}=await caller.auth.getUser();if(authError||!user)return json({error:'Owner required'},403);
  const {data:owner,error:ownerError}=await caller.rpc('apex_is_owner');if(ownerError||owner!==true)return json({error:'Verified owner authenticator required'},403);
- const input=await req.json();if(!['verify','full'].includes(input.action)||typeof input.orderId!=='string'||input.orderId.length>160)return json({error:'Invalid action or order'},400);
+ const input=await req.json();if(!['verify','full','configure'].includes(input.action)||(input.action!=='configure'&&(typeof input.orderId!=='string'||input.orderId.length>160)))return json({error:'Invalid action or order'},400);
  const admin=createClient(url,key,{auth:{persistSession:false}});
- const {data:ord,error}=await admin.from('apex_orders').select('id,total,tax,is_test,paypal_capture_id').eq('id',input.orderId).maybeSingle();
- if(error||!ord||ord.is_test||!ord.paypal_capture_id)return json({error:'Real captured order required'},409);
  const env=Deno.env.get('PAYPAL_ENVIRONMENT');if(!['live','sandbox'].includes(env||''))throw Error('Payment environment is not configured');
  const base=env==='live'?'https://api-m.paypal.com':'https://api-m.sandbox.paypal.com';
  const client=Deno.env.get('PAYPAL_CLIENT_ID'),secret=Deno.env.get('PAYPAL_CLIENT_SECRET');if(!client||!secret)throw Error('Payment service not configured');
@@ -24,6 +22,18 @@ Deno.serve(async(req)=>{
  const tokenData=await tokenResponse.json();if(!tokenResponse.ok||!tokenData.access_token)throw Error('PayPal authentication failed');
  const auth={Authorization:'Bearer '+tokenData.access_token,'Content-Type':'application/json'};
  const get=async(path:string)=>{const r=await fetch(base+path,{headers:auth,signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error('PayPal lookup failed; reconcile before retrying');return await r.json();};
+ if(input.action==='configure'){
+ const endpoint=url+'/functions/v1/paypal-webhook';
+ const existing=await get('/v1/notifications/webhooks');
+ let hook=existing.webhooks?.find((h:any)=>h.url===endpoint);
+ if(hook&&!hook.event_types?.some((e:any)=>e.name==='PAYMENT.CAPTURE.REFUNDED'||e.name==='*'))throw Error('Existing webhook needs its refund subscription updated in PayPal');
+ if(!hook){const response=await fetch(base+'/v1/notifications/webhooks',{method:'POST',headers:auth,body:JSON.stringify({url:endpoint,event_types:[{name:'PAYMENT.CAPTURE.REFUNDED'}]}),signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error('Webhook registration failed; retry to discover an existing registration');hook=await response.json();}
+ if(!hook?.id)throw Error('Provider returned no webhook ID');
+ const saved=await admin.from('apex_paypal_webhook_config').upsert({environment:env,webhook_id:hook.id},{onConflict:'environment'});if(saved.error)throw Error('Webhook registered but local verification setup failed; retry configuration');
+ return json({success:true,configured:true});
+ }
+ const {data:ord,error}=await admin.from('apex_orders').select('id,total,tax,is_test,paypal_capture_id').eq('id',input.orderId).maybeSingle();
+ if(error||!ord||ord.is_test||!ord.paypal_capture_id)return json({error:'Real captured order required'},409);
  let reference=String(input.reference||''),tax=Number(input.taxCents),attempt:any=null;
  if(input.action==='full'){
  if(input.confirmation!==ord.id)return json({error:'Type the exact order ID to authorize a full refund'},400);
