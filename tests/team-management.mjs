@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+const source=readFileSync('team-management.js','utf8');
+const ctx={isOwner:false,isEmployee:true,staffEpoch:1,employeeProfile:{user_id:'me'},staffGate:()=>null,staffLoadSales:()=>{},employeeJobsLoaded:true,employeeJobsLoading:false,employeeJobs:{orders:[{assigned_to:'me',status:'working'},{assigned_to:'other',status:'working'},{assigned_to:'me',status:'delivered'}],requests:[]},staffSales:{items:[{is_test:false},{is_test:true}]},staffShell:(a,b,c)=>c,staffCommissionSummary:()=>'',staffCan:()=>false,STAFF_PERMISSIONS:[],esc:String};
+vm.createContext(ctx);vm.runInContext(source,ctx);
+const html=ctx.teamOverview();assert.match(html,/Assigned work/);assert.match(html,/staff-metric">1</);assert.doesNotMatch(html,/Prepare sale/);
+ctx.isOwner=true;ctx.staffDashboardPage=()=> 'owner dashboard';assert.equal(ctx.teamOverview(),'owner dashboard');
+let rows=[{textContent:'Alice permission changed',hidden:false},{textContent:'Bob order updated',hidden:false}];ctx.document={querySelectorAll:()=>rows};ctx.teamFilterActivity('alice');assert.equal(rows[0].hidden,false);assert.equal(rows[1].hidden,true);
+const sql=readFileSync('supabase/migrations/202611170001_team_management.sql','utf8');
+assert.match(sql,/enable row level security/);assert.match(sql,/o.assigned_to=auth.uid\(\)/);assert.match(sql,/apex_staff_can\('edit_notes'\)/);assert.match(sql,/p_revision is distinct from/);assert.match(sql,/for update/);assert.match(sql,/revoke all.*from public,anon/);
+assert.doesNotMatch(sql,/grant select.*authenticated/);
+console.log('Team overview scoping, search, owner routing, and private-note security contracts passed.');
