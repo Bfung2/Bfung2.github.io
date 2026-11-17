@@ -71,4 +71,17 @@ await sql('reset role');await query('delete from auth.sessions where id=$1',[own
 await sql('reset role');await query("insert into auth.mfa_factors(user_id,status) values($1,'verified')",[owner]);
 await secureAs(owner,'apexcomputers039@gmail.com',ownerSession,'aal2');assert.equal(await value('select public.apex_is_owner()'),false);
 console.log('PASS: AAL1 owner denied, AAL2 canonical owner allowed, forged owner denied, legacy employee denied, password reset and revoked-session tokens denied.');
+// Owner-only record backup: complete included rows and explicit missing coverage.
+await sql('reset role');await query('insert into auth.sessions(id,user_id) values($1,$2)',[ownerSession,owner]);
+await sql(await fs.readFile(new URL('../supabase/migrations/202611170003_private_record_backup.sql',import.meta.url),'utf8'));
+await sql(await fs.readFile(new URL('../supabase/migrations/202611170003_private_record_backup.sql',import.meta.url),'utf8'));
+await secureAs(owner,'apexcomputers039@gmail.com',ownerSession,'aal2');
+const backup=await value('select public.apex_owner_record_backup()');assert.equal(backup.format,'apex-business-records');assert.equal(backup.automatic_restore,false);
+assert.equal(backup.counts.employee_profiles,backup.tables.employee_profiles.length);assert.ok(backup.tables.employee_profiles.length>0);assert.ok(backup.excluded.some(x=>x.includes('Auth')));assert.ok(backup.missing_tables.length>0);
+assert.equal(backup.tables['auth.users'],undefined);assert.equal(backup.tables['auth.sessions'],undefined);
+await secureAs(owner,'apexcomputers039@gmail.com',ownerSession);await deny('select public.apex_owner_record_backup()');
+await secureAs(tech,'tech@test.invalid',employeeSession);await deny('select public.apex_owner_record_backup()');
+await secureAs(customer,'customer@test.invalid',employeeSession);await deny('select public.apex_owner_record_backup()');
+await sql('reset role');await sql('set role anon');await deny('select public.apex_owner_record_backup()');
+console.log('PASS: record export includes full table/count manifests, excludes Auth, discloses missing tables and denies employees/customers/anonymous/AAL1 owner.');
 await db.close();

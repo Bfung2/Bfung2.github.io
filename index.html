@@ -1527,7 +1527,7 @@ function render(){
   const views = {"/":home,"/products":products,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/catalog-health":()=>ownerCatalogHealth.page(),"/operations":opsPage,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
-    "/track-order":customerTrackingPage,"/team-workflow":teamWorkflowPage,"/team-overview":teamOverview,"/team-activity":teamActivityPage,"/team-security":teamSecurityPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
+    "/track-order":customerTrackingPage,"/team-workflow":teamWorkflowPage,"/team-overview":teamOverview,"/team-activity":teamActivityPage,"/private-backup":recordBackupPage,"/team-security":teamSecurityPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
   const keep = (ae && ae.id && (app.contains(ae)||document.getElementById("shopFilterPanel")?.contains(ae))) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
   const rows = {};
@@ -3158,9 +3158,11 @@ function toast(msg){
 }
 </script>
 <script src="build-compatibility.js"></script>
-<script src="staff-workspace.js?v=20261117-security"></script>
-<script src="team-management.js?v=20261117-mfa-resume"></script>
+<script src="staff-workspace.js?v=20261117-record-backup"></script>
+<script src="team-management.js?v=20261117-record-backup"></script>
 <script src="staff-security.js?v=20261117-security"></script>
+<script src="private-record-crypto.js"></script>
+<script src="private-record-backup.js"></script>
 <script src="staff-sales-ledger.js"></script>
 <script src="market-sales.js"></script>
 <script src="order-tracking.js"></script>

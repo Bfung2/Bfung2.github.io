@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import fs from 'node:fs';
+const {encrypt,decrypt,validate}=createRequire(import.meta.url)('../private-record-crypto.js');
+const fixture={format:'apex-business-records',version:1,created_at:'2026-11-17T00:00:00Z',tables:{employee_profiles:[{user_id:'fixture',display_name:'Apex 🛠 fixture'}],apex_orders:[]},counts:{employee_profiles:1,apex_orders:0},missing_tables:[],unlisted_tables:[],excluded:['Auth credentials'],automatic_restore:false};
+const password='synthetic-only encryption passphrase';
+const a=await encrypt(fixture,password),b=await encrypt(fixture,password);
+assert.notEqual(a.salt,b.salt);assert.notEqual(a.iv,b.iv);assert.notEqual(a.ciphertext,b.ciphertext);
+assert.ok(!JSON.stringify(a).includes('fixture'));assert.ok(!JSON.stringify(a).includes(password));assert.deepEqual(await decrypt(a,password),fixture);
+await assert.rejects(decrypt(a,'wrong password with enough characters'),/Incorrect password/);
+const bytes=Uint8Array.from(atob(a.ciphertext),c=>c.charCodeAt(0));bytes[0]^=1;
+await assert.rejects(decrypt({...a,ciphertext:btoa(String.fromCharCode(...bytes))},password),/damaged backup/);
+await assert.rejects(decrypt({...a,iterations:1},password),/Unsupported/);
+await assert.rejects(encrypt(fixture,'short'),/16/);
+assert.throws(()=>validate({...fixture,counts:{employee_profiles:2,apex_orders:0}}),/count/);
+assert.throws(()=>validate({...fixture,automatic_restore:true}),/Not an Apex/);
+const script=fs.readFileSync('private-record-backup.js','utf8');assert.doesNotMatch(script,/localStorage|sessionStorage/);assert.match(script,/epoch!==staffEpoch/);assert.match(script,/apex_owner_record_backup/);assert.doesNotMatch(script,/rpc\([^)]*password/);
+console.log('PASS: encrypted backup round trip, random salt/IV, wrong-password/tamper rejection, strict format/count checks and no persistent browser password storage.');

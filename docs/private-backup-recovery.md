@@ -28,3 +28,15 @@ Run the backup daily using the trusted machine's scheduler after one manual succ
 Back up Storage object files separately if used. Database rows alone do not restore object bytes. Edge Function code is in GitHub; redeploy it from the matching source. Re-enter Edge secrets from a private password manager. Restore Auth configuration, email/OAuth settings, allowed URLs, PayPal settings, DNS and platform integrations separately. Service tokens and provider keys are not recoverable from the public repository.
 
 During an actual incident, pause writes, identify the last known good snapshot, restore to an isolated replacement first, verify permissions and data, and obtain the owner's decision before replacing production or changing its endpoint. Never run a destructive restore as a backup test.
+
+## Manual encrypted business-record download
+
+The owner workspace now has **Private backup**. A verified owner can select a new encryption password (at least 16 characters), download an encrypted business-record snapshot, and verify that saved file locally using the same password. The password stays in browser memory, is cleared from the form afterward, and is never stored in the catalog or sent to Supabase. The file uses AES-256-GCM with a random nonce and salt and PBKDF2-SHA256 (600,000 iterations). Store the file privately and keep its encryption password separately.
+
+The server checks owner MFA on every export and captures included tables using the calling statement's stable database snapshot. It exports every row in its allowlist without API pagination truncation, with per-table counts. The archive reports missing tables and public tables outside the allowlist. Exports over 16 MiB of table JSON fail rather than silently omit rows; use the pg_dump procedure for larger databases.
+
+**This is a manual business-record backup, not full database recovery.** It excludes Auth user accounts, password hashes, MFA and sessions; schema, roles and RLS policies; Storage file bytes; Edge secrets and provider configuration; and the public catalog held in GitHub. No downloaded copy exists until the owner chooses a password and actually saves the file. Scheduled backups remain disabled.
+
+To check a saved copy, select it under Check a saved copy and enter its encryption password. Verification authenticates the encrypted content, validates the archive format, and checks each table's row count. It displays counts and coverage only; it never restores or modifies production. Successful file verification is not a successful disaster recovery drill.
+
+For recovery, decrypt only in a private, isolated environment; review the schema/migration version, recreate/map missing Auth identities, and stage the records into a disposable database using the matching repository migrations. Validate foreign keys, table counts, assignments, commissions, notes and access controls. Expired checkout links, notification queues and old tracking tokens require review before any real replay. Do not bulk-import this archive into production or automatically replay jobs. Full restoration remains a reviewed database migration requiring an owner decision.
