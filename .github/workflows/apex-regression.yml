@@ -85,6 +85,8 @@ jobs:
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/staff-permissions.mjs
       - name: Payment binding database permissions
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/payment-binding.mjs
+      - name: Owner finance permissions and accounting
+        run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/owner-finances.mjs
       - name: Staff security and current storefront regressions
         run: |
           node tests/staff-security.mjs
