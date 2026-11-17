@@ -1192,7 +1192,7 @@ async function loadEmployeeJobs(){
   if(!isEmployee||employeeJobsLoading)return;employeeJobsLoading=true;
   try{const {data,error}=await supabaseClient.rpc("apex_employee_get_jobs");if(error)throw error;employeeJobs.orders=data?.orders||[];employeeJobs.requests=data?.requests||[];employeeJobsLoaded=true;}
   catch(err){toast("Could not load assignments: "+err.message);}
-  finally{employeeJobsLoading=false;employeeJobsLoaded=true;if(route()==="/employee")render();}
+  finally{employeeJobsLoading=false;employeeJobsLoaded=true;if(["/employee","/team-workflow","/team-overview"].includes(route()))render();}
 }
 async function claimEmployeeJob(kind,id){
   if(!employeeProfile?.permissions?.claim_jobs){toast("Your account does not have permission to claim jobs.");return;}
@@ -1208,7 +1208,7 @@ async function loadOwnerWorkData(){
   if(!isOwner)return;
   try{const [q,e]=await Promise.all([supabaseClient.from("apex_service_requests").select("*").order("created_at",{ascending:false}),supabaseClient.from("employee_profiles").select("user_id,username,display_name,active,permissions").eq("active",true).order("display_name")]);if(q.error)throw q.error;if(e.error)throw e.error;cloudRequests=q.data||[];cloudRequestsLoaded=true;employeeProfiles=e.data||[];}
   catch(err){console.error(err);cloudOrdersError=err.message||"Could not load requests and employees.";}
-  finally{if(route()==="/inbox")render();}
+  finally{if(["/inbox","/team-workflow"].includes(route()))render();}
 }
 async function assignJob(kind,id,userId){
   const table=kind==="order"?"apex_orders":"apex_service_requests";const {error}=await supabaseClient.from(table).update({assigned_to:userId||null}).eq("id",id);
@@ -1234,7 +1234,7 @@ function employeeJobCard(kind,j){
   }else{
     actionMarkup=perms.claim_jobs?'<button class="btn gold" onclick="claimEmployeeJob(\''+kind+'\',\''+id+'\')">Claim this '+(order?"order":"request")+'</button>':'<p class="muted">Claiming jobs is disabled for this account.</p>';
   }
-  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div>${customerMarkup}<p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}${actionMarkup}${order&&assigned&&perms.update_status?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="staffOpenOrderTracking(this.dataset.order)">Customer progress</button>`:""}</div>`;
+  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div>${customerMarkup}<p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}${actionMarkup}${order&&assigned&&staffCan("view_notes")?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="teamOrderNote(this.dataset.order)">Private note</button>`:""}${order&&assigned&&perms.update_status?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="staffOpenOrderTracking(this.dataset.order)">Customer progress</button>`:""}</div>`;
 }
 function employeeDashboard(){
   if(!isEmployee||!employeeProfile)return employeeLogin();
@@ -1264,11 +1264,11 @@ async function loadCloudOrders(){
   try{
     const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,trackingToken:row.tracking_token||"",is_test:!!row.is_test,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,fulfillment_stage:row.fulfillment_stage||'received',trackingToken:row.tracking_token||"",is_test:!!row.is_test,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
     cloudOrdersLoaded=true;
     await loadOwnerWorkData();
   }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
-  finally{ cloudOrdersLoading=false; if(route()==="/inbox") render(); }
+  finally{ cloudOrdersLoading=false; if(["/inbox","/team-workflow"].includes(route())) render(); }
 }
 function combineAddress(a){
   a = a || {};
@@ -1522,7 +1522,7 @@ function render(){
   const views = {"/":home,"/products":products,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/catalog-health":()=>ownerCatalogHealth.page(),"/operations":opsPage,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
-    "/track-order":customerTrackingPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
+    "/track-order":customerTrackingPage,"/team-workflow":teamWorkflowPage,"/team-overview":teamOverview,"/team-activity":teamActivityPage,"/team-security":teamSecurityPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
   const ae = document.activeElement;
   const keep = (ae && ae.id && (app.contains(ae)||document.getElementById("shopFilterPanel")?.contains(ae))) ? {id:ae.id, s:ae.selectionStart, e:ae.selectionEnd} : null;
   const rows = {};
@@ -3154,6 +3154,7 @@ function toast(msg){
 </script>
 <script src="build-compatibility.js"></script>
 <script src="staff-workspace.js"></script>
+<script src="team-management.js"></script>
 <script src="staff-sales-ledger.js"></script>
 <script src="market-sales.js"></script>
 <script src="order-tracking.js"></script>

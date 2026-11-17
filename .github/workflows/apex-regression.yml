@@ -29,6 +29,7 @@ jobs:
           node --check customer-accounts.js
           node --check customer-experience.js
           node --check staff-workspace.js
+          node --check team-management.js
           node --check staff-sales-ledger.js
           node --check order-tracking.js
           node --check market-sales.js
@@ -73,6 +74,12 @@ jobs:
         run: node tests/build-compatibility.mjs
       - name: Phase 10 mobile storefront and checkout UX regression
         run: node tests/phase10-storefront.mjs
+      - name: Install isolated database test dependency
+        run: npm install --prefix "$RUNNER_TEMP/apex-tests" --no-save @electric-sql/pglite@0.5.16
+      - name: Team database permissions
+        run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/team-permissions.mjs
+      - name: Team management regression
+        run: node tests/team-management.mjs
       - name: Phase 11 owner operations and public monitor regression
         run: node tests/phase11-operations.mjs
       - name: Create non-destructive static catalog report
