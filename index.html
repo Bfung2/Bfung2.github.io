@@ -1001,6 +1001,10 @@ let githubSaveQueue = Promise.resolve();
 function pushToGithub(){
   // Serialize writes so two quick edits cannot race using the same GitHub SHA.
   githubSaveQueue = githubSaveQueue.catch(()=>{}).then(async ()=>{
+    try{
+      const {data:verifiedOwner,error:securityError}=await supabaseClient.rpc('apex_is_owner');
+      if(!isOwner||securityError||verifiedOwner!==true){cloudError="Verify your owner authenticator before saving site changes.";toast(cloudError);return false;}
+    }catch{cloudError="Owner security could not be verified. Site changes were not sent.";toast(cloudError);return false;}
     const token = ghToken();
     if(!token){
       cloudError = "No GitHub write token saved on this device — add one in Site settings to save changes.";
@@ -3154,9 +3158,9 @@ function toast(msg){
 }
 </script>
 <script src="build-compatibility.js"></script>
-<script src="staff-workspace.js"></script>
-<script src="team-management.js"></script>
-<script src="staff-security.js"></script>
+<script src="staff-workspace.js?v=20261117-security"></script>
+<script src="team-management.js?v=20261117-security"></script>
+<script src="staff-security.js?v=20261117-security"></script>
 <script src="staff-sales-ledger.js"></script>
 <script src="market-sales.js"></script>
 <script src="order-tracking.js"></script>

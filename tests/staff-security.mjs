@@ -12,7 +12,7 @@ const loading=ctx.staffSecurityLoad();resolve({data:{verified:false,owner:true,e
 ctx.isOwner=false;ctx.isEmployee=true;assert.match(ctx.staffSecurityGate(),/Employee password setup required/);
 run('staffSecurity.verified=true');assert.equal(ctx.staffSecurityGate(),null);
 ctx.isEmployee=false;assert.equal(ctx.staffSecurityGate(),null);
-const html=fs.readFileSync('index.html','utf8');assert.match(html,/id="employeePassword" type="password"/);assert.doesNotMatch(html,/password:passcode/);assert.match(html,/staffSecurityGate\(\)/);
+const html=fs.readFileSync('index.html','utf8');assert.match(html,/id="employeePassword" type="password"/);assert.doesNotMatch(html,/password:passcode/);assert.match(html,/staffSecurityGate\(\)/);assert.match(html,/verifiedOwner!==true/);
 const edge=fs.readFileSync('supabase/functions/manage-employee/index.ts','utf8');assert.match(edge,/crypto.getRandomValues\(bytes\)/);assert.match(edge,/credential_version: 1/);assert.doesNotMatch(edge,/password: passcode/);
 for(const path of ['manage-employee','send-gmail','paid-order-notify'])assert.match(fs.readFileSync(`supabase/functions/${path}/index.ts`,'utf8'),/rpc\(['"]apex_is_owner['"]\)/);
 console.log('PASS: owner challenge, employee migration gate, stale session isolation, independent password generation and all owner Edge checks.');
