@@ -7,15 +7,15 @@
 - Added tests for guest receipt authorization, provider order binding, verification before capture, recovery from ambiguous provider responses, duplicate/concurrent callbacks and preservation of shipped/delivered status.
 - Added an immutable, unique `paypal_order_id` binding, controlled by the payment server and permitted only after pricing is locked. Database tests verify reruns, anonymous/customer denial and uniqueness.
 - Checkout now requires the existing 256-bit receipt token for create/capture, verifies provider identity/currency/amount before money movement, reuses a completed capture during recovery and conditionally records payment once. It blocks new payments for cancelled/refunded orders and refuses captures whose provider status is refunded. This does not implement a refund service.
-- Reconciled GitHub's checkout source with deployed v23's strict seller/stock checks while retaining the repository's cost-recovery guard and carrier-quote support. The currently active shipping mode remains unchanged.
+- Reconciled GitHub's checkout source with deployed v23's strict seller/stock checks while retaining the repository's cost-recovery guard and carrier-quote support. Fixed the discount cost-recovery calculation to subtract the locked promo discount and added a regression rejecting an under-cost promotion. The currently active shipping mode remains unchanged.
 - Wired previously omitted suites into GitHub Actions and updated its Node version to 24 for built-in TypeScript stripping.
 - Inspected the live desktop Home and Products pages. Products remains available with the intentionally empty catalog. Mobile interaction behavior and responsive CSS pass automated regressions; a real phone/viewport walkthrough is still pending.
 
 ## Rollout
 
-1. Apply `supabase/migrations/20261117200001_checkout_payment_binding.sql`.
-2. Merge the accompanying frontend and checkout changes, then deploy `paypal-checkout` with `../_shared/carrier-shipping.mjs`. These are coordinated changes: the browser supplies `checkoutToken`; the Edge Function checks it and reads the new database column.
-3. Verify unauthenticated/missing-token requests are denied and the production function is ACTIVE. Existing cached tabs should refresh. Legacy unpaid checkouts without a stored provider binding must start a new checkout. A legacy payment that already captured needs PayPal reconciliation rather than an unverified automatic backfill.
+1. **Done:** Applied `supabase/migrations/20261117200001_checkout_payment_binding.sql` and verified the column, unique index and guard in production.
+2. **Done:** Deployed `paypal-checkout` version **25**, status **ACTIVE**, including its shared carrier module and discounted cost-recovery fix. Missing-token create/capture requests returned 403; unsupported actions returned 400. These read-only probes used a nonexistent order and caused no payment action.
+3. **Pending:** Merge PR #137 so the storefront sends `checkoutToken`. The catalog is currently intentionally empty; before adding saleable products, merge and refresh cached tabs. The backend now requires the receipt token. Legacy unpaid checkouts without a stored provider binding must start a new checkout. A legacy payment that already captured needs PayPal reconciliation rather than an unverified automatic backfill.
 4. When an eligible product exists, complete a controlled approval/capture and retry acceptance. Mock tests do not constitute a live financial transaction test.
 
 ## Remaining work and actual dependencies

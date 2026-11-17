@@ -169,7 +169,9 @@ function checkoutMeetsBreakEven(items: any[], catalog: any, locked: any, origina
       }
     } else return false;
   }
-  const subtotal = Number(locked.subtotal), shipping = Number(locked.shipping), total = Number(locked.total);
+  const discount = Number(locked.discount ?? 0);
+  const subtotal = Number(locked.subtotal) - discount, shipping = Number(locked.shipping), total = Number(locked.total);
+  if (!Number.isFinite(discount) || discount < 0 || subtotal < 0) return false;
   if (![supplierCost, subtotal, shipping, total, originalSubtotal].every(Number.isFinite)) return false;
   const outboundCost = actualCarrierCost === null ? roundMoney(originalSubtotal * shippingExpensePercent / 100) : actualCarrierCost;
   const paymentFee = roundMoney(total * feePercent / 100 + feeFixed);
@@ -256,7 +258,7 @@ Deno.serve(async (req) => {
         p_shipping: pricing.shipping, p_tax_rate: Number(catalog.settings?.taxRate ?? 0),
       });
       if (pricingError || !locked) return json({ error: pricingError?.message || "Could not verify checkout pricing." }, 400);
-      Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total) });
+      Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total), discount: Number(locked.discount ?? 0) });
       // apex_lock_checkout_price can return an earlier locked order. Never let an
       // expired or changed carrier quote silently use that older shipping charge.
       if (carrierQuote && Math.abs(pricing.shipping - carrierQuote.charge) >= 0.005) {
