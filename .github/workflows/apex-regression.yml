@@ -91,6 +91,8 @@ jobs:
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/refunds.mjs
       - name: Signed refund webhook and private inbox
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/refund-webhook.mjs
+      - name: Financial pagination and private customer refund status
+        run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/finance-tracking.mjs
       - name: Staff security and current storefront regressions
         run: |
           node tests/staff-security.mjs

@@ -1,0 +1,7 @@
+# Refund visibility and financial navigation
+
+Follow-up to PR #138. The customer private tracking endpoint now returns only aggregate provider-confirmed refunded cents and a full/partial/none status. It combines verified records and the signed provider inbox, deduplicates matching refund IDs and excludes manually recorded unverified refunds. Neither provider IDs nor costs, employee information or refunded-tax allocation are exposed. Invalid tokens retain the existing generic error; TEST checkouts never claim real refunds. The customer page shows confirmed refund totals and avoids promising a bank settlement date. Fulfillment stages are preserved; no order is automatically cancelled and no email is sent by this change.
+
+Order finances now uses owner-MFA-protected cursor pagination (50 real orders per page) with Newer/Older controls. A timestamp plus ID cursor prevents omission/duplication when multiple orders share a timestamp; new orders do not shift older page boundaries. There is no longer a latest-100 cutoff for order access. Unresolved refund inbox entries retain their independent verification form.
+
+User acceptance: the owner reported payment and refund tests successful in this conversation. Those are accepted as owner-reported passes and were not repeated through real transactions here. Deployment metadata may still show an open frontend PR; that does not invalidate the reported PayPal tests. Private backup activation is not inferred from payment testing. Previously documented credential/key/destination limitations remain applicable.
