@@ -839,12 +839,14 @@ const customerAuthCallback = new URLSearchParams(location.search).has("customer_
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {auth:{detectSessionInUrl:!customerAuthCallback}});
 let cloudOrders = [], cloudOrdersLoaded = false, cloudOrdersLoading = false, cloudOrdersError = "";
 const ghConfigured = GITHUB_OWNER !== "YOUR_GITHUB_USERNAME" && GITHUB_REPO !== "YOUR_REPO_NAME";
-function ghToken(){ try{ return localStorage.getItem("apex.ghtoken")||""; }catch(e){ return ""; } }
-function setGhToken(t){ try{ if(t) localStorage.setItem("apex.ghtoken", t); else localStorage.removeItem("apex.ghtoken"); }catch(e){} }
+function ghToken(){ if(!isOwner)return ""; try{ return localStorage.getItem("apex.ghtoken")||""; }catch(e){ return ""; } }
+function setGhToken(t){ if(!isOwner)return false; try{ if(t) localStorage.setItem("apex.ghtoken", t); else localStorage.removeItem("apex.ghtoken"); return true; }catch(e){ return false; } }
 function saveGhToken(e){
   e.preventDefault();
+  if(!isOwner)return false;
   const v = s_ghtoken.value.replace(/[\s'\u0022]/g,'');
-  setGhToken(v);
+  if(!setGhToken(v)){toast("Could not update the token in this browser’s storage.");return false;}
+  ghTestMsg = "";
   s_ghtoken.value = '';
   fileSha = null;
   toast(v ? ('Saved: '+v.slice(0,12)+'…'+v.slice(-4)+' — check that matches what you copied.') : 'Token removed from this device.');
@@ -1082,7 +1084,7 @@ async function applyAuthSession(session){
   if(user && !isOwner){
     const {data,error}=await supabaseClient.from("employee_profiles").select("user_id,username,display_name,email,active,permissions").eq("user_id",user.id).eq("active",true).maybeSingle();
     if(authEpoch!==staffEpoch)return;
-    if(!error && data){isEmployee=true;employeeProfile=data;setGhToken("");}
+    if(!error && data){isEmployee=true;employeeProfile=data;}
   }
   cloudOrdersLoaded=false;cloudOrders=[];cloudRequestsLoaded=false;cloudRequests=[];
   employeeJobs={orders:[],requests:[]};employeeJobsLoaded=false;if(isOwner||isEmployee)void staffSecurityLoad();render();
@@ -1143,7 +1145,6 @@ async function tryEmployeeLogin(e){
     return false;
   }
   const {error:loginLogError}=await supabaseClient.rpc("apex_record_employee_login",{p_user_agent:navigator.userAgent||""});if(loginLogError)console.error("Employee login could not be recorded:",loginLogError);
-  setGhToken("");
   isEmployee=true;employeeProfile=profile;staffSecurityReset();await staffSecurityLoad();go("/employee");toast("Welcome, "+profile.display_name+".");return false;
 }
 async function activateEmployee(event){
@@ -1319,7 +1320,7 @@ function employeeDashboard(){
 }
 
 async function logout(){
-  if(isEmployee||isOwner)setGhToken("");
+  ghTestMsg = "";
   await supabaseClient.auth.signOut(); isOwner=false; isEmployee=false; employeeProfile=null; staffReset(); cloudOrders=[]; cloudOrdersLoaded=false; employeeJobsLoaded=false;
   go("/"); toast("Signed out.");
 }
@@ -2680,7 +2681,7 @@ function manage(){
     </form>
     ${ghTestMsg?`<div class="notice" style="margin-top:12px;margin-bottom:0">${esc(ghTestMsg)}</div>`:""}
     ${ghToken()?`<p class="muted" style="font-size:.82rem;margin-top:10px">Currently saved on this device: <code>${esc(ghToken().slice(0,12))}…${esc(ghToken().slice(-4))}</code> (${ghToken().length} characters). Doesn't match what you copied from GitHub? Paste it again above and hit Save token.</p>`:""}
-    <p class="muted" style="font-size:.82rem">Stored only in this browser's local storage — never written to data.json, never emailed, never visible to anyone else. Leave the field blank and submit to remove it from this device.</p>
+    <p class="muted" style="font-size:.82rem">This browser keeps the token when you sign out. To remove it, leave the field blank and select Save token.</p>
   </div>
   <div class="panel" style="margin-top:20px"><h3>Backup</h3>
     <p class="muted" style="font-size:.9rem">${ghConfigured?"Your catalog lives in data.json in your GitHub repo now, so devices stay in sync. Still worth exporting a copy now and then in case anything goes wrong.":"Your catalog lives in this browser only right now. Export a copy before switching devices, or email yourself a plain-text copy of everything."}</p>
