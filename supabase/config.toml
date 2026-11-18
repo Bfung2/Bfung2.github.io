@@ -17,3 +17,6 @@ verify_jwt = true
 
 [functions.paypal-webhook]
 verify_jwt = false
+
+[functions.shipment-tracking]
+verify_jwt = true
