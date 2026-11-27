@@ -1942,7 +1942,7 @@ function upsertCatalogRecord(section,rec){
   // Verified catalog edits enforce a cost floor while preserving an owner-entered higher price.
   if(Number(rec.neweggPrice)>0){
     apexProfitPricing.applyToRecord(rec,S.settings,{preserveHigher:!!rec.supplierVersion});
-  }else if(isPartCat(rec.category)||!["Tech Service","Donation","Custom PC","Prebuilt PC","Gaming PC"].includes(rec.category)){
+  }else if(rec.supplierVersion||isPartCat(rec.category)||!["Tech Service","Donation","Custom PC","Prebuilt PC","Gaming PC"].includes(rec.category)){
     rec.active=false; // Never list an uncosted physical item as purchasable.
   }
   const exists=S[section].some(x=>x.id===rec.id);
