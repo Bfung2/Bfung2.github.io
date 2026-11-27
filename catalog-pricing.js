@@ -53,12 +53,15 @@
       contribution:model.contributionCents/100,
       marginPercent:model.contributionMarginPercent};
   }
+  function contributionAt(price, cost, extra, settings){
+    return simulate(asMoneyCents(cost),asMoneyCents(price),policy(settings),asMoneyCents(extra)).contributionCents/100;
+  }
   function eligibleForSale(rec,now=new Date()){
     if(String(rec?.seller||"").trim().toLowerCase()!=="newegg")return false;
     if(String(rec?.stockStatus||"").trim().toLowerCase()!=="in stock")return false;
     try{
       const u=new URL(rec?.sourceUrl);
-      if(u.protocol!=="https:"||!["www.newegg.com","newegg.com"].includes(u.hostname.toLowerCase())||!u.pathname.includes("/p/"))return false;
+      if(u.protocol!=="https:"||!["www.newegg.com","newegg.com"].includes(u.hostname.toLowerCase())||!/\/p\/[^/]*\d[^/]*$/.test(u.pathname))return false;
     }catch{return false;}
     const verified=String(rec?.verifiedDate||"");
     if(!/^\d{4}-\d{2}-\d{2}$/.test(verified))return false;
@@ -79,6 +82,6 @@
     rec.active=rec.active!==false&&eligibleForSale(rec,options.now);
     return {priced:true,minimumPrice:proposed.price,active:rec.active,model:proposed};
   }
-  root.apexProfitPricing={policy,quote,eligibleForSale,applyToRecord};
+  root.apexProfitPricing={policy,quote,contributionAt,eligibleForSale,applyToRecord};
   if(typeof module!=="undefined"&&module.exports)module.exports=root.apexProfitPricing;
 })(typeof globalThis!=="undefined"?globalThis:this);

@@ -8,5 +8,5 @@ run("upsertCatalogRecord('products',{id:'shared',name:'Renamed GPU',price:115,ca
 run("upsertCatalogRecord('parts',{id:'shared',price:120,lengthMm:230})");assert.equal(ctx.S.products[0].price,120);assert.equal(ctx.S.products[0].lengthMm,230);assert.equal(ctx.S.products[0].featured,true);
 run("upsertCatalogRecord('parts',{id:'new',price:50})");assert.equal(ctx.S.parts.length,2);assert.equal(ctx.S.products.length,2);assert.throws(()=>run("upsertCatalogRecord('orders',{id:'bad'})"));
 ctx.S.parts[0].name='Different legacy name';assert.equal(run("dupeOfPart({id:'shared',name:'Other name',category:'Graphics card'})"),true);
-assert.ok(html.includes('upsertCatalogRecord("products",rec)'));assert.ok(html.includes('upsertCatalogRecord("parts",rec)'));
+assert.ok(html.includes('catalogSaveOwnerRecord("products",rec,"p")'));assert.ok(html.includes('catalogSaveOwnerRecord("parts",rec,"q")'));
 console.log('PASS: same-SKU price/name/spec edits sync across catalog sections, unrelated/section-only metadata retained, new entries stay in selected section and same-ID cards deduplicate.');

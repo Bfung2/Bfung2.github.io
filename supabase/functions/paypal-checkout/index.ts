@@ -38,6 +38,37 @@ async function loadPublicCatalog() {
   return await response.json();
 }
 
+// Resolve versioned private costs only for the requested checkout items.
+async function attachPrivateSources(admin: any, catalog: any, items: any) {
+  if (!Array.isArray(items) || items.length > 50) return;
+  const ids = new Set(items.flatMap(item => item?.kind === "build" && Array.isArray(item.parts)
+    ? item.parts.slice(0, 9).map((part: any) => String(part?.id || "")) : [String(item?.id || "")]));
+  const records = [...(catalog.products || []), ...(catalog.parts || [])]
+    .filter(record => record?.supplierVersion && ids.has(String(record.id)));
+  if (!records.length) return;
+  const versions = [...new Set(records.map(record => record.supplierVersion))];
+  const { data, error } = await admin.from("apex_catalog_sources")
+    .select("version,sku,source_url,supplier_cost,extra_cost").in("version", versions);
+  if (error) throw new Error("Supplier information is temporarily unavailable.");
+  for (const record of records) {
+    const source = data?.find((row: any) => row.version === record.supplierVersion && row.sku === String(record.id));
+    const verifiedAt = Date.parse(String(record.verifiedDate || "") + "T00:00:00Z");
+    const age = Date.now() - verifiedAt;
+    let exactListing = false;
+    try {
+      const url = new URL(source?.source_url || "");
+      exactListing = url.protocol === "https:" && ["newegg.com", "www.newegg.com"].includes(url.hostname) &&
+        /\/p\/[^/]*\d[^/]*$/.test(url.pathname);
+    } catch { /* Invalid supplier listing. */ }
+    if (!source || !exactListing || !(age >= 0 && age < 7 * 86400000)) {
+      record.active = false;
+      continue;
+    }
+    record.neweggPrice = source.supplier_cost;
+    record.extraCostUSD = source.extra_cost;
+  }
+}
+
 // Browser-provided prices, names, fees and totals are ignored. All values are
 // rebuilt from the canonical product catalog and shop settings on the server.
 function calculateOrder(items: any, catalog: any) {
@@ -209,6 +240,7 @@ Deno.serve(async (req) => {
       if (catalog.settings?.shippingMode !== "carrier") {
         return json({ error: "Carrier shipping is not enabled yet." }, 409);
       }
+      await attachPrivateSources(admin, catalog, body.items);
       const pricing = calculateOrder(body.items, catalog);
       const quote = await quoteActualShipping(pricing.items, catalog, body.address, { allowTest: environment === "sandbox" });
       pricing.shipping = quote.charge;
@@ -242,30 +274,49 @@ Deno.serve(async (req) => {
         return json({ error: "This order cannot accept a payment." }, 409);
       }
       if (order.paypal_order_id) return json({ id: order.paypal_order_id, pricing: { subtotal: order.subtotal, shipping: order.shipping, tax: order.tax, total: order.total, discount: order.discount_amount, promo_code: order.promo_code } });
-      const catalog = await loadPublicCatalog();
-      const pricing = calculateOrder(order.items, catalog);
-      const undiscountedSubtotal = pricing.subtotal;
-      let carrierQuote: { charge: number; carrierCost: number } | null = null;
-      if (catalog.settings?.shippingMode === "carrier") {
-        carrierQuote = await quoteActualShipping(pricing.items, catalog, order.shipping_address,
-          { allowTest: environment === "sandbox" });
-        pricing.shipping = carrierQuote.charge;
-        pricing.total = roundMoney(pricing.subtotal + pricing.shipping + pricing.tax);
-      }
+      let locked;
+      if (Array.isArray(order.items) && order.items.some(item => item?.kind === "quote")) {
+        // The private quote/order association is created atomically by the
+        // customer acceptance RPC. An ordinary cart insert cannot create it.
+        const { data: quote, error: quoteError } = await admin.from("apex_pc_quotes")
+          .select("offer").eq("order_id", order.id).eq("status", "accepted").maybeSingle();
+        if (quoteError || !quote?.offer || !order.pricing_locked ||
+            ["subtotal", "shipping", "tax", "total"].some(key =>
+              !Number.isSafeInteger(quote.offer[key]) ||
+              Math.round(Number(order[key as keyof typeof order]) * 100) !== quote.offer[key])) {
+          return json({ error: "The accepted quote could not be verified." }, 409);
+        }
+        locked = { subtotal: Number(order.subtotal), shipping: Number(order.shipping),
+          tax: Number(order.tax), total: Number(order.total), discount: 0 };
+      } else {
+        const catalog = await loadPublicCatalog();
+        await attachPrivateSources(admin, catalog, order.items);
+        const pricing = calculateOrder(order.items, catalog);
+        const undiscountedSubtotal = pricing.subtotal;
+        let carrierQuote: { charge: number; carrierCost: number } | null = null;
+        if (catalog.settings?.shippingMode === "carrier") {
+          carrierQuote = await quoteActualShipping(pricing.items, catalog, order.shipping_address,
+            { allowTest: environment === "sandbox" });
+          pricing.shipping = carrierQuote.charge;
+          pricing.total = roundMoney(pricing.subtotal + pricing.shipping + pricing.tax);
+        }
 
-      const { data: locked, error: pricingError } = await admin.rpc("apex_lock_checkout_price", {
-        p_order: order.id, p_items: pricing.items, p_subtotal: pricing.subtotal,
-        p_shipping: pricing.shipping, p_tax_rate: Number(catalog.settings?.taxRate ?? 0),
-      });
-      if (pricingError || !locked) return json({ error: pricingError?.message || "Could not verify checkout pricing." }, 400);
-      Object.assign(pricing, { subtotal: Number(locked.subtotal), shipping: Number(locked.shipping), tax: Number(locked.tax), total: Number(locked.total), discount: Number(locked.discount ?? 0) });
-      // apex_lock_checkout_price can return an earlier locked order. Never let an
-      // expired or changed carrier quote silently use that older shipping charge.
-      if (carrierQuote && Math.abs(pricing.shipping - carrierQuote.charge) >= 0.005) {
-        return json({ error: "The carrier rate changed after this order was locked. Please start a new checkout to get the current rate." }, 409);
-      }
-      if (!checkoutMeetsBreakEven(pricing.items, catalog, pricing, undiscountedSubtotal, carrierQuote?.carrierCost ?? null)) {
-        return json({ error: "This order would fall below its cost-recovery price, possibly because of a promo code. Remove the discount and try again." }, 409);
+        const { data: catalogLocked, error: pricingError } = await admin.rpc("apex_lock_checkout_price", {
+          p_order: order.id, p_items: pricing.items, p_subtotal: pricing.subtotal,
+          p_shipping: pricing.shipping, p_tax_rate: Number(catalog.settings?.taxRate ?? 0),
+        });
+        if (pricingError || !catalogLocked) return json({ error: pricingError?.message || "Could not verify checkout pricing." }, 400);
+        Object.assign(pricing, { subtotal: Number(catalogLocked.subtotal), shipping: Number(catalogLocked.shipping), tax: Number(catalogLocked.tax), total: Number(catalogLocked.total), discount: Number(catalogLocked.discount ?? 0) });
+        // apex_lock_checkout_price can return an earlier locked order. Never let an
+        // expired or changed carrier quote silently use that older shipping charge.
+        if (carrierQuote && Math.abs(pricing.shipping - carrierQuote.charge) >= 0.005) {
+          return json({ error: "The carrier rate changed after this order was locked. Please start a new checkout to get the current rate." }, 409);
+        }
+        if (!checkoutMeetsBreakEven(pricing.items, catalog, pricing, undiscountedSubtotal, carrierQuote?.carrierCost ?? null)) {
+          return json({ error: "This order would fall below its cost-recovery price, possibly because of a promo code. Remove the discount and try again." }, 409);
+        }
+
+        locked = { ...catalogLocked, total: pricing.total };
       }
 
       const response = await fetch(base + "/v2/checkout/orders", {
@@ -281,7 +332,7 @@ Deno.serve(async (req) => {
             reference_id: order.ref,
             custom_id: order.id,
             invoice_id: order.ref,
-            amount: { currency_code: "USD", value: pricing.total.toFixed(2) },
+            amount: { currency_code: "USD", value: Number(locked.total).toFixed(2) },
           }],
           application_context: {
             brand_name: "Apex Computers",
@@ -304,9 +355,9 @@ Deno.serve(async (req) => {
       if (!bound) {
         const { data: current, error } = await admin.from("apex_orders").select("paypal_order_id").eq("id", order.id).maybeSingle();
         if (error || !current?.paypal_order_id) return json({ error: "Payment reference needs review." }, 409);
-        return json({ id: current.paypal_order_id, pricing: { ...locked, total: pricing.total } });
+        return json({ id: current.paypal_order_id, pricing: locked });
       }
-      return json({ id: bound.paypal_order_id, pricing: { ...locked, total: pricing.total } });
+      return json({ id: bound.paypal_order_id, pricing: locked });
     }
 
     if (action === "capture") {

@@ -42,6 +42,8 @@ jobs:
           node --check owner-test-checkout.js
           if test -f catalog-health.js; then node --check catalog-health.js; fi
           node --check owner-operations.js
+          node --check pc-quotes.js
+          node --check private-catalog.js
           node --check scripts/ops-monitor.mjs
       - name: Check public-data privacy and storefront references
         run: node tests/site-safety.mjs
@@ -79,6 +81,8 @@ jobs:
         run: node tests/phase10-storefront.mjs
       - name: Install isolated database test dependency
         run: npm install --prefix "$RUNNER_TEMP/apex-tests" --no-save @electric-sql/pglite@0.5.16
+      - name: Custom PC quotes and private supplier records
+        run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/custom-pc-quotes.mjs
       - name: Team database permissions
         run: PGLITE_MODULE="$RUNNER_TEMP/apex-tests/node_modules/@electric-sql/pglite/dist/index.js" node tests/team-permissions.mjs
       - name: Staff database permissions

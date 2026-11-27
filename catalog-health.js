@@ -40,11 +40,13 @@ function catalogData(data,today=new Date()){
   if(!group.id||name==="Unnamed item")flag("identity","Missing ID or name","critical");
   if(price==null||price<=0)flag("price","Missing or invalid Apex price","critical");
   if(new Set(priceValues).size>1)flag("price_conflict","Product / builder price differs","critical");
+  const privateSource=Boolean(pick("supplierVersion"));
   const baseline=cents(pick("neweggPrice"));
-  if(baseline==null||baseline<=0)flag("baseline","Missing Newegg baseline","missing");
+  if(privateSource)flag("private_source","Review prices and source in the owner editor","owner_review");
+  else if(baseline==null||baseline<=0)flag("baseline","Missing Newegg baseline","missing");
   else if(price!=null&&policy){
    const amount=price/100,cost=baseline/100;
-   if(![shippingPct,taxPct,feePct,fixedFee,target].every(Number.isFinite)||target<=0||target>=100||shippingPct<0||shippingPct>100||taxPct<0||taxPct>25){
+   if(![shippingPct,taxPct,feePct,fixedFee,target].every(Number.isFinite)||target<0||target>=100||shippingPct<0||shippingPct>100||taxPct<0||taxPct>25){
     flag("policy_invalid","Profit pricing assumptions invalid","critical");
    }else{
     const shipping=Math.round(amount*shippingPct)/100,tax=Math.round(amount*taxPct)/100;
@@ -56,7 +58,7 @@ function catalogData(data,today=new Date()){
   }
   else if(price!=null&&price-baseline!==1500)flag("markup","Stored price is not baseline + $15","critical");
   const source=validSource(pick("sourceUrl"));
-  if(!source)flag("source","Missing or invalid Newegg source URL","missing");
+  if(!source&&!privateSource)flag("source","Missing or invalid Newegg source URL","missing");
   if(yes(pick("seller"))!=="newegg")flag("seller",pick("seller")?"Seller not documented as direct Newegg":"Seller not documented","missing");
   const stock=yes(pick("stockStatus"));
   if(!stock)flag("stock_missing","Stock status not documented","missing");
@@ -74,7 +76,7 @@ function catalogData(data,today=new Date()){
   if(!pick("desc")&&!pick("longDesc"))flag("description","Missing description","missing");
   rows.push({id:group.id,name,category:String(pick("category")||"Other"),active,source,
    sections:group.records.map(r=>r.section),price:price==null?null:price/100,
-   baseline:baseline==null?null:baseline/100,flags,days,
+   baseline:baseline==null?null:baseline/100,flags,days,privateSource,
    priority:flags.some(f=>f.group==="critical")?0:flags.length?1:2});
  }
  rows.sort((a,b)=>a.priority-b.priority||a.category.localeCompare(b.category)||a.name.localeCompare(b.name));
@@ -135,7 +137,7 @@ function page(){
  '<p class="muted">Showing '+(rows.length?((state.page-1)*PAGE_SIZE+1):0)+'–'+Math.min(state.page*PAGE_SIZE,rows.length)+' of '+rows.length+' matching items.</p>'+
  (pageRows.length?pageRows.map(r=>'<article style="border-top:1px solid var(--line);padding:14px 0"><strong>'+escText(r.name)+'</strong><p class="muted">'+escText(r.category)+' · '+escText(r.id||"Missing ID")+' · '+escText(r.sections.join(" & "))+(r.active?"":" · Inactive")+'</p><p>Apex: '+(r.price==null?"Unknown":'$'+r.price.toFixed(2))+' · Stored Newegg baseline: '+(r.baseline==null?"Unknown":'$'+r.baseline.toFixed(2))+'</p>'+
  (r.flags.length?'<p>'+r.flags.map(f=>'<span class="staff-pill" style="margin:2px">'+escText(f.label)+'</span>').join("")+'</p>':'<p class="muted">No static catalog flags.</p>')+
- (r.source?'<a href="'+escText(r.source)+'" target="_blank" rel="noopener noreferrer">Review Newegg listing</a>':'<span class="muted">No verified source link</span>')+'</article>').join(""):'<p>No matching catalog items.</p>')+
+ (r.source?'<a href="'+escText(r.source)+'" target="_blank" rel="noopener noreferrer">Review Newegg listing</a>':r.privateSource?'<button class="btn sm ghost" data-id="'+escText(r.id)+'" onclick="editItem(this.dataset.id)">Open private supplier details</button>':'<span class="muted">No verified source link</span>')+'</article>').join(""):'<p>No matching catalog items.</p>')+
  '<div class="row" style="justify-content:space-between;margin-top:16px"><button class="btn ghost" '+(state.page<=1?"disabled":"")+' onclick="ownerCatalogHealth.setPage('+(state.page-1)+')">Previous</button><span>Page '+state.page+' of '+max+'</span><button class="btn ghost" '+(state.page>=max?"disabled":"")+' onclick="ownerCatalogHealth.setPage('+(state.page+1)+')">Next</button></div></div></div>';
 }
 window.ownerCatalogHealth={page,summary,catalogData,toCSV,setFilter,setSearch,setPage,download};
