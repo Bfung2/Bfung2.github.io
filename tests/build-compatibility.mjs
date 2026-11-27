@@ -57,6 +57,7 @@ ctx.upsertCatalogRecord=(section,rec)=>{
  for(const key of ['products','parts']){ctx.S[key]=(ctx.S[key]||[]).map(item=>item.id===rec.id?{...item,...rec}:item);}
  if(!ctx.S[section].some(item=>item.id===rec.id))ctx.S[section].push(rec);
 };
+ctx.catalogSaveOwnerRecord=(section,rec)=>ctx.upsertCatalogRecord(section,rec);
 vm.runInContext(savePartCode,ctx);run("savePart('edited',true)");assert.equal(ctx.S.parts[0].name,'Renamed cooler');assert.equal(ctx.S.parts[0].radiatorSizeMm,280);assert.equal(ctx.S.parts[0].coolingType,'Liquid');assert.equal(ctx.S.parts[0].sourceUrl,'https://example.invalid/source');
 // Phase 9: case class must not be forced by aggregate clearance of unrelated mATX cases.
 const phase9Micro={...base.find(p=>p.id==='case'),id:'micro-case',name:'Micro case',caseFormFactors:'Micro ATX, Mini-ITX',maxGpuLengthMm:440};

@@ -899,7 +899,7 @@ function mergeIntoDefaults(d){
   return merged;
 }
 function publicSiteData(){
-  return {settings:S.settings, products:S.products, parts:S.parts};
+  return {settings:S.settings, products:S.products.map(catalogPublicRecord), parts:S.parts.map(catalogPublicRecord)};
 }
 function loadLocalFallback(){
   try{
@@ -1290,6 +1290,7 @@ function employeesPage(){return staffEmployeesPage();}
 function employeeJobCard(kind,j){
   const order=kind==="order",id=j.id,assigned=j.assigned_to===employeeProfile.user_id,perms=employeeProfile.permissions||{};
   const detail=order?(j.items||[]).map(x=>x.name+" × "+(x.qty||1)).join(", "):((j.device?j.device+" · ":"")+j.details);
+  const buildSpecs=order&&assigned?(j.items||[]).filter(x=>x.kind==="quote"&&x.specification).map(x=>`<p class="staff-prewrap">${esc(x.specification)}</p>`).join(""):"";
   const customerMarkup=perms.customer_details
     ? '<p><strong>'+esc(j.customer_name||"Customer")+'</strong><br><a href="mailto:'+esc(j.customer_email||"")+'">'+esc(j.customer_email||"")+'</a><br>'+(j.customer_phone?'<a href="tel:'+esc(j.customer_phone)+'">'+esc(j.customer_phone)+'</a><br>':"")+esc((order?j.shipping_address:j.customer_address)||"No address provided")+'</p>'
     : '<p class="muted">Customer contact details are restricted for this account.</p>';
@@ -1301,7 +1302,7 @@ function employeeJobCard(kind,j){
   }else{
     actionMarkup=perms.claim_jobs?'<button class="btn gold" onclick="claimEmployeeJob(\''+kind+'\',\''+id+'\')">Claim this '+(order?"order":"request")+'</button>':'<p class="muted">Claiming jobs is disabled for this account.</p>';
   }
-  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div>${customerMarkup}<p>${esc(detail||"No details")}</p>${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}${actionMarkup}${order&&assigned&&perms.update_status&&j.status==="shipped"?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="staffOpenShipment(this.dataset.order)">Shipment / email</button>`:""}${order&&assigned&&staffCan("view_notes")?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="teamOrderNote(this.dataset.order)">Private note</button>`:""}${order&&assigned&&perms.update_status?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="staffOpenOrderTracking(this.dataset.order)">Customer progress</button>`:""}</div>`;
+  return `<div class="panel" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(order?"Order "+j.ref:j.reason||"Service request")}</h3><small class="muted">${new Date(j.created_at).toLocaleString()}</small></div><strong>${esc(j.status||"requested")}</strong></div>${customerMarkup}<p>${esc(detail||"No details")}</p>${buildSpecs}${order?'<p><strong>Total: '+money(j.total)+'</strong></p>':""}${actionMarkup}${order&&assigned&&perms.update_status&&j.status==="shipped"?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="staffOpenShipment(this.dataset.order)">Shipment / email</button>`:""}${order&&assigned&&staffCan("view_notes")?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="teamOrderNote(this.dataset.order)">Private note</button>`:""}${order&&assigned&&perms.update_status?`<button class="btn sm ghost" data-order="${esc(id)}" onclick="staffOpenOrderTracking(this.dataset.order)">Customer progress</button>`:""}</div>`;
 }
 function employeeDashboard(){
   if(!isEmployee||!employeeProfile)return employeeLogin();
@@ -1331,7 +1332,7 @@ async function loadCloudOrders(){
   try{
     const {data,error}=await supabaseClient.from("apex_orders").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,fulfillment_stage:row.fulfillment_stage||'received',trackingToken:row.tracking_token||"",is_test:!!row.is_test,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
+    cloudOrders=(data||[]).map(row=>({id:row.id,ref:row.ref,at:row.created_at,name:row.customer_name,email:row.customer_email,phone:row.customer_phone,address:row.shipping_address,notes:row.notes||"",items:row.items||[],sub:Number(row.subtotal),shipping:Number(row.shipping),tax:Number(row.tax),total:Number(row.total),status:row.status,fulfillment_stage:row.fulfillment_stage||'received',trackingToken:row.tracking_token||"",payment_confirmed:!!row.paypal_capture_id,is_test:!!row.is_test,sales_employee_name:row.sales_employee_name||"",sales_employee_code:row.sales_employee_code||"",promo_code:row.promo_code||"",discount:Number(row.discount_amount||0),sales_origin:row.sales_origin||"website",assigned_to:row.assigned_to||null}));
     cloudOrdersLoaded=true;
     await loadOwnerWorkData();
   }catch(err){ console.error(err); cloudOrdersError=err.message||"Unable to load orders."; }
@@ -1343,10 +1344,10 @@ function combineAddress(a){
   return [a.street, [line2, a.zip].filter(Boolean).join(" ")].filter(Boolean).join(", ");
 }
 /* ---------- router ---------- */
-const PAGES = [["/","Home"],["/products","Products"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"],["/warranty","Warranty"],["/returns","Returns"],["/track-order","Track order"]];
+const PAGES = [["/","Home"],["/custom-pc","Custom PCs"],["/products","Products"],["/tech","Request a tech"],["/about","About"],["/contact","Contact"],["/warranty","Warranty"],["/returns","Returns"],["/track-order","Track order"]];
 function go(p){ location.hash = "#"+p; }
 function route(){ return (location.hash||"#/").slice(1).split("?")[0] || "/"; }
-addEventListener("hashchange", ()=>{ if(route()!=="/track-order")orderTracking.token=""; render(); scrollTo({top:0}); });
+addEventListener("hashchange", ()=>{ if(route()!=="/track-order")orderTracking.token=""; if(route()!=="/pc-quote")pcQuoteCustomer={token:"",data:null,error:""}; render(); scrollTo({top:0}); });
 
 /* ---------- part categories & compatibility ---------- */
 const CATS = ["CPU","Motherboard","Memory","Graphics card","Storage","Power supply","Case","CPU cooler","Other"];
@@ -1414,6 +1415,10 @@ function recommendedPSUWatts(baseWatts){
 function cartCount(){ return myCart.reduce((n,i)=>n+(i.qty||1),0); }
 function apexPurchasable(rec){
   if(!rec || rec.active===false) return false;
+  if(rec.supplierVersion){
+    const age=Date.now()-Date.parse(rec.verifiedDate+"T00:00:00Z");
+    if(!Number.isFinite(age)||age<0||age>=7*86400000)return false;
+  }
   // A missing seller/stock claim remains a catalog review task, not fabricated proof.
   // Explicit known ineligibility must never reach the cart or PC picker.
   const seller=String(rec.seller||"").trim().toLowerCase();
@@ -1588,7 +1593,7 @@ function render(){
   const r = route();
   if(r==="/build"){go("/products");return;} // Retired PC-builder URL redirects to the preserved shop.
   if(isEmployee && ["/manage","/employees","/inbox","/inventory","/performance","/policies-admin","/catalog-health","/operations"].includes(r)){go("/employee");return;}
-  const views = {"/":home,"/products":products,"/inventory":inventory,"/tech":tech,"/about":about,
+  const views = {"/":home,"/custom-pc":pcQuoteLanding,"/pc-quote":pcQuoteCustomerPage,"/pc-quotes":pcQuoteOwnerPage,"/products":products,"/inventory":inventory,"/tech":tech,"/about":about,
     "/contact":contact,"/warranty":()=>apexPolicies.publicPage("warranty"),"/returns":()=>apexPolicies.publicPage("returns"),"/policies-admin":()=>apexPolicies.ownerPage(),"/catalog-health":()=>ownerCatalogHealth.page(),"/operations":opsPage,"/finances":financePage,"/cart":cart,"/checkout":checkout,"/login":login,"/account":account,
     "/staff":staff,"/owner":staff,"/employee-login":employeeLogin,"/employee":employeeDashboard,
     "/track-order":customerTrackingPage,"/team-workflow":teamWorkflowPage,"/team-overview":teamOverview,"/team-activity":teamActivityPage,"/private-backup":recordBackupPage,"/team-security":teamSecurityPage,"/staff-dashboard":staffDashboardPage,"/employees":employeesPage,"/promo-codes":promoAdminPage,"/market-sales":marketSalesPage,"/customer-link":customerLinkPage,"/sales-credits":staffSalesPage,"/roles":staffRolesPage,"/schedule":staffSchedulePage,"/staff-notes":staffNotesPage,"/employee-report":staffReportPage,"/employee-reports":staffReportsPage,"/performance":performancePage,"/manage":manage,"/inbox":inbox,"/done":done};
@@ -1726,10 +1731,10 @@ function home(){
     <div class="wrap home-hero-inner">
       <div class="home-hero-copy">
         <span class="home-kicker"><span class="home-live-dot"></span> BUILT FOR YOUR NEXT LEVEL</span>
-        <h1>Power your<br><span>next big idea.</span></h1>
+        <h1>Custom PCs<br><span>built for you.</span></h1>
         <p>${esc(S.settings.tagline||"Custom PCs, parts and on-site tech help.")} From the right components to a complete custom build, let's make your setup work harder.</p>
         <div class="row home-hero-actions">
-          <a class="btn gold" href="#/products">Shop products <span aria-hidden="true">↗</span></a>
+          <a class="btn gold" href="#/custom-pc">Get a Custom PC Quote <span aria-hidden="true">↗</span></a>
           <a class="btn home-outline-btn" href="#/tech">Request tech help</a>
         </div>
         <div class="home-trust-row"><span>✦ Carefully selected parts</span><span>✦ Custom build support</span><span>✦ Local tech help</span></div>
@@ -1755,7 +1760,7 @@ function home(){
     <section class="home-journey home-reveal">
       <div class="home-section-head"><div><span class="home-kicker">YOUR SETUP, YOUR WAY</span><h2>Start with what you need.</h2><p>Whether you're building from scratch or fixing what you already own, we've got a place to start.</p></div></div>
       <div class="home-journey-grid">
-        <a class="home-journey-card journey-build" href="#/contact"><span class="journey-icon">⌘</span><span class="journey-number">01 / CUSTOM PCS</span><h3>Ask about a custom PC</h3><p>Tell us what you need and we can discuss options for your setup.</p><b>Contact us <span>↗</span></b></a>
+        <a class="home-journey-card journey-build" href="#/custom-pc"><span class="journey-icon">⌘</span><span class="journey-number">01 / CUSTOM PCS</span><h3>Get a custom PC quote</h3><p>Tell us your budget, what you play or run, and how you want to receive your PC.</p><b>Request a quote <span>↗</span></b></a>
         <a class="home-journey-card journey-shop" href="#/products"><span class="journey-icon">▦</span><span class="journey-number">02 / SHOP</span><h3>Find your next upgrade</h3><p>Explore components, computers, accessories, and gear for your setup.</p><b>Browse products <span>↗</span></b></a>
         <a class="home-journey-card journey-help" href="#/tech"><span class="journey-icon">⌁</span><span class="journey-number">03 / GET HELP</span><h3>Tech support, minus the headache</h3><p>Need help installing, troubleshooting, or setting up your tech? Send a request.</p><b>Request a tech <span>↗</span></b></a>
       </div>
@@ -1934,9 +1939,9 @@ const nameKey = p => String(p.category||"")+"|"+String(p.name||"").trim().toLowe
 function dupeOfPart(p){ return isPartCat(p.category) && S.parts.some(x=>x.id===p.id || nameKey(x)===nameKey(p)); }
 function upsertCatalogRecord(section,rec){
   if(!["products","parts"].includes(section))throw new Error("Invalid catalog section");
-  // Owner edits recalculate from Newegg cost, PayPal fees and optional extra cost, without a profit markup.
+  // Verified catalog edits enforce a cost floor while preserving an owner-entered higher price.
   if(Number(rec.neweggPrice)>0){
-    apexProfitPricing.applyToRecord(rec,S.settings);
+    apexProfitPricing.applyToRecord(rec,S.settings,{preserveHigher:!!rec.supplierVersion});
   }else if(isPartCat(rec.category)||!["Tech Service","Donation","Custom PC","Prebuilt PC","Gaming PC"].includes(rec.category)){
     rec.active=false; // Never list an uncosted physical item as purchasable.
   }
@@ -2045,7 +2050,7 @@ function partDetail(id,ctx){
     summary:p.desc, full:p.longDesc,
     actions:`<button class="btn gold" onclick="pickPart('${p.category}','${p.id}');editDlg.close()">${picked?"Remove from build":"Add to build"}</button>`
       +(ctx==="products"?`<button class="btn" onclick="addToCart(${cartPayload(p)});editDlg.close()">Add to cart</button>`:"")
-      +(p.category==="Power supply"&&p.sourceUrl?`<a class="btn ghost" href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">View Newegg listing ↗</a>`:"")
+
       +(staffCan("view_notes")?`<button class="btn ghost" data-note-id="${esc(p.id)}" onclick="staffOpenNotes('product',this.dataset.noteId)">Staff notes</button>`:"")
       +(isOwner?`<button class="btn ghost" onclick="editItem('${p.id}')">Edit</button>`:"")
   });
@@ -2555,34 +2560,7 @@ async function submitOrder(e){
     const payment=document.getElementById("paypalPayment");
     payment.hidden=false;
     document.getElementById("paypalStatus").textContent="Order "+o.ref+" saved. Complete your payment securely with PayPal below.";
-    paypal.Buttons({
-      style:{layout:"vertical",color:"gold",shape:"rect",label:"paypal"},
-      createOrder:async function(){
-        const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"create",orderId:o.id,checkoutToken:o.trackingToken}});
-        if(error) throw new Error(error.message||"Could not start PayPal checkout.");
-        if(!data||!data.id) throw new Error(data?.error||"PayPal did not return an order ID.");
-        if(checkoutPromo.code&&!data.pricing)throw new Error("Promo checkout is not activated yet. Contact Apex before paying.");
-        if(data.pricing){o.sub=Number(data.pricing.subtotal);o.shipping=Number(data.pricing.shipping);o.tax=Number(data.pricing.tax);o.total=Number(data.pricing.total);o.discount=Number(data.pricing.discount);document.getElementById("paypalStatus").textContent="Verified payment total: "+money(o.total)+(o.discount?" (discount "+money(o.discount)+")":"");}
-        return data.id;
-      },
-      onApprove:async function(data){
-        document.getElementById("paypalStatus").textContent="Payment received by PayPal. Verifying it now…";
-        const {data:result,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"capture",orderId:o.id,checkoutToken:o.trackingToken,paypalOrderId:data.orderID}});
-        if(error) throw new Error(error.message||"Payment verification failed.");
-        if(!result||!result.success) throw new Error(result?.error||"PayPal could not verify the payment.");
-        o.status="paid";
-        myCart=[];checkoutPromo={code:"",discount:0,subtotal:null};saveCart();
-        o.notificationsPending=!!result.notificationsPending;
-        go("/done");
-      },
-      onCancel:function(){
-        document.getElementById("paypalStatus").textContent="Payment was cancelled. Your order is saved but not paid. You can try PayPal again below.";
-      },
-      onError:function(err){
-        console.error("PayPal checkout error:",err);
-        document.getElementById("paypalStatus").textContent="We could not confirm the payment result. Check your order tracking and PayPal activity before trying another payment, or contact Apex Computers.";
-      }
-    }).render("#paypalButtons");
+    await mountApexPaypal(o,payment.querySelector("#paypalButtons"),payment.querySelector("#paypalStatus"),true);
   }catch(err){
     console.error("Order submission failed:",err);
     toast("Checkout couldn't start: "+(err.message||"Please try again."));
@@ -2590,10 +2568,42 @@ async function submitOrder(e){
   }
   return false;
 }
+function mountApexPaypal(o,container,status,useCart){
+  return paypal.Buttons({
+      style:{layout:"vertical",color:"gold",shape:"rect",label:"paypal"},
+      createOrder:async function(){
+        const {data,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"create",orderId:o.id,checkoutToken:o.trackingToken}});
+        if(error) throw new Error(error.message||"Could not start PayPal checkout.");
+        if(!data||!data.id) throw new Error(data?.error||"PayPal did not return an order ID.");
+        if(useCart&&checkoutPromo.code&&!data.pricing)throw new Error("Promo checkout is not activated yet. Contact Apex before paying.");
+        if(data.pricing){o.sub=Number(data.pricing.subtotal);o.shipping=Number(data.pricing.shipping);o.tax=Number(data.pricing.tax);o.total=Number(data.pricing.total);o.discount=Number(data.pricing.discount);status.textContent="Verified payment total: "+money(o.total)+(o.discount?" (discount "+money(o.discount)+")":"");}
+        return data.id;
+      },
+      onApprove:async function(data){
+        status.textContent="Payment received by PayPal. Verifying it now…";
+        const {data:result,error}=await supabaseClient.functions.invoke("paypal-checkout",{body:{action:"capture",orderId:o.id,checkoutToken:o.trackingToken,paypalOrderId:data.orderID}});
+        if(error) throw new Error(error.message||"Payment verification failed.");
+        if(!result||!result.success) throw new Error(result?.error||"PayPal could not verify the payment.");
+        o.status="paid";
+        if(useCart){myCart=[];checkoutPromo={code:"",discount:0,subtotal:null};saveCart();}
+        o.notificationsPending=!!result.notificationsPending;
+        lastOrder=o;
+        go("/done");
+      },
+      onCancel:function(){
+        status.textContent="Payment was cancelled. Your order is saved but not paid. You can try PayPal again below.";
+      },
+      onError:function(err){
+        console.error("PayPal checkout error:",err);
+        status.textContent="We could not confirm the payment result. Check your order tracking and PayPal activity before trying another payment, or contact Apex Computers.";
+      }
+    }).render(container);
+}
 let lastOrder = null;
 function done(){
   if(!lastOrder) return `<div class="wrap"><div class="empty"><strong>Nothing to show</strong></div></div>`;
   const o = lastOrder;
+  if(o.fromQuote)return `<div class="wrap"><div class="pagehead"><div><h2>Order ${esc(o.ref)} confirmed</h2><p>Your PayPal payment was verified.${o.notificationsPending?" Your confirmation email is pending.":""}</p></div></div>${trackingReceipt(o)}<p><a href="#/custom-pc">Back to custom PCs</a></p></div>`;
   return `<div class="wrap"><div class="pagehead"><div><h2>Order ${esc(o.ref)} submitted</h2>
   <p>${o.is_test?("TEST SUCCESSFUL — NO PAYMENT TAKEN. "+(o.notificationsPending?"Test emails are pending delivery.":"Test email notifications have been processed.")):o.notificationsPending?"Your PayPal payment was verified and your order is confirmed. Email notifications are pending; Apex can retry delivery.":"Your PayPal payment was verified and your order is confirmed. Order email notifications have been processed."}</p></div></div>
   ${trackingReceipt(o)}<div class="panel"><pre style="white-space:pre-wrap;font-size:.88rem;margin:0">${esc(orderText(o))}</pre></div>
@@ -2811,7 +2821,7 @@ function inbox(){
   const assignmentSelect=(kind,id,assigned)=>'<select style="min-width:130px" onchange="assignJob(\''+kind+'\',\''+id+'\',this.value)"><option value="">Unassigned</option>'+employeeProfiles.filter(p=>p.active).map(p=>'<option value="'+p.user_id+'" '+(assigned===p.user_id?"selected":"")+'>'+esc(p.display_name)+'</option>').join("")+'</select>';
   const orderRows=allOrders.map(o=>`<tr><td>${esc(o.ref)}</td><td>${new Date(o.at).toLocaleDateString()}</td>
     <td>${esc(o.name)}<br><small class="muted">${esc(o.email)}<br>${esc(o.address)}</small></td>
-    <td><small>${(o.items||[]).map(i=>esc(i.name)).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td>
+    <td><small>${(o.items||[]).map(i=>esc(i.name)+(i.specification?`<br><span class="staff-prewrap">${esc(i.specification)}</span>`:"")).join("<br>")}</small></td><td>${money(o.total)}${o.promo_code?`<br><small>Promo ${esc(o.promo_code)}: −${money(o.discount)}</small>`:""}</td>
     <td><small>${o.is_test?"TEST — NO PAYMENT TAKEN":statusLabel[o.status]||o.status}</small><br><small>${o.sales_origin==="employee"?"Employee-assisted · "+esc(o.sales_employee_name||"")+" · "+esc(o.sales_employee_code||""):"Online / direct"}</small><br>${cloudOrders.some(x=>x.id===o.id)?(o.is_test?"<small>Test record — no fulfillment or sales credit</small>":assignmentSelect("order",o.id,o.assigned_to)+staffSaleButton("order",o.id)):"<small class=\"muted\">Local legacy order</small>"}</td><td class="row" style="flex-wrap:wrap">${cloudOrders.some(x=>x.id===o.id)?`<button class="btn sm ghost" data-order="${esc(o.id)}" onclick="staffOpenOrderTracking(this.dataset.order)">Customer progress / tracking link</button>`:""}${(o.status==="paid"||o.is_test)?`<button class="btn sm ghost" data-order="${esc(o.id)}" onclick="marketRetryNotification(this.dataset.order,this)">Retry paid-order emails</button>`:""}
     <button class="btn sm gold" onclick="sendInvoice(&quot;${esc(o.id)}&quot;)">Send invoice</button>
     <button class="btn sm ghost" onclick="sendStatusEmail(&quot;${esc(o.id)}&quot;,&quot;working&quot;)">Working on it</button>
@@ -2821,6 +2831,7 @@ function inbox(){
   return `<div class="wrap"><div class="pagehead"><div><h2>Orders &amp; requests</h2></div></div>
   ${cloudOrdersLoading?`<p class="muted">Loading customer orders…</p>`:""}
   ${cloudOrdersError?`<div class="notice">Could not load online orders: ${esc(cloudOrdersError)} <button class="btn sm ghost" onclick="cloudOrdersLoaded=false;loadCloudOrders()">Try again</button></div>`:""}
+  <p><a class="btn gold" href="#/pc-quotes">Custom PC quotes</a></p>
   <h3>Orders (${allOrders.length})</h3>
   ${allOrders.length?`<div class="scroll"><table><tr><th>Ref</th><th>When</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>${orderRows}</table></div>`:`<div class="empty">No orders yet.</div>`}
   <h3 style="margin-top:32px">Service requests (${cloudRequests.length})</h3>
@@ -2947,8 +2958,8 @@ function recordedParcelMetadata(prefix){
 function supplierPricingFields(prefix,rec){
   const vendor=String(rec.seller||""), stock=String(rec.stockStatus||"");
   return `<div class="panel" style="margin-bottom:16px;padding:14px">
-    <h4 style="margin:0 0 6px">Newegg cost and break-even pricing</h4>
-    <p class="muted" style="font-size:.82rem">Verify the exact item page, seller, stock, and source cost. The selling price is calculated to recover source cost and modeled payment/shipping expenses without an added profit margin. Add any inbound freight, supplier tax, or packing expense below. Unverified merchandise stays inactive.</p>
+    <h4 style="margin:0 0 6px">Private supplier costs and pricing</h4>
+    <p class="muted" style="font-size:.82rem">Verify the exact item page, seller, stock, and source cost. The minimum price covers modeled expenses. Set a higher selling price to earn a margin. Add any inbound freight, supplier tax, or packing expense below. Unverified merchandise stays inactive.</p>
     <div class="field"><label>Verified Newegg cost ($)</label><input id="${prefix}_newegg" type="number" min="0" step="0.01" value="${rec.neweggPrice??""}" oninput="updateProfitPreview('${prefix}',true)"></div>
     <div class="field"><label>Additional per-item expense ($)</label><input id="${prefix}_othercost" type="number" min="0" step="0.01" value="${rec.extraCostUSD??0}" oninput="updateProfitPreview('${prefix}',true)"><small class="muted">Optional: inbound supplier shipping, purchase tax if applicable, packing or handling cost. Use actual costs where possible.</small></div>
     <div class="field"><label>Exact Newegg product URL</label><input id="${prefix}_source" type="url" value="${esc(rec.sourceUrl||"")}" placeholder="https://www.newegg.com/.../p/..." oninput="updateProfitPreview('${prefix}')"></div>
@@ -2974,13 +2985,17 @@ function updateProfitPreview(prefix,updatePrice=false){
       sourceUrl:input("source").value,seller:input("seller").value,
       stockStatus:input("stock").value,verifiedDate:input("verified").value
     });
-    preview.textContent="Estimated break-even price "+money(quote.price)+", estimated contribution "+money(quote.contribution)+
-      " ("+quote.marginPercent.toFixed(2)+"%). "+(eligible?"Eligibility details complete.":"Not ready: verify seller, stock, URL and date.");
+    const sellingPrice=Number(input("price").value);
+    const contribution=apexProfitPricing.contributionAt(sellingPrice,cost,Number(input("othercost")?.value||0),S.settings);
+    preview.textContent="Modeled minimum "+money(quote.price)+". Estimated contribution at "+money(sellingPrice)+": "+money(contribution)+
+      ". "+(eligible?"Eligibility details complete.":"Verify seller, stock, URL and date before listing.");
   }catch(err){preview.textContent=err.message||"Unable to calculate price.";}
 }
-function editProduct(id){
+async function editProduct(id){
   if(!isOwner) return;
-  const p = id ? S.products.find(x=>x.id===id) : {id:uid(),name:"",category:(S.settings.productCategories||[])[0]||"",cpuType:"",processor:"",brand:"",price:0,desc:"",longDesc:"",featured:false,image:""};
+  let p = id ? S.products.find(x=>x.id===id) : {id:uid(),name:"",category:(S.settings.productCategories||[])[0]||"",cpuType:"",processor:"",brand:"",price:0,desc:"",longDesc:"",featured:false,image:""};
+  try{p=await catalogOpenWithSource(p);}catch(error){toast(error.message);return;}
+  if(!p||!isOwner)return;
   const html = `<div class="dlg"><h3>${id?"Edit":"New"} product</h3>
     <div class="field"><label>Name</label><input id="p_name" value="${esc(p.name)}"></div>
     <div class="field"><label>Product type (which row it appears in)</label>${selectWithAdd("p_cat","productCategories",p.category,null,{extra:CATS.filter(isPartCat),extraLabel:"PC parts",onchange:"toggleProductSpecs()"})}</div>
@@ -3018,8 +3033,9 @@ function editProduct(id){
       <div class="field"><label>Processor model (for PCs)</label><input id="p_proc" value="${esc(p.processor||"")}" placeholder="Intel Core i5-13400F"></div>
     </div>
     <div class="field"><label>Brand (optional)</label><input id="p_brand" value="${esc(p.brand||"")}" placeholder="Apex, ASUS, HP..."></div>
-    <div class="field"><label>Apex selling price ($)</label><input id="p_price" type="number" min="0" step="0.01" value="${+p.price||0}"></div>
+    <div class="field"><label>Apex selling price ($)</label><input id="p_price" oninput="updateProfitPreview('p')" type="number" min="0" step="0.01" value="${+p.price||0}"></div>
     ${supplierPricingFields("p",p)}
+    ${catalogOwnerKeywords("p",p)}
     <div class="field"><label>Short description (shown on the card)</label><textarea id="p_desc" style="min-height:70px">${esc(p.desc)}</textarea></div>
     <div class="field"><label>Detailed description (shown when a customer taps Details)</label><textarea id="p_long" style="min-height:140px" placeholder="Full specs, what's included, warranty, who it's for…">${esc(p.longDesc||"")}</textarea></div>
     <div class="field"><label>Photo</label>
@@ -3028,7 +3044,7 @@ function editProduct(id){
       <p class="muted" style="font-size:.8rem;margin:10px 0 4px">Or paste an image link instead of uploading:</p>
       <input id="p_img" value="${esc(p.image||"")}" placeholder="https://..." oninput="document.getElementById('p_img_preview').innerHTML = this.value ? '<img src=\\''+this.value.replace(/'/g,'%27')+'\\' style=\\'max-height:130px;border-radius:4px;display:block\\'>' : '';">
     </div>
-    <div class="row"><button class="btn gold" onclick="saveProduct('${p.id}',${!!id})">Save</button>
+    <div class="row"><button class="btn gold" data-catalog-save onclick="saveProduct('${p.id}',${!!id})">Save</button>
     <button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`;
   openDlg(html);
   toggleProductSpecs();
@@ -3084,14 +3100,15 @@ function saveProduct(id,exists){
     rec.power = (rec.category!=="CPU"&&rec.category!=="Power supply") ? p_power.value : "";
   }
   if(!rec.name){ toast("Give it a name first."); return; }
-  try{upsertCatalogRecord("products",rec);}catch(err){toast("Cannot save product: "+err.message);return;}
-  save(); editDlg.close(); render(); toast(rec.active?"Product saved with break-even pricing.":"Product saved inactive pending supplier verification.");
+  void catalogSaveOwnerRecord("products",rec,"p");
 }
 function delProduct(id){ if(confirm("Delete this product?")){ S.products=S.products.filter(x=>x.id!==id); Object.keys(buildSel).forEach(k=>{if(buildSel[k]===id)delete buildSel[k]}); saveBuild(); save(); render(); } }
 
-function editPart(id,presetCat){
+async function editPart(id,presetCat){
   if(!isOwner) return;
-  const p = id ? S.parts.find(x=>x.id===id) : {id:uid(),name:"",category:presetCat||"CPU",brand:"",cpuType:"",price:0,desc:"",longDesc:"",image:"",socket:"",memType:"",tdp:"",watts:"",power:""};
+  let p = id ? S.parts.find(x=>x.id===id) : {id:uid(),name:"",category:presetCat||"CPU",brand:"",cpuType:"",price:0,desc:"",longDesc:"",image:"",socket:"",memType:"",tdp:"",watts:"",power:""};
+  try{p=await catalogOpenWithSource(p);}catch(error){toast(error.message);return;}
+  if(!p||!isOwner)return;
   const html = `<div class="dlg"><h3>${id?"Edit":"New"} part</h3>
     <div class="field"><label>Name</label><input id="q_name" value="${esc(p.name)}"></div>
     <div class="fields2">
@@ -3100,8 +3117,9 @@ function editPart(id,presetCat){
         <datalist id="q_brand_list"><option value="AMD"><option value="Intel"><option value="NVIDIA"><option value="Corsair"><option value="ASUS"><option value="MSI"></datalist>
       </div>
     </div>
-    <div class="field"><label>Apex selling price ($)</label><input id="q_price" type="number" min="0" step="0.01" value="${+p.price||0}"></div>
+    <div class="field"><label>Apex selling price ($)</label><input id="q_price" oninput="updateProfitPreview('q')" type="number" min="0" step="0.01" value="${+p.price||0}"></div>
     ${supplierPricingFields("q",p)}
+    ${catalogOwnerKeywords("q",p)}
     <div class="field"><label>Short summary (shown in the parts list)</label><textarea id="q_desc" style="min-height:70px">${esc(p.desc)}</textarea></div>
     <div class="field"><label>Full description (shown when someone taps the part)</label><textarea id="q_long" style="min-height:140px" placeholder="Full specs, features, what's in the box, warranty…">${esc(p.longDesc||"")}</textarea></div>
     <div class="field"><label>Photo</label>
@@ -3139,7 +3157,7 @@ function editPart(id,presetCat){
       <div class="field" id="q_power_wrap"><label>Power draw (W) — component power consumption</label><input id="q_power" type="number" value="${p.power||""}"></div>
       <p class="muted" style="font-size:.82rem">Socket and memory type are what the builder matches boards/coolers/memory on. CPU TDP, and power draw on every other part (mainly the graphics card), are what it adds up to size the power supply. Brand feeds the filter dropdown on this page.</p>
     </div>
-    <div class="row"><button class="btn gold" onclick="savePart('${p.id}',${!!id})">Save</button>
+    <div class="row"><button class="btn gold" data-catalog-save onclick="savePart('${p.id}',${!!id})">Save</button>
     <button class="btn ghost" onclick="editDlg.close()">Cancel</button></div></div>`;
   openDlg(html);
   toggleSpecs();
@@ -3165,8 +3183,7 @@ function savePart(id,exists){
     requiredPowerConnectors:q_gpu_connectors.value.trim(),
     gpuPowerConnectors:q_psu_connectors.value.trim()};
   if(!rec.name){ toast("Give it a name first."); return; }
-  try{upsertCatalogRecord("parts",rec);}catch(err){toast("Cannot save part: "+err.message);return;}
-  save(); editDlg.close(); render(); toast(rec.active?"Part saved with break-even pricing.":"Part saved inactive pending supplier verification.");
+  void catalogSaveOwnerRecord("parts",rec,"q");
 }
 function delPart(id){ if(confirm("Delete this part?")){ S.parts=S.parts.filter(x=>x.id!==id); Object.keys(buildSel).forEach(k=>{if(buildSel[k]===id)delete buildSel[k]}); saveBuild(); save(); render(); } }
 function toggleSpecs(){
@@ -3237,6 +3254,8 @@ function toast(msg){
 <script src="apex-policies.js"></script>
 <script src="catalog-health.js"></script>
 <script src="owner-operations.js"></script>
+<script src="pc-quotes.js"></script>
+<script src="private-catalog.js"></script>
 <script>
 supabaseClient.auth.onAuthStateChange((event,session)=>{if(event!=="INITIAL_SESSION")setTimeout(()=>applyAuthSession(session),0);});
 initializeSupabaseAuth();

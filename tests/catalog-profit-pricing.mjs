@@ -58,7 +58,7 @@ for(const rec of [...data.products,...data.parts]){
 }
 const html=await fs.readFile('index.html','utf8');
 assert.match(html,/<script src="catalog-pricing\.js"><\/script>/);
-assert.match(html,/apexProfitPricing\.applyToRecord\(rec,S\.settings\)/);
+assert.match(html,/apexProfitPricing\.applyToRecord\(rec,S\.settings,\{preserveHigher:!!rec\.supplierVersion\}\)/);
 assert.match(html,/supplierPricingFields\("p",p\)/);
 assert.match(html,/supplierPricingFields\("q",p\)/);
 assert.match(html,/raiseUnderpricedCatalogItems\(\)/);

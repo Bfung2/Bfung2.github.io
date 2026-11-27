@@ -23,14 +23,17 @@ def audit(path):
             if price<=0: raise ValueError()
         except (TypeError,ValueError): flag("invalid_price",section,p,"Missing/nonpositive price")
         baseline=p.get("neweggPrice")
-        if baseline is None:
+        private_source=bool(p.get("supplierVersion"))
+        if private_source:
+            flag("private_supplier_review",section,p,"Exact listing and cost are available in the verified owner editor")
+        elif baseline is None:
             flag("missing_newegg_baseline",section,p,"Requires exact live listing, seller and stock verification")
         else:
             try:
                 item_price=float(p["price"])
                 cost=float(baseline)
                 if pricing_policy:
-                    if not (0 <= shipping_pct <= 100 and 0 <= tax_pct <= 25 and 0 < margin_pct < 100 and 0 <= fee_pct < 100 and fixed_fee >= 0):
+                    if not (0 <= shipping_pct <= 100 and 0 <= tax_pct <= 25 and 0 <= margin_pct < 100 and 0 <= fee_pct < 100 and fixed_fee >= 0):
                         flag("pricing_policy_invalid",section,p,"Invalid policy inputs; cannot model margin")
                     else:
                         shipping=round(item_price*shipping_pct/100+1e-9,2)
@@ -45,8 +48,8 @@ def audit(path):
             except (TypeError,ValueError,KeyError):
                 flag("invalid_newegg_baseline",section,p,"Invalid baseline/price")
         source=p.get("sourceUrl")
-        if not source: flag("missing_source_url",section,p,"Exact Newegg listing URL missing")
-        else:
+        if not source and not private_source: flag("missing_source_url",section,p,"Exact Newegg listing URL missing")
+        elif source:
             url=urllib.parse.urlparse(str(source))
             if url.scheme!="https" or (url.hostname or "").lower() not in ("newegg.com","www.newegg.com") or not re.search(r"/p/[^/]*\d[^/]*$",url.path):
                 flag("invalid_source_url",section,p,"Source URL is not an exact HTTPS product listing on Newegg")
